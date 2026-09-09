@@ -4,9 +4,10 @@ import App from './App.vue';
 import { router } from './router';
 import { installGlobalWheelScrollContainment } from './composables/scrollContainment';
 import './styles/global.css';
-import './styles/desktop-motion-global.css';
-import './styles/desktop-token-scope.css';
-import './styles/desktop-components-scope.css';
+import './styles/mobile-motion-global.css';
+import './styles/mobile-token-scope.css';
+import './styles/mobile-showcase-compat.css';
+import './styles/mobile-components-scope.css';
 
 installGlobalWheelScrollContainment();
 

@@ -1,43 +1,31 @@
 import type { CatalogSection } from '../types';
-import type { ScensMotionScenario } from '@/views/components/previews/scensMotionDocCustomize';
 
 export type AnimationCatalogMeta = {
   slug: string;
   name: string;
-  scenario: ScensMotionScenario;
   description: string;
 };
 
 export const animationCatalogMeta: AnimationCatalogMeta[] = [
   {
-    slug: 'verification-ring-dots',
-    name: 'VerificationRingDots',
-    scenario: 'verify-ring-dots',
-    description: '验证外圈点阵动画。',
+    slug: 'ios-spring-default',
+    name: 'iOS Spring Default',
+    description: 'Modal / sheet 默认 spring（Reanimated withSpring）',
   },
   {
-    slug: 'business-success',
-    name: 'BusinessSuccess',
-    scenario: 'done-tick',
-    description: '业务成功完成动效。',
+    slug: 'ios-spring-snappy',
+    name: 'iOS Spring Snappy',
+    description: 'Button press / toggle',
   },
   {
-    slug: 'business-processing',
-    name: 'BusinessProcessing',
-    scenario: 'motion-processing',
-    description: '业务处理中时间动效。',
+    slug: 'ios-navigation-push',
+    name: 'iOS Navigation Push',
+    description: 'Navigation push 时序曲线',
   },
   {
-    slug: 'ripple-pulse',
-    name: 'RipplePulse',
-    scenario: 'ripple-pulse',
-    description: '波纹脉冲动画。',
-  },
-  {
-    slug: 'mnemonic-verification',
-    name: 'MnemonicVerification',
-    scenario: 'mnemonic-verify',
-    description: '助记词校验中动画。',
+    slug: 'ios-ease-in-out',
+    name: 'iOS Ease In Out',
+    description: 'UIView 标准 ease-in-out',
   },
 ];
 

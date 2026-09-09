@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { findPatternCatalogItem } from '@/data/patterns';
-import { isListFieldSceneSlug } from '@/data/scenes';
-import ListFieldScenePreview from '@/views/scenes/previews/ListFieldScenePreview.vue';
 import shared from '@/views/shared/showcase.module.css';
 
 const props = defineProps<{
@@ -10,19 +8,12 @@ const props = defineProps<{
 }>();
 
 const location = computed(() => findPatternCatalogItem(props.slug));
-
-const listFieldSlug = computed(() =>
-  isListFieldSceneSlug(props.slug) ? props.slug : null,
-);
 </script>
 
 <template>
-  <ListFieldScenePreview
-    v-if="listFieldSlug"
-    :key="listFieldSlug"
-    :slug="listFieldSlug"
-  />
-  <section v-else-if="location" :class="shared.section">
+  <section v-if="location" :class="shared.section">
+    <h2 :class="shared.sectionTitle">{{ location.item.name }}</h2>
+    <p :class="shared.bodyText">{{ location.item.description }}</p>
     <p :class="shared.bodyText">Preview coming soon.</p>
   </section>
 </template>

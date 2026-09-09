@@ -42,17 +42,28 @@ const headerTitle = computed(() => {
   return 'Components';
 });
 
+const headerExportName = computed(() => {
+  if (childPage.value?.child.exportName) return childPage.value.child.exportName;
+  return previewEntry.value?.exportName;
+});
+
 const headerLead = computed(() => {
   if (activeSlug.value === 'icons') return getIconsPageLead();
   if (activeSlug.value === 'crypto') return getCryptoPageLead();
-  return moleculeLocation.value?.item.description ?? '';
+
+  const parts: string[] = [];
+  if (headerExportName.value) parts.push(headerExportName.value);
+  const description = moleculeLocation.value?.item.description ?? '';
+  if (description) parts.push(description);
+  return parts.join(' · ');
 });
 
 const isGallerySearchPage = computed(() => isAtomsGallerySearchSlug(activeSlug.value));
 
 const gallerySearchPlaceholder = computed(() => {
-  if (!isGallerySearchPage.value) return '';
-  return atomsGallerySearchPlaceholder(activeSlug.value);
+  const slug = activeSlug.value;
+  if (!isAtomsGallerySearchSlug(slug)) return '';
+  return atomsGallerySearchPlaceholder(slug);
 });
 
 const showPageAnchors = computed(() => {
@@ -82,7 +93,7 @@ watch(activeSlug, () => {
         :lead="headerLead"
       >
         <template v-if="isGallerySearchPage" #afterLead>
-          <div class="desktopTokens">
+          <div class="mobileTokens">
             <EgSearch
               v-model="gallerySearchQuery"
               :placeholder="gallerySearchPlaceholder"

@@ -94,9 +94,9 @@
   border-radius: var(--radius-full);
   background-color: transparent;
   color: var(--text-base-secondary);
-  font-size: var(--eds-body-small-size);
-  line-height: var(--eds-body-small-line-height);
-  font-weight: var(--eds-body-small-strong-weight);
+  font-size: var(--eds-footnote-size);
+  line-height: var(--eds-footnote-line-height);
+  font-weight: var(--weight-medium);
   white-space: nowrap;
   transition:
     background-color var(--eds-motion-hover-duration) ease,
@@ -119,7 +119,7 @@
 .link.linkNested.linkActive:focus-visible {
   background-color: var(--event-focus);
   color: var(--text-base-primary);
-  font-weight: var(--eds-body-small-strong-weight);
+  font-weight: var(--weight-medium);
   border-color: var(--stroke-color-brand);
 }
 
@@ -147,7 +147,7 @@
 
 .linkActive {
   color: var(--text-base-primary);
-  font-weight: var(--eds-body-small-strong-weight);
+  font-weight: var(--weight-medium);
 }
 
 .linkActive:hover:not(:focus-visible) {

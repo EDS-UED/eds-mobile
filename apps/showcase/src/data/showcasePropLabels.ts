@@ -27,21 +27,6 @@ export function tokenOption(zh: string, value: string): SelectOption {
   return { value, label: tokenLabel(zh, value) };
 }
 
-/** @deprecated 使用 tokenOption */
-export function literalOption(value: string): SelectOption {
-  return { value, label: value };
-}
-
-/** @deprecated 使用 tokenOptions 或 propLabelRows */
-export function literalOptions(values: readonly string[]): SelectOption[] {
-  return values.map(literalOption);
-}
-
-/** @deprecated 使用 tokenOption */
-export function chineseOption(value: string, label: string): SelectOption {
-  return { value, label };
-}
-
 export function countSelectOptions(max: number, start = 1): SelectOption[] {
   return Array.from({ length: max - start + 1 }, (_, index) => {
     const value = String(start + index);
@@ -351,12 +336,7 @@ export const showcaseDialogTypeLabels = {
   symbol: tokenLabel('带符号的对话', 'symbol'),
   compose: tokenLabel('业务对话', 'compose'),
   standard: tokenLabel('标准', 'standard'),
-  /** @deprecated Use compose */
-  slot: tokenLabel('业务对话', 'compose'),
 } as const;
-
-/** @deprecated Use showcaseDialogTypeLabels */
-export const showcaseReminderTypeLabels = showcaseDialogTypeLabels;
 
 export const showcasePaginerDataVolumeLabels = {
   few: tokenLabel('少量', 'few'),

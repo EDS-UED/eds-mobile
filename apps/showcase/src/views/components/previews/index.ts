@@ -1,286 +1,109 @@
+/** Auto-generated Mobile preview registry */
 import type { ComponentPreviewEntry } from './componentPreviewTypes';
+import ShowcasePlaceholderPreview from './ShowcasePlaceholderPreview.vue';
 import IconPreview from './IconPreview.vue';
 import CryptoPreview from './CryptoPreview.vue';
-import FlotationPreview from './FlotationPreview.vue';
-import FlotationTriggerPreview from './FlotationTriggerPreview.vue';
-import FlotationBoxPreview from './FlotationBoxPreview.vue';
-import TooltipPanelKindPreview from './TooltipPanelKindPreview.vue';
-import InputInputPreview from './InputInputPreview.vue';
-import InputTextareaPreview from './InputTextareaPreview.vue';
-import InputSearchPreview from './InputSearchPreview.vue';
-import InputVerifyInputPreview from './InputVerifyInputPreview.vue';
-import InputComboInputPreview from './InputComboInputPreview.vue';
-import InputComboTextareaPreview from './InputComboTextareaPreview.vue';
-import ButtonTextPreview from './ButtonTextPreview.vue';
-import ButtonIconPreview from './ButtonIconPreview.vue';
-import ButtonIconProPreview from './ButtonIconProPreview.vue';
-import ButtonLinkPreview from './ButtonLinkPreview.vue';
-import ButtonPaginationPreview from './ButtonPaginationPreview.vue';
-import ButtonComboPreview from './ButtonComboPreview.vue';
-import DividerPreview from './DividerPreview.vue';
 import AvatarPreview from './AvatarPreview.vue';
-import TagSystemPreview from './TagSystemPreview.vue';
-import TagStatusPreview from './TagStatusPreview.vue';
-import TagColorfulPreview from './TagColorfulPreview.vue';
-import TagCustomPreview from './TagCustomPreview.vue';
-import ToggleCheckboxPreview from './ToggleCheckboxPreview.vue';
-import ToggleRadioPreview from './ToggleRadioPreview.vue';
-import ToggleDecidePreview from './ToggleDecidePreview.vue';
-import ToggleSwitchPreview from './ToggleSwitchPreview.vue';
-import TabSegmentedPreview from './TabSegmentedPreview.vue';
-import TabTabsPreview from './TabTabsPreview.vue';
-import FeedbackEndFeedbackCardPreview from './FeedbackEndFeedbackCardPreview.vue';
-import FeedbackToastPreview from './FeedbackToastPreview.vue';
-import FeedbackMessagePreview from './FeedbackMessagePreview.vue';
-import FeedbackReddotPreview from './FeedbackReddotPreview.vue';
-import FeedbackFormSubmissionPreview from './FeedbackFormSubmissionPreview.vue';
-import FeedbackStreamerPreview from './FeedbackStreamerPreview.vue';
-import ProgressPreview from './ProgressPreview.vue';
-import NavBarPreview from './NavBarPreview.vue';
-import ModuleMenuPreview from './ModuleMenuPreview.vue';
-import ToolBarPreview from './ToolBarPreview.vue';
-import PaginerPreview from './PaginerPreview.vue';
-import DialogStandardPreview from './DialogStandardPreview.vue';
-import DialogSymbolPreview from './DialogSymbolPreview.vue';
-import DialogComposePreview from './DialogComposePreview.vue';
-import BatchBarPreview from './BatchBarPreview.vue';
-import DataListPreview from './DataListPreview.vue';
-import DetailPreview from './DetailPreview.vue';
-import ContainerPreview from './ContainerPreview.vue';
-import LayoutPreview from './LayoutPreview.vue';
-import PopupPreview from './PopupPreview.vue';
-import PopoversPopoverPreview from './PopoversPopoverPreview.vue';
-import SkidPreview from './SkidPreview.vue';
-import { splitScenePreviewEntries } from './splitScenePreviewEntries';
 
 export type { ComponentPreviewEntry } from './componentPreviewTypes';
 
-/** Showcase 文档页：预览区高度 280px（见 --showcase-doc-preview-height-compact）。 */
+const REAL_PREVIEWS: Record<string, ComponentPreviewEntry> = {
+  icons: { slug: 'icons', title: 'Icons', exportName: 'EgIcon', component: IconPreview },
+  crypto: { slug: 'crypto', title: 'Crypto', exportName: 'EgCrypto', component: CryptoPreview },
+  avatar: { slug: 'avatar', title: 'Avatar', exportName: 'EgAvatar', component: AvatarPreview, usesComponentDocHeader: true },
+};
+
+function placeholder(slug: string, title: string, exportName?: string): ComponentPreviewEntry {
+  return { slug, title, exportName, component: ShowcasePlaceholderPreview };
+}
+
+export const componentPreviewBySlug: Record<string, ComponentPreviewEntry> = {
+  'avatar': REAL_PREVIEWS['avatar'],
+  'avatar-preset-0': placeholder('avatar-preset-0', 'eds-avatar-0', 'EgAvatarPreset0'),
+  'avatar-preset-1': placeholder('avatar-preset-1', 'eds-avatar-1', 'EgAvatarPreset1'),
+  'button-body': placeholder('button-body', 'Button'),
+  'button-brand': placeholder('button-brand', 'Brand', 'EgBrandButton'),
+  'button-combo-action': placeholder('button-combo-action', 'Combo/Action', 'EgComboActionButton'),
+  'button-combo-action-alt': placeholder('button-combo-action-alt', 'Combo/Action', 'EgComboActionButtonAlt'),
+  'button-danger': placeholder('button-danger', 'Danger', 'EgDangerButton'),
+  'button-decor': placeholder('button-decor', 'Decor', 'EgDecorButton'),
+  'button-icon-container': placeholder('button-icon-container', 'iCon Container', 'EgIconContainerButton'),
+  'button-link': placeholder('button-link', 'Link', 'EgLinkButton'),
+  'button-option': placeholder('button-option', 'Option', 'EgOptionButton'),
+  'crypto': REAL_PREVIEWS['crypto'],
+  'data-combo-detail': placeholder('data-combo-detail', 'Data Combo/Detail', 'EgDataComboDetail'),
+  'divider': placeholder('divider', 'Divider', 'EgDivider'),
+  'dropdown-body': placeholder('dropdown-body', 'Drop-Down'),
+  'dropdown-trigger': placeholder('dropdown-trigger', 'Trigger', 'EgTriggerDropdown'),
+  'feedback-body': placeholder('feedback-body', 'Feedback'),
+  'feedback-form-submission': placeholder('feedback-form-submission', 'Form Submission', 'EgFormSubmissionFeedback'),
+  'feedback-status-card': placeholder('feedback-status-card', 'Status Card', 'EgStatusCardFeedback'),
+  'feedback-toast': placeholder('feedback-toast', 'Toast', 'EgToastFeedback'),
+  'icons': REAL_PREVIEWS['icons'],
+  'index-body': placeholder('index-body', 'Index'),
+  'index-title': placeholder('index-title', 'Title', 'EgIndexTitle'),
+  'input-body': placeholder('input-body', 'Input'),
+  'input-combo-input-group': placeholder('input-combo-input-group', 'Combo/Input Group', 'EgInputGroup'),
+  'input-combo-text-input': placeholder('input-combo-text-input', 'Combo/Text Input', 'EgComboTextInput'),
+  'input-combo-textarea-input': placeholder('input-combo-textarea-input', 'Combo/Textarea Input', 'EgComboTextareaInput'),
+  'input-input': placeholder('input-input', 'Input', 'EgInput'),
+  'input-pointer': placeholder('input-pointer', 'Input/Pointer', 'EgInputPointer'),
+  'input-quick-input': placeholder('input-quick-input', 'Quick Input', 'EgQuickInput'),
+  'input-search': placeholder('input-search', 'Search', 'EgSearchInput'),
+  'input-textarea': placeholder('input-textarea', 'Textarea', 'EgTextareaInput'),
+  'mode': placeholder('mode', 'Mode', 'EgMode'),
+  'popovers-body': placeholder('popovers-body', 'Popovers'),
+  'popovers-notes': placeholder('popovers-notes', 'Notes', 'EgNotesPopover'),
+  'tab-bar-base': placeholder('tab-bar-base', 'TabBar', 'EgTabBar'),
+  'tab-bar-body': placeholder('tab-bar-body', 'TabBar'),
+  'tab-bar-cregis': placeholder('tab-bar-cregis', 'Apply_TabBar@Cregis', 'EgCregisTabBar'),
+  'tab-bar-glass-bg': placeholder('tab-bar-glass-bg', 'Glass BG.', 'EgTabBarGlassBg'),
+  'tab-bar-item': placeholder('tab-bar-item', 'TabBar-Item', 'EgTabBarItem'),
+  'tab-bar-udun': placeholder('tab-bar-udun', 'Apply_TabBar@UDun', 'EgUDunTabBar'),
+  'tab-base-segmented-control': placeholder('tab-base-segmented-control', 'Base_Segmented Control', 'EgSegmentedControlBase'),
+  'tab-base-tab': placeholder('tab-base-tab', 'Base_ Tab', 'EgBaseTab'),
+  'tab-body': placeholder('tab-body', 'Tab'),
+  'tab-segmented-control': placeholder('tab-segmented-control', 'Segmented Control', 'EgSegmentedControl'),
+  'tab-tabs': placeholder('tab-tabs', 'Tabs', 'EgTabs'),
+  'tag-body': placeholder('tag-body', 'Tag'),
+  'tag-color': placeholder('tag-color', 'Color', 'EgColorTag'),
+  'tag-color-alt': placeholder('tag-color-alt', 'Color', 'EgColorTagAlt'),
+  'tag-system': placeholder('tag-system', 'System', 'EgSystemTag'),
+  'tag-system-alt': placeholder('tag-system-alt', 'System', 'EgSystemTagAlt'),
+  'text-bar': placeholder('text-bar', '7-Bar', 'EgTextBar'),
+  'text-body': placeholder('text-body', 'Text'),
+  'text-detail': placeholder('text-detail', '5-Detail', 'EgTextDetail'),
+  'text-display': placeholder('text-display', '1-Display', 'EgTextDisplay'),
+  'text-footnote': placeholder('text-footnote', '6-Footnote', 'EgTextFootnote'),
+  'text-headline': placeholder('text-headline', '2-Headline', 'EgTextHeadline'),
+  'text-title': placeholder('text-title', '3-Title', 'EgTextTitle'),
+  'title-combo-body': placeholder('title-combo-body', 'Title Combo/4-Body', 'EgTitleComboBody'),
+  'title-combo-display': placeholder('title-combo-display', 'Title Combo/1-Display', 'EgTitleComboDisplay'),
+  'title-combo-headline': placeholder('title-combo-headline', 'Title Combo/2-Headline', 'EgTitleComboHeadline'),
+  'title-combo-title': placeholder('title-combo-title', 'Title Combo/3-Title', 'EgTitleComboTitle'),
+  'toggle-body': placeholder('toggle-body', 'Toggle'),
+  'toggle-checkbox': placeholder('toggle-checkbox', 'Checkbox', 'EgCheckbox'),
+  'toggle-decide': placeholder('toggle-decide', 'Decide', 'EgDecide'),
+  'toggle-radio': placeholder('toggle-radio', 'Radio', 'EgRadio'),
+  'toggle-switch': placeholder('toggle-switch', 'Switch', 'EgSwitch'),
+};
+
 export const compactComponentPreviewSlugs = new Set<string>([
-  'input-input',
-  'input-textarea',
-  'input-search',
-  'input-verify-input',
-  'input-combo-input',
-  'input-combo-textarea',
-  'button-text',
-  'button-icon',
-  'button-icon-pro',
-  'button-link',
-  'button-pagination',
-  'button-combo',
-  'tooltip-flotation',
-  'tooltip-scene-text-overflow',
-  'tooltip-scene-paragraph-overflow',
-  'tooltip-scene-multi-address',
-  'flotation-trigger',
-  'flotation-trigger-scene-module-menu',
-  'flotation-container-tooltip',
-  'flotation-box-cascade-menu',
-  'flotation-box-address-dropdown',
-  'flotation-box-address-hover',
-  'flotation',
-  'tag-system',
-  'tag-status',
-  'tag-colorful',
-  'tag-palette',
-  'toggle-checkbox',
-  'toggle-radio',
-  'toggle-decide',
-  'toggle-switch',
-  'tab-segmented',
-  'tab-tabs',
-  'feedback-end-feedback-card',
-  'feedback-toast',
-  'feedback-message',
-  'feedback-reddot',
-  'feedback-form-submission',
-  'feedback-streamer',
-  'popovers-popover',
-  'popovers-scens-guidance',
-  'popovers-scens-notes',
-  'popovers-scens-gas-fee',
-  'avatar',
-  'tool-bar',
-  'paginer',
-  'batch-bar',
-  'verify-email',
-  'verify-google',
-  'verify-login-password',
-  'verify-transaction-password',
-  'verify-passkey',
-  'verify-locked',
+  'input-body', 'button-body', 'tag-body', 'toggle-body', 'tab-body', 'dropdown-body', 'icons', 'crypto',
 ]);
 
-/** Organism / Template 等高预览：圆角壳 + 随页滚动（不 sticky）。 */
-export const scrollComponentPreviewSlugs = new Set<string>([
-  'nav-bar',
-  'nav-bar-scene-cregis',
-  'module-menu',
-  'module-menu-scene-cregis',
-  'module-menu-scene-udun',
-  'data-list',
-  'container',
-  'layout',
-  'skid',
-  'popup',
-  'popup-scene-detail',
-  'popup-scene-dialog',
-  'popup-scene-verify',
-  'detail',
-  'dialog-standard',
-  'dialog-symbol',
-  'dialog-compose',
-]);
-
-export function usesCompactComponentPreview(slug: string): boolean {
+export function usesCompactComponentPreview(slug: string) {
   return compactComponentPreviewSlugs.has(slug);
 }
 
-export function usesScrollComponentPreview(slug: string): boolean {
-  return scrollComponentPreviewSlugs.has(slug);
+export function usesScrollComponentPreview(_slug: string) {
+  return false;
 }
 
-/** Tag / Avatar 文档页：480px 预览区 + 底部样式色板 / 尺寸画廊。 */
-export const tagComponentPreviewSlugs = new Set<string>([
-  'avatar',
-  'tag-system',
-  'tag-status',
-  'tag-colorful',
-  'tag-palette',
-]);
-
-export function usesTagComponentPreview(slug: string): boolean {
-  return tagComponentPreviewSlugs.has(slug);
+export function usesTagComponentPreview(slug: string) {
+  return slug.startsWith('tag-');
 }
 
-/** Avatar 文档：更高预览区以容纳原色盘。 */
-export const avatarComponentPreviewSlugs = new Set<string>(['avatar']);
-
-export function usesAvatarComponentPreview(slug: string): boolean {
-  return avatarComponentPreviewSlugs.has(slug);
+export function usesAvatarComponentPreview(slug: string) {
+  return slug.startsWith('avatar-');
 }
-
-export const componentPreviews: ComponentPreviewEntry[] = [
-  { slug: 'input-input', title: 'Input', component: InputInputPreview, usesComponentDocHeader: true },
-  { slug: 'input-search', title: 'Search', component: InputSearchPreview, usesComponentDocHeader: true },
-  {
-    slug: 'input-verify-input',
-    title: 'Verify Input',
-    component: InputVerifyInputPreview,
-    usesComponentDocHeader: true,
-  },
-  {
-    slug: 'input-combo-input',
-    title: 'Combo Input Item',
-    component: InputComboInputPreview,
-    usesComponentDocHeader: true,
-  },
-  { slug: 'input-textarea', title: 'Textarea', component: InputTextareaPreview, usesComponentDocHeader: true },
-  {
-    slug: 'input-combo-textarea',
-    title: 'Combo Textarea Item',
-    component: InputComboTextareaPreview,
-    usesComponentDocHeader: true,
-  },
-  { slug: 'button-text', title: 'Standard', component: ButtonTextPreview, usesComponentDocHeader: true },
-  { slug: 'button-icon', title: 'IconContainer', component: ButtonIconPreview, usesComponentDocHeader: true },
-  { slug: 'button-icon-pro', title: 'IconContainerPro', component: ButtonIconProPreview, usesComponentDocHeader: true },
-  { slug: 'button-link', title: 'Link', component: ButtonLinkPreview, usesComponentDocHeader: true },
-  { slug: 'button-pagination', title: 'Scenes', component: ButtonPaginationPreview, usesComponentDocHeader: true },
-  { slug: 'button-combo', title: 'Combo', component: ButtonComboPreview, usesComponentDocHeader: true },
-  { slug: 'divider', title: 'Divider', component: DividerPreview, usesComponentDocHeader: true },
-  { slug: 'avatar', title: 'Avatar', component: AvatarPreview, usesComponentDocHeader: true },
-  { slug: 'tag-system', title: 'Standard', component: TagSystemPreview, usesComponentDocHeader: true },
-  { slug: 'tag-status', title: 'Status', component: TagStatusPreview, usesComponentDocHeader: true },
-  { slug: 'tag-colorful', title: 'Colorful', component: TagColorfulPreview, usesComponentDocHeader: true },
-  { slug: 'tag-palette', title: 'Palette', component: TagCustomPreview, usesComponentDocHeader: true },
-  { slug: 'toggle-checkbox', title: 'Checkbox', component: ToggleCheckboxPreview, usesComponentDocHeader: true },
-  { slug: 'toggle-radio', title: 'Radio', component: ToggleRadioPreview, usesComponentDocHeader: true },
-  { slug: 'toggle-decide', title: 'Decide', component: ToggleDecidePreview, usesComponentDocHeader: true },
-  { slug: 'toggle-switch', title: 'Switch', component: ToggleSwitchPreview, usesComponentDocHeader: true },
-  {
-    slug: 'tab-segmented',
-    title: 'Segmented',
-    component: TabSegmentedPreview,
-    usesComponentDocHeader: true,
-  },
-  { slug: 'tab-tabs', title: 'Standard', component: TabTabsPreview, usesComponentDocHeader: true },
-  {
-    slug: 'feedback-end-feedback-card',
-    title: 'EndFeedbackCard',
-    component: FeedbackEndFeedbackCardPreview,
-    usesComponentDocHeader: true,
-  },
-  { slug: 'feedback-toast', title: 'Toast', component: FeedbackToastPreview, usesComponentDocHeader: true },
-  { slug: 'feedback-message', title: 'Message', component: FeedbackMessagePreview, usesComponentDocHeader: true },
-  { slug: 'feedback-reddot', title: 'Reddot', component: FeedbackReddotPreview, usesComponentDocHeader: true },
-  {
-    slug: 'feedback-form-submission',
-    title: 'FormSubmission',
-    component: FeedbackFormSubmissionPreview,
-    usesComponentDocHeader: true,
-  },
-  {
-    slug: 'feedback-streamer',
-    title: 'Streamer',
-    component: FeedbackStreamerPreview,
-    usesComponentDocHeader: true,
-  },
-  { slug: 'progress', title: 'Progress', component: ProgressPreview, usesComponentDocHeader: true },
-  { slug: 'nav-bar', title: 'NavBar', component: NavBarPreview, usesComponentDocHeader: true },
-  { slug: 'module-menu', title: 'ModuleMenu', component: ModuleMenuPreview, usesComponentDocHeader: true },
-  { slug: 'tool-bar', title: 'ToolBar', component: ToolBarPreview, usesComponentDocHeader: true },
-  { slug: 'paginer', title: 'Paginer', component: PaginerPreview, usesComponentDocHeader: true },
-  { slug: 'data-list', title: 'DataList', component: DataListPreview, usesComponentDocHeader: true },
-  { slug: 'detail', title: 'Detail', component: DetailPreview, usesComponentDocHeader: true },
-  { slug: 'batch-bar', title: 'BatchBar', component: BatchBarPreview, usesComponentDocHeader: true },
-  { slug: 'container', title: 'Container', component: ContainerPreview, usesComponentDocHeader: true },
-  { slug: 'layout', title: 'Layout', component: LayoutPreview, usesComponentDocHeader: true },
-  { slug: 'popup', title: 'Popup', component: PopupPreview, usesComponentDocHeader: true },
-  { slug: 'popovers-popover', title: 'Standard', component: PopoversPopoverPreview, usesComponentDocHeader: true },
-  { slug: 'dialog-standard', title: 'Standard', component: DialogStandardPreview, usesComponentDocHeader: true },
-  { slug: 'dialog-symbol', title: 'DialogSymbol', component: DialogSymbolPreview, usesComponentDocHeader: true },
-  { slug: 'dialog-compose', title: 'Compose', component: DialogComposePreview, usesComponentDocHeader: true },
-  { slug: 'skid', title: 'Skid', component: SkidPreview, usesComponentDocHeader: true },
-  { slug: 'icons', title: 'Icon', component: IconPreview },
-  { slug: 'crypto', title: 'Crypto', component: CryptoPreview },
-  ...([
-    { slug: 'tooltip-flotation', title: 'StandardBox' },
-    { slug: 'flotation-container-tooltip', title: 'Tooltip' },
-    { slug: 'tooltip-subtle', title: 'SubtleCard' },
-  ] as const).map(({ slug, title }) => ({
-    slug,
-    title,
-    component: TooltipPanelKindPreview,
-    usesComponentDocHeader: true,
-  })),
-  ...([
-    { slug: 'tooltip-scene-text-overflow', title: '字段溢出' },
-    { slug: 'tooltip-scene-paragraph-overflow', title: '段落溢出' },
-    { slug: 'tooltip-scene-multi-address', title: '地址溢出' },
-  ] as const).map(({ slug, title }) => ({
-    slug,
-    title,
-    component: TooltipPanelKindPreview,
-    usesComponentDocHeader: true,
-  })),
-  { slug: 'flotation', title: 'Combo', component: FlotationPreview, usesComponentDocHeader: true },
-  {
-    slug: 'flotation-trigger',
-    title: 'Trigger',
-    component: FlotationTriggerPreview,
-    usesComponentDocHeader: true,
-  },
-  {
-    slug: 'flotation-box',
-    title: 'Box',
-    component: FlotationBoxPreview,
-    usesComponentDocHeader: true,
-  },
-  ...splitScenePreviewEntries,
-];
-
-export const componentPreviewBySlug = Object.fromEntries(
-  componentPreviews.map((entry) => [entry.slug, entry]),
-) as Record<string, ComponentPreviewEntry>;

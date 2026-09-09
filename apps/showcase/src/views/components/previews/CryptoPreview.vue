@@ -37,11 +37,11 @@ const filteredCryptoEntries = computed(() =>
   <section id="crypto-gallery" :class="shared.section">
     <div :class="styles.iconGrid">
       <div v-for="entry in filteredCryptoEntries" :key="entry.name" :class="styles.iconCell">
-        <div class="desktopTokens">
+        <div class="mobileTokens">
           <EgCrypto :name="entry.name" :class="styles.iconCellCryptoIcon" />
         </div>
         <span :class="styles.iconCellName">{{ entry.displayName }}</span>
-        <span class="desktopTokens">
+        <span class="mobileTokens">
           <EgTag
             :class="styles.iconCellKindTag"
             size="sm"

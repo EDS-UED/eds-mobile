@@ -1,0 +1,37 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+.mobileTokens {
+  font-family: var(--eds-family-sans);
+}
+
+.mobileTokens,
+.mobileTokens * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mobileTokens :is(input, textarea, [contenteditable='true']) {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+button,
+input:not(.eds-input-field),
+textarea:not(.eds-textarea-control),
+select {
+  font-family: inherit;
+}
+
+.eds-input-field,
+.eds-input-control,
+.eds-input-unit,
+.eds-textarea-control {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

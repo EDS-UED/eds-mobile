@@ -1,5 +1,5 @@
-@import '@eds/desktop-tokens';
-@import '@eds/desktop-tokens/tag';
+@import '@eds/mobile-tokens';
+@import '@eds/mobile-tokens/tag';
 @import './fonts.css';
 @import '../motion/tokens.css';
 
@@ -23,8 +23,8 @@ html {
 body {
   overscroll-behavior: none;
   font-family: var(--eds-family-sans);
-  font-size: var(--eds-body-small-size);
-  line-height: var(--eds-body-small-line-height);
+  font-size: var(--eds-footnote-size);
+  line-height: var(--eds-footnote-line-height);
   color: var(--text-base-primary);
   background: var(--material-brand-primary);
 }

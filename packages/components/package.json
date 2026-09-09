@@ -1,8 +1,8 @@
 {
-  "name": "@eds/desktop-components",
+  "name": "@eds/mobile-components",
   "version": "0.1.0",
   "private": true,
-  "description": "Vue 3 components for EverGreen Design System (Desktop)",
+  "description": "React Native components for EDS Mobile",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -11,30 +11,27 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    },
-    "./style.css": "./dist/index.css"
+    }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist", "src"],
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
-    "typecheck": "vue-tsc --noEmit",
+    "generate": "node scripts/generate-catalog.mjs",
+    "prebuild": "node scripts/generate-catalog.mjs",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "echo \"No linter configured yet\""
   },
   "peerDependencies": {
-    "vue": "^3.5.0"
+    "react": ">=18",
+    "react-native": ">=0.74",
+    "react-native-svg": ">=15",
+    "react-native-reanimated": ">=3"
   },
   "dependencies": {
-    "@eds/desktop-tokens": "workspace:*",
-    "@eds/desktop-animations": "workspace:*"
+    "@eds/mobile-tokens": "workspace:*"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "typescript": "^5.7.3",
-    "vite": "^6.0.7",
-    "vite-plugin-dts": "^4.4.0",
-    "vue": "^3.5.13",
-    "vue-tsc": "^2.2.0"
+    "@types/react": "^19.0.8",
+    "typescript": "^5.7.3"
   }
 }

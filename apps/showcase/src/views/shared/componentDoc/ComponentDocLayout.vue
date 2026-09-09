@@ -251,7 +251,7 @@ async function copyAiPrompt() {
         data-no-corner-smoothing
       >
         <div
-          class="desktopTokens"
+          class="mobileTokens"
           :class="styles.previewShellToolbar"
           :aria-label="`${title} 视图`"
         >

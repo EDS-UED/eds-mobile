@@ -22,7 +22,7 @@ const filteredIconNames = computed(() => {
   <section id="icons-gallery" :class="shared.section">
     <div :class="styles.iconGrid">
       <div v-for="name in filteredIconNames" :key="name" :class="styles.iconCell">
-        <div class="desktopTokens">
+        <div class="mobileTokens">
           <EgIcon :name="name" size="lg" :label="name" />
         </div>
         <span :class="styles.iconCellName">{{ name }}</span>

@@ -9,11 +9,11 @@ const repoRoot = resolve(__dirname, '../..');
 const tokensSpecDir = resolve(repoRoot, 'packages/tokens/spec');
 const tokensDistDir = resolve(repoRoot, 'packages/tokens/dist');
 const componentsSrcDir = resolve(repoRoot, 'packages/components/src');
-const animationsSrcDir = resolve(repoRoot, 'packages/animations/src');
+const animationsSrcDir = resolve(repoRoot, 'packages/mobile-animations/src');
 const tokensBuildScript = resolve(repoRoot, 'packages/tokens/scripts/build.mjs');
 
 /** spec 变更 → 重建 dist → full-reload；dist/css 外部重建 → full-reload；components 走 alias + HMR。 */
-function watchDesktopTokens(): Plugin {
+function watchMobileTokens(): Plugin {
   let building = false;
   let queued = false;
   let debounceTimer: ReturnType<typeof setTimeout> | undefined;
@@ -43,7 +43,7 @@ function watchDesktopTokens(): Plugin {
       if (code === 0) {
         scheduleFullReload(server);
       } else {
-        console.error('[watch-desktop-tokens] build failed');
+        console.error('[watch-mobile-tokens] build failed');
       }
       if (queued) {
         queued = false;
@@ -53,7 +53,7 @@ function watchDesktopTokens(): Plugin {
   }
 
   return {
-    name: 'watch-desktop-tokens',
+    name: 'watch-mobile-tokens',
     configureServer(server) {
       server.watcher.add(tokensSpecDir);
       server.watcher.add(tokensDistDir);
@@ -89,27 +89,27 @@ function watchDesktopTokens(): Plugin {
   };
 }
 
-function scopeDesktopTokens() {
+function scopeMobileTokens() {
   return prefixSelector({
-    prefix: '.desktopTokens',
-    includeFiles: [/desktop-token-scope\.css$/, /desktop-components-scope\.css$/],
+    prefix: '.mobileTokens',
+    includeFiles: [/mobile-token-scope\.css$/, /mobile-components-scope\.css$/],
     transform(_prefix, selector, prefixedSelector) {
       if (/^\[data-theme=["']?dark["']?\]\s+/.test(selector)) {
         return selector.replace(
           /^\[data-theme=["']?dark["']?\]/,
-          '[data-theme="dark"] .desktopTokens',
+          '[data-theme="dark"] .mobileTokens',
         );
       }
 
       if (/^\[data-theme=["']?light["']?\]\s+/.test(selector)) {
         return selector.replace(
           /^\[data-theme=["']?light["']?\]/,
-          '[data-theme="light"] .desktopTokens',
+          '[data-theme="light"] .mobileTokens',
         );
       }
 
       if (selector === '[data-theme="dark"]' || selector === '[data-theme=dark]') {
-        return '[data-theme="dark"] .desktopTokens';
+        return '[data-theme="dark"] .mobileTokens';
       }
 
       if (
@@ -118,18 +118,18 @@ function scopeDesktopTokens() {
         selector.includes('[data-theme="light"]') ||
         selector.includes('[data-theme=light]')
       ) {
-        return '.desktopTokens';
+        return '.mobileTokens';
       }
 
       if (selector === 'body') {
-        return '.desktopTokens';
+        return '.mobileTokens';
       }
 
       if (selector === 'input' || selector === 'textarea' || selector === 'button') {
-        return `.desktopTokens ${selector}`;
+        return `.mobileTokens ${selector}`;
       }
 
-      if (selector === '.desktopTokens' || selector.startsWith('.desktopTokens ')) {
+      if (selector === '.mobileTokens' || selector.startsWith('.mobileTokens ')) {
         return selector;
       }
 
@@ -140,26 +140,25 @@ function scopeDesktopTokens() {
 
 export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',
-  plugins: [vue(), watchDesktopTokens()],
+  plugins: [vue(), watchMobileTokens()],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      // Dev/HMR：走组件源码 + 各 SFC 的 CSS Modules，避免 dist/index.css 与 dist JS 哈希不同步
-      '@eds/desktop-components': resolve(__dirname, '../../packages/components/src/index.ts'),
-      '@eds/desktop-animations': resolve(__dirname, '../../packages/animations/src/index.ts'),
+      '@eds/desktop-components': resolve(__dirname, 'src/stubs/eds-components.ts'),
+      '@eds/mobile-animations': resolve(__dirname, '../../packages/mobile-animations/src/index.ts'),
     },
   },
   css: {
     postcss: {
-      plugins: [scopeDesktopTokens()],
+      plugins: [scopeMobileTokens()],
     },
   },
   optimizeDeps: {
-    exclude: ['@eds/desktop-components', '@eds/desktop-animations'],
+    exclude: ['@eds/mobile-animations'],
   },
   server: {
     host: true,
-    port: 5177,
+    port: 5178,
     strictPort: true,
     fs: {
       allow: [resolve(__dirname), resolve(__dirname, '../../..')],
@@ -168,7 +167,7 @@ export default defineConfig({
       ignored: [
         '**/node_modules/**',
         '!**/packages/components/**',
-        '!**/packages/animations/**',
+        '!**/packages/mobile-animations/**',
         '!**/packages/tokens/dist/**',
         '!**/packages/tokens/spec/**',
       ],

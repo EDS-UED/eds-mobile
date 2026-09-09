@@ -107,6 +107,11 @@ export function iterCatalogItems(
   return entries;
 }
 
+export function getCatalogChildExportName(slug: string): string | undefined {
+  const page = findCatalogChildPage(slug);
+  return page?.child.exportName;
+}
+
 export function findCatalogItem(slug: string): CatalogItemLocation | undefined {
   return iterCatalogItems().find((entry) => entry.item.slug === slug);
 }

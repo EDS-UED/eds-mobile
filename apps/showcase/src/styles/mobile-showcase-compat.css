@@ -1,0 +1,72 @@
+/**
+ * Desktop showcase CSS expects these semantic token names.
+ * Mobile Figma uses tap / flat naming — alias here for layout parity only.
+ */
+:root,
+[data-theme='light'] {
+  --event-hover: var(--event-tap);
+  --event-hover-brand: var(--event-tap-brand);
+  --text-same-white-primary: var(--text-same-white);
+  --text-same-white-secondary: var(--text-same-white-weaken);
+  --material-same-white-quaternary: var(--material-same-white-weaken);
+  --material-brand-primary: var(--material-brand);
+  --stroke-xs: var(--stroke-sm);
+  --spacing-025: 1px;
+  --spacing-2-5: 10px;
+}
+
+[data-theme='dark'] {
+  --event-hover: var(--event-tap);
+  --event-hover-brand: var(--event-tap-brand);
+  --text-same-white-primary: var(--text-same-white);
+  --text-same-white-secondary: var(--text-same-white-weaken);
+  --material-same-white-quaternary: var(--material-same-white-weaken);
+  --material-brand-primary: var(--material-brand);
+  --stroke-xs: var(--stroke-sm);
+  --spacing-025: 1px;
+  --spacing-2-5: 10px;
+}
+
+/* Showcase chrome stubs */
+.eds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-full);
+  border: var(--stroke-sm) solid var(--stroke-same-white);
+  background: transparent;
+  color: var(--text-same-white-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.eds-segmented {
+  display: inline-flex;
+  gap: var(--spacing-1);
+  padding: var(--spacing-05);
+  border-radius: var(--radius-full);
+  background: var(--material-card-shallow);
+}
+
+.eds-segmented__item {
+  border: 0;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-2) var(--spacing-4);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.eds-segmented__item.is-active {
+  background: var(--box-page);
+}
+
+.eds-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-md);
+  border: var(--stroke-sm) solid var(--stroke-divider);
+  font: inherit;
+}

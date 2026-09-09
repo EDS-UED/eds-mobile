@@ -1,7 +1,0 @@
-/**
- * Hover-enter-only — 组件 glue：聚焦等场景 suppress，覆盖 token hover 入场。
- */
-.motion-ease.is-hover-enter-only.eds-motion-hover-enter-suppressed,
-.motion-ease.is-hover-enter-only.eds-motion-hover-enter-suppressed:hover {
-  transition: none;
-}

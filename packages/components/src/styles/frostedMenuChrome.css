@@ -1,6 +1,0 @@
-/** Module Menu Title 固定栏 — box-menu 88% + eds-blur-bg */
-.eds-frosted-menu-chrome {
-  background: color-mix(in display-p3, var(--box-menu) 88%, transparent);
-  -webkit-backdrop-filter: var(--eds-blur-bg);
-  backdrop-filter: var(--eds-blur-bg);
-}

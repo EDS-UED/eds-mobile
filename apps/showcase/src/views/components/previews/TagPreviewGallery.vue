@@ -27,7 +27,7 @@ const emit = defineEmits<{
 
 <template>
   <div
-    class="desktopTokens"
+    class="mobileTokens"
     :class="[
       docStyles.previewInputHost,
       galleryStyles.host,

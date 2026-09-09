@@ -103,7 +103,7 @@ function patchInlineSelect(control: DocCustomizeControl, value: unknown) {
     :is="embedded ? 'div' : 'section'"
     :class="[
       embedded ? styles.customizeEmbedded : [shared.section, styles.customizeSection],
-      'desktopTokens',
+      'mobileTokens',
     ]"
   >
     <h2

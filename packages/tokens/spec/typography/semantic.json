@@ -1,100 +1,125 @@
 {
-  "$description": "Typography System semantic role tokens (语义角色令牌 → base).",
+  "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
+  "$description": "Typography System semantic role tokens — Mobile Figma text styles.",
   "groups": [
     {
       "comment": "Display",
       "tokens": [
-        { "name": "eds-display-size", "value": "var(--size-4xl)" },
+        { "name": "eds-display-size", "value": "var(--size-display)" },
         { "name": "eds-display-weight", "value": "var(--weight-bold)" },
-        { "name": "eds-display-line-height", "value": "var(--line-height-4xl)" }
+        { "name": "eds-display-line-height", "value": "var(--line-height-display)" }
       ]
     },
     {
       "comment": "Headline",
       "tokens": [
-        { "name": "eds-headline-size", "value": "var(--size-3xl)" },
+        { "name": "eds-headline-size", "value": "var(--size-headline)" },
         { "name": "eds-headline-weight", "value": "var(--weight-bold)" },
-        { "name": "eds-headline-line-height", "value": "var(--line-height-3xl)" }
+        { "name": "eds-headline-line-height", "value": "var(--line-height-headline)" }
       ]
     },
     {
       "comment": "Title",
       "tokens": [
-        { "name": "eds-title-size", "value": "var(--size-2xl)" },
+        { "name": "eds-title-size", "value": "var(--size-title)" },
         { "name": "eds-title-weight", "value": "var(--weight-bold)" },
-        { "name": "eds-title-line-height", "value": "var(--line-height-2xl)" }
+        { "name": "eds-title-line-height", "value": "var(--line-height-title)" }
       ]
     },
     {
       "comment": "Body Large",
       "tokens": [
-        { "name": "eds-body-large-size", "value": "var(--size-xl)" },
+        { "name": "eds-body-large-size", "value": "var(--size-body-large)" },
         { "name": "eds-body-large-weight", "value": "var(--weight-regular)" },
-        { "name": "eds-body-large-line-height", "value": "var(--line-height-xl)" }
+        { "name": "eds-body-large-line-height", "value": "var(--line-height-body-large)" }
       ]
     },
     {
       "comment": "Body Large Strong",
       "tokens": [
-        { "name": "eds-body-large-strong-size", "value": "var(--size-xl)" },
-        { "name": "eds-body-large-strong-weight", "value": "var(--weight-medium)" },
-        { "name": "eds-body-large-strong-line-height", "value": "var(--line-height-xl)" }
+        { "name": "eds-body-large-strong-size", "value": "var(--size-body-large)" },
+        { "name": "eds-body-large-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-large-strong-line-height", "value": "var(--line-height-body-large)" }
       ]
     },
     {
       "comment": "Body Medium",
       "tokens": [
-        { "name": "eds-body-medium-size", "value": "var(--size-lg)" },
+        { "name": "eds-body-medium-size", "value": "var(--size-body-medium)" },
         { "name": "eds-body-medium-weight", "value": "var(--weight-regular)" },
-        { "name": "eds-body-medium-line-height", "value": "var(--line-height-lg)" }
+        { "name": "eds-body-medium-line-height", "value": "var(--line-height-body-medium)" }
       ]
     },
     {
       "comment": "Body Medium Strong",
       "tokens": [
-        { "name": "eds-body-medium-strong-size", "value": "var(--size-lg)" },
-        { "name": "eds-body-medium-strong-weight", "value": "var(--weight-medium)" },
-        { "name": "eds-body-medium-strong-line-height", "value": "var(--line-height-lg)" }
+        { "name": "eds-body-medium-strong-size", "value": "var(--size-body-medium)" },
+        { "name": "eds-body-medium-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-medium-strong-line-height", "value": "var(--line-height-body-medium)" }
       ]
     },
     {
       "comment": "Body Small",
       "tokens": [
-        { "name": "eds-body-small-size", "value": "var(--size-md)" },
+        { "name": "eds-body-small-size", "value": "var(--size-body-small)" },
         { "name": "eds-body-small-weight", "value": "var(--weight-regular)" },
-        { "name": "eds-body-small-line-height", "value": "var(--line-height-md)" }
+        { "name": "eds-body-small-line-height", "value": "var(--line-height-body-small)" }
       ]
     },
     {
       "comment": "Body Small Strong",
       "tokens": [
-        { "name": "eds-body-small-strong-size", "value": "var(--size-md)" },
-        { "name": "eds-body-small-strong-weight", "value": "var(--weight-medium)" },
-        { "name": "eds-body-small-strong-line-height", "value": "var(--line-height-md)" }
+        { "name": "eds-body-small-strong-size", "value": "var(--size-body-small)" },
+        { "name": "eds-body-small-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-small-strong-line-height", "value": "var(--line-height-body-small)" }
+      ]
+    },
+    {
+      "comment": "Detail",
+      "tokens": [
+        { "name": "eds-detail-size", "value": "var(--size-detail)" },
+        { "name": "eds-detail-weight", "value": "var(--weight-regular)" },
+        { "name": "eds-detail-line-height", "value": "var(--line-height-detail)" }
+      ]
+    },
+    {
+      "comment": "Detail Strong",
+      "tokens": [
+        { "name": "eds-detail-strong-size", "value": "var(--size-detail)" },
+        { "name": "eds-detail-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-detail-strong-line-height", "value": "var(--line-height-detail)" }
       ]
     },
     {
       "comment": "Footnote",
       "tokens": [
-        { "name": "eds-footnote-size", "value": "var(--size-sm)" },
+        { "name": "eds-footnote-size", "value": "var(--size-footnote)" },
         { "name": "eds-footnote-weight", "value": "var(--weight-regular)" },
-        { "name": "eds-footnote-line-height", "value": "var(--line-height-sm)" }
+        { "name": "eds-footnote-line-height", "value": "var(--line-height-footnote)" }
       ]
     },
     {
       "comment": "Footnote Strong",
       "tokens": [
-        { "name": "eds-footnote-strong-size", "value": "var(--size-sm)" },
-        { "name": "eds-footnote-strong-weight", "value": "var(--weight-medium)" },
-        { "name": "eds-footnote-strong-line-height", "value": "var(--line-height-sm)" }
+        { "name": "eds-footnote-strong-size", "value": "var(--size-footnote)" },
+        { "name": "eds-footnote-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-footnote-strong-line-height", "value": "var(--line-height-footnote)" }
       ]
     },
     {
       "comment": "Bar",
       "tokens": [
-        { "name": "eds-bar-size", "value": "var(--size-xs)" },
+        { "name": "eds-bar-size", "value": "var(--size-bar)" },
         { "name": "eds-bar-weight", "value": "var(--weight-medium)" },
-        { "name": "eds-bar-line-height", "value": "var(--line-height-xs)" }
+        { "name": "eds-bar-line-height", "value": "var(--line-height-bar)" }
+      ]
+    },
+    {
+      "comment": "Bar Strong",
+      "tokens": [
+        { "name": "eds-bar-strong-size", "value": "var(--size-bar)" },
+        { "name": "eds-bar-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-bar-strong-line-height", "value": "var(--line-height-bar)" }
       ]
     }
   ]

@@ -1,49 +1,104 @@
 {
-  "$schema": "./base.schema.json",
-  "$figma": "https://www.figma.com/design/OkYrDmatUWtgw9n1uVHt6v/EverGreen-Design-System--Desktop-?node-id=2008-41",
-  "$description": "Color System base palette (基色). eds-popup: box-flotation, effect-popup-box. eds-flotation: effect-flotation-box (typically @ 60% in semantic).",
+  "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
+  "$description": "Color System base palette — Mobile Figma Primitives.",
   "light": {
-    "eds-brand": { "hex": "#006d41", "displayP3": [0, 0.4275, 0.2549] },
-    "eds-match": { "hex": "#003a6d", "displayP3": [0, 0.2275, 0.4275] },
-    "eds-decor": { "hex": "#022d0d", "displayP3": [0.0078, 0.1765, 0.051] },
-    "eds-success": { "hex": "#1fc35a", "displayP3": [0.1216, 0.7647, 0.3529] },
-    "eds-danger": { "hex": "#d7462d", "displayP3": [0.8431, 0.2745, 0.1765] },
-    "eds-warning": { "hex": "#eb9114", "displayP3": [0.9216, 0.5686, 0.0784] },
-    "eds-base": { "hex": "#020304", "displayP3": [0.0078, 0.0118, 0.0157] },
-    "eds-face": { "hex": "#ffffff", "displayP3": [1, 1, 1] },
-    "eds-same-black": { "hex": "#020304", "displayP3": [0.0078, 0.0118, 0.0157] },
-    "eds-same-white": { "hex": "#ffffff", "displayP3": [1, 1, 1] },
-    "eds-container": { "hex": "#e6e7e8", "displayP3": [0.902, 0.9059, 0.9098] },
-    "eds-menu": { "hex": "#fafafa", "displayP3": [0.9804, 0.9804, 0.9804] },
-    "eds-page": { "hex": "#ffffff", "displayP3": [1, 1, 1] },
-    "eds-popup": { "hex": "#ffffff", "displayP3": [1, 1, 1] },
-    "eds-flotation": { "hex": "#e2e4e6", "displayP3": [0.8863, 0.8941, 0.902] },
-    "eds-inner-glow": { "hex": "#282828", "displayP3": [0.1569, 0.1569, 0.1569] },
-    "eds-outer-glow": { "hex": "#dcdcdc", "displayP3": [0.8627, 0.8627, 0.8627] },
-    "eds-vulvar-glow": { "hex": "#dcdcdc", "displayP3": [0.8627, 0.8627, 0.8627] },
-    "eds-data-table": { "hex": "#f4f5f6", "displayP3": [0.9569, 0.9608, 0.9647] },
-    "eds-module-stroke": { "hex": "#ebeced", "displayP3": [0.9216, 0.9255, 0.9294] }
+    "eds-brand": {
+      "hex": "#5f2243",
+      "displayP3": [0.3725, 0.1333, 0.2627]
+    },
+    "eds-match": {
+      "hex": "#003a6d",
+      "displayP3": [0, 0.2275, 0.4275]
+    },
+    "eds-decor": {
+      "hex": "#022d0d",
+      "displayP3": [0.0078, 0.1765, 0.051]
+    },
+    "eds-success": {
+      "hex": "#1fc35a",
+      "displayP3": [0.1216, 0.7647, 0.3529]
+    },
+    "eds-danger": {
+      "hex": "#d7462d",
+      "displayP3": [0.8431, 0.2745, 0.1765]
+    },
+    "eds-warning": {
+      "hex": "#eb9114",
+      "displayP3": [0.9216, 0.5686, 0.0784]
+    },
+    "eds-base": {
+      "hex": "#020304",
+      "displayP3": [0.0078, 0.0118, 0.0157]
+    },
+    "eds-face": {
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
+    },
+    "eds-same-black": {
+      "hex": "#020304",
+      "displayP3": [0.0078, 0.0118, 0.0157]
+    },
+    "eds-same-white": {
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
+    },
+    "eds-page": {
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
+    },
+    "eds-flotation": {
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
+    }
   },
   "dark": {
-    "eds-brand": { "hex": "#4db28f", "displayP3": [0.302, 0.698, 0.5608] },
-    "eds-match": { "hex": "#004178", "displayP3": [0, 0.2549, 0.4706] },
-    "eds-decor": { "hex": "#ffffff", "displayP3": [1, 1, 1] },
-    "eds-success": { "hex": "#1fc35a", "displayP3": [0.1216, 0.7647, 0.3529] },
-    "eds-danger": { "hex": "#fa6950", "displayP3": [0.9804, 0.4118, 0.3137] },
-    "eds-warning": { "hex": "#ffaa32", "displayP3": [1, 0.6667, 0.1961] },
-    "eds-base": { "hex": "#ffffff", "displayP3": [1, 1, 1] },
-    "eds-face": { "hex": "#020304", "displayP3": [0.0078, 0.0118, 0.0157] },
-    "eds-same-black": { "hex": "#020304", "displayP3": [0.0078, 0.0118, 0.0157] },
-    "eds-same-white": { "hex": "#ffffff", "displayP3": [1, 1, 1] },
-    "eds-container": { "hex": "#2a2d30", "displayP3": [0.1647, 0.1765, 0.1882] },
-    "eds-menu": { "hex": "#25282a", "displayP3": [0.1451, 0.1569, 0.1647] },
-    "eds-page": { "hex": "#1e2123", "displayP3": [0.1176, 0.1294, 0.1373] },
-    "eds-popup": { "hex": "#232527", "displayP3": [0.1373, 0.1451, 0.1529] },
-    "eds-flotation": { "hex": "#232527", "displayP3": [0.1373, 0.1451, 0.1529] },
-    "eds-inner-glow": { "hex": "#3c3c3c", "displayP3": [0.2353, 0.2353, 0.2353] },
-    "eds-outer-glow": { "hex": "#a0a0a0", "displayP3": [0.6275, 0.6275, 0.6275] },
-    "eds-vulvar-glow": { "hex": "#a0a0a0", "displayP3": [0.6275, 0.6275, 0.6275] },
-    "eds-data-table": { "hex": "#18191a", "displayP3": [0.0941, 0.098, 0.102] },
-    "eds-module-stroke": { "hex": "#000000", "displayP3": [0, 0, 0] }
+    "eds-brand": {
+      "hex": "#5f2243",
+      "displayP3": [0.3725, 0.1333, 0.2627]
+    },
+    "eds-match": {
+      "hex": "#004178",
+      "displayP3": [0, 0.2549, 0.4706]
+    },
+    "eds-decor": {
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
+    },
+    "eds-success": {
+      "hex": "#1fc35a",
+      "displayP3": [0.1216, 0.7647, 0.3529]
+    },
+    "eds-danger": {
+      "hex": "#fa6950",
+      "displayP3": [0.9804, 0.4118, 0.3137]
+    },
+    "eds-warning": {
+      "hex": "#ffaa32",
+      "displayP3": [1, 0.6667, 0.1961]
+    },
+    "eds-base": {
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
+    },
+    "eds-face": {
+      "hex": "#020304",
+      "displayP3": [0.0078, 0.0118, 0.0157]
+    },
+    "eds-same-black": {
+      "hex": "#020304",
+      "displayP3": [0.0078, 0.0118, 0.0157]
+    },
+    "eds-same-white": {
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
+    },
+    "eds-page": {
+      "hex": "#020304",
+      "displayP3": [0.0078, 0.0118, 0.0157]
+    },
+    "eds-flotation": {
+      "hex": "#1c1d1f",
+      "displayP3": [0.1098, 0.1137, 0.1216]
+    }
   }
 }

@@ -2,7 +2,6 @@ export {
   scenesCatalog,
   listFieldSceneSlugs,
   isListFieldSceneSlug,
-  legacyListFieldsSlug,
 } from './catalog';
 export type { ListFieldSceneSlug } from './catalog';
 export { sceneAnchorItems } from './anchors';

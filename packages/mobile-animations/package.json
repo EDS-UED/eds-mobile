@@ -1,0 +1,26 @@
+{
+  "name": "@eds/mobile-animations",
+  "version": "0.1.0",
+  "private": true,
+  "description": "iOS-native motion presets for EverGreen Design System (Mobile)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo \"No linter configured yet\""
+  },
+  "peerDependencies": {
+    "react-native-reanimated": ">=3"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

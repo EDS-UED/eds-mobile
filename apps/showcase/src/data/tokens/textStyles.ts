@@ -1,4 +1,4 @@
-/** Desktop text style class order (spec/text/styles.json). CSS: @eds/desktop-tokens/text/styles */
+/** Desktop text style class order (spec/text/styles.json). CSS: @eds/mobile-tokens/text/styles */
 export const textStyleOrder = [
   'typography-display',
   'typography-headline',

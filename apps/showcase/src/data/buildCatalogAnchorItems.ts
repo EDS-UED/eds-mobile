@@ -7,6 +7,10 @@ import { catalogSectionId } from './catalogSectionId';
 
 export type CatalogChildPageSlugResolver = (child: CatalogChildItem) => string;
 
+function catalogDepth(value: number): AnchorItem['depth'] {
+  return value as AnchorItem['depth'];
+}
+
 function appendFamilyChildren(
   items: AnchorItem[],
   family: CatalogItem,
@@ -21,7 +25,7 @@ function appendFamilyChildren(
       items.push({
         id: `${family.slug}:${child.id}`,
         label: child.label,
-        depth: familyDepth + 1,
+        depth: catalogDepth(familyDepth + 1),
         kind: 'navSubgroup',
       });
       continue;
@@ -32,7 +36,7 @@ function appendFamilyChildren(
       items.push({
         id: `${family.slug}:${child.id}`,
         label: child.label,
-        depth: familyDepth + 1,
+        depth: catalogDepth(familyDepth + 1),
         kind: 'navSection',
       });
       continue;
@@ -46,7 +50,7 @@ function appendFamilyChildren(
       items.push({
         id: `${family.slug}:nav-group:${navRole}:${child.id}`,
         label: CATALOG_NAV_ROLE_GROUP_LABELS[navRole],
-        depth: familyDepth + 1,
+        depth: catalogDepth(familyDepth + 1),
         kind: 'navGroup',
       });
       activeNavGroup = navRole;
@@ -59,7 +63,7 @@ function appendFamilyChildren(
     items.push({
       id: `${family.slug}:${child.id}`,
       label: child.label,
-      depth: linkDepth,
+      depth: catalogDepth(linkDepth),
       parentSlug: family.slug,
       anchorId: child.id,
       pageSlug: resolveChildPageSlug?.(child) ?? child.pageSlug ?? child.id,
@@ -80,7 +84,7 @@ function appendFamilies(
     items.push({
       id: family.slug,
       label: family.name,
-      depth: familyDepth,
+      depth: catalogDepth(familyDepth),
     });
 
     appendFamilyChildren(items, family, familyDepth, resolveChildPageSlug);
@@ -97,7 +101,7 @@ export function buildCatalogAnchorItems(
     items.push({
       id: catalogSectionId(section.title),
       label: section.title,
-      depth: 1,
+      depth: catalogDepth(1),
     });
 
     if (section.groups?.length) {
@@ -105,7 +109,7 @@ export function buildCatalogAnchorItems(
         items.push({
           id: `${catalogSectionId(section.title)}:${group.title}`,
           label: group.title,
-          depth: 2,
+          depth: catalogDepth(2),
           kind: 'navGroup',
         });
 

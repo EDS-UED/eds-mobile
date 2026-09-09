@@ -1,0 +1,41 @@
+{
+  "name": "@eds-evergreen/mobile",
+  "version": "0.1.0",
+  "description": "EverGreen Design System (Mobile) — tokens, animations, components",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "node scripts/assemble.mjs",
+    "typecheck": "echo \"Assembled from workspace packages\""
+  },
+  "publishConfig": { "access": "public" },
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.74",
+    "react-native-svg": ">=15",
+    "react-native-reanimated": ">=3"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./animations": {
+      "import": "./dist/animations/index.js",
+      "types": "./dist/animations/index.d.ts"
+    },
+    "./components": {
+      "import": "./dist/components/index.js",
+      "types": "./dist/components/index.d.ts"
+    },
+    "./tokens": {
+      "import": "./dist/tokens/js/theme.js",
+      "types": "./dist/tokens/js/theme.d.ts"
+    },
+    "./tokens/css": "./dist/tokens/css/index.css",
+    "./tokens/json": "./dist/tokens/json/tokens.json"
+  }
+}

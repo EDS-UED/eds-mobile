@@ -1,9 +1,0 @@
-/**
- * Popup Box 内嵌滚动 + sticky 工具栏场景：
- * 外层 effect-popup-box 已有 backdrop-filter 时会阻断内层二次 blur。
- * 含 .eds-popup-inner-backdrop 时关闭外层 blur，由 sticky bar 承担 eds-blur-bg。
- */
-.effect-popup-box:has(.eds-popup-inner-backdrop) {
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}

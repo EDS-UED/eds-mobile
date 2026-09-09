@@ -1,24 +1,23 @@
 {
   "$schema": "./packages/tokens/schemas/figma.config.schema.json",
-  "fileKey": "OkYrDmatUWtgw9n1uVHt6v",
-  "fileName": "EverGreen Design System (Desktop)",
-  "fileUrl": "https://www.figma.com/design/OkYrDmatUWtgw9n1uVHt6v/EverGreen-Design-System--Desktop-",
-  "libraryKey": "lk-9428bb87b23d0e0cc56490b123accb100a2a91b7574161b00f3c6f7dfb34408b317566255710ee436bfaf5fe1a8dd45cb85a9c346a6820982f4b2c0908a7cda0",
+  "fileKey": "LlB2jT8KdxM6taf5wOSAEM",
+  "fileName": "EverGreen Design System (Mobile)",
+  "fileUrl": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
   "variableCollections": [
     {
       "name": "Color System",
-      "variableSetKey": "81483908e5879b7473f5fc05f18fff02f230ca57",
-      "categories": ["Text", "Stroke", "Material", "Primitives"]
+      "variableSetKey": "f81a9bba65e9ef71ba4328a2d094eb16b67b79a0",
+      "categories": ["Text", "Stroke", "Material", "Primitives", "Box", "Event", "Effect", "Status"]
     },
     {
       "name": "Scale System",
-      "variableSetKey": "3115f22a7f2c4a76bc5fb6fe0cacd111dc23a6cd",
-      "categories": ["Primitives"]
+      "variableSetKey": "b5435be9abe5ac9444ad1aa22e7ca1dd69299d8b",
+      "categories": ["Spacing", "Radius", "Stroke", "Blur", "Depth", "Controls"]
     }
   ],
   "tokensStudio": {
     "exportPath": "packages/tokens/spec",
     "syncDirection": "figma-to-repo"
   },
-  "notes": "Source of truth: packages/tokens/spec/*.json. Update spec from Figma, then run pnpm build:tokens"
+  "notes": "Source of truth: packages/tokens/spec/*.json. Independent from eds-desktop. Update spec from Mobile Figma, then run pnpm build:tokens"
 }

@@ -12,8 +12,8 @@ const { contentRef, theme } = provideShowcaseContentTheme();
   <div :class="styles.shell">
     <aside :class="styles.sidebar">
       <div :class="styles.brand">
-        <p :class="styles.brandTitle">EvergreenDesignSystem</p>
-        <p :class="styles.brandSub">@Desktop</p>
+        <p :class="styles.brandTitle">EDS Mobile</p>
+        <p :class="styles.brandSub">@Mobile</p>
       </div>
 
       <div :class="styles.sidebarScroll">

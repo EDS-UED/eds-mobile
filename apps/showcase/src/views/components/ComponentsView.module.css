@@ -73,7 +73,7 @@
   font-weight: var(--eds-footnote-weight);
 }
 
-.iconCell .desktopTokens {
+.iconCell .mobileTokens {
   color: var(--stroke-base-primary);
 }
 

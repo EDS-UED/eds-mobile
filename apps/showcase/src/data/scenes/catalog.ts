@@ -103,6 +103,3 @@ export const scenesCatalog: CatalogSection[] = [
     ],
   },
 ];
-
-/** @deprecated Use list-field-* slugs. */
-export const legacyListFieldsSlug = 'list-fields';

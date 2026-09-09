@@ -1,0 +1,52 @@
+{
+  "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
+  "$description": "iOS-native motion presets for React Native Reanimated. Maps UIKit spring / timing curves to RN config.",
+  "groups": [
+    {
+      "comment": "Spring（UIKit 风格 · Reanimated withSpring）",
+      "tokenList": [
+        {
+          "name": "eds-ios-spring-default",
+          "value": "damping:18,stiffness:220,mass:1",
+          "usageNotes": ["Modal / sheet 默认 spring"]
+        },
+        {
+          "name": "eds-ios-spring-snappy",
+          "value": "damping:22,stiffness:320,mass:0.9",
+          "usageNotes": ["Button press / toggle"]
+        },
+        {
+          "name": "eds-ios-spring-gentle",
+          "value": "damping:20,stiffness:160,mass:1",
+          "usageNotes": ["Large content morph"]
+        },
+        {
+          "name": "eds-ios-spring-bouncy",
+          "value": "damping:12,stiffness:180,mass:1",
+          "usageNotes": ["Pull-to-refresh / overscroll"]
+        }
+      ]
+    },
+    {
+      "comment": "Timing（UIView 动画曲线 · Reanimated withTiming）",
+      "tokenList": [
+        {
+          "name": "eds-ios-ease-in-out",
+          "value": "duration:350,easing:cubic-bezier(0.42,0,0.58,1)"
+        },
+        {
+          "name": "eds-ios-ease-out",
+          "value": "duration:300,easing:cubic-bezier(0,0,0.58,1)"
+        },
+        {
+          "name": "eds-ios-ease-in",
+          "value": "duration:250,easing:cubic-bezier(0.42,0,1,1)"
+        },
+        {
+          "name": "eds-ios-navigation-push",
+          "value": "duration:350,easing:cubic-bezier(0.32,0.72,0,1)"
+        }
+      ]
+    }
+  ]
+}

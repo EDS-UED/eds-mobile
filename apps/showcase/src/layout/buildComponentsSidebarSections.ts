@@ -34,36 +34,14 @@ const SIDEBAR_GROUP_LABELS: Partial<Record<string, string>> = {
   Detail: '详情',
 };
 
-/** Molecules 侧栏分组（Showcase 导航小标题）。 */
+/** Molecules 侧栏分组（Mobile Figma 页面结构）。 */
 const MOLECULES_SIDEBAR_GROUPS: Array<{ label: string; slugs: string[] }> = [
-  {
-    label: '输入',
-    slugs: ['input', 'textarea', 'upload'],
-  },
-  {
-    label: '输出',
-    slugs: ['button'],
-  },
-  {
-    label: '切换',
-    slugs: ['tab', 'segmented', 'checkbox', 'radio', 'switch', 'decide'],
-  },
-  {
-    label: '标记',
-    slugs: ['tag', 'streamer'],
-  },
-  {
-    label: '浮层',
-    slugs: ['tooltip', 'popover', 'flotation', 'dialog'],
-  },
-  {
-    label: '反馈',
-    slugs: ['toast', 'message', 'reddot', 'end-feedback-card', 'form-submission'],
-  },
-  {
-    label: '进度',
-    slugs: ['progress', 'loading', 'countdown'],
-  },
+  { label: '输入', slugs: ['input'] },
+  { label: '输出', slugs: ['button'] },
+  { label: '切换', slugs: ['toggle', 'tab'] },
+  { label: '标记', slugs: ['tag'] },
+  { label: '浮层', slugs: ['dropdown', 'popovers'] },
+  { label: '反馈', slugs: ['feedback'] },
 ];
 
 /** 侧栏不展示的组件族（保留右侧 Scenes 等子路由）。 */

@@ -91,7 +91,7 @@ export function buildComponentAiPrompt(options: {
   return [
     'Use the EDS Desktop Vue 3 component below in the target app.',
     '',
-    'Package: @eds/desktop-components',
+    'Package: @/stubs/eds-components',
     `Component: ${options.componentTag}`,
     '',
     'Import:',
@@ -102,7 +102,7 @@ export function buildComponentAiPrompt(options: {
     '',
     'Notes:',
     '- Template attributes in the snippet use kebab-case; keep them as written.',
-    '- Styling comes from the component and @eds/desktop-tokens; use the library rather than ad-hoc colors.',
+    '- Styling comes from the component and @eds/mobile-tokens; use the library rather than ad-hoc colors.',
     '- For API beyond the snippet, refer to EDS Desktop component source or docs.',
   ].join('\n');
 }

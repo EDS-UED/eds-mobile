@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import tokens from '@eds/desktop-tokens/json';
+import tokens from '@eds/mobile-tokens/json';
 import '@/styles/text-style-preview.css';
 import PageHeader from '@/components/shared/PageHeader.vue';
 import PageAnchors from '@/components/shared/PageAnchors.vue';
 import TokenParamRows from '@/components/tokens/TokenParamRows.vue';
 import TokenThemeRows from '@/components/tokens/TokenThemeRows.vue';
 import { tokenAnchorItems } from '@/data/tokens';
+import { sortColorBaseRows } from '@/data/tokens/colorBase';
 import {
   colorSemanticGroupKey,
   colorSemanticGroupLabels,
@@ -30,11 +31,13 @@ const colorBaseRows = computed(() => {
   const light = tokens.colorBase_light as Record<string, { hex: string }>;
   const dark = tokens.colorBase_dark as Record<string, { hex: string }>;
 
-  return Object.keys(light).map((name) => ({
-    name,
-    light: light[name].hex,
-    dark: dark[name]?.hex ?? '',
-  }));
+  return sortColorBaseRows(
+    Object.keys(light).map((name) => ({
+      name,
+      light: light[name].hex,
+      dark: dark[name]?.hex ?? '',
+    })),
+  );
 });
 
 const colorGroups = computed(() => {
@@ -159,7 +162,7 @@ const effectSemanticRows = computed(() =>
     <div :class="shared.page">
       <PageHeader
         title="Tokens"
-        lead="Desktop global variables from @eds/desktop-tokens."
+        lead="Desktop global variables from @eds/mobile-tokens."
       />
 
       <section id="color-base" :class="shared.section">
@@ -197,7 +200,7 @@ const effectSemanticRows = computed(() =>
             <h3 :id="section.id" :class="styles.subsectionTitle">{{ section.title }}</h3>
             <div
               v-if="section.title === 'Spacing'"
-              class="desktopTokens"
+              class="mobileTokens"
               :class="styles.spacingList"
             >
               <div v-for="item in section.items" :key="item.name" :class="styles.spacingRow">
@@ -223,7 +226,7 @@ const effectSemanticRows = computed(() =>
 
       <section id="text-style" :class="shared.section">
         <h2 :class="shared.sectionTitle">Text Style</h2>
-        <div class="desktopTokens" :class="styles.typeStack">
+        <div class="mobileTokens" :class="styles.typeStack">
           <div v-for="item in textStyleItems" :key="item.key" :class="styles.typeRow">
             <div :class="[styles.typeSample, item.key]">
               {{ item.label }}

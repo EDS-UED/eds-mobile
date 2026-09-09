@@ -6,7 +6,7 @@ const { theme, toggleTheme } = useShowcaseContentTheme();
 </script>
 
 <template>
-  <div class="desktopTokens">
+  <div class="mobileTokens">
     <EgButton
       tone="sameWhite"
       variant="outline"

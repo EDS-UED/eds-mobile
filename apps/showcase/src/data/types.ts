@@ -15,6 +15,8 @@ export type CatalogChildItem = {
   emptyScenesPlaceholder?: boolean;
   /** Standalone showcase route slug (defaults to `id`). */
   pageSlug?: string;
+  /** RN / Vue export — Eg* scene component name; aligns with route slug. */
+  exportName?: string;
   /** When true, child has its own `/components/:pageSlug` route (not in-page hash). */
   standalonePage?: boolean;
   /** Body duplicates family nav — sidebar uses the family row only (business presets). */

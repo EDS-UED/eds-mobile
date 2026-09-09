@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync, rmSync, copyFileSy
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { verifyColorSpecAgainstDist } from './verify-color-spec.mjs';
+import { buildRnTheme } from './build-rn-theme.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
@@ -39,13 +40,13 @@ function appendCssCommentBlock(lines, commentLines, indent = '  ') {
 
 const COLOR_SEMANTIC_GROUP_ORDER = [
   { prefix: 'box', comment: 'Box（容器 / 背景）' },
-  { prefix: 'event', comment: 'Event（交互状态）' },
-  { prefix: 'status', comment: 'Status' },
   { prefix: 'stroke', comment: 'Stroke（描边 / 分割线）' },
   { prefix: 'text', comment: 'Text（文本色）' },
   { prefix: 'material', comment: 'Material（材质 / 填充）' },
+  { prefix: 'status', comment: 'Status' },
+  { prefix: 'effect', comment: 'Effect（特效）' },
+  { prefix: 'event', comment: 'Event（交互状态）' },
   { prefix: 'data-table', comment: 'Data Table（表格）' },
-  { prefix: 'effect', comment: null },
 ];
 
 const TAG_SEMANTIC_GROUP_ORDER = [
@@ -1362,7 +1363,7 @@ function buildMotionSystem() {
   const baseSpec = loadJson('motion/base.json');
   const recipeSpec = loadJson('motion/recipe.json');
   const semanticSpec = loadJson('motion/semantic.json');
-  const selector = ':root, .desktopTokens';
+  const selector = ':root, .mobileTokens';
 
   writeMotionBaseCssFile(join(cssDir, 'motion/base.css'), selector, baseSpec, [
     ' * Motion System — base primitives (duration, easing, physical state).',
@@ -1741,7 +1742,8 @@ async function buildAll() {
   buildTagColorSystem();
   buildRootIndex();
   buildJsonExport();
-  await buildCornerSmoothingAssets();
+  buildRnTheme({ specDir, distDir });
+  // Mobile DS — no squircle scanner bundle
 
   const colorErrors = verifyColorSpecAgainstDist();
   if (colorErrors.length > 0) {

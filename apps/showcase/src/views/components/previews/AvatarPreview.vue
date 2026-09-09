@@ -23,6 +23,7 @@ const avatarCustomize = reactive({
   ...avatarCustomizeDefaults,
   size: avatarCustomizeDefaults.size as 'xs' | 'sm' | 'md' | 'lg' | 'xl',
   variant: avatarCustomizeDefaults.variant as 'initials' | 'robot',
+  colorIndexMode: avatarCustomizeDefaults.colorIndexMode as 'auto' | string,
 });
 
 const avatarUsageSnippet = computed(() => buildAvatarUsageSnippet(avatarCustomize));

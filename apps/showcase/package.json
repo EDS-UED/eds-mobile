@@ -1,10 +1,10 @@
 {
-  "name": "@eds/desktop-showcase",
+  "name": "@eds/mobile-showcase",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "pnpm --dir ../.. build:tokens && pnpm --dir ../.. build:animations",
+    "predev": "pnpm --dir ../.. build:tokens && pnpm --dir ../.. build:animations && node scripts/generate-mobile-showcase-data.mjs",
     "dev": "vite",
     "prebuild": "pnpm --dir ../.. build:tokens && pnpm --dir ../.. build:animations && pnpm --dir ../.. build:components",
     "build": "vue-tsc --noEmit && vite build",
@@ -13,9 +13,8 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@eds/desktop-components": "workspace:*",
-    "@eds/desktop-animations": "workspace:*",
-    "@eds/desktop-tokens": "link:../../packages/tokens",
+    "@eds/mobile-animations": "workspace:*",
+    "@eds/mobile-tokens": "link:../../packages/tokens",
     "highlight.js": "^11.11.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"

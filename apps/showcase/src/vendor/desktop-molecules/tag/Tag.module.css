@@ -1,0 +1,405 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: none;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+/* Lg → 24：3 + body-small lh 18 + 3（描边用 inset，不占布局） */
+.lg {
+  padding: 3px var(--spacing-2-5);
+  font-size: var(--eds-body-small-size);
+  font-weight: var(--eds-body-small-strong-weight);
+  line-height: var(--eds-body-small-line-height);
+}
+
+/* Md → 20：spacing-05 + footnote lh 16 + spacing-05 */
+.md {
+  padding: var(--spacing-05) var(--spacing-2);
+  font-size: var(--eds-footnote-size);
+  font-weight: var(--eds-footnote-strong-weight);
+  line-height: var(--eds-footnote-line-height);
+}
+
+/* Sm → 16：spacing-025 + bar lh 14 + spacing-025；字号见 .smText* */
+.sm {
+  padding: var(--spacing-025) var(--spacing-1-5);
+}
+
+/* Bar 11px：与 Nav moduleLabel 同手法 — sizer 撑布局，paint 2×+scale 绘字 */
+.smText {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  max-width: 100%;
+  color: inherit;
+}
+
+.smTextSizer {
+  display: block;
+  visibility: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: var(--eds-bar-size);
+  font-weight: var(--eds-bar-weight);
+  line-height: var(--eds-bar-line-height);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.smTextPaint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 200%;
+  margin: 0;
+  padding: 0;
+  font-size: calc(var(--eds-bar-size) * 2);
+  font-weight: var(--eds-bar-weight);
+  line-height: calc(var(--eds-bar-line-height) * 2);
+  color: inherit;
+  white-space: nowrap;
+  transform: scale(0.5);
+  transform-origin: top left;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  pointer-events: none;
+}
+
+/* System */
+.systemSubtle {
+  background: var(--material-card-moderate);
+  color: var(--text-base-primary);
+}
+
+.systemSolidBrand {
+  background: var(--material-brand-primary);
+  color: var(--text-same-white-primary);
+}
+
+.systemSolidRed {
+  background: var(--status-danger);
+  color: var(--text-same-white-primary);
+}
+
+.systemGray {
+  background: var(--material-base-tertiary);
+  color: var(--text-same-white-primary);
+}
+
+.systemStrokeSubtle {
+  background: var(--material-hide);
+  box-shadow: inset 0 0 0 var(--stroke-sm) var(--stroke-divider-page);
+  color: var(--text-base-secondary);
+}
+
+.systemStrokeSolid {
+  background: var(--material-hide);
+  box-shadow: inset 0 0 0 var(--stroke-sm) var(--stroke-color-brand);
+  color: var(--text-brand-primary);
+}
+
+/* Status — spec/color/tag-palette.json */
+.statusDanger {
+  background: var(--tag-status-danger-bg);
+  color: var(--tag-status-danger-text);
+}
+
+.statusWarning {
+  background: var(--tag-status-warning-bg);
+  color: var(--tag-status-warning-text);
+}
+
+.statusSuccess {
+  background: var(--tag-status-success-bg);
+  color: var(--tag-status-success-text);
+}
+
+.statusReady {
+  background: var(--tag-status-ready-bg);
+  color: var(--tag-status-ready-text);
+}
+
+.statusInvalid {
+  background: var(--tag-status-invalid-bg);
+  color: var(--tag-status-invalid-text);
+}
+
+/* Custom — 左侧竖线 + 内容区 padding（Figma Custom tag） */
+.custom {
+  --tag-custom-bar: var(--tag-custom-vermilion-bar);
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-base-primary);
+}
+
+.custom::before {
+  content: '';
+  flex: none;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 3px;
+  background-color: var(--tag-custom-bar);
+}
+
+.customVermilion {
+  --tag-custom-bar: var(--tag-custom-vermilion-bar);
+}
+
+.customOrange {
+  --tag-custom-bar: var(--tag-custom-orange-bar);
+}
+
+.customAmber {
+  --tag-custom-bar: var(--tag-custom-amber-bar);
+}
+
+.customLime {
+  --tag-custom-bar: var(--tag-custom-lime-bar);
+}
+
+.customMint {
+  --tag-custom-bar: var(--tag-custom-mint-bar);
+}
+
+.customTeal {
+  --tag-custom-bar: var(--tag-custom-teal-bar);
+}
+
+.customClearSky {
+  --tag-custom-bar: var(--tag-custom-clear-sky-bar);
+}
+
+.customCobalt {
+  --tag-custom-bar: var(--tag-custom-cobalt-bar);
+}
+
+.customAurora {
+  --tag-custom-bar: var(--tag-custom-aurora-bar);
+}
+
+.customOrchid {
+  --tag-custom-bar: var(--tag-custom-orchid-bar);
+}
+
+.customRose {
+  --tag-custom-bar: var(--tag-custom-rose-bar);
+}
+
+.customPeach {
+  --tag-custom-bar: var(--tag-custom-peach-bar);
+}
+
+.customAmlDanger {
+  --tag-custom-bar: var(--status-danger);
+  background: var(--status-danger-weaken);
+  color: var(--status-danger);
+}
+
+.customAmlSafe {
+  --tag-custom-bar: var(--tag-custom-aml-safe-bar);
+  background: color-mix(in display-p3, var(--tag-custom-aml-safe-bar) 20%, transparent);
+  color: var(--tag-custom-aml-safe-bar);
+}
+
+.customAmlSuspicious {
+  --tag-custom-bar: var(--status-warning);
+  background: var(--status-warning-weaken);
+  color: var(--status-warning);
+}
+
+.customAmlInvalid {
+  --tag-custom-bar: var(--stroke-base-tertiary);
+  color: var(--text-base-tertiary);
+}
+
+.customAmlDanger .customContent,
+.customAmlSafe .customContent,
+.customAmlSuspicious .customContent {
+  background: transparent;
+}
+
+.customContent {
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: var(--material-card-deep);
+}
+
+.custom.lg .customContent {
+  padding: 3px var(--spacing-2-5);
+}
+
+.custom.md .customContent {
+  padding: var(--spacing-05) var(--spacing-2);
+}
+
+.custom.sm .customContent {
+  padding: var(--spacing-025) var(--spacing-1-5);
+}
+
+/* Colorful — spec/color/tag-palette.json */
+.colorfulApricot {
+  background: var(--tag-colorful-apricot-bg);
+  color: var(--tag-colorful-apricot-text);
+}
+
+.colorfulKhaki {
+  background: var(--tag-colorful-khaki-bg);
+  color: var(--tag-colorful-khaki-text);
+}
+
+.colorfulGrass {
+  background: var(--tag-colorful-grass-bg);
+  color: var(--tag-colorful-grass-text);
+}
+
+.colorfulSage {
+  background: var(--tag-colorful-sage-bg);
+  color: var(--tag-colorful-sage-text);
+}
+
+.colorfulCyan {
+  background: var(--tag-colorful-cyan-bg);
+  color: var(--tag-colorful-cyan-text);
+}
+
+.colorfulIceBlue {
+  background: var(--tag-colorful-ice-blue-bg);
+  color: var(--tag-colorful-ice-blue-text);
+}
+
+.colorfulPeriwinkle {
+  background: var(--tag-colorful-periwinkle-bg);
+  color: var(--tag-colorful-periwinkle-text);
+}
+
+.colorfulLilac {
+  background: var(--tag-colorful-lilac-bg);
+  color: var(--tag-colorful-lilac-text);
+}
+
+.colorfulOrchid {
+  background: var(--tag-colorful-orchid-bg);
+  color: var(--tag-colorful-orchid-text);
+}
+
+.colorfulMallow {
+  background: var(--tag-colorful-mallow-bg);
+  color: var(--tag-colorful-mallow-text);
+}
+
+.colorfulRose {
+  background: var(--tag-colorful-rose-bg);
+  color: var(--tag-colorful-rose-text);
+}
+
+.colorfulCoral {
+  background: var(--tag-colorful-coral-bg);
+  color: var(--tag-colorful-coral-text);
+}
+
+.colorfulMauve {
+  background: var(--tag-colorful-mauve-bg);
+  color: var(--tag-colorful-mauve-text);
+}
+
+.colorfulMoss {
+  background: var(--tag-colorful-moss-bg);
+  color: var(--tag-colorful-moss-text);
+}
+
+.colorfulSteel {
+  background: var(--tag-colorful-steel-bg);
+  color: var(--tag-colorful-steel-text);
+}
+
+.colorfulGrape {
+  background: var(--tag-colorful-grape-bg);
+  color: var(--tag-colorful-grape-text);
+}
+
+.colorfulSamewhite {
+  background: var(--tag-colorful-samewhite-bg);
+  color: var(--tag-colorful-samewhite-text);
+}
+
+.colorfulLime {
+  background: var(--tag-colorful-lime-bg);
+  color: var(--tag-colorful-lime-text);
+}
+
+/* Truncate — 父级约束 max-width 后文本省略（如 CryptoAddress 行内 Tag） */
+.truncate {
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+}
+
+.truncate.custom {
+  display: inline-flex;
+  box-sizing: border-box;
+}
+
+.truncate.custom:not(.sm) .customContent {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+
+.truncate.custom.sm .customContent {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+
+.smTextTruncate {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--eds-bar-size);
+  font-weight: var(--eds-bar-weight);
+  line-height: var(--eds-bar-line-height);
+}
+
+.textTruncate {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.overflowTooltip :global(.eds-tooltip-panel) {
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--eds-body-medium-size);
+  font-weight: var(--eds-body-medium-weight);
+  line-height: var(--eds-body-medium-line-height);
+  color: var(--text-base-primary);
+  white-space: normal;
+  word-break: break-word;
+}

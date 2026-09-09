@@ -1,8 +1,8 @@
 {
-  "name": "@eds/desktop-tokens",
+  "name": "@eds/mobile-tokens",
   "version": "0.1.0",
   "private": true,
-  "description": "Design tokens for EverGreen Design System (Desktop)",
+  "description": "Design tokens for EverGreen Design System (Mobile)",
   "type": "module",
   "main": "./dist/css/index.css",
   "exports": {
@@ -13,7 +13,6 @@
     "./typography": "./dist/css/typography/index.css",
     "./typography/base": "./dist/css/typography/base.css",
     "./typography/semantic": "./dist/css/typography/semantic.css",
-    "./typography/bar-subpixel": "./dist/css/typography/bar-subpixel.css",
     "./text": "./dist/css/text/index.css",
     "./text/styles": "./dist/css/text/styles.css",
     "./fonts": "./dist/css/typography/fonts.css",
@@ -22,19 +21,22 @@
     "./motion/recipe": "./dist/css/motion/recipe.css",
     "./motion/semantic": "./dist/css/motion/semantic.css",
     "./motion/utilities": "./dist/css/motion/utilities.css",
+    "./motion/ios": "./dist/css/motion/ios.css",
     "./effect": "./dist/css/effect/index.css",
     "./effect/light": "./dist/css/effect/themes/light.css",
     "./effect/dark": "./dist/css/effect/themes/dark.css",
-    "./effect/ready": "./dist/css/effect/ready.css",
-    "./liquid-glass": "./dist/js/liquid-glass.js",
-    "./corner-smoothing": "./dist/js/corner-smoothing.js",
     "./color": "./dist/css/color/index.css",
     "./color/light": "./dist/css/color/themes/light.css",
     "./color/dark": "./dist/css/color/themes/dark.css",
     "./tag": "./dist/css/color/tag/index.css",
     "./tag/light": "./dist/css/color/tag/themes/light.css",
     "./tag/dark": "./dist/css/color/tag/themes/dark.css",
-    "./json": "./dist/json/tokens.json"
+    "./json": "./dist/json/tokens.json",
+    "./css": "./dist/css/index.css",
+    "./theme": {
+      "import": "./dist/js/theme.js",
+      "types": "./dist/js/theme.d.ts"
+    }
   },
   "files": [
     "dist",
@@ -45,9 +47,6 @@
     "build": "node scripts/build.mjs",
     "sync:figma": "node scripts/sync-from-figma.mjs",
     "typecheck": "echo \"No TypeScript in tokens package\""
-  },
-  "dependencies": {
-    "figma-squircle": "^1.1.0"
   },
   "devDependencies": {
     "esbuild": "^0.28.1"

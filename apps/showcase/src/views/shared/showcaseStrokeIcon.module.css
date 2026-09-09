@@ -1,6 +1,6 @@
 /**
- * Stroke icons inside `.desktopTokens` (Desktop tokens).
- * See `.cursor/rules/eds-project.mdc` §12.
+ * Stroke icons inside `.mobileTokens` (Desktop tokens).
+ * See `.cursor/rules/work.mdc` §12.
  */
 .iconMd {
   display: block;

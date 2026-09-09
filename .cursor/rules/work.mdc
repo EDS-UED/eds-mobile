@@ -1,0 +1,175 @@
+---
+description: EDS Mobile 工作约定（唯一真源）
+alwaysApply: true
+---
+
+# EDS Mobile — 工作约定（唯一真源）
+
+> **§0** 执行（含 §0.1 协作方式） · **§1** token · **§2** 公共 API · **§3** 组件命名 · **§4** Showcase · **§5** 包与同步 · **§6** Mobile 专项 · **§7** Desktop 对照 · **§8** 场景真封装 · **§9** 验证 · **§19** 变更
+>
+> Mobile 与 Desktop **完全独立**。禁止修改 `eds-desktop` 或其 consumer。术语统一 **EDS**（禁单独写「DS」指本设计系统）。
+
+## 0. Agent 执行范围
+
+- 只改 `eds-mobile` 仓库；**最小 diff**
+- token 无 spec → **停改**，先问
+- Figma 真源：[EDS Mobile Figma](https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/) · fileKey `LlB2jT8KdxM6taf5wOSAEM`
+- 「同步」→ §5；不确定先问
+
+| 用户说 | ✅ | ❌ |
+|--------|----|----|
+| 对齐 Desktop 命名 | §7 对照表；**不**强行改 Mobile export | 把 Mobile slug 改成 `-scene-`  unless 用户明确要求 |
+| 同步 | §5 全流程 | touch `eds-desktop` / `@eds/desktop-*` |
+
+### 0.1 Agent 协作方式
+
+与 EDS Desktop `work.mdc` §0.1 一致。
+
+**过程中**：**每个动作**（读、搜、改、验）动手前或同时一两句——为什么、依据哪条 §、边界（Mobile / 不改 Desktop）；**小环节也要带逻辑**，不只大阶段才说明。约束与风险随进度带出。**禁止**闷头改完再汇报；**禁止**五段式模板。
+
+**收尾**：两三句，简单明了——做了什么、还需什么、验证过没过。**禁止**复述全过程、禁止啰嗦总结。
+
+**内在顺序**（不必当标题输出）：约束 → 最小 diff（catalog / RN / showcase）→ §9 验证（区分本次引入与预先存在）。
+
+## 1. Token
+
+- 真源：`packages/tokens/spec/*.json`
+- 同步：`node packages/tokens/scripts/import-mobile-figma.mjs` → `pnpm build:tokens`
+- RN：`@eds/mobile-tokens/theme` → `mobileTheme`（StyleSheet 数值）
+- Web Showcase：`@eds/mobile-tokens` CSS + JSON
+- **禁止**私造 token；**禁止**引用 desktop token
+
+## 2. 公共 API 与废弃
+
+- **不留 `@deprecated`**：`packages/components` 公共 export 一旦废弃就**当轮删干净** — prop、类型、`index.ts`、内部兼容分支一并移除。
+- **破坏性变更必须同轮迁移 consumer**（若有）：删/改 export 后 §5 sync + §9 验证。
+- **名字互换要先让位再占位**；全仓扫描须 `rg --hidden`。
+- Showcase / chrome 内 `@deprecated` 同样当轮清；**不得**留「先标记后清理」。
+- **`generate-catalog.mjs` 不得覆盖已实现组件**：见 §3.3。
+
+## 3. 组件命名与 catalog
+
+- **202 个 Figma 组件必须全在 catalog**（`packages/components/src/catalog/figmaCatalog.ts`）
+- 样式：`StyleSheet` + `mobileTheme`；禁止 NativeWind/Tamagui
+- 图标：`react-native-svg`；动画：`react-native-reanimated` + iOS spring（`@eds/mobile-animations`）
+- 变更 Figma 组件 → 更新 `generate-catalog.mjs` → `pnpm --filter @eds/mobile-components generate` → `pnpm --filter @eds/mobile-showcase generate`
+
+### 3.1 场景化 export：`Eg{场景}{族类型}`
+
+由 `generate-catalog.mjs` 的 `computeSceneExportName` 驱动（**禁止**手工分叉 export）：
+
+| 族 | 后缀 | Figma 示例 | export | slug |
+|----|------|-----------|--------|------|
+| `button` | `Button` | Brand | `EgButtonBrand` | `button-brand` |
+| `input` | `Input` | Search | `EgSearch` | `input-search` |
+| `tag` | `Tag` | Color | `EgTagColor` | `tag-color` |
+| `dropdown` | `Dropdown` | Trigger | `EgDropdownTrigger` | `dropdown-trigger` |
+| `tab-bar` | `TabBar` | Apply_TabBar@Cregis | `EgCregisTabBar` | `tab-bar-cregis` |
+| `popovers` | `Popover` | Notes | `EgNotesPopover` | `popovers-notes` |
+
+**例外**（generator 强制执行）：
+- 族基准项：`Input` → `EgInput`；`TabBar` → `EgTabBar`
+- 场景名已含族类型：`Quick Input` → `EgQuickInput`
+- Toggle：`EgSwitch` / `EgCheckbox` / `EgRadio` / `EgDecide`
+- Atoms（Text / Icon / Crypto / Avatar）：`EgTextDisplay` / `EgIconAdd` 等
+- 重复 Figma 名：export / slug 加 `Alt`
+
+### 3.2 路由 · export · 文档 一一对应
+
+| 层 | 规则 |
+|----|------|
+| **Route slug** | `{family}-{scene-kebab}`；族 nav → `{family}-body` |
+| **Export** | catalog `exportName` |
+| **Sidebar 标签** | Figma component set 名 |
+| **Preview** | `component-tag` / snippet 用 catalog `exportName` |
+
+**Mobile slug 约定**：`{family}-{scene}`（**无** `-scene-` 段）。与 Desktop `{family}-scene-{scene}` **并存**；跨端对照见 §7，**禁止**无用户确认时批量改 slug。
+
+生成链路：
+1. `packages/components/scripts/generate-catalog.mjs` → `figmaCatalog.ts` + RN scaffold
+2. `apps/showcase/scripts/generate-mobile-showcase-data.mjs` → `catalog.ts` + `previews/index.ts`
+3. `apps/showcase/src/data/components/routeRedirects.ts` — 旧 slug 仅 router 重定向
+
+### 3.3 Generator 与实现保护
+
+- 目录：`packages/components/src/{tier}/{family}/{kebab-from-export}/`
+- **已实现组件**（`.tsx` 不含 generator 脚手架标记 `RN implementation —`）→ **skip 覆盖**
+- 从 scaffold 升级为真实现后，该文件不再被 `generate` 回滚
+
+## 4. Showcase
+
+- 顶栏 IA（与 Desktop 对齐）：**Tokens · Animations · Components · Patterns · Workflows**
+- Port **5178**（Desktop 5177）
+- 只消费 `@eds/mobile-*`；**禁止** `@eds/desktop-*`、`eds-desktop/apps/showcase/**` 复制进业务逻辑
+- 当前多数预览为 `ShowcasePlaceholderPreview`；已实现 RN 组件须逐步替换 placeholder
+- **禁止**保留 Desktop-only preset（NavBar / ModuleMenu 等）— Mobile 业务 preset 进 `packages/components` 场景封装
+
+## 5. 包名与同步
+
+| 层 | 包 |
+|----|-----|
+| tokens | `@eds/mobile-tokens` |
+| components | `@eds/mobile-components` |
+| animations | `@eds/mobile-animations` |
+| 对外 npm | `@eds-evergreen/mobile` |
+
+| 用户说 | 行为 |
+|--------|------|
+| 「同步」 | `pnpm build:mobile` → link consumer `pnpm install` |
+| 「列出可同步项目」 | `pnpm sync:list` |
+
+扫描 `~/Projects/**/package.json` 含 `link:`/`file:` 指向 `eds-mobile/packages/*`。**单向** Mobile → consumer ✅。
+
+## 6. Mobile 专项
+
+- Event 语义：`event-tap*`（非 desktop `event-hover`）
+- Brand 色：`#5f2243`（Mobile Figma；sRGB + `color(display-p3)`）
+- 控件高度 token：`button-*` / `input-*` / `dropdown-*`（Figma Scale）
+
+## 7. EDS Desktop 对照（跨端 · 不强制改名）
+
+Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**禁止**为「对齐」而改 Mobile 已有 export（除非用户明确要求 + consumer 同轮迁移）。
+
+| Mobile export | Desktop export | 说明 |
+|---------------|----------------|------|
+| `EgCregisTabBar` | `EgCregisNavBar` | TabBar vs 侧栏 NavBar |
+| `EgUDunTabBar` | `EgUdunModuleMenu` | 不同 organism |
+| `EgTagColor` | `EgColorfulTag` | 同色族 |
+| `EgTagSystem` | `EgStatusTag` | 状态 Tag |
+| `EgNotesPopover` | `EgRemarkPopover` | 备注 Popover |
+| `EgSearch` | `EgSearchInput` | 搜索输入 |
+| slug `tag-color` | slug `tag-scene-colorful` | slug 策略不同 |
+
+**Desktop 有、Mobile 暂无**（勿在 Mobile 手搓同名空壳）：`EgGuidancePopover`、`EgGasFeePopover`、`EgConfirmPopover`、`EgDataList`、`EgDetail`、`EgVerify*` 等 — 按 Figma Mobile 清单逐步实现。
+
+## 8. 场景真封装
+
+与 Desktop §7 / §17 同原则：**业务场景在 EDS 侧统一维护**，consumer 用同一 `Eg*` 入口，禁止手拼 primitives。
+
+| 状态 | 规则 |
+|------|------|
+| **当前** | 202 组件均为 Figma 对齐 **scaffold**（`View` + `testID`） |
+| **升级** | 场景组件（如 `EgCregisTabBar`、`EgNotesPopover`）须在 `packages/components` 内锁 preset / 默认 props，非 showcase 手搓 |
+| **consumer** | 仅传 `translate`、业务 override；动态数据用 optional `groups` 类 prop（比照 Desktop `EgCregisModuleMenu`） |
+
+## 9. 验证与交付
+
+改动未过对应行 = **未完成**。
+
+| 改动面 | 必跑 |
+|--------|------|
+| `packages/components/**` | `pnpm build:components` |
+| `packages/tokens/**` | `pnpm build:tokens` |
+| `packages/mobile/**`（npm _bundle） | `pnpm build:mobile` |
+| `apps/showcase/**` | `pnpm --filter @eds/mobile-showcase build` |
+| 公共 export 增删改名（§2） | 上述 + `pnpm sync` + consumer typecheck |
+
+- 批量改名后 `rg --hidden` 回扫残留
+- 报告须区分「本次引入」与「预先存在」失败
+
+## 19. 变更记录
+
+- 2026-09-09：§0.1 细化 —— 每个动作（含小环节）都要带逻辑；收尾两三句、禁止啰嗦复述；对齐 Desktop §0.1。
+- 2026-09-09：对齐 Desktop 治理 — §0.1 协作方式、§2 公共 API、§9 验证、§7 Desktop 对照、§8 场景真封装；slug `{family}-{scene}`；术语 DS→EDS；删 showcase Desktop preset 与 `@deprecated`；generator 实现保护。
+- 2026-09-09：场景 export 统一 `Eg{Scene}{FamilyType}`；`EgCregisTabBar` / `EgUDunTabBar` / `EgNotesPopover` 命名定稿。
+- 更早见 git history。

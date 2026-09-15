@@ -7,13 +7,31 @@ import {
   findComponentsSidebarSectionId,
   type ComponentsSidebarSection,
 } from './buildComponentsSidebarSections';
+import { localizeComponentsSidebarSections } from './localizeComponentsSidebarSections';
 import { getComponentRouteSlug } from '@/data/components/navigation';
-import { navItems } from './nav';
+import { useShowcaseI18n } from '@/composables/useShowcaseI18n';
+import { useShowcaseLocale } from '@/composables/useShowcaseLocale';
 import styles from './ShowcaseLayout.module.css';
 
 const route = useRoute();
+const { locale } = useShowcaseLocale();
+const i18n = useShowcaseI18n();
 
-const componentsSections = buildComponentsSidebarSections();
+const navItems = computed(() => {
+  void locale.value;
+  return [
+    { label: i18n.name('nav:tokens', 'Tokens'), to: '/tokens' },
+    { label: i18n.name('nav:animations', 'Animations'), to: '/animations' },
+    { label: i18n.name('nav:components', 'Components'), to: '/components' },
+    { label: i18n.name('nav:patterns', 'Patterns'), to: '/patterns' },
+    { label: i18n.name('nav:workflows', 'Workflows'), to: '/workflows' },
+  ];
+});
+
+const componentsSections = computed(() => {
+  void locale.value;
+  return localizeComponentsSidebarSections(buildComponentsSidebarSections(), i18n);
+});
 
 const expandedSections = ref<Set<string>>(new Set());
 

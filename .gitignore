@@ -1,6 +1,9 @@
 node_modules/
+.expo/
+apps/playground/.expo/
 .pnpm-store/
 dist/
+packages/mobile-animations/src/generated/
 storybook-static/
 .tmp-video-frames/
 package-lock.json

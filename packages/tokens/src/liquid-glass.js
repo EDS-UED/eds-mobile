@@ -3,7 +3,7 @@
  * Adapted from https://github.com/shuding/liquid-glass (MIT © Shu Ding, 2025).
  *
  * Usage:
- *   import { initLiquidGlass, attachLiquidGlass } from '@eds/desktop-tokens/liquid-glass';
+ *   import { initLiquidGlass, attachLiquidGlass } from '@eds/mobile-tokens/liquid-glass';
  *   initLiquidGlass(); // optional: pass selector for custom glass surfaces
  *   attachLiquidGlass(element);
  */

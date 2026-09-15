@@ -1,6 +1,6 @@
 import type { DocPropRow } from '@/views/shared/componentDoc/types';
 
-export const avatarImportCode = `import { EgAvatar } from '@eds/desktop-components';`;
+export const avatarImportCode = `import { EgAvatar } from '@eds/mobile-components';`;
 
 export const avatarPropRows: DocPropRow[] = [
   {

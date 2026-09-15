@@ -68,7 +68,7 @@
 }
 
 .table tbody tr td {
-  transition: var(--motion-recipe-hover);
+  transition: var(--motion-recipe-tap);
 }
 
 .table tbody tr td:first-child {

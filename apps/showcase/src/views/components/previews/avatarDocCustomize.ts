@@ -1,6 +1,6 @@
 import type { DocCustomizeControl } from '@/views/shared/componentDoc/types';
 import { buildVueSelfClosingSnippet } from '@/views/shared/componentDoc/buildUsageSnippet';
-import { AVATAR_NATIVE_PALETTE_SIZE, formatAvatarPaletteName } from '@eds/desktop-components';
+import { AVATAR_NATIVE_PALETTE_SIZE, formatAvatarPaletteName } from '@/stubs/eds-components';
 
 export const avatarCustomizeDefaults = {
   name: 'Nancy',

@@ -45,8 +45,17 @@ export function resolveShowcaseI18nText(
   return text[locale] || text['zh-Hans'] || text.en || fallback;
 }
 
+export const DEFAULT_SHOWCASE_LOCALE: ShowcaseLocale = 'zh-Hans';
+
 export function isShowcaseLocale(value: string): value is ShowcaseLocale {
   return value === 'en' || value === 'zh-Hans' || value === 'zh-Hant';
 }
 
-export const DEFAULT_SHOWCASE_LOCALE: ShowcaseLocale = 'zh-Hans';
+/** 兼容 Desktop locale id 与旧 storage 值。 */
+export function coerceShowcaseLocale(value: string): ShowcaseLocale {
+  if (isShowcaseLocale(value)) return value;
+  if (value === 'zh-CN' || value === 'zh') return 'zh-Hans';
+  if (value === 'zh-TW' || value === 'zh-HK') return 'zh-Hant';
+  if (value === 'en-US' || value.startsWith('en-')) return 'en';
+  return DEFAULT_SHOWCASE_LOCALE;
+}

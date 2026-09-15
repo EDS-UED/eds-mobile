@@ -42,7 +42,7 @@
   height: var(--scale-10);
   pointer-events: none;
   opacity: 0;
-  transition: opacity var(--eds-motion-chrome-fade-duration) ease;
+  transition: opacity var(--eds-motion-2) ease;
   background: linear-gradient(
     to bottom,
     var(--box-page) 0%,

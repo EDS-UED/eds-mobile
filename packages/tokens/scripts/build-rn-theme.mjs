@@ -41,31 +41,19 @@ function flattenTypographySemantic(semanticSpec) {
   return out;
 }
 
-function parseIosMotion(iosSpec) {
+function parseBaseMotion(baseSpec) {
   const springs = {};
-  const timings = {};
-  for (const group of iosSpec.groups ?? []) {
-    for (const token of group.tokenList ?? []) {
-      if (token.name.includes('spring')) {
-        const pairs = Object.fromEntries(
-          token.value.split(',').map((part) => {
-            const idx = part.indexOf(':');
-            const k = part.slice(0, idx).trim();
-            const vRaw = part.slice(idx + 1).trim();
-            const v = Number.isNaN(Number(vRaw)) ? vRaw : Number(vRaw);
-            return [k, v];
-          }),
-        );
-        springs[token.name] = pairs;
-      } else {
-        const durationMatch = token.value.match(/duration:([^,]+)/);
-        const easingMatch = token.value.match(/easing:(.+)$/);
-        timings[token.name] = {
-          duration: durationMatch ? Number(durationMatch[1]) : undefined,
-          easing: easingMatch ? easingMatch[1].trim() : token.value,
-        };
-      }
+  for (const [name, spring] of Object.entries(baseSpec.springs ?? {})) {
+    if (spring.reanimated) {
+      springs[`eds-ios-spring-${name}`] = spring.reanimated;
     }
+  }
+  const timings = {};
+  for (const [name, timing] of Object.entries(baseSpec.timings ?? {})) {
+    timings[`eds-ios-${name.replace(/([A-Z])/g, '-$1').toLowerCase()}`] = {
+      duration: timing.duration,
+      easing: `cubic-bezier(${timing.easing.join(',')})`,
+    };
   }
   return { springs, timings };
 }
@@ -76,7 +64,7 @@ export function buildRnTheme({ specDir, distDir }) {
   const scaleSemantic = loadJson(specDir, 'scale/semantic.json');
   const typographyBase = loadJson(specDir, 'typography/base.json');
   const typographySemantic = loadJson(specDir, 'typography/semantic.json');
-  const iosMotion = loadJson(specDir, 'motion/ios-native.json');
+  const motionBase = loadJson(specDir, 'motion/base.json');
 
   const colors = { light: {}, dark: {} };
   for (const theme of ['light', 'dark']) {
@@ -95,7 +83,7 @@ export function buildRnTheme({ specDir, distDir }) {
       base: flattenTypographyBase(typographyBase),
       semantic: flattenTypographySemantic(typographySemantic),
     },
-    motion: parseIosMotion(iosMotion),
+    motion: parseBaseMotion(motionBase),
   };
 
   const jsDir = join(distDir, 'js');

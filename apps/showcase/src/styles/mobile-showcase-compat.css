@@ -1,5 +1,5 @@
 /**
- * Desktop showcase CSS expects these semantic token names.
+ * Showcase chrome CSS compat shims (Desktop-era class names → Mobile tokens).
  * Mobile Figma uses tap / flat naming — alias here for layout parity only.
  */
 :root,

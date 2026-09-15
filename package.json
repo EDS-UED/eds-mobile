@@ -4,7 +4,8 @@
   "private": true,
   "description": "EDS Mobile — React Native component library with Figma-synced tokens",
   "scripts": {
-    "dev": "pnpm --filter @eds/mobile-showcase dev",
+    "dev": "pnpm --filter @eds/mobile-playground dev",
+    "dev:playground": "pnpm --filter @eds/mobile-playground dev",
     "dev:showcase": "pnpm --filter @eds/mobile-showcase dev",
     "build": "pnpm build:mobile",
     "build:tokens": "pnpm --filter @eds/mobile-tokens build",

@@ -1,170 +1,266 @@
 {
-  "$description": "Motion Semantic — 4 大类场景 class（Ease / Layout / Flotation / Deform + 状态 modifier）。业务只选场景；勿改 base/recipe。引用：@eds/desktop-tokens/motion/semantic",
+  "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
+  "$description": "EDS Mobile Motion Semantic — 封装好的场景 class（沿用现有命名，非文档 8 场景）。只引用 Recipe，不存底层参数。",
   "groups": [
     {
-      "comment": "1 · Ease（缓入缓出 · 挂状态 modifier）",
+      "comment": "1 · Tap（点按 · event-tap*）",
       "styles": [
         {
-          "title": "Ease — 基类（与 .is-focus / .is-hover / .is-hover-enter-only / .is-asym 组合）",
-          "className": "motion-ease",
-          "properties": {},
+          "title": "点按反馈 · Button / List Item / Icon",
+          "className": "motion-tap",
+          "recipe": "press",
+          "properties": {
+            "transition": "var(--motion-recipe-tap)"
+          },
           "stateStyles": [
             {
-              "hostClass": "motion-ease.is-focus",
-              "title": "a · 悬浮+聚焦 入+出",
+              "hostClass": "motion-tap.is-active",
+              "title": "按下态",
               "properties": {
-                "transition": "var(--motion-recipe-hover), var(--motion-recipe-fade)"
-              },
-              "notes": ["eds-hover-tooltip-trigger--focus"]
-            },
-            {
-              "hostClass": "motion-ease.is-hover",
-              "title": "b · 悬浮入+出",
-              "properties": { "transition": "var(--motion-recipe-hover)" }
-            },
-            {
-              "hostClass": "motion-ease.is-hover-enter-only",
-              "title": "c · 悬浮入",
-              "properties": {
-                "transition": "var(--motion-recipe-hover-asym)",
-                "transition-duration": "0ms"
-              },
-              "pseudoStyles": [
-                {
-                  "selector": ":focus, :focus-visible, :active",
-                  "properties": { "transition": "none" }
-                },
-                {
-                  "selector": ":hover:not(:active):not(:focus-visible)",
-                  "properties": {
-                    "transition-duration": "var(--motion-duration-hover-asym)",
-                    "transition-timing-function": "var(--motion-easing-enter)"
-                  }
-                }
-              ],
-              "notes": [
-                "EgMotionHoverEnter · 仅 hover 入场 600ms；mouseleave / focus / active / 点按 无过渡"
-              ]
-            },
-            {
-              "hostClass": "motion-ease.is-asym",
-              "title": "d · 悬浮入场（非对称 enter/exit）",
-              "properties": { "transition": "var(--motion-recipe-hover-asym)" },
-              "pseudoStyles": [
-                {
-                  "selector": ":hover, :focus-visible, :active",
-                  "properties": { "transition-timing-function": "var(--motion-easing-enter)" }
-                }
-              ],
-              "notes": ["Detail 关闭按钮等"]
+                "transform": "scale(var(--motion-scale-press))"
+              }
             }
-          ]
+          ],
+          "notes": ["Semantic → Recipe(press) → Base(spring.press · haptic.light)"]
         }
       ]
     },
     {
-      "comment": "2 · Layout（大位移动效）",
+      "comment": "1.5 · Focus（Input / Search 边框 · 无 hover）",
       "styles": [
         {
-          "title": "大位移 · Drawer / Panel 等",
+          "title": "聚焦态 · Input / Search",
+          "className": "motion-focus",
+          "recipe": "enter",
+          "properties": {
+            "transition": "var(--motion-recipe-enter)"
+          },
+          "notes": ["Semantic → Recipe(enter) → Base(timing.easeIn)"]
+        }
+      ]
+    },
+    {
+      "comment": "2 · Layout（大位移 · Drawer / Panel）",
+      "styles": [
+        {
+          "title": "大位移进出场",
           "className": "motion-layout",
+          "recipe": "enter",
           "activeModifier": "is-active",
           "properties": {
             "transition": "var(--motion-recipe-enter)",
             "opacity": "var(--motion-opacity-hidden)",
-            "transform": "translateY(var(--motion-offset-small))"
+            "transform": "translateY(var(--motion-distance-sm))"
           },
           "activeState": {
             "opacity": "var(--motion-opacity-visible)",
             "transform": "translateY(0)"
           },
-          "parentActiveSelectors": [".is-active", ".glassMicroFloatHostActive"],
-          "selfActiveSelectors": [".glassMicroFloatHostActive"],
-          "notes": ["默认自 bottom 入场；方向变体由 DS glue 扩展"]
+          "parentActiveSelectors": [".is-active"],
+          "selfActiveSelectors": []
         }
       ]
     },
     {
-      "comment": "3 · Flotation（微位移动效 · 浮层类）",
+      "comment": "3 · Flotation（Sheet / Modal / Toast / Popover）",
       "styles": [
         {
-          "title": "Tooltip / Popover / Popup glass",
+          "title": "浮层进出场",
           "className": "motion-flotation",
+          "recipe": "sheet",
           "activeModifier": "is-active",
           "properties": {
             "transition": "var(--motion-recipe-flotation-enter)",
             "opacity": "var(--motion-opacity-hidden)",
-            "transform": "translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-flotation-enter))"
+            "transform": "translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-present))"
           },
           "activeState": {
             "opacity": "var(--motion-opacity-visible)",
             "transform": "translateY(0) scale(1)"
           },
-          "parentActiveSelectors": [".is-active", ".glassMicroFloatHostActive"],
-          "selfActiveSelectors": [".glassMicroFloatHostActive"],
-          "notes": ["glass 挂 motion-flotation；host 挂 is-active / glassMicroFloatHostActive"]
+          "parentActiveSelectors": [".is-active"],
+          "selfActiveSelectors": []
         }
       ]
     },
     {
-      "comment": "4 · Deform（形变）",
+      "comment": "4 · Deform（Tab 指示器 / Toggle / Segmented）",
       "styles": [
         {
-          "title": "控件形变 · Tab / Toggle",
+          "title": "控件形变",
           "className": "motion-deform",
-          "properties": { "transition": "var(--motion-recipe-control)" },
-          "notes": ["非 enter/leave · 组件自身控制 transform"]
+          "recipe": "control",
+          "properties": {
+            "transition": "var(--motion-recipe-control)"
+          },
+          "notes": ["Semantic → Recipe(control) → Base(spring.control)"]
         }
       ]
     },
     {
-      "comment": "5 · Page（页面切换）",
+      "comment": "5 · Page（Stack Push / Pop）",
       "styles": [
         {
-          "title": "页面切换 · 推动 + 淡入淡出",
+          "title": "页面转场",
           "className": "motion-page",
+          "recipe": "navigation",
           "properties": {
             "transition": "var(--motion-recipe-page-push)"
           },
-          "notes": ["Detail / 列表详情等前后页切换"]
+          "notes": ["Semantic → Recipe(navigation) → Base(spring.navigation · timing.navigationPush)"]
         }
       ]
     },
     {
-      "comment": "6 · Layout Deform（布局形态 · 浮层容器尺寸 morph）",
+      "comment": "6 · Layout Deform（容器 morph）",
       "styles": [
         {
-          "title": "布局形态 · Tooltip / Popover 多页容器尺寸变化",
+          "title": "容器尺寸 morph",
           "className": "motion-layout-deform",
+          "recipe": "layout-deform",
           "properties": {
             "overflow": "hidden",
             "transition": "var(--motion-recipe-layout-deform-shell)"
-          },
-          "notes": [
-            "浮层 shell：固定宽 + overflow hidden；A↔B 宽/高 morph 350ms · ease-8",
-            "内容：`.motion-layout-deform-content` + to-smaller/to-larger · 变矮下→上 · 变高上→下"
-          ]
+          }
         }
       ]
     }
   ],
   "utilityClasses": [
     {
-      "title": "None — 无过渡",
+      "title": "无过渡",
       "className": "motion-none",
       "standaloneTransition": "none",
-      "notes": ["Focus / Selected"]
+      "notes": ["Reduce Motion 降级 · Semantic → instant"]
+    },
+    {
+      "title": "Reduce Motion 降级 · 仅 fade",
+      "className": "motion-reduced-fade",
+      "standaloneTransition": "opacity var(--motion-duration-fade) var(--motion-easing-standard)",
+      "notes": ["Slide/Translate → Fade · motion.accessibility.reducedMotion"]
     }
   ],
   "reducedMotionScenarioClasses": [
-    "motion-ease.is-focus",
-    "motion-ease.is-hover",
-    "motion-ease.is-hover-enter-only",
-    "motion-ease.is-asym",
+    "motion-tap",
+    "motion-tap.is-active",
+    "motion-focus",
     "motion-layout",
     "motion-flotation",
     "motion-deform",
     "motion-page",
     "motion-layout-deform"
+  ],
+  "reducedMotion": {
+    "mediaQuery": "prefers-reduced-motion: reduce",
+    "durationToken": "var(--eds-motion-0)",
+    "simplifications": [
+      { "from": "motion-layout", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
+      { "from": "motion-flotation", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
+      { "from": "motion-page", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
+      { "from": "motion-layout-deform", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
+      { "from": "motion-tap", "toStrategy": "instant", "utilityClass": "motion-none" }
+    ],
+    "rules": [
+      "Slide → Fade",
+      "Shared Element → Cross Fade",
+      "Large Title collapse → Opacity only",
+      "禁止 animation: none 一刀切；使用 motion-reduced-fade / motion-none"
+    ],
+    "hapticReduced": {
+      "enabled": false,
+      "notes": ["Reduce Motion 开启时可选择弱化 haptic；由 consumer AccessibilityInfo 决定"]
+    }
+  },
+  "compositions": [
+    {
+      "id": "ios-navigation",
+      "label": "iOS Navigation",
+      "semanticClass": "motion-page",
+      "push": { "recipe": "navigation" },
+      "pop": { "recipe": "navigation" },
+      "interactivePop": { "recipe": "interactive" }
+    },
+    {
+      "id": "ios-sheet",
+      "label": "iOS Sheet",
+      "semanticClass": "motion-flotation",
+      "presentation": { "recipe": "sheet" },
+      "interaction": { "recipe": "interactive" },
+      "dismiss": { "recipe": "dismiss" },
+      "snapPoints": [0.25, 0.5, 0.75, 1],
+      "haptic": { "snap": "selection" }
+    },
+    {
+      "id": "ios-modal",
+      "label": "iOS Modal",
+      "semanticClass": "motion-flotation",
+      "presentation": { "recipe": "modal" },
+      "content": { "recipe": "modal", "scaleFrom": "motion-scale-present", "opacityFrom": "motion-opacity-hidden" },
+      "backdrop": { "opacity": "motion-opacity-dim" },
+      "dismiss": { "recipe": "exit", "springRef": "default" }
+    },
+    {
+      "id": "ios-popover",
+      "label": "iOS Popover",
+      "semanticClass": "motion-flotation",
+      "presentation": { "recipe": "modal" },
+      "scale": { "from": "motion-scale-present", "to": "1" },
+      "opacity": { "from": "motion-opacity-hidden", "to": "motion-opacity-visible" }
+    },
+    {
+      "id": "ios-large-title",
+      "label": "iOS Large Title",
+      "type": "scroll-linked",
+      "scrollRange": { "start": 0, "end": 44 },
+      "scale": { "from": 1, "to": 0.82 },
+      "opacity": { "from": 1, "to": 0 },
+      "navigationBar": { "opacityFrom": 0, "opacityTo": 1 }
+    },
+    {
+      "id": "shared-element",
+      "label": "Shared Element",
+      "recipe": "layout-deform",
+      "timingRef": "easeInOut",
+      "notes": ["Asset Card → Detail · 非普通 page transition"]
+    },
+    {
+      "id": "list-insert",
+      "label": "List Insert",
+      "recipe": "enter",
+      "springRef": "default"
+    },
+    {
+      "id": "list-delete",
+      "label": "List Delete",
+      "recipe": "interactive"
+    },
+    {
+      "id": "transaction",
+      "label": "Crypto Transaction",
+      "states": ["pending", "confirming", "confirmed"],
+      "recipe": "layout-deform",
+      "success": { "recipe": "success" }
+    },
+    {
+      "id": "swap",
+      "label": "Crypto Swap",
+      "recipe": "enter",
+      "timingRef": "easeInOut",
+      "notes": ["Token A ↔ Token B · Quote morph"]
+    },
+    {
+      "id": "security-signing",
+      "label": "Security Signing",
+      "presentation": { "recipe": "sheet" },
+      "success": { "recipe": "success" },
+      "error": { "recipe": "error" }
+    },
+    {
+      "id": "wallet-connect",
+      "label": "Wallet Connect",
+      "states": ["idle", "connecting", "connected"],
+      "recipe": "enter",
+      "haptic": { "connected": "success" }
+    }
   ]
 }

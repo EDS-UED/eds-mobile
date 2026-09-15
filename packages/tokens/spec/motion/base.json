@@ -1,62 +1,109 @@
 {
-  "$description": "Motion Base — primitive only（duration / easing / opacity / scale / offset）。无场景语义。引用：@eds/desktop-tokens/motion/base",
+  "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
+  "$description": "EDS Mobile Motion Base — duration / easing / distance / scale / opacity。仅物理量，无场景语义。",
   "groups": [
     {
-      "comment": "Duration（时长阶梯 · --eds-motion-N）",
+      "comment": "Duration ladder（--eds-motion-N · ms）",
       "tokens": {
         "eds-motion-0": "0ms",
         "eds-motion-1": "100ms",
-        "eds-motion-2": "150ms",
-        "eds-motion-3": "200ms",
-        "eds-motion-4": "300ms",
-        "eds-motion-5": "600ms",
-        "eds-motion-6": "500ms",
-        "eds-motion-7": "700ms",
-        "eds-motion-8": "250ms",
-        "eds-motion-9": "350ms",
-        "eds-motion-10": "800ms",
-        "eds-motion-11": "2000ms",
-        "eds-motion-12": "180ms"
+        "eds-motion-2": "180ms",
+        "eds-motion-3": "280ms",
+        "eds-motion-4": "400ms",
+        "eds-motion-5": "500ms",
+        "eds-motion-6": "250ms",
+        "eds-motion-7": "350ms",
+        "eds-motion-8": "800ms",
+        "eds-motion-9": "2000ms"
       },
       "usageNotes": [
-        "0 = instant / focus / reduced-motion",
-        "4 = 默认 hover（300ms）",
-        "8 = Toggle / Tab 滑块（250ms）",
-        "12 = Layout Deform 内容 crossfade",
-        "10–11 = Spinner 周期"
+        "0 instant · 1 micro (press/selection) · 2 fast (fade/icon)",
+        "3 normal (simple transition) · 4 slow (large content) · 5 emphasis",
+        "6 control (tab/toggle) · 7 navigation timing · 8–9 spinner"
       ]
     },
     {
-      "comment": "Easing（缓动曲线 · --eds-motion-ease-N）",
+      "comment": "Easing（--eds-motion-ease-N）",
       "tokens": {
-        "eds-motion-ease-1": "ease-in-out",
+        "eds-motion-ease-1": "cubic-bezier(0.42, 0, 0.58, 1)",
         "eds-motion-ease-2": "cubic-bezier(0.2, 0, 0, 1)",
         "eds-motion-ease-3": "cubic-bezier(0.4, 0, 1, 1)",
         "eds-motion-ease-4": "cubic-bezier(0.4, 0, 0.2, 1)",
         "eds-motion-ease-5": "linear",
         "eds-motion-ease-6": "cubic-bezier(0.34, 1.4, 0.64, 1)",
         "eds-motion-ease-7": "cubic-bezier(0.34, 1.45, 0.64, 1)",
-        "eds-motion-ease-8": "cubic-bezier(0.22, 1, 0.36, 1)"
+        "eds-motion-ease-8": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "eds-motion-ease-9": "cubic-bezier(0.32, 0.72, 0, 1)"
       },
       "usageNotes": [
-        "ease-1 = 缓入缓出（对称 hover，默认）",
-        "ease-4 = Material · ease-5 = 线性（Spinner）",
-        "ease-6/7 = 弹性反馈 · ease-8 = 减速渐隐"
+        "ease-1 standard · ease-2 entrance · ease-3 exit · ease-4 product",
+        "ease-5 linear (spinner) · ease-6/7 spring-emphasis · ease-8 decelerate",
+        "ease-9 navigation push (iOS-like)"
       ]
     },
     {
-      "comment": "Primitive State（物理量 — 无场景语义）",
+      "comment": "Opacity",
       "tokenList": [
         { "name": "motion-opacity-hidden", "value": "0" },
-        { "name": "motion-opacity-visible", "value": "1" },
-        { "name": "motion-scale-small", "value": "0.95" },
-        { "name": "motion-scale-flotation-enter", "value": "0.96", "comment": "Flotation 入场 scale" },
-        { "name": "motion-offset-small", "value": "var(--spacing-2)", "comment": "8px · shift" },
-        { "name": "motion-offset-nudge-y", "value": "calc(-1 * var(--spacing-1-5))", "comment": "-6px · nudge（legacy）" },
-        { "name": "motion-offset-flotation-y", "value": "calc(-1 * var(--spacing-2-5))", "comment": "-10px · Flotation 入场" },
-        { "name": "motion-offset-page-push", "value": "30%", "comment": "页面推动位移（相对容器宽度）" },
-        { "name": "motion-offset-layout-deform-y", "value": "var(--spacing-2-5)", "comment": "10px · Layout Deform 内容 vertical nudge（Popover crossfade）" }
+        { "name": "motion-opacity-dim", "value": "0.4" },
+        { "name": "motion-opacity-subtle", "value": "0.7" },
+        { "name": "motion-opacity-visible", "value": "1" }
+      ]
+    },
+    {
+      "comment": "Scale",
+      "tokenList": [
+        { "name": "motion-scale-press", "value": "0.96" },
+        { "name": "motion-scale-subtle", "value": "0.98" },
+        { "name": "motion-scale-emphasis", "value": "1.04" },
+        { "name": "motion-scale-present", "value": "0.96", "comment": "Sheet / Modal / Popover 入场" }
+      ]
+    },
+    {
+      "comment": "Distance（px · 对齐 spacing scale）",
+      "tokenList": [
+        { "name": "motion-distance-xs", "value": "4px" },
+        { "name": "motion-distance-sm", "value": "8px" },
+        { "name": "motion-distance-md", "value": "16px" },
+        { "name": "motion-distance-lg", "value": "24px" },
+        { "name": "motion-distance-xl", "value": "40px" },
+        { "name": "motion-offset-small", "value": "var(--motion-distance-sm)" },
+        { "name": "motion-offset-flotation-y", "value": "calc(-1 * var(--spacing-2-5))" },
+        { "name": "motion-offset-page-push", "value": "30%" },
+        { "name": "motion-offset-layout-deform-y", "value": "var(--spacing-2-5)" }
       ]
     }
-  ]
+  ],
+  "springs": {
+    "default": { "response": 0.55, "dampingFraction": 0.82, "blendDuration": 0.15, "reanimated": { "damping": 19, "stiffness": 130, "mass": 1 } },
+    "interactive": { "response": 0.15, "dampingFraction": 0.86, "blendDuration": 0.25, "reanimated": { "damping": 72, "stiffness": 1755, "mass": 1 } },
+    "navigation": { "response": 0.38, "dampingFraction": 0.88, "blendDuration": 0.20, "reanimated": { "damping": 29, "stiffness": 273, "mass": 1 } },
+    "sheet": { "response": 0.48, "dampingFraction": 0.86, "blendDuration": 0.20, "reanimated": { "damping": 23, "stiffness": 171, "mass": 1 } },
+    "modal": { "response": 0.38, "dampingFraction": 0.90, "blendDuration": 0.15, "reanimated": { "damping": 30, "stiffness": 273, "mass": 1 } },
+    "control": { "response": 0.28, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 37, "stiffness": 503, "mass": 1 } },
+    "press": { "response": 0.18, "dampingFraction": 0.90, "blendDuration": 0.05, "reanimated": { "damping": 63, "stiffness": 1218, "mass": 1 } },
+    "drag": { "response": 0.32, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 32, "stiffness": 385, "mass": 1 } },
+    "bouncy": { "response": 0.42, "dampingFraction": 0.68, "blendDuration": 0.10, "reanimated": { "damping": 20, "stiffness": 224, "mass": 1 } },
+    "gentle": { "response": 0.60, "dampingFraction": 0.92, "blendDuration": 0.20, "reanimated": { "damping": 19, "stiffness": 110, "mass": 1 } }
+  },
+  "haptics": {
+    "selection": "selection",
+    "light": "light",
+    "medium": "medium",
+    "heavy": "heavy",
+    "success": "success",
+    "warning": "warning",
+    "error": "error"
+  },
+  "timings": {
+    "navigationPush": { "duration": 350, "easing": [0.32, 0.72, 0, 1] },
+    "easeInOut": { "duration": 350, "easing": [0.42, 0, 0.58, 1] },
+    "easeOut": { "duration": 300, "easing": [0, 0, 0.58, 1] },
+    "easeIn": { "duration": 250, "easing": [0.42, 0, 1, 1] }
+  },
+  "interaction": {
+    "velocityAware": true,
+    "interruptible": true,
+    "preserveVelocity": true
+  }
 }

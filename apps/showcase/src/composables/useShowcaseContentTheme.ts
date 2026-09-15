@@ -1,5 +1,5 @@
 import { inject, onMounted, provide, ref, watch, type InjectionKey, type Ref } from 'vue';
-import { applyTheme, getPreferredTheme, type ThemeMode } from '@eds/desktop-components';
+import { applyTheme, getPreferredTheme, type ThemeMode } from '@/stubs/eds-components';
 
 const STORAGE_KEY = 'evergreen-theme';
 

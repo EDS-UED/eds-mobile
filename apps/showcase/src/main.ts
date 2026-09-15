@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { applyTheme, rescanCornerSmoothing } from '@eds/desktop-components';
+import { applyTheme, rescanCornerSmoothing } from '@/stubs/eds-components';
 import App from './App.vue';
 import { router } from './router';
 import { installGlobalWheelScrollContainment } from './composables/scrollContainment';

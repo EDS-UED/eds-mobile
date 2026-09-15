@@ -1,16 +1,16 @@
-# EverGreen Desktop Showcase
+# EDS Mobile Showcase
 
-Desktop 设计系统的本地预览站：token 画廊、组件 live preview、场景目录。
+**EDS Mobile** 的 **Vue 过渡文档壳**：token 画廊、组件 catalog IA、Motion 三层文档（Base → Recipe → Semantic）。
 
-## 依赖模型
+> **RN live preview 真源**是 `apps/playground`（Expo），不是本 Showcase。
 
-| 角色 | 来源 | 包 |
-|------|------|-----|
-| Token（全站） | `eds-desktop` | `@eds/desktop-tokens` |
-| 组件（壳层 + live preview） | `eds-desktop` | `@eds/desktop-components` |
-| 动画 | `eds-desktop` | `@eds/desktop-animations` |
+## 依赖
 
-**核心规则：** Showcase **完全自包含**，仅依赖本仓 `@eds/desktop-*`；与 `eds-website` **零关联**。组件预览 subtree 包在 `.desktopTokens` 内以锁定排版基线。
+| 角色 | 包 |
+|------|-----|
+| Token | `@eds/mobile-tokens` |
+| Motion | `@eds/mobile-animations` |
+| 组件 catalog | `@eds/mobile-components`（文档引用；preview stub 在 `src/stubs/`） |
 
 ## 启动
 
@@ -19,13 +19,15 @@ pnpm install
 pnpm dev:showcase
 ```
 
-打开 http://localhost:5177/
-
-## 页面
-
-| 路由 | 内容 |
+| 环境 | 地址 |
 |------|------|
-| `/` | 概览 |
-| `/tokens` | Desktop 颜色、尺度、排版、语义变量 |
-| `/components/:slug` | Desktop 组件 live preview |
-| `/scenes` | 场景目录 |
+| 本地 | http://localhost:5178/ |
+| GitHub Pages | https://eds-ued.github.io/eds-mobile/ |
+
+## 路由
+
+| 路径 | 内容 |
+|------|------|
+| `/tokens` | Color / Scale / Typography / Motion tokens |
+| `/animations/:slug` | Motion 三层（Base → Recipe → Semantic）+ RN composition 示例 |
+| `/components/:slug` | 组件文档（Web stub preview） |

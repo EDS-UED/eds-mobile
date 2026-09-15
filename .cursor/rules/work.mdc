@@ -96,13 +96,22 @@ alwaysApply: true
 - **已实现组件**（`.tsx` 不含 generator 脚手架标记 `RN implementation —`）→ **skip 覆盖**
 - 从 scaffold 升级为真实现后，该文件不再被 `generate` 回滚
 
-## 4. Showcase
+## 4. Preview（RN 真源 · Web 过渡）
 
-- 顶栏 IA（与 Desktop 对齐）：**Tokens · Animations · Components · Patterns · Workflows**
-- Port **5178**（Desktop 5177）
-- 只消费 `@eds/mobile-*`；**禁止** `@eds/desktop-*`、`eds-desktop/apps/showcase/**` 复制进业务逻辑
-- 当前多数预览为 `ShowcasePlaceholderPreview`；已实现 RN 组件须逐步替换 placeholder
-- **禁止**保留 Desktop-only preset（NavBar / ModuleMenu 等）— Mobile 业务 preset 进 `packages/components` 场景封装
+Mobile 与 Desktop **技术栈不同**：Desktop = Vue 全链路；Mobile = **React Native + iOS/Android 原生混编**（consumer 为 RN App，非 Vue）。
+
+| 层 | 栈 | 职责 |
+|----|-----|------|
+| **`apps/playground`** | Expo / RN | **组件 live preview 真源** — 模拟器 / 真机；直接渲染 `@eds/mobile-components` |
+| **`apps/showcase`** | Vue（自 Desktop 复制的**过渡**文档壳） | Token / catalog IA / 文档文案；**不是** RN 运行时 |
+| **`packages/*`** | RN | EDS 本体；consumer 与 playground 同源 |
+
+- Playground：`pnpm dev:playground` → Expo；catalog 来自 `figmaComponentCatalog`，与 consumer 同 import 路径
+- Showcase 顶栏 IA（与 Desktop 对齐）：**Tokens · Animations · Components · Patterns · Workflows** · Port **5178**
+- Showcase 只消费 `@eds/mobile-*`；**禁止** `@eds/desktop-*`、禁止把 Desktop Vue 组件 preview 当 Mobile 真源
+- **禁止**在 Showcase 新增 Vue 版组件 live preview；新 preview 只在 playground / RN consumer 验收
+- **禁止**保留 Desktop-only preset — Mobile 业务 preset 进 `packages/components` 场景封装（§8）
+- Consumer 为 **RN + 原生混编**；完整业务能力（原生 Module / SDK）在 consumer 真机验，playground 验 EDS 组件层
 
 ## 5. 包名与同步
 
@@ -125,6 +134,13 @@ alwaysApply: true
 - Event 语义：`event-tap*`（非 desktop `event-hover`）
 - Brand 色：`#5f2243`（Mobile Figma；sRGB + `color(display-p3)`）
 - 控件高度 token：`button-*` / `input-*` / `dropdown-*`（Figma Scale）
+- **Motion 三层（同架构文档 · Semantic 沿用现有 class）** — `Base → Recipe → Semantic` · 见 `spec/motion/README.md`：
+  - **Base** — 唯一底层参数（duration / spring / haptic / opacity / scale …）→ `base.css`
+  - **Recipe** — 组合 Base（`namedRecipes` + `--motion-recipe-*`）→ `recipe.css`
+  - **Semantic** — 场景 class（`.motion-tap` 等，**非**文档 8 场景）+ `compositions[]` / `reducedMotion` → `semantic.css`
+  - **RN** — 同 spec 生成 `@eds/mobile-animations`（`resolveMotionRecipe` / `resolveMotionComposition`）
+- 解析链 Semantic → Recipe → Base；catalog：`@eds/mobile-tokens/motion/catalog`
+- consumer 禁止硬编码 spring；Reduce Motion 用 `motion-reduced-fade`
 
 ## 7. EDS Desktop 对照（跨端 · 不强制改名）
 
@@ -162,6 +178,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 | `packages/tokens/**` | `pnpm build:tokens` |
 | `packages/mobile/**`（npm _bundle） | `pnpm build:mobile` |
 | `apps/showcase/**` | `pnpm --filter @eds/mobile-showcase build` |
+| `apps/playground/**` | `pnpm --filter @eds/mobile-playground typecheck` |
 | 公共 export 增删改名（§2） | 上述 + `pnpm sync` + consumer typecheck |
 
 - 批量改名后 `rg --hidden` 回扫残留
@@ -172,4 +189,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 - 2026-09-09：§0.1 细化 —— 每个动作（含小环节）都要带逻辑；收尾两三句、禁止啰嗦复述；对齐 Desktop §0.1。
 - 2026-09-09：对齐 Desktop 治理 — §0.1 协作方式、§2 公共 API、§9 验证、§7 Desktop 对照、§8 场景真封装；slug `{family}-{scene}`；术语 DS→EDS；删 showcase Desktop preset 与 `@deprecated`；generator 实现保护。
 - 2026-09-09：场景 export 统一 `Eg{Scene}{FamilyType}`；`EgCregisTabBar` / `EgUDunTabBar` / `EgNotesPopover` 命名定稿。
+- 2026-09-15：§4 定调 RN playground 为 preview 真源；Showcase 降为 Vue 过渡文档壳；明确 RN + 原生混编 consumer。
+- 2026-09-15：术语排查 — 源码中独立「DS」缩写清零；文档「设计系统」指 EDS 时统一写 EDS / EDS Mobile。
+- 2026-09-15：Motion 公开 CSS 对齐 Desktop（base · recipe · semantic · utilities）；RN runtime 由内部 spec 生成；移除 hover，新增 tap/focus。
 - 更早见 git history。

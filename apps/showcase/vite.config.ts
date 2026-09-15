@@ -144,7 +144,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      '@eds/desktop-components': resolve(__dirname, 'src/stubs/eds-components.ts'),
       '@eds/mobile-animations': resolve(__dirname, '../../packages/mobile-animations/src/index.ts'),
     },
   },

@@ -5,7 +5,7 @@ import {
   EgFlotation,
   EgFlotationTrigger,
   EgInput,
-} from '@eds/desktop-components';
+} from '@/stubs/eds-components';
 import { galleryLabelFromTokenLabel } from '@/data/showcasePropLabels';
 import styles from './ComponentDocLayout.module.css';
 import type {

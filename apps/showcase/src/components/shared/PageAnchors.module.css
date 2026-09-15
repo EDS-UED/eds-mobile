@@ -66,14 +66,14 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .activeIndicator {
-    transition: opacity var(--eds-motion-indicator-opacity-duration) ease;
+    transition: opacity var(--eds-motion-3) ease;
   }
 
   .activeIndicatorMove {
     transition:
-      transform var(--eds-motion-indicator-duration) var(--eds-motion-ease-standard),
-      height var(--eds-motion-indicator-duration) var(--eds-motion-ease-standard),
-      opacity var(--eds-motion-indicator-opacity-duration) ease;
+      transform var(--eds-motion-3) var(--eds-motion-ease-4),
+      height var(--eds-motion-3) var(--eds-motion-ease-4),
+      opacity var(--eds-motion-3) ease;
   }
 }
 
@@ -99,9 +99,9 @@
   font-weight: var(--weight-medium);
   white-space: nowrap;
   transition:
-    background-color var(--eds-motion-hover-duration) ease,
-    color var(--eds-motion-hover-duration) ease,
-    border-color var(--eds-motion-hover-duration) ease;
+    background-color var(--eds-motion-1) ease,
+    color var(--eds-motion-1) ease,
+    border-color var(--eds-motion-1) ease;
 }
 
 .link:hover:not(.linkActive) {

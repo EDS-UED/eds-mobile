@@ -1,0 +1,19 @@
+:root {
+  /* Showcase shell layout — not part of @eds/mobile-tokens */
+  --showcase-doc-preview-height: 400px;
+  --showcase-doc-preview-height-organism: 1024px;
+  --showcase-organism-page-height-fixed: 800px;
+  --showcase-organism-page-height-min: 720px;
+  --showcase-doc-preview-height-compact: 280px;
+  --showcase-doc-preview-height-tag: 480px;
+  --showcase-doc-preview-height-avatar: 640px;
+  --showcase-doc-preview-bg: #e8f0fc;
+  --showcase-doc-preview-bg-organism: var(--showcase-doc-preview-bg);
+  --showcase-doc-preview-bg-dark: #252c36;
+  --showcase-popup-preview-min-height: 420px;
+  --showcase-popup-preview-width: 1280px;
+  --showcase-popup-preview-height: var(--showcase-organism-page-height-fixed);
+  --showcase-data-list-page-height-fixed: var(--showcase-organism-page-height-fixed);
+  --showcase-data-list-page-height-min: var(--showcase-organism-page-height-min);
+  --showcase-sticky-preview-z-index: 10;
+}

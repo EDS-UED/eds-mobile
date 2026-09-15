@@ -1,4 +1,4 @@
-import { getProcessedIcon, iconNames } from '@eds/desktop-components';
+import { getProcessedIcon, iconNames } from '@/stubs/eds-components';
 
 export function getRegisteredIconCount(): number {
   return iconNames.filter((name) => Boolean(getProcessedIcon(name))).length;

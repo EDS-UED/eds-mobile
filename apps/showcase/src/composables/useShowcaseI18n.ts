@@ -1,4 +1,4 @@
-import { inject, type InjectionKey, type Ref } from 'vue';
+import { inject, watch, type InjectionKey, type Ref } from 'vue';
 import {
   createShowcaseI18nRegistry,
   getShowcaseI18nRegistry,
@@ -13,7 +13,13 @@ export function useShowcaseI18n() {
   const registry = getShowcaseI18nRegistry();
 
   if (injectedLocale) {
-    registry.setLocale(injectedLocale.value);
+    watch(
+      injectedLocale,
+      (nextLocale) => {
+        registry.setLocale(nextLocale);
+      },
+      { immediate: true },
+    );
   }
 
   return registry satisfies ShowcaseI18nRegistry;

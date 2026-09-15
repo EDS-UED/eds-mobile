@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { EgTag } from '@eds/desktop-components';
+import { EgTag } from '@/stubs/eds-components';
 import {
   EgCrypto,
   cryptoNames,
   formatCryptoDisplayName,
   getProcessedCrypto,
   resolveCryptoAssetKind,
-} from '@eds/desktop-components';
+} from '@/stubs/eds-components';
 import shared from '@/views/shared/showcase.module.css';
 import styles from '../ComponentsView.module.css';
 import { useAtomsGallerySearch } from './atomsGallerySearch';

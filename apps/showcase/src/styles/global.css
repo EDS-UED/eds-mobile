@@ -1,7 +1,7 @@
 @import '@eds/mobile-tokens';
 @import '@eds/mobile-tokens/tag';
 @import './fonts.css';
-@import '../motion/tokens.css';
+@import './showcase-vars.css';
 
 *,
 *::before,

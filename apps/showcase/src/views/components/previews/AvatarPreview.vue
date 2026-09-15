@@ -5,7 +5,7 @@ import {
   AVATAR_ROBOT_ASSET_NAME,
   EgAvatar,
   formatAvatarPaletteName,
-} from '@eds/desktop-components';
+} from '@/stubs/eds-components';
 import ComponentDocLayout from '@/views/shared/componentDoc/ComponentDocLayout.vue';
 import previewPageStyles from './InputPreview.module.css';
 import galleryStyles from './TagPreviewGallery.module.css';

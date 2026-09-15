@@ -21,7 +21,7 @@
     "./motion/recipe": "./dist/css/motion/recipe.css",
     "./motion/semantic": "./dist/css/motion/semantic.css",
     "./motion/utilities": "./dist/css/motion/utilities.css",
-    "./motion/ios": "./dist/css/motion/ios.css",
+    "./motion/catalog": "./dist/json/motion/catalog.json",
     "./effect": "./dist/css/effect/index.css",
     "./effect/light": "./dist/css/effect/themes/light.css",
     "./effect/dark": "./dist/css/effect/themes/dark.css",

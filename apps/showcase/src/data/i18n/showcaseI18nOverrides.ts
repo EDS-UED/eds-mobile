@@ -7,6 +7,16 @@ type ShowcaseI18nOverride =
 
 /** 按注册键覆盖 name / description（未列出的条目从 catalog 英文自动补全简繁）。 */
 export const showcaseI18nOverrides: Record<string, ShowcaseI18nOverride> = {
+  'nav:tokens': defineShowcaseI18nText('Tokens', '设计令牌', '設計令牌'),
+  'nav:animations': defineShowcaseI18nText('Animations', '动画', '動畫'),
+  'nav:components': defineShowcaseI18nText('Components', '组件', '組件'),
+  'nav:patterns': defineShowcaseI18nText('Patterns', '模式', '模式'),
+  'nav:workflows': defineShowcaseI18nText('Workflows', '工作流', '工作流'),
+
+  'shell:theme-dark': defineShowcaseI18nText('Dark', '深色', '深色'),
+  'shell:theme-light': defineShowcaseI18nText('Light', '浅色', '淺色'),
+  'shell:language': defineShowcaseI18nText('Language', '语言', '語言'),
+
   'components:section:atoms': defineShowcaseI18nText('Atoms', '原子', '原子'),
   'components:section:molecules': defineShowcaseI18nText('Molecules', '分子', '分子'),
   'components:section:organisms': defineShowcaseI18nText('Organisms', '有机体', '有機體'),
@@ -25,7 +35,10 @@ export const showcaseI18nOverrides: Record<string, ShowcaseI18nOverride> = {
   'nav:slot': defineShowcaseI18nText('Slot', '插槽', '插槽'),
 
   'sidebar:输入': defineShowcaseI18nText('Input', '输入', '輸入'),
+  'sidebar:输出': defineShowcaseI18nText('Output', '输出', '輸出'),
   'sidebar:切换': defineShowcaseI18nText('Switching', '切换', '切換'),
+  'sidebar:浮层': defineShowcaseI18nText('Overlays', '浮层', '浮層'),
+  'sidebar:反馈': defineShowcaseI18nText('Feedback', '反馈', '回饋'),
   'sidebar:触发': defineShowcaseI18nText('Trigger', '触发', '觸發'),
   'sidebar:标记': defineShowcaseI18nText('Tags', '标记', '標記'),
   'sidebar:浮层提示': defineShowcaseI18nText('Overlays', '浮层提示', '浮層提示'),

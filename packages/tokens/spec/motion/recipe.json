@@ -1,60 +1,82 @@
 {
-  "$description": "Motion Recipe — duration role + easing + property 组合。DS glue 用 `--motion-recipe-*`；业务用 semantic 场景 class。引用：@eds/desktop-tokens/motion/recipe（需先引 base）",
+  "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
+  "$description": "EDS Mobile Motion Recipe — 组合 Base 参数为可复用配方；Semantic 只引用 recipe id + css var。",
+  "namedRecipes": [
+    { "id": "press", "label": "Press", "springRef": "press", "hapticRef": "light", "cssRecipe": "motion-recipe-tap", "semanticClass": "motion-tap" },
+    { "id": "interactive", "label": "Interactive", "springRef": "interactive", "hapticRef": "selection", "velocityAware": true, "interruptible": true },
+    { "id": "navigation", "label": "Navigation", "springRef": "navigation", "timingRef": "navigationPush", "cssRecipe": "motion-recipe-page-push", "semanticClass": "motion-page" },
+    { "id": "sheet", "label": "Sheet", "springRef": "sheet", "hapticRef": "selection", "cssRecipe": "motion-recipe-flotation-enter", "semanticClass": "motion-flotation" },
+    { "id": "modal", "label": "Modal", "springRef": "modal", "cssRecipe": "motion-recipe-flotation-enter", "semanticClass": "motion-flotation" },
+    { "id": "control", "label": "Control", "springRef": "control", "cssRecipe": "motion-recipe-control", "semanticClass": "motion-deform", "hapticRef": "selection" },
+    { "id": "enter", "label": "Enter", "timingRef": "easeIn", "cssRecipe": "motion-recipe-enter", "semanticClass": "motion-focus" },
+    { "id": "exit", "label": "Exit", "timingRef": "easeOut", "cssRecipe": "motion-recipe-exit" },
+    { "id": "expand", "label": "Expand", "springRef": "gentle", "cssRecipe": "motion-recipe-enter", "semanticClass": "motion-layout" },
+    { "id": "collapse", "label": "Collapse", "springRef": "gentle", "timingRef": "easeOut", "cssRecipe": "motion-recipe-exit", "semanticClass": "motion-layout" },
+    { "id": "layout-deform", "label": "Layout Deform", "springRef": "gentle", "cssRecipe": "motion-recipe-layout-deform-shell", "semanticClass": "motion-layout-deform" },
+    { "id": "scroll-fade", "label": "Scroll Fade", "cssRecipe": "motion-recipe-scroll-fade" },
+    { "id": "drag", "label": "Drag", "springRef": "drag", "hapticRef": "light", "velocityAware": true, "interruptible": true },
+    { "id": "dismiss", "label": "Dismiss", "springRef": "interactive", "timingRef": "easeOut", "semanticClass": "motion-flotation", "velocityAware": true },
+    { "id": "success", "label": "Success", "springRef": "bouncy", "hapticRef": "success" },
+    { "id": "error", "label": "Error", "springRef": "press", "timingRef": "easeOut", "hapticRef": "error" },
+    { "id": "loading", "label": "Loading", "timingRef": "easeInOut", "cssRecipe": "motion-recipe-fade" }
+  ],
   "groups": [
     {
-      "comment": "Duration Roles（物理时长角色 → eds-motion-N）",
+      "comment": "Duration roles（→ eds-motion-N）",
       "tokenList": [
-        { "name": "motion-duration-instant", "value": "var(--eds-motion-0)", "comment": "Focus / selected / reduced" },
-        { "name": "motion-duration-micro", "value": "var(--eds-motion-1)", "comment": "Checkbox / toggle" },
-        { "name": "motion-duration-fade", "value": "var(--eds-motion-2)", "comment": "Opacity / 虚线" },
-        { "name": "motion-duration-enter", "value": "var(--eds-motion-3)", "comment": "浮层进入" },
-        { "name": "motion-duration-float", "value": "var(--eds-motion-4)", "comment": "微浮动 / hover 反馈" },
-        { "name": "motion-duration-hover", "value": "var(--eds-motion-4)", "comment": "Hover paint（is-hover / is-focus）" },
-        { "name": "motion-duration-hover-asym", "value": "var(--eds-motion-5)", "comment": "600ms · is-asym 入场（仅 motion-recipe-hover-asym）" },
-        { "name": "motion-duration-shift", "value": "var(--eds-motion-4)", "comment": "Layout / Skid" },
-        { "name": "motion-duration-emphasis", "value": "var(--eds-motion-5)", "comment": "强调 / 大面板" },
-        { "name": "motion-duration-page", "value": "var(--eds-motion-6)", "comment": "页面切换推动" },
-        { "name": "motion-duration-control", "value": "var(--eds-motion-8)", "comment": "Toggle / Tab 滑块" },
-        { "name": "motion-duration-feedback", "value": "var(--eds-motion-9)", "comment": "EndFeedback 圆环" },
-        { "name": "motion-duration-scroll-fade", "value": "var(--eds-motion-6)", "comment": "Nav 滚动遮罩" },
-        { "name": "motion-duration-spin", "value": "var(--eds-motion-10)", "comment": "Button spinner" },
-        { "name": "motion-duration-spin-slow", "value": "var(--eds-motion-11)", "comment": "DataList spinner" },
-        { "name": "motion-duration-layout-deform", "value": "var(--eds-motion-9)", "comment": "350ms · Layout Deform shell（height / max-height）" },
-        { "name": "motion-duration-layout-deform-content", "value": "var(--eds-motion-12)", "comment": "180ms · Layout Deform 内容 crossfade" },
-        { "name": "motion-delay-layout-deform-content-swap", "value": "120ms", "comment": "内容淡出中途换页（与 shell morph 并行）" },
-        { "name": "motion-delay-feedback-tick", "value": "var(--eds-motion-3)", "comment": "EndFeedback 勾号延迟" }
+        { "name": "motion-duration-instant", "value": "var(--eds-motion-0)" },
+        { "name": "motion-duration-micro", "value": "var(--eds-motion-1)" },
+        { "name": "motion-duration-fast", "value": "var(--eds-motion-2)" },
+        { "name": "motion-duration-normal", "value": "var(--eds-motion-3)" },
+        { "name": "motion-duration-slow", "value": "var(--eds-motion-4)" },
+        { "name": "motion-duration-emphasis", "value": "var(--eds-motion-5)" },
+        { "name": "motion-duration-control", "value": "var(--eds-motion-6)" },
+        { "name": "motion-duration-navigation", "value": "var(--eds-motion-7)" },
+        { "name": "motion-duration-spin", "value": "var(--eds-motion-8)" },
+        { "name": "motion-duration-spin-slow", "value": "var(--eds-motion-9)" },
+        { "name": "motion-duration-fade", "value": "var(--eds-motion-2)" },
+        { "name": "motion-duration-enter", "value": "var(--eds-motion-3)" },
+        { "name": "motion-duration-exit", "value": "var(--eds-motion-2)" },
+        { "name": "motion-duration-tap", "value": "var(--eds-motion-1)" },
+        { "name": "motion-duration-shift", "value": "var(--eds-motion-3)" },
+        { "name": "motion-duration-scroll-fade", "value": "var(--eds-motion-5)" },
+        { "name": "motion-duration-layout-deform", "value": "var(--eds-motion-7)" },
+        { "name": "motion-duration-layout-deform-content", "value": "var(--eds-motion-2)" },
+        { "name": "motion-delay-layout-deform-content-swap", "value": "120ms" },
+        { "name": "motion-delay-feedback-tick", "value": "var(--eds-motion-3)" }
       ]
     },
     {
-      "comment": "Easing Roles（物理缓动角色 → eds-motion-ease-N）",
+      "comment": "Easing roles",
       "tokenList": [
-        { "name": "motion-easing-standard", "value": "var(--eds-motion-ease-1)", "comment": "缓入缓出（默认）" },
-        { "name": "motion-easing-enter", "value": "var(--eds-motion-ease-2)", "comment": "进入" },
-        { "name": "motion-easing-exit", "value": "var(--eds-motion-ease-3)", "comment": "离开" },
-        { "name": "motion-easing-product", "value": "var(--eds-motion-ease-4)", "comment": "Material" },
-        { "name": "motion-easing-linear", "value": "var(--eds-motion-ease-5)", "comment": "Spinner 线性" },
-        { "name": "motion-easing-spring", "value": "var(--eds-motion-ease-6)", "comment": "弹性反馈（圆环）" },
-        { "name": "motion-easing-spring-emphasis", "value": "var(--eds-motion-ease-7)", "comment": "弹性反馈（勾号）" },
-        { "name": "motion-easing-decelerate", "value": "var(--eds-motion-ease-8)", "comment": "减速渐隐" },
-        { "name": "motion-easing-float", "value": "var(--eds-motion-ease-8)", "comment": "微浮动" }
+        { "name": "motion-easing-standard", "value": "var(--eds-motion-ease-1)" },
+        { "name": "motion-easing-enter", "value": "var(--eds-motion-ease-2)" },
+        { "name": "motion-easing-exit", "value": "var(--eds-motion-ease-3)" },
+        { "name": "motion-easing-product", "value": "var(--eds-motion-ease-4)" },
+        { "name": "motion-easing-linear", "value": "var(--eds-motion-ease-5)" },
+        { "name": "motion-easing-spring", "value": "var(--eds-motion-ease-6)" },
+        { "name": "motion-easing-spring-emphasis", "value": "var(--eds-motion-ease-7)" },
+        { "name": "motion-easing-decelerate", "value": "var(--eds-motion-ease-8)" },
+        { "name": "motion-easing-navigation", "value": "var(--eds-motion-ease-9)" }
       ]
     },
     {
-      "comment": "Property Bundles（属性束 — DS glue 拼装用）",
+      "comment": "Property bundles",
       "tokenList": [
         {
           "name": "motion-property-paint",
-          "value": "background-color, color, border-color, box-shadow, opacity, outline-color, outline-offset, fill"
+          "value": "background-color, color, border-color, box-shadow, opacity, outline-color, fill"
         },
         {
           "name": "motion-property-geometry",
           "value": "flex, max-width, width, min-width, max-height, transform, left, padding"
         },
-        { "name": "motion-property-fade", "value": "opacity" }
+        { "name": "motion-property-fade", "value": "opacity" },
+        { "name": "motion-property-transform", "value": "transform, opacity" }
       ]
     },
     {
-      "comment": "Recipes（duration + easing + property 组合）",
+      "comment": "Recipes",
       "tokenList": [
         {
           "name": "motion-recipe-fade",
@@ -66,37 +88,23 @@
         },
         {
           "name": "motion-recipe-exit",
-          "value": "opacity var(--motion-duration-enter) var(--motion-easing-exit), transform var(--motion-duration-enter) var(--motion-easing-exit)"
+          "value": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-exit) var(--motion-easing-exit)"
         },
         {
-          "name": "motion-recipe-nudge",
-          "value": "opacity var(--motion-duration-float) var(--motion-easing-float), transform var(--motion-duration-float) var(--motion-easing-float)"
+          "name": "motion-recipe-tap",
+          "value": "background-color var(--motion-duration-tap) var(--motion-easing-standard), color var(--motion-duration-tap) var(--motion-easing-standard), border-color var(--motion-duration-tap) var(--motion-easing-standard), opacity var(--motion-duration-tap) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-tap) var(--motion-easing-standard)"
         },
         {
           "name": "motion-recipe-flotation-enter",
-          "value": "opacity var(--motion-duration-enter) var(--motion-easing-standard), transform var(--motion-duration-emphasis) var(--motion-easing-spring-emphasis)",
-          "comment": "Flotation 非对称入场 · opacity 200ms + transform 400ms spring"
+          "value": "opacity var(--motion-duration-enter) var(--motion-easing-standard), transform var(--motion-duration-emphasis) var(--motion-easing-spring-emphasis)"
         },
         {
           "name": "motion-recipe-flotation-exit",
-          "value": "opacity var(--motion-duration-enter) var(--motion-easing-exit), transform var(--motion-duration-float) var(--motion-easing-decelerate)",
-          "comment": "Flotation 离场 · 无 spring overshoot"
-        },
-        {
-          "name": "motion-recipe-nudge-opacity",
-          "value": "opacity var(--motion-duration-float) var(--motion-easing-float)"
+          "value": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-fast) var(--motion-easing-decelerate)"
         },
         {
           "name": "motion-recipe-control",
           "value": "transform var(--motion-duration-control) var(--motion-easing-product), width var(--motion-duration-control) var(--motion-easing-product)"
-        },
-        {
-          "name": "motion-recipe-hover",
-          "value": "background-color var(--motion-duration-hover) var(--motion-easing-standard), color var(--motion-duration-hover) var(--motion-easing-standard), border-color var(--motion-duration-hover) var(--motion-easing-standard), box-shadow var(--motion-duration-hover) var(--motion-easing-standard), opacity var(--motion-duration-hover) var(--motion-easing-standard), outline-color var(--motion-duration-hover) var(--motion-easing-standard), outline-offset var(--motion-duration-hover) var(--motion-easing-standard)"
-        },
-        {
-          "name": "motion-recipe-hover-asym",
-          "value": "background-color var(--motion-duration-hover-asym) var(--motion-easing-exit), color var(--motion-duration-hover-asym) var(--motion-easing-exit), border-color var(--motion-duration-hover-asym) var(--motion-easing-exit), box-shadow var(--motion-duration-hover-asym) var(--motion-easing-exit), opacity var(--motion-duration-hover-asym) var(--motion-easing-exit), outline-color var(--motion-duration-hover-asym) var(--motion-easing-exit), outline-offset var(--motion-duration-hover-asym) var(--motion-easing-exit), fill var(--motion-duration-hover-asym) var(--motion-easing-exit)"
         },
         {
           "name": "motion-recipe-shift",
@@ -111,50 +119,48 @@
           "value": "background var(--motion-duration-scroll-fade) var(--motion-easing-decelerate)"
         },
         {
-          "name": "motion-recipe-float",
-          "value": "opacity var(--motion-duration-hover) var(--motion-easing-standard), transform var(--motion-duration-hover) var(--motion-easing-standard)"
-        },
-        {
           "name": "motion-recipe-page-push",
-          "value": "opacity var(--motion-duration-page) var(--motion-easing-enter), transform var(--motion-duration-page) var(--motion-easing-enter)"
+          "value": "opacity var(--motion-duration-navigation) var(--motion-easing-navigation), transform var(--motion-duration-navigation) var(--motion-easing-navigation)"
         },
         {
           "name": "motion-recipe-layout-deform-shell",
-          "value": "height var(--motion-duration-layout-deform) var(--motion-easing-float), max-height var(--motion-duration-layout-deform) var(--motion-easing-float), width var(--motion-duration-layout-deform) var(--motion-easing-float), max-width var(--motion-duration-layout-deform) var(--motion-easing-float)"
+          "value": "height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), width var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-width var(--motion-duration-layout-deform) var(--motion-easing-decelerate)"
         },
         {
           "name": "motion-recipe-layout-deform-content",
-          "value": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-float)"
+          "value": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-decelerate)"
         }
       ]
     },
     {
-      "comment": "DS Internal — shift 方向位移（AnchoredTooltip glue）",
+      "comment": "Displace（方向位移 glue）",
       "tokenList": [
-        { "name": "motion-displace-from-bottom", "value": "translateY(var(--motion-offset-small))" },
-        { "name": "motion-displace-from-top", "value": "translateY(calc(-1 * var(--motion-offset-small)))" },
-        { "name": "motion-displace-from-left", "value": "translateX(calc(-1 * var(--motion-offset-small)))" },
-        { "name": "motion-displace-from-right", "value": "translateX(var(--motion-offset-small))" }
+        { "name": "motion-displace-from-bottom", "value": "translateY(var(--motion-distance-sm))" },
+        { "name": "motion-displace-from-top", "value": "translateY(calc(-1 * var(--motion-distance-sm)))" },
+        { "name": "motion-displace-from-left", "value": "translateX(calc(-1 * var(--motion-distance-sm)))" },
+        { "name": "motion-displace-from-right", "value": "translateX(var(--motion-distance-sm))" }
       ]
     }
   ],
   "reducedMotionOverrides": [
     { "name": "motion-duration-micro", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-fast", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-normal", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-slow", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-emphasis", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-control", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-navigation", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-fade", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-enter", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-float", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-hover", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-hover-asym", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-exit", "value": "var(--eds-motion-0)" },
+    { "name": "motion-duration-tap", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-shift", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-emphasis", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-page", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-control", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-feedback", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-scroll-fade", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-spin", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-spin-slow", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-layout-deform", "value": "var(--eds-motion-0)" },
     { "name": "motion-duration-layout-deform-content", "value": "var(--eds-motion-0)" },
+    { "name": "motion-delay-layout-deform-content-swap", "value": "var(--eds-motion-0)" },
     { "name": "motion-delay-feedback-tick", "value": "var(--eds-motion-0)" }
   ]
 }

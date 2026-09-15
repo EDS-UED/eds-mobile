@@ -1,4 +1,4 @@
-import { cryptoNames, getProcessedCrypto } from '@eds/desktop-components';
+import { cryptoNames, getProcessedCrypto } from '@/stubs/eds-components';
 
 export function getRegisteredCryptoCount(): number {
   return cryptoNames.filter((name) => Boolean(getProcessedCrypto(name))).length;

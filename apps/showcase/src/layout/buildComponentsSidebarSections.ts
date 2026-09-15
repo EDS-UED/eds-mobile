@@ -5,23 +5,28 @@ import {
   findCatalogItem,
   getMoleculeLandingPageSlug,
 } from '@/data/components/navigation';
+import { componentFamilyI18nKey } from '@/data/i18n/buildShowcaseComponentI18n';
+import type { ShowcaseI18nKey } from '@/data/i18n/types';
 import type { CatalogItem, CatalogSection } from '@/data/types';
 
 export type ComponentsSidebarFamily = {
   id: string;
   label: string;
+  labelKey: ShowcaseI18nKey;
   to: string;
 };
 
 export type ComponentsSidebarGroup = {
   id: string;
   label: string;
+  labelKey: ShowcaseI18nKey;
   families: ComponentsSidebarFamily[];
 };
 
 export type ComponentsSidebarSection = {
   id: string;
   label: string;
+  labelKey: ShowcaseI18nKey;
   families?: ComponentsSidebarFamily[];
   groups?: ComponentsSidebarGroup[];
 };
@@ -51,6 +56,7 @@ function mapFamily(item: CatalogItem): ComponentsSidebarFamily {
   return {
     id: item.slug,
     label: item.name,
+    labelKey: componentFamilyI18nKey(item.slug),
     to: `/components/${getMoleculeLandingPageSlug(item)}`,
   };
 }
@@ -68,6 +74,7 @@ function buildMoleculesGroups(section: CatalogSection): ComponentsSidebarGroup[]
   return MOLECULES_SIDEBAR_GROUPS.map((group, index) => ({
     id: `${sectionId}:molecule-group:${index}`,
     label: group.label,
+    labelKey: `sidebar:${group.label}` as ShowcaseI18nKey,
     families: group.slugs
       .map((slug) => bySlug.get(slug))
       .filter((item): item is CatalogItem => Boolean(item))
@@ -83,6 +90,7 @@ function buildSectionGroups(section: CatalogSection): ComponentsSidebarGroup[] |
   return section.groups.map((group) => ({
     id: `${sectionId}:${catalogSectionId(group.title)}`,
     label: SIDEBAR_GROUP_LABELS[group.title] ?? group.title,
+    labelKey: `components:group:${catalogSectionId(group.title)}` as ShowcaseI18nKey,
     families: mapSectionFamilies(group.items),
   }));
 }
@@ -90,11 +98,13 @@ function buildSectionGroups(section: CatalogSection): ComponentsSidebarGroup[] |
 export function buildComponentsSidebarSections(): ComponentsSidebarSection[] {
   return componentCatalog.map((section) => {
     const id = catalogSectionId(section.title);
+    const labelKey = `components:section:${id}` as ShowcaseI18nKey;
 
     if (section.title === 'Molecules') {
       return {
         id,
         label: section.title,
+        labelKey,
         groups: buildMoleculesGroups(section),
       };
     }
@@ -105,6 +115,7 @@ export function buildComponentsSidebarSections(): ComponentsSidebarSection[] {
       return {
         id,
         label: section.title,
+        labelKey,
         groups,
       };
     }
@@ -112,6 +123,7 @@ export function buildComponentsSidebarSections(): ComponentsSidebarSection[] {
     return {
       id,
       label: section.title,
+      labelKey,
       families: mapSectionFamilies(section.items),
     };
   });

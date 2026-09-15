@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
-import { EgSearch } from '@eds/desktop-components';
+import { EgSearch } from '@/stubs/eds-components';
 import PageHeader from '@/components/shared/PageHeader.vue';
 import ComponentsPageAnchors from '@/components/shared/ComponentsPageAnchors.vue';
 import { findCatalogChildPage, findCatalogItem, getComponentRouteSlug } from '@/data/components/navigation';

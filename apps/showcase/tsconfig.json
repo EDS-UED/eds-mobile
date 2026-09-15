@@ -12,12 +12,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@eds/desktop-components": ["src/stubs/eds-components.ts"],
-      "@eds/desktop-animations": ["../../packages/mobile-animations/src/index.ts"],
-      "@eds/desktop-tokens": ["../../packages/tokens"],
-      "@eds/desktop-tokens/*": ["../../packages/tokens/*"],
       "@eds/mobile-tokens": ["../../packages/tokens"],
-      "@eds/mobile-tokens/*": ["../../packages/tokens/*"]
+      "@eds/mobile-tokens/*": ["../../packages/tokens/*"],
+      "@eds/mobile-animations": ["../../packages/mobile-animations/src/index.ts"]
     },
     "resolveJsonModule": true
   },

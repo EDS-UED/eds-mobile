@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { EgIcon, getProcessedIcon, iconNames } from '@eds/desktop-components';
+import { EgIcon, getProcessedIcon, iconNames } from '@/stubs/eds-components';
 import shared from '@/views/shared/showcase.module.css';
 import styles from '../ComponentsView.module.css';
 import { useAtomsGallerySearch } from './atomsGallerySearch';

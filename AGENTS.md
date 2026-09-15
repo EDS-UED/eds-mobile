@@ -1,6 +1,6 @@
 # eds-mobile — Agent 须知
 
-本项目是 **EDS Mobile（React Native）**，与 `eds-desktop` **完全独立**。
+本项目是 **EDS Mobile（React Native）**，与 [EDS-UED/eds-desktop](https://github.com/EDS-UED/eds-desktop) **完全独立**。
 
 ## 协作方式（Agent 必读）
 
@@ -15,12 +15,18 @@
 5. **场景组件**（`EgCregisTabBar`、`EgNotesPopover` 等）preset 在 `packages/components` 统一维护；consumer 禁止手搓平行实现（§8）。
 6. **`pnpm sync`** 仅更新 link 到 `eds-mobile` 的 consumer；步骤见 `work.mdc` §5。
 
+## Preview
+
+- **RN 真源**：`apps/playground`（Expo）— 模拟器 / 真机预览 `@eds/mobile-components`
+- **Web 过渡**：`apps/showcase`（Vue）— token / 文档 IA；**不是** RN 运行时
+
 ## 验证（改动后）
 
 | 面 | 命令 |
 |----|------|
 | 组件 | `pnpm build:components` |
 | 全量 npm 包 | `pnpm build:mobile` |
+| Playground | `pnpm --filter @eds/mobile-playground typecheck` |
 | Showcase | `pnpm --filter @eds/mobile-showcase build` |
 
 ## 文件索引

@@ -3,6 +3,10 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { verifyColorSpecAgainstDist } from './verify-color-spec.mjs';
 import { buildRnTheme } from './build-rn-theme.mjs';
+import {
+  writeMotionCatalogJson,
+  generateMobileMotionRuntime,
+} from './motion-build.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
@@ -1139,9 +1143,9 @@ function buildTypographyFonts() {
 
   const lines = [
     '/**',
-    ' * EverGreen Desktop — self-hosted UI + code fonts.',
-    ' * Bundled via @eds/desktop-tokens (typography/index.css).',
-    ' * Granular import: @eds/desktop-tokens/fonts',
+    ' * EDS Mobile — self-hosted UI + code fonts.',
+    ' * Bundled via @eds/mobile-tokens (typography/index.css).',
+    ' * Granular import: @eds/mobile-tokens/fonts',
     ' * Source: assets/fonts/EDSText-*.ttf, IBMPlexMono-*.ttf',
     ' */',
     '',
@@ -1202,6 +1206,48 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
     }
   }
 
+  if (baseSpec.springs) {
+    lines.push('');
+    lines.push('  /* Physics · Spring（Base 唯一真源） */');
+    for (const [name, spring] of Object.entries(baseSpec.springs)) {
+      lines.push(`  --motion-base-spring-${name}-response: ${spring.response};`);
+      lines.push(`  --motion-base-spring-${name}-damping-fraction: ${spring.dampingFraction};`);
+      lines.push(`  --motion-base-spring-${name}-blend-duration: ${spring.blendDuration}s;`);
+      if (spring.reanimated) {
+        const { damping, stiffness, mass } = spring.reanimated;
+        lines.push(`  --eds-ios-spring-${name}: damping:${damping},stiffness:${stiffness},mass:${mass};`);
+      }
+    }
+  }
+
+  if (baseSpec.haptics) {
+    lines.push('');
+    lines.push('  /* Haptic */');
+    for (const [name, value] of Object.entries(baseSpec.haptics)) {
+      lines.push(`  --motion-base-haptic-${name}: ${JSON.stringify(value)};`);
+      lines.push(`  --eds-haptic-${name}: ${JSON.stringify(value)};`);
+    }
+  }
+
+  if (baseSpec.timings) {
+    lines.push('');
+    lines.push('  /* Timing（RN withTiming 参考） */');
+    for (const [name, timing] of Object.entries(baseSpec.timings)) {
+      const easing = timing.easing.join(',');
+      const cssName = name.replace(/([A-Z])/g, '-$1').toLowerCase();
+      lines.push(`  --eds-ios-${cssName}: duration:${timing.duration},easing:cubic-bezier(${easing});`);
+    }
+  }
+
+  if (baseSpec.interaction) {
+    lines.push('');
+    lines.push('  /* Interaction defaults */');
+    for (const [name, value] of Object.entries(baseSpec.interaction)) {
+      const cssName = name.replace(/([A-Z])/g, '-$1').toLowerCase();
+      lines.push(`  --motion-base-interaction-${cssName}: ${value ? 1 : 0};`);
+    }
+  }
+
   lines.push('}', '');
 
   if (baseSpec.reducedMotionOverrides?.length) {
@@ -1253,8 +1299,8 @@ function writeMotionSemanticCssFile(destination, semanticSpec, headerLines = [])
     '/**',
     ' * Do not edit directly, this file was auto-generated from Figma tokens.',
     ...headerLines.map((line) => (line.startsWith(' *') ? line : ` * ${line}`)),
-    ' * Motion semantic — Ease / Layout / Flotation / Deform / Page (.motion-ease + state · .motion-layout · .motion-flotation · .motion-deform · .motion-page).',
-    ' * Recipes: @eds/desktop-tokens/motion/recipe',
+    ' * Motion semantic — Tap / Layout / Flotation / Deform / Page (.motion-tap · .motion-layout · .motion-flotation · .motion-deform · .motion-page).',
+    ' * Recipes: @eds/mobile-tokens/motion/recipe',
     ' */',
     '',
   ];
@@ -1364,6 +1410,7 @@ function buildMotionSystem() {
   const recipeSpec = loadJson('motion/recipe.json');
   const semanticSpec = loadJson('motion/semantic.json');
   const selector = ':root, .mobileTokens';
+  const animationsSrcDir = resolve(rootDir, '../mobile-animations/src');
 
   writeMotionBaseCssFile(join(cssDir, 'motion/base.css'), selector, baseSpec, [
     ' * Motion System — base primitives (duration, easing, physical state).',
@@ -1376,7 +1423,7 @@ function buildMotionSystem() {
   ]);
 
   writeMotionSemanticCssFile(join(cssDir, 'motion/semantic.css'), semanticSpec, [
-    ' * Motion System — semantic scenario classes.',
+    ' * Motion System — semantic scenario classes (.motion-tap · .motion-page …).',
     ' * Source: spec/motion/semantic.json',
   ]);
 
@@ -1385,10 +1432,13 @@ function buildMotionSystem() {
     ' * Source: spec/motion/semantic.json',
   ]);
 
+  writeMotionCatalogJson(specDir, distDir);
+  generateMobileMotionRuntime(specDir, animationsSrcDir);
+
   writeImportAggregator(
     join(cssDir, 'motion/index.css'),
     ['./base.css', './recipe.css', './semantic.css', './utilities.css'],
-    'Motion System entry',
+    'Motion CSS entry（同 Desktop — base · recipe · semantic · utilities）',
   );
 }
 
@@ -1599,6 +1649,8 @@ function buildJsonExport() {
   const motionBaseSpec = loadJson('motion/base.json');
   const motionRecipeSpec = loadJson('motion/recipe.json');
   const motionSemanticSpec = loadJson('motion/semantic.json');
+  const motionBaseFullSpec = loadJson('motion/base.json');
+  const motionNamedRecipes = loadJson('motion/recipe.json').namedRecipes ?? [];
 
   const scaleUnit = resolveScaleBaseUnit(scaleBaseSpec);
   const scaleMultipliers = {};
@@ -1714,6 +1766,14 @@ function buildJsonExport() {
         { transition: utility.standaloneTransition ?? 'none' },
       ]),
     ),
+    motionSprings: motionBaseFullSpec.springs ?? {},
+    motionHaptics: motionBaseFullSpec.haptics ?? {},
+    motionTimings: motionBaseFullSpec.timings ?? {},
+    motionNamedRecipes: Object.fromEntries(motionNamedRecipes.map((r) => [r.id, r])),
+    motionCompositions: Object.fromEntries(
+      (motionSemanticSpec.compositions ?? []).map((composition) => [composition.id, composition]),
+    ),
+    motionReducedMotion: motionSemanticSpec.reducedMotion ?? {},
   };
 
   const baseSpec = loadJson('color/base.json');
@@ -1731,7 +1791,7 @@ function buildJsonExport() {
 }
 
 async function buildAll() {
-  rmSync(distDir, { recursive: true, force: true });
+  rmSync(distDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
   mkdirSync(distDir, { recursive: true });
 
   buildScaleSystem();
@@ -1743,7 +1803,7 @@ async function buildAll() {
   buildRootIndex();
   buildJsonExport();
   buildRnTheme({ specDir, distDir });
-  // Mobile DS — no squircle scanner bundle
+  // Mobile EDS — no squircle scanner bundle
 
   const colorErrors = verifyColorSpecAgainstDist();
   if (colorErrors.length > 0) {

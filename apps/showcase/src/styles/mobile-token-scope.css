@@ -1,5 +1,5 @@
 /*
- * Desktop 组件预览 subtree 排版基线（token 变量由 global.css @eds/mobile-tokens 提供）。
+ * Mobile 组件预览 subtree 排版基线（token 变量由 global.css @eds/mobile-tokens 提供）。
  * 各 Eg* 组件在文本节点上再绑定语义角色 token。
  */
 .mobileTokens {

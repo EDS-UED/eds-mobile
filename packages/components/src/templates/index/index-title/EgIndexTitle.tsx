@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgIndexTitleProps } from './EgIndexTitle.types';
+import type { EgIndexTitleProps } from './EgIndexTitle.types.js';
 
 /** RN implementation — Title (component) */
 export function EgIndexTitle(props: EgIndexTitleProps & Pick<ViewProps, 'style'>) {

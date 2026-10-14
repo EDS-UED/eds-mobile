@@ -24,9 +24,18 @@ export { EgOptionButton } from './molecules/button/option-button';
 export { EgComboActionButton } from './molecules/button/combo-action-button';
 export { EgComboActionButtonAlt } from './molecules/button/combo-action-button-alt';
 export { EgIconContainerButton } from './molecules/button/icon-container-button';
+export {
+  EgButtonGlass,
+  shouldUseEgButtonGlassNativeStack,
+} from './molecules/button/button-glass';
+export type {
+  EgButtonGlassProps,
+  EgButtonGlassKind,
+  EgButtonGlassIconCount,
+} from './molecules/button/button-glass';
 export { EgInput } from './molecules/input/input';
-export { EgSearchInput } from './molecules/input/search-input';
-export { EgTextareaInput } from './molecules/input/textarea-input';
+export { EgSearch } from './molecules/input/search';
+export { EgTextarea } from './molecules/input/textarea';
 export { EgQuickInput } from './molecules/input/quick-input';
 export { EgInputPointer } from './molecules/input/input-pointer';
 export { EgInputGroup } from './molecules/input/input-group';
@@ -48,11 +57,52 @@ export { EgTriggerDropdown } from './molecules/dropdown/trigger-dropdown';
 export { EgFormSubmissionFeedback } from './molecules/feedback/form-submission-feedback';
 export { EgStatusCardFeedback } from './molecules/feedback/status-card-feedback';
 export { EgToastFeedback } from './molecules/feedback/toast-feedback';
-export { EgTabBar } from './organisms/tab-bar/tab-bar';
+export {
+  EgTabBar,
+  EgTabBarBottomTabsDock,
+  EgTabBarNativeLayout,
+  shouldUseEgTabBarNativeStack,
+  egTabBarScrollContentReserve,
+  egTabBarScrollContentReserveWithSafeArea,
+  egTabBarScrollContentReserveForList,
+  useEgTabBarShellLayout,
+  egTabBarPillTrackHeight,
+  egTabBarShellLayoutHeight,
+  tabBarTrackIntrinsicHeight,
+  TAB_BAR_PILL_TRACK_HEIGHT,
+  createEgTabBarBottomTabsBinding,
+  egTabBarRouteNameForIndex,
+  egTabBarSelectedIndexForActiveRoute,
+} from './organisms/tab-bar/tab-bar';
+export type {
+  EgTabBarNativeLayoutProps,
+  EgTabBarNativeTabSpec,
+  EgTabBarNativeTriggerIcon,
+  EgTabBarBottomTabNavigation,
+  EgTabBarBottomTabNavigationState,
+  EgTabBarBottomTabRoute,
+  EgTabBarNavBindItem,
+} from './organisms/tab-bar/tab-bar';
 export { EgTabBarItem } from './organisms/tab-bar/tab-bar-item';
 export { EgTabBarGlassBg } from './organisms/tab-bar/tab-bar-glass-bg';
 export { EgCregisTabBar } from './organisms/tab-bar/cregis-tab-bar';
 export { EgUDunTabBar } from './organisms/tab-bar/udun-tab-bar';
+export {
+  EgNavBar,
+  shouldUseEgNavBarNativeStack,
+  egNavBarNativeStackOptions,
+  useEgNavBarScroll,
+  egNavBarContentHeight,
+  egNavBarScrollContentReserve,
+} from './organisms/tab-bar/nav-bar';
+export type {
+  EgNavBarProps,
+  EgNavBarAction,
+  EgNavBarBackground,
+  EgNavBarScrollOffset,
+  EgNavBarNativeStackOptions,
+  EgNavBarNativeStackOptionsInput,
+} from './organisms/tab-bar/nav-bar';
 export { EgNotesPopover } from './molecules/popovers/notes-popover';
 export { EgMode } from './templates/index/mode';
 export { EgIndexTitle } from './templates/index/index-title';
@@ -200,6 +250,54 @@ export { EgIconZoomIn } from './atoms/icon/icon-zoom-in';
 export { EgIconZoomOut } from './atoms/icon/icon-zoom-out';
 export { EgIconIConDrawType6 } from './atoms/icon/icon-icon-draw-type6';
 export { EgIconOvalTickMini } from './atoms/icon/icon-oval-tick-mini';
+export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';
+export type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';
+export {
+  EgGlass,
+  GlassSurface,
+  GlassInteraction,
+  GlassContainer,
+  GlassControlShell,
+  GlassBlurScope,
+  GlassBlurBackdrop,
+  useGlassBlurTargetRef,
+  getNativeBlurView,
+  nativeBlurIntensity,
+  resolveAndroidBlurMethod,
+  getNativeLinearGradient,
+  getAndroidLiquidGlassView,
+  isAndroidLiquidGlassAvailable,
+  getSkiaModule,
+  isSkiaGlassAvailable,
+  resolveGlassBoxComposition,
+  glassBoxViewStyle,
+  glassBoxNativeBlurIntensity,
+} from './atoms/glass/index.js';
+export type {
+  EgGlassProps,
+  GlassVariant,
+  GlassShape,
+  GlassSurfaceProps,
+  GlassInteractionProps,
+  GlassContainerProps,
+  GlassControlShape,
+  GlassControlShellProps,
+  GlassBoxClassName,
+  GlassBoxComposition,
+  GlassBoxLayer,
+  GlassBoxShadowLayer,
+} from './atoms/glass/index.js';
 export { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';
 export type { FigmaComponentEntry } from './catalog/figmaCatalog';
+export { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs';
+export { createCatalogPreviewProps } from './preview/createCatalogPreviewProps';
+export type { CatalogPreviewProps } from './preview/createCatalogPreviewProps';
+export { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas';
+export { resolvePreviewComponent } from './preview/resolvePreviewComponent';
+export { AtomGallery, atomGalleryFamily } from './preview/AtomGallery';
+export type { AtomGalleryFamily } from './preview/AtomGallery';
+export { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './preview/ParityHarness';
+export type { ParityMeasurement, ParityReport } from './preview/ParityHarness';
+export { LiquidGlassDemo } from './preview/LiquidGlassDemo';
+export { MotionDemo } from './preview/MotionDemo';
 export * from './theme';

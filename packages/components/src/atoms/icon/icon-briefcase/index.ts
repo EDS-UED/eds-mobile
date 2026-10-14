@@ -1,2 +1,2 @@
-export { EgIconBriefcase } from './EgIconBriefcase';
-export type { EgIconBriefcaseProps } from './EgIconBriefcase.types';
+export { EgIconBriefcase } from './EgIconBriefcase.js';
+export type { EgIconBriefcaseProps } from './EgIconBriefcase.types.js';

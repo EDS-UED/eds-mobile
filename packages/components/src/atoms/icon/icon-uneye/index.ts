@@ -1,2 +1,2 @@
-export { EgIconUneye } from './EgIconUneye';
-export type { EgIconUneyeProps } from './EgIconUneye.types';
+export { EgIconUneye } from './EgIconUneye.js';
+export type { EgIconUneyeProps } from './EgIconUneye.types.js';

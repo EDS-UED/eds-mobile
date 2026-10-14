@@ -1,2 +1,2 @@
-export { EgTitleComboDisplay } from './EgTitleComboDisplay';
-export type { EgTitleComboDisplayProps } from './EgTitleComboDisplay.types';
+export { EgTitleComboDisplay } from './EgTitleComboDisplay.js';
+export type { EgTitleComboDisplayProps } from './EgTitleComboDisplay.types.js';

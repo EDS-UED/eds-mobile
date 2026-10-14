@@ -1,8 +1,15 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgInputProps } from './EgInput.types';
+import type { EgFieldProps } from '../../_shared/props.js';
+import { EgFieldBase } from '../_shared/EgFieldBase.js';
 
-/** RN implementation — Input (set · 25 variants) */
-export function EgInput(props: EgInputProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'input-input' } style={style} accessibilityLabel="Input" />;
+export type EgInputProps = EgFieldProps;
+
+export function EgInput(props: EgInputProps) {
+  return (
+    <EgFieldBase
+      {...props}
+      size={props.size ?? 'xl'}
+      testID={props.testID ?? 'input-input'}
+      placeholder={props.placeholder ?? 'Input'}
+    />
+  );
 }

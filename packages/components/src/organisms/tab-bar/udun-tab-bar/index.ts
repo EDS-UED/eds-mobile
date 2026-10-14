@@ -1,2 +1,2 @@
-export { EgUDunTabBar } from './EgUDunTabBar';
-export type { EgUDunTabBarProps } from './EgUDunTabBar.types';
+export { EgUDunTabBar } from './EgUDunTabBar.js';
+export type { EgUDunTabBarProps } from './EgUDunTabBar.types.js';

@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTextBarProps } from './EgTextBar.types';
+import type { EgTextBarProps } from './EgTextBar.types.js';
 
 /** RN implementation — 7-Bar (set · 6 variants) */
 export function EgTextBar(props: EgTextBarProps & Pick<ViewProps, 'style'>) {

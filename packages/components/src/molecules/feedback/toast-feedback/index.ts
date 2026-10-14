@@ -1,2 +1,2 @@
-export { EgToastFeedback } from './EgToastFeedback';
-export type { EgToastFeedbackProps } from './EgToastFeedback.types';
+export { EgToastFeedback } from './EgToastFeedback.js';
+export type { EgToastFeedbackProps } from './EgToastFeedback.types.js';

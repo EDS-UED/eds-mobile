@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconPayeeProps } from './EgIconPayee.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconPayeeProps } from './EgIconPayee.types.js';
 
-/** RN implementation — eds-payee (component) */
+/** RN icon — eds-payee */
 export function EgIconPayee(props: EgIconPayeeProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-payee' } style={style} accessibilityLabel="eds-payee" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-payee"
+      testID={testID ?? 'icon-eds-payee'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-payee"}
+    />
+  );
 }

@@ -1,2 +1,2 @@
-export { EgIconEnableFill } from './EgIconEnableFill';
-export type { EgIconEnableFillProps } from './EgIconEnableFill.types';
+export { EgIconEnableFill } from './EgIconEnableFill.js';
+export type { EgIconEnableFillProps } from './EgIconEnableFill.types.js';

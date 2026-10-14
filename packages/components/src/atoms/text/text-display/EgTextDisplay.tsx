@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTextDisplayProps } from './EgTextDisplay.types';
+import type { EgTextDisplayProps } from './EgTextDisplay.types.js';
 
 /** RN implementation — 1-Display (set · 3 variants) */
 export function EgTextDisplay(props: EgTextDisplayProps & Pick<ViewProps, 'style'>) {

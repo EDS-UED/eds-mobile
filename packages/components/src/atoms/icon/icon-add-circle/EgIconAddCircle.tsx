@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconAddCircleProps } from './EgIconAddCircle.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconAddCircleProps } from './EgIconAddCircle.types.js';
 
-/** RN implementation — eds-add-circle (component) */
+/** RN icon — eds-add-circle */
 export function EgIconAddCircle(props: EgIconAddCircleProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-add-circle' } style={style} accessibilityLabel="eds-add-circle" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-add-circle"
+      testID={testID ?? 'icon-eds-add-circle'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-add-circle"}
+    />
+  );
 }

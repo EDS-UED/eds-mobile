@@ -1,8 +1,15 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgSystemTagProps } from './EgSystemTag.types';
+import type { EgCommonProps, EgLabelProps, SystemTagType, TagSize } from '../../../shared/types.js';
+import type { TagStatus } from '../../../shared/tagPalette.js';
+import { EgTagBase } from '../_shared/EgTagBase.js';
 
-/** RN implementation — System (set · 15 variants) */
-export function EgSystemTag(props: EgSystemTagProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'tag-system' } style={style} accessibilityLabel="System" />;
+export type EgSystemTagProps = EgCommonProps &
+  EgLabelProps & {
+    size?: TagSize;
+    systemType?: SystemTagType;
+    status?: TagStatus;
+    alt?: boolean;
+  };
+
+export function EgSystemTag({ systemType = 'subtle', ...props }: EgSystemTagProps) {
+  return <EgTagBase {...props} systemType={systemType} testID={props.testID ?? 'tag-system'} />;
 }

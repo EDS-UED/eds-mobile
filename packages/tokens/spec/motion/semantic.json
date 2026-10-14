@@ -124,6 +124,55 @@
           }
         }
       ]
+    },
+    {
+      "comment": "7 · Glass（Liquid Glass 交互）",
+      "styles": [
+        {
+          "title": "Glass 普通交互 · Button / Tab / Icon Button",
+          "className": "motion-glass-interactive",
+          "recipe": "glass-press",
+          "properties": {
+            "transition": "var(--motion-recipe-glass-press)"
+          },
+          "stateStyles": [
+            {
+              "hostClass": "motion-glass-interactive.is-active",
+              "title": "Glass 按下态",
+              "properties": {
+                "transform": "scale(var(--motion-glass-scale-press))"
+              }
+            }
+          ],
+          "notes": ["Semantic → Recipe(glass-press) → Base(motion-glass-scale-press)"]
+        },
+        {
+          "title": "Glass 光泽反馈 · Shimmer",
+          "className": "motion-glass-shimmer",
+          "recipe": "glass-shimmer",
+          "properties": {
+            "transition": "var(--motion-recipe-glass-shimmer)"
+          }
+        },
+        {
+          "title": "Glass 容器 Morph",
+          "className": "motion-glass-morph",
+          "recipe": "glass-morph",
+          "properties": {
+            "overflow": "hidden",
+            "transition": "var(--motion-recipe-glass-morph)"
+          }
+        },
+        {
+          "title": "Glass 无动效 · Reduce Motion",
+          "className": "motion-glass-none",
+          "properties": {
+            "transition": "none",
+            "animation": "none"
+          },
+          "notes": ["显式关闭 Glass 动画"]
+        }
+      ]
     }
   ],
   "utilityClasses": [
@@ -148,17 +197,24 @@
     "motion-flotation",
     "motion-deform",
     "motion-page",
-    "motion-layout-deform"
+    "motion-layout-deform",
+    "motion-glass-interactive",
+    "motion-glass-interactive.is-active",
+    "motion-glass-shimmer",
+    "motion-glass-morph"
   ],
   "reducedMotion": {
     "mediaQuery": "prefers-reduced-motion: reduce",
-    "durationToken": "var(--eds-motion-0)",
+    "durationToken": "var(--motion-0)",
     "simplifications": [
       { "from": "motion-layout", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-flotation", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-page", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-layout-deform", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
-      { "from": "motion-tap", "toStrategy": "instant", "utilityClass": "motion-none" }
+      { "from": "motion-tap", "toStrategy": "instant", "utilityClass": "motion-none" },
+      { "from": "motion-glass-interactive", "toStrategy": "instant", "utilityClass": "motion-glass-none" },
+      { "from": "motion-glass-shimmer", "toStrategy": "instant", "utilityClass": "motion-glass-none" },
+      { "from": "motion-glass-morph", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" }
     ],
     "rules": [
       "Slide → Fade",

@@ -1,6 +1,6 @@
 {
   "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
-  "$description": "Color System base palette — Mobile Figma Primitives.",
+  "$description": "Color System base palette — Mobile Figma Primitives. `eds-brand` 为默认基色；consumer 项目在构建前改此值或运行时覆盖 `--eds-brand`，全链 semantic（text-brand、event-focus-brand、fill-brand-* 等）随之变化，EDS 不绑定单一 light/dark 绿 hex。",
   "light": {
     "eds-brand": {
       "hex": "#5f2243",
@@ -49,6 +49,10 @@
     "eds-flotation": {
       "hex": "#ffffff",
       "displayP3": [1, 1, 1]
+    },
+    "eds-overlay": {
+      "hex": "#eff0f2",
+      "displayP3": [0.9373, 0.9412, 0.949]
     }
   },
   "dark": {
@@ -99,6 +103,10 @@
     "eds-flotation": {
       "hex": "#1c1d1f",
       "displayP3": [0.1098, 0.1137, 0.1216]
+    },
+    "eds-overlay": {
+      "hex": "#000000",
+      "displayP3": [0, 0, 0]
     }
   }
 }

@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgUDunTabBarProps } from './EgUDunTabBar.types';
+import type { EgUDunTabBarProps } from './EgUDunTabBar.types.js';
 
 /** RN implementation — Apply_TabBar@UDun (set · 2 variants) */
 export function EgUDunTabBar(props: EgUDunTabBarProps & Pick<ViewProps, 'style'>) {

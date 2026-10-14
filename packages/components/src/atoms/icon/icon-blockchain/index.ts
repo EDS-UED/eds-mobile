@@ -1,2 +1,2 @@
-export { EgIconBlockchain } from './EgIconBlockchain';
-export type { EgIconBlockchainProps } from './EgIconBlockchain.types';
+export { EgIconBlockchain } from './EgIconBlockchain.js';
+export type { EgIconBlockchainProps } from './EgIconBlockchain.types.js';

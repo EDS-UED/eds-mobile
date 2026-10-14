@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconEarphoneFillProps } from './EgIconEarphoneFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconEarphoneFillProps } from './EgIconEarphoneFill.types.js';
 
-/** RN implementation — eds-earphone-fill (component) */
+/** RN icon — eds-earphone-fill */
 export function EgIconEarphoneFill(props: EgIconEarphoneFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-earphone-fill' } style={style} accessibilityLabel="eds-earphone-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-earphone-fill"
+      testID={testID ?? 'icon-eds-earphone-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-earphone-fill"}
+    />
+  );
 }

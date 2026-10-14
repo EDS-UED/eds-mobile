@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTitleComboTitleProps } from './EgTitleComboTitle.types';
+import type { EgTitleComboTitleProps } from './EgTitleComboTitle.types.js';
 
 /** RN implementation — Title Combo/3-Title (set · 3 variants) */
 export function EgTitleComboTitle(props: EgTitleComboTitleProps & Pick<ViewProps, 'style'>) {

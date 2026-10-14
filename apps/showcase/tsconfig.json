@@ -1,22 +1,19 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "strict": true,
-    "jsx": "preserve",
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
-    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
     "paths": {
-      "@/*": ["src/*"],
-      "@eds/mobile-tokens": ["../../packages/tokens"],
-      "@eds/mobile-tokens/*": ["../../packages/tokens/*"],
-      "@eds/mobile-animations": ["../../packages/mobile-animations/src/index.ts"]
-    },
-    "resolveJsonModule": true
+      "@/*": ["./src/*"],
+      "@eds/mobile-tokens/theme": ["../../packages/tokens/dist/js/theme.d.ts"],
+      "@eds/mobile-components": ["../../packages/components/dist/index.d.ts"],
+      "@eds/mobile-components/catalog": ["../../packages/components/dist/catalogEntry.d.ts"],
+      "@eds/mobile-components/preview/liquid-glass": ["../../packages/components/dist/preview/LiquidGlassDemo.d.ts"],
+      "@eds/mobile-components/preview/motion": ["../../packages/components/dist/preview/MotionDemo.d.ts"],
+      "@eds/mobile-components/preview/atom-gallery": ["../../packages/components/dist/preview/AtomGallery.d.ts"],
+      "@eds/mobile-components/preview/parity": ["../../packages/components/dist/preview/ParityHarness.d.ts"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.vue"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

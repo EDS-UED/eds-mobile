@@ -4,7 +4,9 @@ import mobileTheme from '@eds/mobile-tokens/theme';
 export type MobileTheme = typeof mobileTheme;
 export type ThemeMode = 'light' | 'dark';
 
-export function resolveThemeMode(scheme: ColorSchemeName | null | undefined): ThemeMode {
+export function resolveThemeMode(
+  scheme: ColorSchemeName | 'unspecified' | null | undefined,
+): ThemeMode {
   return scheme === 'dark' ? 'dark' : 'light';
 }
 

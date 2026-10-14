@@ -1,12 +1,15 @@
+import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, readdirSync, writeFileSync, rmSync, copyFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { verifyColorSpecAgainstDist } from './verify-color-spec.mjs';
 import { buildRnTheme } from './build-rn-theme.mjs';
+import { mapColorTokenValue } from './color-reference.mjs';
 import {
   writeMotionCatalogJson,
   generateMobileMotionRuntime,
 } from './motion-build.mjs';
+import { buildGlassBoxCompositions } from './resolve-effect-glass-box.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
@@ -42,21 +45,38 @@ function appendCssCommentBlock(lines, commentLines, indent = '  ') {
   lines.push(`${indent}   */`);
 }
 
+/** Primitives@Cregis — Figma Color System base order (node 2008:41). */
+const COLOR_BASE_ORDER = [
+  'eds-brand',
+  'eds-match',
+  'eds-decor',
+  'eds-success',
+  'eds-danger',
+  'eds-warning',
+  'eds-base',
+  'eds-face',
+  'eds-same-black',
+  'eds-same-white',
+  'eds-page',
+  'eds-flotation',
+  'eds-overlay',
+];
+
 const COLOR_SEMANTIC_GROUP_ORDER = [
-  { prefix: 'box', comment: 'Box（容器 / 背景）' },
-  { prefix: 'stroke', comment: 'Stroke（描边 / 分割线）' },
-  { prefix: 'text', comment: 'Text（文本色）' },
-  { prefix: 'material', comment: 'Material（材质 / 填充）' },
-  { prefix: 'status', comment: 'Status' },
-  { prefix: 'effect', comment: 'Effect（特效）' },
-  { prefix: 'event', comment: 'Event（交互状态）' },
-  { prefix: 'data-table', comment: 'Data Table（表格）' },
+  { prefix: 'box', comment: '容器（Box）' },
+  { prefix: 'stroke', comment: '线（Stroke）' },
+  { prefix: 'text', comment: '文本（Text）' },
+  { prefix: 'material', comment: '材质（Material）' },
+  { prefix: 'status', comment: '状态（Status）' },
+  { prefix: 'effect', comment: '特效（Effect）' },
+  { prefix: 'event', comment: '交互状态（Event）' },
+  { prefix: 'data-table', comment: '表格（Data Table）' },
 ];
 
 const TAG_SEMANTIC_GROUP_ORDER = [
-  { prefix: 'tag-status', comment: 'Tag Status' },
-  { prefix: 'tag-colorful', comment: 'Tag Colorful' },
-  { prefix: 'tag-custom', comment: 'Tag Custom' },
+  { prefix: 'tag-status', comment: '标签状态（Tag Status）' },
+  { prefix: 'tag-colorful', comment: '彩色标签（Tag Colorful）' },
+  { prefix: 'tag-custom', comment: '自定义标签（Tag Custom）' },
 ];
 
 function groupTagSemanticTokens(tokens) {
@@ -139,10 +159,10 @@ function writeScaleBaseCssFile(destination, selector, baseSpec, headerLines = []
     '',
     `${selector} {`,
     '',
-    '  /* 原始尺度引擎（Primitive Scale Engine）',
-    '     scale(n) = n × var(--scale-base)',
-    '     离散映射：仅预定义以下值 */',
+    '  /* 基数（Primitive） */',
     `  --scale-base: ${unit}px;`,
+    '',
+    '  /* 原始尺度引擎（Primitive Scale Engine） */',
   ];
 
   for (const token of scaleVars.slice(1)) {
@@ -200,6 +220,48 @@ function flattenGroupedSemanticTokens(spec) {
   return (spec.groups ?? []).flatMap((group) => group.tokens);
 }
 
+function flattenTypographyBasePool(baseSpec) {
+  const pool = {};
+  for (const group of baseSpec.groups ?? []) {
+    for (const [name, value] of Object.entries(group.tokens ?? {})) {
+      pool[name] = value;
+    }
+  }
+  return pool;
+}
+
+function resolveCssVarReference(value, pool) {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const match = value.match(/^var\(--([a-z0-9-]+)\)$/i);
+  if (!match) {
+    return value;
+  }
+
+  const next = pool[match[1]];
+  if (next === undefined) {
+    return value;
+  }
+
+  if (typeof next === 'string' && next.startsWith('var(')) {
+    return resolveCssVarReference(next, pool);
+  }
+
+  return next;
+}
+
+/** Inline comment for dist CSS — resolved literal after var(--*) chain. */
+function cssVarValueComment(value, pool) {
+  const resolved = resolveCssVarReference(value, pool);
+  if (resolved === value || resolved === undefined || resolved === '') {
+    return '';
+  }
+
+  return ` /* ${resolved} */`;
+}
+
 function writeTypographyBaseCssFile(destination, selector, baseSpec, headerLines = []) {
   const lines = [
     '/**',
@@ -231,8 +293,12 @@ function writeTypographySemanticCssFile(
   selector,
   semanticSpec,
   textStylesSpec,
+  baseSpec,
   headerLines = [],
 ) {
+  const basePool = flattenTypographyBasePool(baseSpec);
+  const semanticPool = { ...basePool };
+
   const lines = [
     '/**',
     ' * Do not edit directly, this file was auto-generated from Figma tokens.',
@@ -243,13 +309,17 @@ function writeTypographySemanticCssFile(
   ];
 
   for (const group of semanticSpec.groups) {
+    lines.push('');
+    lines.push(`  /* ${group.comment} */`);
     for (const token of group.tokens) {
-      lines.push(`  --${token.name}: ${token.value};`);
+      semanticPool[token.name] = token.value;
+      const comment = cssVarValueComment(token.value, basePool);
+      lines.push(`  --${token.name}: ${token.value};${comment}`);
     }
   }
 
   lines.push('}', '');
-  appendTextStyleClassLines(lines, textStylesSpec);
+  appendTextStyleClassLines(lines, textStylesSpec, semanticPool);
 
   mkdirSync(dirname(destination), { recursive: true });
   writeFileSync(destination, lines.join('\n'));
@@ -296,7 +366,7 @@ function writeBarSubpixelCssFile(destination, spec, headerLines = []) {
   writeFileSync(destination, lines.join('\n'));
 }
 
-function appendTextStyleClassLines(lines, stylesSpec) {
+function appendTextStyleClassLines(lines, stylesSpec, tokenPool = {}) {
   lines.push('/* ---- Text Styles（Figma Text Styles） ---- */');
   lines.push('');
 
@@ -304,7 +374,8 @@ function appendTextStyleClassLines(lines, stylesSpec) {
     lines.push(`.${style.className} {`);
 
     for (const [property, value] of Object.entries(style.properties ?? {})) {
-      lines.push(`  ${property}: ${value};`);
+      const comment = cssVarValueComment(value, tokenPool);
+      lines.push(`  ${property}: ${value};${comment}`);
     }
 
     lines.push('}', '');
@@ -388,72 +459,12 @@ function appendEffectGroupTokens(lines, groups) {
   }
 }
 
-function appendLiquidGlassTokens(lines, liquidGlassSpec) {
-  lines.push('');
-  lines.push('  /* Liquid Glass — https://github.com/shuding/liquid-glass (MIT) */');
-
-  const profiles = liquidGlassSpec.profiles ?? {
-    glassBg: {
-      cssPrefix: 'eds-glass-bg',
-      backdrop: liquidGlassSpec.backdrop,
-      shader: liquidGlassSpec.shader,
-      surface: liquidGlassSpec.surface,
-      fallback: liquidGlassSpec.fallback,
-    },
-  };
-
-  for (const profile of Object.values(profiles)) {
-    appendLiquidGlassProfileTokens(lines, profile);
-  }
+function writeLiquidGlassRendererJson(destination, liquidGlassSpec) {
+  mkdirSync(dirname(destination), { recursive: true });
+  writeFileSync(destination, `${JSON.stringify(liquidGlassSpec, null, 2)}\n`);
 }
 
-function appendLiquidGlassProfileTokens(lines, profile) {
-  const prefix = profile.cssPrefix;
-  const { backdrop, shader, surface, fallback } = profile;
-
-  if (profile.title) {
-    lines.push(`  /* ${profile.title} */`);
-  }
-
-  if (profile.figma) {
-    lines.push(
-      `  /* Figma Glass: angle ${profile.figma.lightAngle}° intensity ${profile.figma.lightIntensity} refraction ${profile.figma.refraction} depth ${profile.figma.depth} frost ${profile.figma.frost} splay ${profile.figma.splay} */`,
-    );
-  }
-
-  appendCssCommentBlock(lines, profile.mappingNotes ?? []);
-
-  lines.push(`  --${prefix}-blur: ${backdrop.blur};`);
-  lines.push(`  --${prefix}-contrast: ${backdrop.contrast};`);
-  lines.push(`  --${prefix}-brightness: ${backdrop.brightness};`);
-  lines.push(`  --${prefix}-saturate: ${backdrop.saturate};`);
-  lines.push(`  --${prefix}-shader-edge-start: ${shader.edgeStart};`);
-  lines.push(`  --${prefix}-shader-edge-end: ${shader.edgeEnd};`);
-  lines.push(`  --${prefix}-shader-edge-offset: ${shader.edgeOffset};`);
-  lines.push(`  --${prefix}-shader-rect-inset-x: ${shader.rectInsetX};`);
-  lines.push(`  --${prefix}-shader-rect-inset-y: ${shader.rectInsetY};`);
-  lines.push(`  --${prefix}-shader-corner-radius: ${shader.cornerRadius};`);
-  lines.push(`  --${prefix}-refraction-scale: ${shader.refractionScale};`);
-  lines.push(`  --${prefix}-surface: ${mapColorTokenValue(surface.background)};`);
-  if (profile.tint) {
-    lines.push(`  --${prefix}-tint: ${mapColorTokenValue(profile.tint)};`);
-  }
-  lines.push(`  --${prefix}-fallback: ${fallback.backdropFilter};`);
-  lines.push(`  --${prefix}-fallback-surface: ${mapColorTokenValue(fallback.background)};`);
-  lines.push(
-    `  --${prefix}: blur(var(--${prefix}-blur)) contrast(var(--${prefix}-contrast)) brightness(var(--${prefix}-brightness)) saturate(var(--${prefix}-saturate));`,
-  );
-  lines.push('');
-}
-
-function writeEffectThemeBaseCssFile(
-  destination,
-  selector,
-  themeName,
-  baseSpec,
-  liquidGlassSpec,
-  headerLines = [],
-) {
+function writeEffectThemeBaseCssFile(destination, selector, themeName, baseSpec, headerLines = []) {
   const lines = [
     '/**',
     ' * Do not edit directly, this file was auto-generated from Figma tokens.',
@@ -473,7 +484,6 @@ function writeEffectThemeBaseCssFile(
   }
 
   appendEffectGroupTokens(lines, baseSpec.groups);
-  appendLiquidGlassTokens(lines, liquidGlassSpec);
   lines.push('}', '');
 
   mkdirSync(dirname(destination), { recursive: true });
@@ -495,6 +505,91 @@ function writeEffectReadyCssFile(destination, headerLines = []) {
 
   mkdirSync(dirname(destination), { recursive: true });
   writeFileSync(destination, lines.join('\n'));
+}
+
+function writeLiquidGlassArchitectureCssFile(destination, systemSpec) {
+  const lines = [
+    '/**',
+    ' * Do not edit directly, this file was auto-generated from Figma tokens.',
+    ' * Liquid Glass — 玻璃材质栈（架构说明，非独立 Figma 色板）。',
+    ' * Source: spec/liquid-glass/system.json',
+    ' *',
+    ` * ${systemSpec.architectureSummary}`,
+    ' */',
+    '',
+    `/* ${systemSpec.conceptTitle ?? '液态玻璃'} */`,
+    '',
+  ];
+
+  const architectureNodes = [
+    ...(systemSpec.trunk ?? []),
+    ...(systemSpec.stacks ?? []),
+    ...(systemSpec.platformSplit?.branches ?? []).map((branch) => ({
+      ...branch,
+      label: branch.label ?? systemSpec.platformSplit?.label,
+    })),
+  ];
+
+  if (architectureNodes.length > 0) {
+    for (const node of architectureNodes) {
+      const section = node.label ? `${node.label} — ` : '';
+      lines.push(`/* ${section}${node.primary} — ${node.secondary} */`);
+    }
+  } else {
+    for (const layer of systemSpec.layers ?? []) {
+      const label = layer.primary ?? layer.title;
+      const hint = layer.secondary ?? layer.detail;
+      lines.push(`/* ${label} — ${hint} */`);
+    }
+  }
+
+  lines.push(
+    '',
+    '/* 关联 CSS 入口（完整 @import 见 dist/css/index.css）： */',
+    `/* · ${systemSpec.cssImports?.effect ?? '../effect/index.css'} */`,
+    `/* · ${systemSpec.cssImports?.liquidGlass ?? '../liquid-glass/index.css'} */`,
+    '',
+  );
+
+  mkdirSync(dirname(destination), { recursive: true });
+  writeFileSync(destination, lines.join('\n'));
+}
+
+function buildLiquidGlassCssSystem() {
+  const systemSpec = loadJson('liquid-glass/system.json');
+  const liquidGlassSpec = loadJson('effect/liquid-glass.json');
+  const liquidGlassDir = join(cssDir, 'liquid-glass');
+
+  writeLiquidGlassArchitectureCssFile(join(liquidGlassDir, 'architecture.css'), systemSpec);
+
+  writeEffectReadyCssFile(join(liquidGlassDir, 'ready.css'), [
+    ' * Liquid Glass — Web ready hook（initLiquidGlass / attachLiquidGlass）。',
+    ' * Source: spec/effect/liquid-glass.json, packages/tokens/src/liquid-glass.js',
+  ]);
+
+  writeLiquidGlassRendererJson(
+    join(distDir, 'json/liquid-glass/renderer.json'),
+    liquidGlassSpec,
+  );
+
+  writeFileSync(
+    join(distDir, 'json/liquid-glass/system.json'),
+    `${JSON.stringify(systemSpec, null, 2)}\n`,
+  );
+
+  const surfaceSpec = loadJson('liquid-glass/surface.json');
+  writeFileSync(
+    join(distDir, 'json/liquid-glass/surface.json'),
+    `${JSON.stringify(surfaceSpec, null, 2)}\n`,
+  );
+
+  buildLiquidGlassAssets();
+
+  writeImportAggregator(
+    join(liquidGlassDir, 'index.css'),
+    ['./architecture.css', './ready.css'],
+    'Liquid Glass — glass material stack (architecture + Web ready hook)',
+  );
 }
 
 function buildLiquidGlassAssets() {
@@ -902,10 +997,17 @@ function resolveColorBaseEntry(entry) {
 function buildTagBaseSpec(tagPalette) {
   const light = {};
   const dark = {};
+  const tagGroupRoles = {
+    status: ['bg', 'text'],
+    colorful: ['bg', 'text'],
+    custom: ['bg', 'text', 'bar'],
+    mobileColor: ['bg', 'text', 'altBg'],
+    mobileStatus: ['bg', 'text'],
+  };
 
-  for (const groupKey of ['status', 'colorful', 'custom']) {
+  for (const groupKey of Object.keys(tagGroupRoles)) {
+    const roles = tagGroupRoles[groupKey];
     for (const [key, themeValues] of Object.entries(tagPalette[groupKey] ?? {})) {
-      const roles = groupKey === 'custom' ? ['bg', 'text', 'bar'] : ['bg', 'text'];
       for (const role of roles) {
         const varName = `eds-tag-${groupKey}-${key}-${role}`;
         light[varName] = {
@@ -925,10 +1027,17 @@ function buildTagBaseSpec(tagPalette) {
 
 function expandTagPaletteSemanticTokens(tagPalette) {
   const tokens = [];
+  const tagGroupRoles = {
+    status: ['bg', 'text'],
+    colorful: ['bg', 'text'],
+    custom: ['bg', 'text', 'bar'],
+    mobileColor: ['bg', 'text', 'altBg'],
+    mobileStatus: ['bg', 'text'],
+  };
 
-  for (const groupKey of ['status', 'colorful', 'custom']) {
+  for (const groupKey of Object.keys(tagGroupRoles)) {
+    const roles = tagGroupRoles[groupKey];
     for (const key of Object.keys(tagPalette[groupKey] ?? {})) {
-      const roles = groupKey === 'custom' ? ['bg', 'text', 'bar'] : ['bg', 'text'];
       for (const role of roles) {
         const name = `tag-${groupKey}-${key}-${role}`;
         const reference = `color(var(--eds-${name}) / 1)`;
@@ -954,7 +1063,37 @@ function formatColorBaseCssDeclarations(name, entry) {
   return lines;
 }
 
-function writeColorBaseCssFile(destination, selector, themeName, baseSpec, headerLines = []) {
+function orderedColorBaseEntries(themeEntries, order = null) {
+  if (!order?.length) {
+    return Object.entries(themeEntries).sort(([a], [b]) => a.localeCompare(b));
+  }
+
+  const remaining = new Map(Object.entries(themeEntries));
+  const entries = [];
+
+  for (const name of order) {
+    const entry = remaining.get(name);
+    if (entry) {
+      entries.push([name, entry]);
+      remaining.delete(name);
+    }
+  }
+
+  for (const [name, entry] of remaining) {
+    entries.push([name, entry]);
+  }
+
+  return entries;
+}
+
+function writeColorBaseCssFile(
+  destination,
+  selector,
+  themeName,
+  baseSpec,
+  headerLines = [],
+  order = null,
+) {
   const lines = [
     '/**',
     ' * Do not edit directly, this file was auto-generated from Figma tokens.',
@@ -966,9 +1105,7 @@ function writeColorBaseCssFile(destination, selector, themeName, baseSpec, heade
     '  /* 基色（Primitives@Cregis）— hex 为回退，下一行 display-p3 为正式值 */',
   ];
 
-  for (const [name, entry] of Object.entries(baseSpec[themeName]).sort(([a], [b]) =>
-    a.localeCompare(b),
-  )) {
+  for (const [name, entry] of orderedColorBaseEntries(baseSpec[themeName], order)) {
     lines.push(...formatColorBaseCssDeclarations(name, entry));
   }
 
@@ -976,36 +1113,6 @@ function writeColorBaseCssFile(destination, selector, themeName, baseSpec, heade
 
   mkdirSync(dirname(destination), { recursive: true });
   writeFileSync(destination, lines.join('\n'));
-}
-
-function parseEdsColorReference(value) {
-  const match = value.match(/^color\(var\((--eds-[a-z-]+)\)\s*\/\s*([0-9.]+)\)$/);
-  if (!match) {
-    return null;
-  }
-
-  const [, varName, alphaRaw] = match;
-  return { varName, edsKey: varName.slice(2), alpha: Number(alphaRaw) };
-}
-
-function mapColorTokenValue(value) {
-  const reference = parseEdsColorReference(value);
-  if (!reference) {
-    return value;
-  }
-
-  const { varName, alpha } = reference;
-
-  if (alpha === 0) {
-    return 'transparent';
-  }
-
-  if (alpha === 1) {
-    return `var(${varName})`;
-  }
-
-  const percent = `${Math.round(alpha * 1000) / 10}%`;
-  return `color-mix(in display-p3, var(${varName}) ${percent}, transparent)`;
 }
 
 function writeColorSemanticCssFile(destination, selector, groups, themeName, headerLines = []) {
@@ -1118,28 +1225,9 @@ function buildTypographyFonts() {
     copyFileSync(join(srcFontsDir, fileName), join(distFontsDir, fileName));
   }
 
-  const fontFamilies = [
-    {
-      name: 'EDS Text',
-      comment: 'UI font (Regular / Medium / SemiBold / Bold).',
-      faces: [
-        { weight: 400, file: 'EDSText-Regular.ttf' },
-        { weight: 500, file: 'EDSText-Medium.ttf' },
-        { weight: 600, file: 'EDSText-SemiBold.ttf' },
-        { weight: 700, file: 'EDSText-Bold.ttf' },
-      ],
-    },
-    {
-      name: 'IBM Plex Mono',
-      comment: 'Code font (Regular / Medium / SemiBold / Bold).',
-      faces: [
-        { weight: 400, file: 'IBMPlexMono-Regular.ttf' },
-        { weight: 500, file: 'IBMPlexMono-Medium.ttf' },
-        { weight: 600, file: 'IBMPlexMono-SemiBold.ttf' },
-        { weight: 700, file: 'IBMPlexMono-Bold.ttf' },
-      ],
-    },
-  ];
+  const fontFamilies = JSON.parse(
+    readFileSync(join(rootDir, 'spec/typography/fonts.json'), 'utf-8'),
+  ).families;
 
   const lines = [
     '/**',
@@ -1156,6 +1244,26 @@ function buildTypographyFonts() {
     for (const face of family.faces) {
       lines.push('@font-face {');
       lines.push(`  font-family: '${family.name}';`);
+      lines.push('  font-style: normal;');
+      lines.push(`  font-weight: ${face.weight};`);
+      lines.push('  font-display: swap;');
+      lines.push(`  src: url('../../assets/fonts/${face.file}') format('truetype');`);
+      lines.push('}');
+      lines.push('');
+    }
+  }
+
+  /*
+   * Per-weight families. React Native does not synthesize weights for bundled
+   * fonts — Android resolves by exact family name — so RN surfaces must address
+   * one family per face. Declaring the same names here keeps react-native-web
+   * resolving the identical .ttf the device loads.
+   */
+  lines.push('/* Per-weight families — RN parity (browser resolves the same face as native). */');
+  for (const family of fontFamilies) {
+    for (const face of family.faces) {
+      lines.push('@font-face {');
+      lines.push(`  font-family: '${face.family}';`);
       lines.push('  font-style: normal;');
       lines.push(`  font-weight: ${face.weight};`);
       lines.push('  font-display: swap;');
@@ -1215,7 +1323,7 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
       lines.push(`  --motion-base-spring-${name}-blend-duration: ${spring.blendDuration}s;`);
       if (spring.reanimated) {
         const { damping, stiffness, mass } = spring.reanimated;
-        lines.push(`  --eds-ios-spring-${name}: damping:${damping},stiffness:${stiffness},mass:${mass};`);
+        lines.push(`  --ios-spring-${name}: damping:${damping},stiffness:${stiffness},mass:${mass};`);
       }
     }
   }
@@ -1225,7 +1333,6 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
     lines.push('  /* Haptic */');
     for (const [name, value] of Object.entries(baseSpec.haptics)) {
       lines.push(`  --motion-base-haptic-${name}: ${JSON.stringify(value)};`);
-      lines.push(`  --eds-haptic-${name}: ${JSON.stringify(value)};`);
     }
   }
 
@@ -1235,7 +1342,7 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
     for (const [name, timing] of Object.entries(baseSpec.timings)) {
       const easing = timing.easing.join(',');
       const cssName = name.replace(/([A-Z])/g, '-$1').toLowerCase();
-      lines.push(`  --eds-ios-${cssName}: duration:${timing.duration},easing:cubic-bezier(${easing});`);
+      lines.push(`  --ios-${cssName}: duration:${timing.duration},easing:cubic-bezier(${easing});`);
     }
   }
 
@@ -1410,7 +1517,7 @@ function buildMotionSystem() {
   const recipeSpec = loadJson('motion/recipe.json');
   const semanticSpec = loadJson('motion/semantic.json');
   const selector = ':root, .mobileTokens';
-  const animationsSrcDir = resolve(rootDir, '../mobile-animations/src');
+  const animationsSrcDir = resolve(rootDir, '../animations/src');
 
   writeMotionBaseCssFile(join(cssDir, 'motion/base.css'), selector, baseSpec, [
     ' * Motion System — base primitives (duration, easing, physical state).',
@@ -1462,6 +1569,7 @@ function buildTypographySystem() {
     ':root',
     semanticSpec,
     textStylesSpec,
+    baseSpec,
     [
       ' * Typography System — semantic role tokens + Text Style classes.',
       ' * Source: spec/typography/semantic.json, spec/text/styles.json',
@@ -1507,23 +1615,15 @@ function buildTypographySystem() {
 function buildEffectSystem() {
   const baseSpec = loadJson('effect/base.json');
   const semanticSpec = loadJson('effect/semantic.json');
-  const liquidGlassSpec = loadJson('effect/liquid-glass.json');
 
   for (const themeName of ['light', 'dark']) {
     const selector = effectThemeSelector(themeName);
     const themeDir = join(cssDir, 'effect/themes', themeName);
 
-    writeEffectThemeBaseCssFile(
-      join(themeDir, 'base.css'),
-      selector,
-      themeName,
-      baseSpec,
-      liquidGlassSpec,
-      [
-        ` * Effect System — base tokens (${themeName}).`,
-        ' * Source: spec/effect/base.json, spec/effect/liquid-glass.json',
-      ],
-    );
+    writeEffectThemeBaseCssFile(join(themeDir, 'base.css'), selector, themeName, baseSpec, [
+      ` * Effect System — base tokens (${themeName}).`,
+      ' * Source: spec/effect/base.json',
+    ]);
 
     writeEffectThemeSemanticCssFile(
       join(themeDir, 'semantic.css'),
@@ -1543,13 +1643,9 @@ function buildEffectSystem() {
     );
   }
 
-  writeEffectReadyCssFile(join(cssDir, 'effect/ready.css'), [' * Effect System — liquid glass ready hook.']);
-
-  buildLiquidGlassAssets();
-
   writeImportAggregator(
     join(cssDir, 'effect/index.css'),
-    ['./themes/light.css', './themes/dark.css', './ready.css'],
+    ['./themes/light.css', './themes/dark.css'],
     'Effect System entry (all themes)',
   );
 }
@@ -1563,11 +1659,18 @@ function buildColorSystem() {
     const selector = themeSelector(themeName);
     const themeDir = join(cssDir, 'color/themes', themeName);
 
-    writeColorBaseCssFile(join(themeDir, 'base.css'), selector, themeName, baseSpec, [
-      ` * Color System — base palette (${themeName}).`,
-      ' * Source: spec/color/base.json',
-      ' * Figma: node 2008:41 (Primitives@Cregis)',
-    ]);
+    writeColorBaseCssFile(
+      join(themeDir, 'base.css'),
+      selector,
+      themeName,
+      baseSpec,
+      [
+        ` * Color System — base palette (${themeName}).`,
+        ' * Source: spec/color/base.json',
+        ' * Figma: node 2008:41 (Primitives@Cregis)',
+      ],
+      COLOR_BASE_ORDER,
+    );
 
     writeColorSemanticCssFile(join(themeDir, 'semantic.css'), selector, semanticGroups, themeName, [
       ` * Color System — semantic colors referencing base (${themeName}).`,
@@ -1633,6 +1736,7 @@ function buildRootIndex() {
       './motion/index.css',
       './color/index.css',
       './effect/index.css',
+      './liquid-glass/index.css',
     ],
     'EverGreen Design Tokens — layered CSS architecture',
   );
@@ -1774,6 +1878,14 @@ function buildJsonExport() {
       (motionSemanticSpec.compositions ?? []).map((composition) => [composition.id, composition]),
     ),
     motionReducedMotion: motionSemanticSpec.reducedMotion ?? {},
+    glassBoxCompositions: buildGlassBoxCompositions({
+      effectSemanticSpec,
+      effectBaseSpec,
+      scaleSemanticSpec: loadJson('scale/semantic.json'),
+      scaleBaseSpec: loadJson('scale/base.json'),
+      colorBaseSpec: loadJson('color/base.json'),
+      colorSemanticSpec: loadJson('color/semantic.json'),
+    }),
   };
 
   const baseSpec = loadJson('color/base.json');
@@ -1798,6 +1910,7 @@ async function buildAll() {
   buildTypographySystem();
   buildMotionSystem();
   buildEffectSystem();
+  buildLiquidGlassCssSystem();
   buildColorSystem();
   buildTagColorSystem();
   buildRootIndex();
@@ -1811,6 +1924,15 @@ async function buildAll() {
   }
 
   console.log('✓ Tokens built with layered CSS architecture');
+
+  const repoRoot = resolve(rootDir, '../..');
+  const manifest = spawnSync('node', ['apps/showcase/scripts/extract-dist-css-manifest.mjs'], {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  });
+  if (manifest.status !== 0) {
+    throw new Error('Showcase dist CSS manifest extract failed after token build');
+  }
 }
 
 buildAll().catch((error) => {

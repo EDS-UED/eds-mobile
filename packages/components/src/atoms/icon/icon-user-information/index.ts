@@ -1,2 +1,2 @@
-export { EgIconUserInformation } from './EgIconUserInformation';
-export type { EgIconUserInformationProps } from './EgIconUserInformation.types';
+export { EgIconUserInformation } from './EgIconUserInformation.js';
+export type { EgIconUserInformationProps } from './EgIconUserInformation.types.js';

@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconUneyeProps } from './EgIconUneye.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconUneyeProps } from './EgIconUneye.types.js';
 
-/** RN implementation — eds-uneye (component) */
+/** RN icon — eds-uneye */
 export function EgIconUneye(props: EgIconUneyeProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-uneye' } style={style} accessibilityLabel="eds-uneye" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-uneye"
+      testID={testID ?? 'icon-eds-uneye'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-uneye"}
+    />
+  );
 }

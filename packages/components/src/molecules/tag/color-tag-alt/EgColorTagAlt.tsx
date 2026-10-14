@@ -1,8 +1,14 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgColorTagAltProps } from './EgColorTagAlt.types';
+import type { ColorTagType, EgCommonProps, EgLabelProps, TagSize } from '../../../shared/types.js';
+import { EgTagBase } from '../_shared/EgTagBase.js';
 
-/** RN implementation — Color (set · 24 variants) */
-export function EgColorTagAlt(props: EgColorTagAltProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'tag-color-alt' } style={style} accessibilityLabel="Color" />;
+export type EgColorTagAltProps = EgCommonProps &
+  EgLabelProps & {
+    size?: TagSize;
+    colorType?: ColorTagType;
+  };
+
+export function EgColorTagAlt({ colorType = 'green', ...props }: EgColorTagAltProps) {
+  return (
+    <EgTagBase {...props} alt colorType={colorType} testID={props.testID ?? 'tag-color-alt'} label={props.label ?? 'Tag'} />
+  );
 }

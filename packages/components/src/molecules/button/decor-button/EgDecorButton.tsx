@@ -1,8 +1,8 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgDecorButtonProps } from './EgDecorButton.types';
+import type { EgSceneButtonProps } from '../../_shared/props.js';
+import { EgButtonBase } from '../_shared/EgButtonBase.js';
 
-/** RN implementation — Decor (set · 60 variants) */
-export function EgDecorButton(props: EgDecorButtonProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'button-decor' } style={style} accessibilityLabel="Decor" />;
+export type EgDecorButtonProps = EgSceneButtonProps;
+
+export function EgDecorButton(props: EgDecorButtonProps) {
+  return <EgButtonBase {...props} tone="decor" testID={props.testID ?? 'button-decor'} />;
 }

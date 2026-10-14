@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconGlobalPaymentsProps } from './EgIconGlobalPayments.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconGlobalPaymentsProps } from './EgIconGlobalPayments.types.js';
 
-/** RN implementation — eds-global-payments (component) */
+/** RN icon — eds-global-payments */
 export function EgIconGlobalPayments(props: EgIconGlobalPaymentsProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-global-payments' } style={style} accessibilityLabel="eds-global-payments" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-global-payments"
+      testID={testID ?? 'icon-eds-global-payments'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-global-payments"}
+    />
+  );
 }

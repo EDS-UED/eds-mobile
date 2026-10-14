@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "EDS Mobile",
+    "slug": "eds-mobile-showcase",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.evergreen.eds.mobile.showcase"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#5f2243"
+      },
+      "package": "com.evergreen.eds.mobile.showcase",
+      "statusBar": {
+        "translucent": true,
+        "backgroundColor": "#00000000"
+      }
+    },
+    "scheme": "eds-mobile-showcase",
+    "plugins": [
+      "expo-font",
+      "expo-router"
+    ]
+  }
+}

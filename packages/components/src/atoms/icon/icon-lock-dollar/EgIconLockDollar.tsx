@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconLockDollarProps } from './EgIconLockDollar.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconLockDollarProps } from './EgIconLockDollar.types.js';
 
-/** RN implementation — eds-lock-dollar (component) */
+/** RN icon — eds-lock-dollar */
 export function EgIconLockDollar(props: EgIconLockDollarProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-lock-dollar' } style={style} accessibilityLabel="eds-lock-dollar" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-lock-dollar"
+      testID={testID ?? 'icon-eds-lock-dollar'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-lock-dollar"}
+    />
+  );
 }

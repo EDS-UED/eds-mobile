@@ -1,8 +1,18 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgTriggerDropdownProps } from './EgTriggerDropdown.types';
+import type { EgFieldProps } from '../../_shared/props.js';
+import { EgFieldBase } from '../../input/_shared/EgFieldBase.js';
 
-/** RN implementation — Trigger (set · 15 variants) */
-export function EgTriggerDropdown(props: EgTriggerDropdownProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'dropdown-trigger' } style={style} accessibilityLabel="Trigger" />;
+export type EgTriggerDropdownProps = EgFieldProps;
+
+export function EgTriggerDropdown(props: EgTriggerDropdownProps) {
+  return (
+    <EgFieldBase
+      {...props}
+      kind="dropdown"
+      size={props.size ?? 'xl'}
+      event={props.event ?? 'default'}
+      echoValue={props.echoValue ?? 'Echo Value'}
+      testID={props.testID ?? 'dropdown-trigger'}
+      placeholder={props.placeholder ?? 'Trigger'}
+    />
+  );
 }

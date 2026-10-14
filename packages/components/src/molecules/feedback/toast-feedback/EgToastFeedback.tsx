@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgToastFeedbackProps } from './EgToastFeedback.types';
+import type { EgToastFeedbackProps } from './EgToastFeedback.types.js';
 
 /** RN implementation — Toast (set · 2 variants) */
 export function EgToastFeedback(props: EgToastFeedbackProps & Pick<ViewProps, 'style'>) {

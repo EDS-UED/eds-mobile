@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconZoomInProps } from './EgIconZoomIn.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconZoomInProps } from './EgIconZoomIn.types.js';
 
-/** RN implementation — eds-zoom-in (component) */
+/** RN icon — eds-zoom-in */
 export function EgIconZoomIn(props: EgIconZoomInProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-zoom-in' } style={style} accessibilityLabel="eds-zoom-in" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-zoom-in"
+      testID={testID ?? 'icon-eds-zoom-in'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-zoom-in"}
+    />
+  );
 }

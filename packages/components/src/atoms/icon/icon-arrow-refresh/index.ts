@@ -1,2 +1,2 @@
-export { EgIconArrowRefresh } from './EgIconArrowRefresh';
-export type { EgIconArrowRefreshProps } from './EgIconArrowRefresh.types';
+export { EgIconArrowRefresh } from './EgIconArrowRefresh.js';
+export type { EgIconArrowRefreshProps } from './EgIconArrowRefresh.types.js';

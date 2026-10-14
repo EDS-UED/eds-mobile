@@ -1,2 +1,2 @@
-export { EgIconClear } from './EgIconClear';
-export type { EgIconClearProps } from './EgIconClear.types';
+export { EgIconClear } from './EgIconClear.js';
+export type { EgIconClearProps } from './EgIconClear.types.js';

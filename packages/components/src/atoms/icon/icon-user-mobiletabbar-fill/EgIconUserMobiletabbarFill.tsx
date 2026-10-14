@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconUserMobiletabbarFillProps } from './EgIconUserMobiletabbarFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconUserMobiletabbarFillProps } from './EgIconUserMobiletabbarFill.types.js';
 
-/** RN implementation — eds-user-mobiletabbar-fill (component) */
+/** RN icon — eds-user-mobiletabbar-fill */
 export function EgIconUserMobiletabbarFill(props: EgIconUserMobiletabbarFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-user-mobiletabbar-fill' } style={style} accessibilityLabel="eds-user-mobiletabbar-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-user-mobiletabbar-fill"
+      testID={testID ?? 'icon-eds-user-mobiletabbar-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-user-mobiletabbar-fill"}
+    />
+  );
 }

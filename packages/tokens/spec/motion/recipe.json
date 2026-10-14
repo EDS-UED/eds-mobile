@@ -13,6 +13,9 @@
     { "id": "expand", "label": "Expand", "springRef": "gentle", "cssRecipe": "motion-recipe-enter", "semanticClass": "motion-layout" },
     { "id": "collapse", "label": "Collapse", "springRef": "gentle", "timingRef": "easeOut", "cssRecipe": "motion-recipe-exit", "semanticClass": "motion-layout" },
     { "id": "layout-deform", "label": "Layout Deform", "springRef": "gentle", "cssRecipe": "motion-recipe-layout-deform-shell", "semanticClass": "motion-layout-deform" },
+    { "id": "glass-press", "label": "Glass Press", "springRef": "press", "hapticRef": "light", "cssRecipe": "motion-recipe-glass-press", "semanticClass": "motion-glass-interactive" },
+    { "id": "glass-shimmer", "label": "Glass Shimmer", "timingRef": "easeIn", "cssRecipe": "motion-recipe-glass-shimmer", "semanticClass": "motion-glass-shimmer" },
+    { "id": "glass-morph", "label": "Glass Morph", "springRef": "gentle", "cssRecipe": "motion-recipe-glass-morph", "semanticClass": "motion-glass-morph" },
     { "id": "scroll-fade", "label": "Scroll Fade", "cssRecipe": "motion-recipe-scroll-fade" },
     { "id": "drag", "label": "Drag", "springRef": "drag", "hapticRef": "light", "velocityAware": true, "interruptible": true },
     { "id": "dismiss", "label": "Dismiss", "springRef": "interactive", "timingRef": "easeOut", "semanticClass": "motion-flotation", "velocityAware": true },
@@ -22,42 +25,46 @@
   ],
   "groups": [
     {
-      "comment": "Duration roles（→ eds-motion-N）",
+      "comment": "Duration roles（→ motion-N）",
       "tokenList": [
-        { "name": "motion-duration-instant", "value": "var(--eds-motion-0)" },
-        { "name": "motion-duration-micro", "value": "var(--eds-motion-1)" },
-        { "name": "motion-duration-fast", "value": "var(--eds-motion-2)" },
-        { "name": "motion-duration-normal", "value": "var(--eds-motion-3)" },
-        { "name": "motion-duration-slow", "value": "var(--eds-motion-4)" },
-        { "name": "motion-duration-emphasis", "value": "var(--eds-motion-5)" },
-        { "name": "motion-duration-control", "value": "var(--eds-motion-6)" },
-        { "name": "motion-duration-navigation", "value": "var(--eds-motion-7)" },
-        { "name": "motion-duration-spin", "value": "var(--eds-motion-8)" },
-        { "name": "motion-duration-spin-slow", "value": "var(--eds-motion-9)" },
-        { "name": "motion-duration-fade", "value": "var(--eds-motion-2)" },
-        { "name": "motion-duration-enter", "value": "var(--eds-motion-3)" },
-        { "name": "motion-duration-exit", "value": "var(--eds-motion-2)" },
-        { "name": "motion-duration-tap", "value": "var(--eds-motion-1)" },
-        { "name": "motion-duration-shift", "value": "var(--eds-motion-3)" },
-        { "name": "motion-duration-scroll-fade", "value": "var(--eds-motion-5)" },
-        { "name": "motion-duration-layout-deform", "value": "var(--eds-motion-7)" },
-        { "name": "motion-duration-layout-deform-content", "value": "var(--eds-motion-2)" },
+        { "name": "motion-duration-instant", "value": "var(--motion-0)" },
+        { "name": "motion-duration-micro", "value": "var(--motion-1)" },
+        { "name": "motion-duration-fast", "value": "var(--motion-2)" },
+        { "name": "motion-duration-normal", "value": "var(--motion-3)" },
+        { "name": "motion-duration-slow", "value": "var(--motion-4)" },
+        { "name": "motion-duration-emphasis", "value": "var(--motion-5)" },
+        { "name": "motion-duration-control", "value": "var(--motion-6)" },
+        { "name": "motion-duration-navigation", "value": "var(--motion-7)" },
+        { "name": "motion-duration-spin", "value": "var(--motion-8)" },
+        { "name": "motion-duration-spin-slow", "value": "var(--motion-9)" },
+        { "name": "motion-duration-fade", "value": "var(--motion-2)" },
+        { "name": "motion-duration-enter", "value": "var(--motion-3)" },
+        { "name": "motion-duration-exit", "value": "var(--motion-2)" },
+        { "name": "motion-duration-tap", "value": "var(--motion-1)" },
+        { "name": "motion-duration-shift", "value": "var(--motion-3)" },
+        { "name": "motion-duration-scroll-fade", "value": "var(--motion-5)" },
+        { "name": "motion-duration-layout-deform", "value": "var(--motion-7)" },
+        { "name": "motion-duration-layout-deform-content", "value": "var(--motion-2)" },
         { "name": "motion-delay-layout-deform-content-swap", "value": "120ms" },
-        { "name": "motion-delay-feedback-tick", "value": "var(--eds-motion-3)" }
+        { "name": "motion-delay-feedback-tick", "value": "var(--motion-3)" },
+        { "name": "motion-glass-duration-press", "value": "var(--motion-2)" },
+        { "name": "motion-glass-duration-release", "value": "260ms" },
+        { "name": "motion-glass-duration-shimmer", "value": "var(--motion-3)" },
+        { "name": "motion-glass-duration-morph", "value": "420ms" }
       ]
     },
     {
       "comment": "Easing roles",
       "tokenList": [
-        { "name": "motion-easing-standard", "value": "var(--eds-motion-ease-1)" },
-        { "name": "motion-easing-enter", "value": "var(--eds-motion-ease-2)" },
-        { "name": "motion-easing-exit", "value": "var(--eds-motion-ease-3)" },
-        { "name": "motion-easing-product", "value": "var(--eds-motion-ease-4)" },
-        { "name": "motion-easing-linear", "value": "var(--eds-motion-ease-5)" },
-        { "name": "motion-easing-spring", "value": "var(--eds-motion-ease-6)" },
-        { "name": "motion-easing-spring-emphasis", "value": "var(--eds-motion-ease-7)" },
-        { "name": "motion-easing-decelerate", "value": "var(--eds-motion-ease-8)" },
-        { "name": "motion-easing-navigation", "value": "var(--eds-motion-ease-9)" }
+        { "name": "motion-easing-standard", "value": "var(--motion-ease-1)" },
+        { "name": "motion-easing-enter", "value": "var(--motion-ease-2)" },
+        { "name": "motion-easing-exit", "value": "var(--motion-ease-3)" },
+        { "name": "motion-easing-product", "value": "var(--motion-ease-4)" },
+        { "name": "motion-easing-linear", "value": "var(--motion-ease-5)" },
+        { "name": "motion-easing-spring", "value": "var(--motion-ease-6)" },
+        { "name": "motion-easing-spring-emphasis", "value": "var(--motion-ease-7)" },
+        { "name": "motion-easing-decelerate", "value": "var(--motion-ease-8)" },
+        { "name": "motion-easing-navigation", "value": "var(--motion-ease-9)" }
       ]
     },
     {
@@ -129,6 +136,18 @@
         {
           "name": "motion-recipe-layout-deform-content",
           "value": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-decelerate)"
+        },
+        {
+          "name": "motion-recipe-glass-press",
+          "value": "transform var(--motion-glass-duration-press) var(--motion-easing-standard)"
+        },
+        {
+          "name": "motion-recipe-glass-shimmer",
+          "value": "opacity var(--motion-glass-duration-shimmer) var(--motion-easing-standard)"
+        },
+        {
+          "name": "motion-recipe-glass-morph",
+          "value": "var(--motion-recipe-layout-deform-shell)"
         }
       ]
     },
@@ -143,24 +162,24 @@
     }
   ],
   "reducedMotionOverrides": [
-    { "name": "motion-duration-micro", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-fast", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-normal", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-slow", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-emphasis", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-control", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-navigation", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-fade", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-enter", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-exit", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-tap", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-shift", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-scroll-fade", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-spin", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-spin-slow", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-layout-deform", "value": "var(--eds-motion-0)" },
-    { "name": "motion-duration-layout-deform-content", "value": "var(--eds-motion-0)" },
-    { "name": "motion-delay-layout-deform-content-swap", "value": "var(--eds-motion-0)" },
-    { "name": "motion-delay-feedback-tick", "value": "var(--eds-motion-0)" }
+    { "name": "motion-duration-micro", "value": "var(--motion-0)" },
+    { "name": "motion-duration-fast", "value": "var(--motion-0)" },
+    { "name": "motion-duration-normal", "value": "var(--motion-0)" },
+    { "name": "motion-duration-slow", "value": "var(--motion-0)" },
+    { "name": "motion-duration-emphasis", "value": "var(--motion-0)" },
+    { "name": "motion-duration-control", "value": "var(--motion-0)" },
+    { "name": "motion-duration-navigation", "value": "var(--motion-0)" },
+    { "name": "motion-duration-fade", "value": "var(--motion-0)" },
+    { "name": "motion-duration-enter", "value": "var(--motion-0)" },
+    { "name": "motion-duration-exit", "value": "var(--motion-0)" },
+    { "name": "motion-duration-tap", "value": "var(--motion-0)" },
+    { "name": "motion-duration-shift", "value": "var(--motion-0)" },
+    { "name": "motion-duration-scroll-fade", "value": "var(--motion-0)" },
+    { "name": "motion-duration-spin", "value": "var(--motion-0)" },
+    { "name": "motion-duration-spin-slow", "value": "var(--motion-0)" },
+    { "name": "motion-duration-layout-deform", "value": "var(--motion-0)" },
+    { "name": "motion-duration-layout-deform-content", "value": "var(--motion-0)" },
+    { "name": "motion-delay-layout-deform-content-swap", "value": "var(--motion-0)" },
+    { "name": "motion-delay-feedback-tick", "value": "var(--motion-0)" }
   ]
 }

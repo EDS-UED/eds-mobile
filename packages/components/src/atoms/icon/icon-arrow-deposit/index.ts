@@ -1,2 +1,2 @@
-export { EgIconArrowDeposit } from './EgIconArrowDeposit';
-export type { EgIconArrowDepositProps } from './EgIconArrowDeposit.types';
+export { EgIconArrowDeposit } from './EgIconArrowDeposit.js';
+export type { EgIconArrowDepositProps } from './EgIconArrowDeposit.types.js';

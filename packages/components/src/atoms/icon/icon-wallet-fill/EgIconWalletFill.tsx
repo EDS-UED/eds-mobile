@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconWalletFillProps } from './EgIconWalletFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconWalletFillProps } from './EgIconWalletFill.types.js';
 
-/** RN implementation — eds-wallet-fill (component) */
+/** RN icon — eds-wallet-fill */
 export function EgIconWalletFill(props: EgIconWalletFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-wallet-fill' } style={style} accessibilityLabel="eds-wallet-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-wallet-fill"
+      testID={testID ?? 'icon-eds-wallet-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-wallet-fill"}
+    />
+  );
 }

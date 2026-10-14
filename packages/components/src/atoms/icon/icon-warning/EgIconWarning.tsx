@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconWarningProps } from './EgIconWarning.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconWarningProps } from './EgIconWarning.types.js';
 
-/** RN implementation — eds-warning (component) */
+/** RN icon — eds-warning */
 export function EgIconWarning(props: EgIconWarningProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-warning' } style={style} accessibilityLabel="eds-warning" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-warning"
+      testID={testID ?? 'icon-eds-warning'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-warning"}
+    />
+  );
 }

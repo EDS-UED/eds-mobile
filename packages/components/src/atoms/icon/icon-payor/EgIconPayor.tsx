@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconPayorProps } from './EgIconPayor.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconPayorProps } from './EgIconPayor.types.js';
 
-/** RN implementation — eds-payor (component) */
+/** RN icon — eds-payor */
 export function EgIconPayor(props: EgIconPayorProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-payor' } style={style} accessibilityLabel="eds-payor" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-payor"
+      testID={testID ?? 'icon-eds-payor'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-payor"}
+    />
+  );
 }

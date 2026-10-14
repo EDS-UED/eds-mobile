@@ -1,2 +1,2 @@
-export { EgIconArrowToggleHorizontal } from './EgIconArrowToggleHorizontal';
-export type { EgIconArrowToggleHorizontalProps } from './EgIconArrowToggleHorizontal.types';
+export { EgIconArrowToggleHorizontal } from './EgIconArrowToggleHorizontal.js';
+export type { EgIconArrowToggleHorizontalProps } from './EgIconArrowToggleHorizontal.types.js';

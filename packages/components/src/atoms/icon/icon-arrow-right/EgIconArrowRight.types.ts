@@ -1,5 +1,9 @@
 /** Figma: eds-arrow-right · iCons 图标 ✅🕒 */
+/** Figma atom — synced from EDS Mobile */
 export type EgIconArrowRightProps = {
-  /** Figma component set — variants synced from EDS Mobile */
   testID?: string;
+  mode?: 'light' | 'dark';
+  size?: 'sm' | 'md' | 'lg';
+  fillTone?: 'primary' | 'brand';
+  accessibilityLabel?: string;
 };

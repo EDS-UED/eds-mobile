@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconFlagDollarProps } from './EgIconFlagDollar.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconFlagDollarProps } from './EgIconFlagDollar.types.js';
 
-/** RN implementation — eds-flag-dollar (component) */
+/** RN icon — eds-flag-dollar */
 export function EgIconFlagDollar(props: EgIconFlagDollarProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-flag-dollar' } style={style} accessibilityLabel="eds-flag-dollar" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-flag-dollar"
+      testID={testID ?? 'icon-eds-flag-dollar'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-flag-dollar"}
+    />
+  );
 }

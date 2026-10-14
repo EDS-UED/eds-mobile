@@ -1,2 +1,2 @@
-export { EgIconVip } from './EgIconVip';
-export type { EgIconVipProps } from './EgIconVip.types';
+export { EgIconVip } from './EgIconVip.js';
+export type { EgIconVipProps } from './EgIconVip.types.js';

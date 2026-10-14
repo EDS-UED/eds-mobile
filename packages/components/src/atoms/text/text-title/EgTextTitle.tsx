@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTextTitleProps } from './EgTextTitle.types';
+import type { EgTextTitleProps } from './EgTextTitle.types.js';
 
 /** RN implementation — 3-Title (set · 3 variants) */
 export function EgTextTitle(props: EgTextTitleProps & Pick<ViewProps, 'style'>) {

@@ -1,2 +1,2 @@
-export { EgIconAddRole } from './EgIconAddRole';
-export type { EgIconAddRoleProps } from './EgIconAddRole.types';
+export { EgIconAddRole } from './EgIconAddRole.js';
+export type { EgIconAddRoleProps } from './EgIconAddRole.types.js';

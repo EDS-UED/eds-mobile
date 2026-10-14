@@ -1,2 +1,2 @@
-export { EgIconArrowLaunchCircle } from './EgIconArrowLaunchCircle';
-export type { EgIconArrowLaunchCircleProps } from './EgIconArrowLaunchCircle.types';
+export { EgIconArrowLaunchCircle } from './EgIconArrowLaunchCircle.js';
+export type { EgIconArrowLaunchCircleProps } from './EgIconArrowLaunchCircle.types.js';

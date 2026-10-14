@@ -1,2 +1,2 @@
-export { EgIconListLatticeMobile } from './EgIconListLatticeMobile';
-export type { EgIconListLatticeMobileProps } from './EgIconListLatticeMobile.types';
+export { EgIconListLatticeMobile } from './EgIconListLatticeMobile.js';
+export type { EgIconListLatticeMobileProps } from './EgIconListLatticeMobile.types.js';

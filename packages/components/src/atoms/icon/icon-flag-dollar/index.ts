@@ -1,2 +1,2 @@
-export { EgIconFlagDollar } from './EgIconFlagDollar';
-export type { EgIconFlagDollarProps } from './EgIconFlagDollar.types';
+export { EgIconFlagDollar } from './EgIconFlagDollar.js';
+export type { EgIconFlagDollarProps } from './EgIconFlagDollar.types.js';

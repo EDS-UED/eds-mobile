@@ -1,2 +1,2 @@
-export { EgIconArrowDownload } from './EgIconArrowDownload';
-export type { EgIconArrowDownloadProps } from './EgIconArrowDownload.types';
+export { EgIconArrowDownload } from './EgIconArrowDownload.js';
+export type { EgIconArrowDownloadProps } from './EgIconArrowDownload.types.js';

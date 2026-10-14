@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgNotesPopoverProps } from './EgNotesPopover.types';
+import type { EgNotesPopoverProps } from './EgNotesPopover.types.js';
 
 /** RN implementation — Notes (set · 8 variants) */
 export function EgNotesPopover(props: EgNotesPopoverProps & Pick<ViewProps, 'style'>) {

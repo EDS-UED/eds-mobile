@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowGoLastProps } from './EgIconArrowGoLast.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowGoLastProps } from './EgIconArrowGoLast.types.js';
 
-/** RN implementation — eds-arrow-go-last (component) */
+/** RN icon — eds-arrow-go-last */
 export function EgIconArrowGoLast(props: EgIconArrowGoLastProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-go-last' } style={style} accessibilityLabel="eds-arrow-go-last" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-go-last"
+      testID={testID ?? 'icon-eds-arrow-go-last'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-go-last"}
+    />
+  );
 }

@@ -44,6 +44,7 @@ const CATALOG = [
   { figmaName: 'Combo/Action', exportName: 'EgButtonComboAction', tier: 'molecules', family: 'button', slug: 'button-combo-action', figmaPage: 'Button 按钮 ✅', kind: 'set', variantCount: 2, figmaId: '137:895' },
   { figmaName: 'Combo/Action', exportName: 'EgButtonComboActionAlt', tier: 'molecules', family: 'button', slug: 'button-combo-action-alt', figmaPage: 'Button 按钮 ✅', kind: 'set', variantCount: 2, figmaId: '185:3458' },
   { figmaName: 'iCon Container', exportName: 'EgIconContainer', tier: 'molecules', family: 'button', slug: 'icon-container', figmaPage: 'Button 按钮 ✅', kind: 'set', variantCount: 135, figmaId: '101:4752' },
+  { figmaName: 'Glass', tier: 'molecules', family: 'button', slug: 'button-glass', figmaPage: 'Button 按钮 ✅', kind: 'set', variantCount: 2, figmaId: '710:900' },
 
   // —— Molecules · Input ——
   { figmaName: 'Input', exportName: 'EgInput', tier: 'molecules', family: 'input', slug: 'input', figmaPage: 'Input 输入框✅', kind: 'set', variantCount: 25, figmaId: '149:3727' },
@@ -87,6 +88,7 @@ const CATALOG = [
   { figmaName: 'Glass BG.', exportName: 'EgTabBarGlassBg', tier: 'organisms', family: 'tab-bar', slug: 'tab-bar-glass-bg', figmaPage: 'TabBar✅', kind: 'set', variantCount: 2, figmaId: '710:138' },
   { figmaName: 'Apply_TabBar@Cregis', exportName: 'EgTabBarCregis', tier: 'organisms', family: 'tab-bar', slug: 'tab-bar-cregis', figmaPage: 'TabBar✅', kind: 'set', variantCount: 2, figmaId: '710:414' },
   { figmaName: 'Apply_TabBar@UDun', exportName: 'EgTabBarUDun', tier: 'organisms', family: 'tab-bar', slug: 'tab-bar-udun', figmaPage: 'TabBar✅', kind: 'set', variantCount: 2, figmaId: '710:615' },
+  { figmaName: 'NavBar', exportName: 'EgNavBar', tier: 'organisms', family: 'tab-bar', slug: 'tab-bar-nav-bar', figmaPage: 'TabBar✅', kind: 'component' },
 
   // —— Index / Popovers ——
   { figmaName: 'Notes', exportName: 'EgPopoverNotes', tier: 'molecules', family: 'popovers', slug: 'popovers-notes', figmaPage: '⛳️   组件索引✅', kind: 'set', variantCount: 8, figmaId: '180:1982' },
@@ -170,6 +172,9 @@ const SCENE_FAMILY_SUFFIX = {
 /** Manual export overrides for edge cases */
 const EXPORT_OVERRIDES = {
   'button:iCon Container': 'EgIconContainerButton',
+  'button:Glass': 'EgButtonGlass',
+  'input:Search': 'EgSearch',
+  'input:Textarea': 'EgTextarea',
   'input:Input/Pointer': 'EgInputPointer',
   'input:Combo/Input Group': 'EgInputGroup',
   'input:Combo/Text Input': 'EgComboTextInput',
@@ -180,6 +185,7 @@ const EXPORT_OVERRIDES = {
   'tab-bar:Glass BG.': 'EgTabBarGlassBg',
   'tab-bar:Apply_TabBar@Cregis': 'EgCregisTabBar',
   'tab-bar:Apply_TabBar@UDun': 'EgUDunTabBar',
+  'tab-bar:NavBar': 'EgNavBar',
   'popovers:Notes': 'EgNotesPopover',
 };
 
@@ -283,6 +289,18 @@ function kebabFromExport(exportName) {
   return exportName.replace(/^Eg/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
+function isComponentImplemented(entry) {
+  const componentPath = join(
+    srcDir,
+    entry.tier,
+    entry.family,
+    kebabFromExport(entry.exportName),
+    `${entry.exportName}.tsx`,
+  );
+  if (!existsSync(componentPath)) return false;
+  return !readFileSync(componentPath, 'utf8').includes(SCAFFOLD_MARKER);
+}
+
 function removeOrphanComponentDirs(entries) {
   const expected = new Set(
     entries.map((e) => join(srcDir, e.tier, e.family, kebabFromExport(e.exportName))),
@@ -294,10 +312,12 @@ function removeOrphanComponentDirs(entries) {
 
     for (const family of readdirSync(tierPath, { withFileTypes: true })) {
       if (!family.isDirectory()) continue;
+      if (family.name === '_shared' || family.name === '_assets') continue;
       const familyPath = join(tierPath, family.name);
 
       for (const comp of readdirSync(familyPath, { withFileTypes: true })) {
         if (!comp.isDirectory()) continue;
+        if (comp.name === '_shared') continue;
         const full = join(familyPath, comp.name);
         if (!expected.has(full)) {
           rmSync(full, { recursive: true, force: true });
@@ -305,6 +325,10 @@ function removeOrphanComponentDirs(entries) {
       }
     }
   }
+}
+
+function atomPropsType(exportName) {
+  return `/** Figma atom — synced from EDS Mobile */\nexport type ${exportName}Props = {\n  testID?: string;\n  mode?: 'light' | 'dark';\n  size?: 'sm' | 'md' | 'lg';\n  fillTone?: 'primary' | 'brand';\n  accessibilityLabel?: string;\n};\n`;
 }
 
 function writeComponentFile(entry) {
@@ -322,6 +346,38 @@ function writeComponentFile(entry) {
     }
   }
 
+  if (entry.family === 'icon') {
+    writeFileSync(
+      typesPath,
+      `/** Figma: ${entry.figmaName} · ${entry.figmaPage} */\n${atomPropsType(entry.exportName)}`,
+    );
+    writeFileSync(
+      componentPath,
+      `import type { ViewProps } from 'react-native';\nimport { EgSymbol } from '../../_shared/symbol/EgSymbol.js';\nimport type { ${entry.exportName}Props } from './${entry.exportName}.types.js';\n\n/** RN icon — ${entry.figmaName} */\nexport function ${entry.exportName}(props: ${entry.exportName}Props & Pick<ViewProps, 'style'>) {\n  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;\n  return (\n    <EgSymbol\n      name=${JSON.stringify(entry.figmaName)}\n      testID={testID ?? '${entry.slug}'}\n      mode={mode}\n      size={size}\n      fillTone={fillTone}\n      style={style}\n      accessibilityLabel={accessibilityLabel ?? ${JSON.stringify(entry.figmaName)}}\n    />\n  );\n}\n`,
+    );
+    writeFileSync(
+      indexPath,
+      `export { ${entry.exportName} } from './${entry.exportName}.js';\nexport type { ${entry.exportName}Props } from './${entry.exportName}.types.js';\n`,
+    );
+    return;
+  }
+
+  if (entry.family === 'crypto') {
+    writeFileSync(
+      typesPath,
+      `/** Figma: ${entry.figmaName} · ${entry.figmaPage} */\n${atomPropsType(entry.exportName)}`,
+    );
+    writeFileSync(
+      componentPath,
+      `import type { ViewProps } from 'react-native';\nimport { EgSymbol } from '../../_shared/symbol/EgSymbol.js';\nimport type { ${entry.exportName}Props } from './${entry.exportName}.types.js';\n\n/** RN crypto — ${entry.figmaName} */\nexport function ${entry.exportName}(props: ${entry.exportName}Props & Pick<ViewProps, 'style'>) {\n  const { testID, mode, size, style, accessibilityLabel } = props;\n  return (\n    <EgSymbol\n      name=${JSON.stringify(entry.figmaName)}\n      testID={testID ?? '${entry.slug}'}\n      mode={mode}\n      size={size}\n      style={style}\n      accessibilityLabel={accessibilityLabel ?? ${JSON.stringify(entry.figmaName)}}\n    />\n  );\n}\n`,
+    );
+    writeFileSync(
+      indexPath,
+      `export { ${entry.exportName} } from './${entry.exportName}.js';\nexport type { ${entry.exportName}Props } from './${entry.exportName}.types.js';\n`,
+    );
+    return;
+  }
+
   writeFileSync(
     typesPath,
     `/** Figma: ${entry.figmaName} · ${entry.figmaPage} */\nexport type ${entry.exportName}Props = {\n  /** Figma component set — variants synced from EDS Mobile */\n  testID?: string;\n};\n`,
@@ -329,10 +385,13 @@ function writeComponentFile(entry) {
 
   writeFileSync(
     componentPath,
-    `import { View, type ViewProps } from 'react-native';\nimport type { ${entry.exportName}Props } from './${entry.exportName}.types';\n\n/** RN implementation — ${entry.figmaName} (${entry.kind}${entry.variantCount ? ` · ${entry.variantCount} variants` : ''}) */\nexport function ${entry.exportName}(props: ${entry.exportName}Props & Pick<ViewProps, 'style'>) {\n  const { testID, style } = props;\n  return <View testID={testID ?? '${entry.slug}' } style={style} accessibilityLabel="${entry.figmaName}" />;\n}\n`,
+    `import { View, type ViewProps } from 'react-native';\nimport type { ${entry.exportName}Props } from './${entry.exportName}.types.js';\n\n/** RN implementation — ${entry.figmaName} (${entry.kind}${entry.variantCount ? ` · ${entry.variantCount} variants` : ''}) */\nexport function ${entry.exportName}(props: ${entry.exportName}Props & Pick<ViewProps, 'style'>) {\n  const { testID, style } = props;\n  return <View testID={testID ?? '${entry.slug}' } style={style} accessibilityLabel="${entry.figmaName}" />;\n}\n`,
   );
 
-  writeFileSync(indexPath, `export { ${entry.exportName} } from './${entry.exportName}';\nexport type { ${entry.exportName}Props } from './${entry.exportName}.types';\n`);
+  writeFileSync(
+    indexPath,
+    `export { ${entry.exportName} } from './${entry.exportName}.js';\nexport type { ${entry.exportName}Props } from './${entry.exportName}.types.js';\n`,
+  );
 }
 
 const FINAL_CATALOG = finalizeCatalog(CATALOG);
@@ -349,11 +408,91 @@ for (const entry of FINAL_CATALOG) {
   writeComponentFile(entry);
 }
 
+const implementedSlugs = FINAL_CATALOG.filter(isComponentImplemented).map((entry) => entry.slug);
+writeFileSync(
+  join(srcDir, 'catalog/implementedSlugs.ts'),
+  `/** Auto-generated — real RN implementations (no scaffold marker) */\nimport type { FigmaComponentEntry } from './figmaCatalog.js';\n\nexport const implementedComponentSlugs = new Set(${JSON.stringify(implementedSlugs)}) as ReadonlySet<string>;\n\nexport function isImplementedCatalogEntry(entry: Pick<FigmaComponentEntry, 'slug'>): boolean {\n  return implementedComponentSlugs.has(entry.slug);\n}\n`,
+);
+
+const previewLoaderLines = FINAL_CATALOG.map((entry) => {
+  const rel = `../${entry.tier}/${entry.family}/${kebabFromExport(entry.exportName)}/${entry.exportName}.js`;
+  return `  ${entry.exportName}: () => require('${rel}').${entry.exportName},`;
+});
+
+writeFileSync(
+  join(srcDir, 'preview/previewComponentLoaders.generated.ts'),
+  `/** Auto-generated — lazy catalog preview loads (no barrel import). */\nimport type { ComponentType } from 'react';\n\ntype PreviewLoader = () => ComponentType<Record<string, unknown>>;\n\nexport const previewComponentLoaders: Record<string, PreviewLoader> = {\n${previewLoaderLines.join('\n')}\n};\n\nconst cache = new Map<string, ComponentType<Record<string, unknown>> | null>();\n\nexport function loadPreviewComponent(\n  exportName: string,\n): ComponentType<Record<string, unknown>> | null {\n  if (cache.has(exportName)) {\n    return cache.get(exportName) ?? null;\n  }\n\n  const loader = previewComponentLoaders[exportName];\n  if (!loader) {\n    cache.set(exportName, null);\n    return null;\n  }\n\n  try {\n    const component = loader();\n    cache.set(exportName, component);\n    return component;\n  } catch {\n    cache.set(exportName, null);\n    return null;\n  }\n}\n`,
+);
+
+writeFileSync(
+  join(srcDir, 'catalogEntry.ts'),
+  `/** Auto-generated — showcase / catalog surfaces (no 202-component barrel). */\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog.js';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog.js';\nexport { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs.js';\nexport { createCatalogPreviewProps } from './preview/createCatalogPreviewProps.js';\nexport type { CatalogPreviewProps } from './preview/createCatalogPreviewProps.js';\nexport { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas.js';\nexport { resolvePreviewComponent } from './preview/resolvePreviewComponent.js';\nexport { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';\nexport type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';\nexport * from './theme/index.js';\n`,
+);
+
 // index.ts barrel exports
-const exports = FINAL_CATALOG.map((e) => `export { ${e.exportName} } from './${e.tier}/${e.family}/${kebabFromExport(e.exportName)}';`);
+const exports = FINAL_CATALOG.map((e) => {
+  if (e.exportName === 'EgButtonGlass') {
+    return `export {
+  EgButtonGlass,
+  shouldUseEgButtonGlassNativeStack,
+} from './molecules/button/button-glass';
+export type {
+  EgButtonGlassProps,
+  EgButtonGlassKind,
+  EgButtonGlassIconCount,
+} from './molecules/button/button-glass';`;
+  }
+  if (e.exportName === 'EgNavBar') {
+    return `export {
+  EgNavBar,
+  shouldUseEgNavBarNativeStack,
+  egNavBarNativeStackOptions,
+  useEgNavBarScroll,
+  egNavBarContentHeight,
+  egNavBarScrollContentReserve,
+} from './organisms/tab-bar/nav-bar';
+export type {
+  EgNavBarProps,
+  EgNavBarAction,
+  EgNavBarBackground,
+  EgNavBarScrollOffset,
+  EgNavBarNativeStackOptions,
+  EgNavBarNativeStackOptionsInput,
+} from './organisms/tab-bar/nav-bar';`;
+  }
+  if (e.exportName === 'EgTabBar') {
+    return `export {
+  EgTabBar,
+  EgTabBarBottomTabsDock,
+  EgTabBarNativeLayout,
+  shouldUseEgTabBarNativeStack,
+  egTabBarScrollContentReserve,
+  egTabBarScrollContentReserveWithSafeArea,
+  egTabBarScrollContentReserveForList,
+  useEgTabBarShellLayout,
+  egTabBarPillTrackHeight,
+  egTabBarShellLayoutHeight,
+  tabBarTrackIntrinsicHeight,
+  TAB_BAR_PILL_TRACK_HEIGHT,
+  createEgTabBarBottomTabsBinding,
+  egTabBarRouteNameForIndex,
+  egTabBarSelectedIndexForActiveRoute,
+} from './organisms/tab-bar/tab-bar';
+export type {
+  EgTabBarNativeLayoutProps,
+  EgTabBarNativeTabSpec,
+  EgTabBarNativeTriggerIcon,
+  EgTabBarBottomTabNavigation,
+  EgTabBarBottomTabNavigationState,
+  EgTabBarBottomTabRoute,
+  EgTabBarNavBindItem,
+} from './organisms/tab-bar/tab-bar';`;
+  }
+  return `export { ${e.exportName} } from './${e.tier}/${e.family}/${kebabFromExport(e.exportName)}';`;
+});
 writeFileSync(
   join(srcDir, 'index.ts'),
-  `${exports.join('\n')}\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog';\nexport * from './theme';\n`,
+  `${exports.join('\n')}\nexport { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';\nexport type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';\nexport {\n  EgGlass,\n  GlassSurface,\n  GlassInteraction,\n  GlassContainer,\n  GlassControlShell,\n  GlassBlurScope,\n  GlassBlurBackdrop,\n  useGlassBlurTargetRef,\n  getNativeBlurView,\n  nativeBlurIntensity,\n  resolveAndroidBlurMethod,\n  getNativeLinearGradient,\n  getAndroidLiquidGlassView,\n  isAndroidLiquidGlassAvailable,\n  getSkiaModule,\n  isSkiaGlassAvailable,\n  resolveGlassBoxComposition,\n  glassBoxViewStyle,\n  glassBoxNativeBlurIntensity,\n} from './atoms/glass/index.js';\nexport type {\n  EgGlassProps,\n  GlassVariant,\n  GlassShape,\n  GlassSurfaceProps,\n  GlassInteractionProps,\n  GlassContainerProps,\n  GlassControlShape,\n  GlassControlShellProps,\n  GlassBoxClassName,\n  GlassBoxComposition,\n  GlassBoxLayer,\n  GlassBoxShadowLayer,\n} from './atoms/glass/index.js';\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog';\nexport { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs';\nexport { createCatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport type { CatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas';\nexport { resolvePreviewComponent } from './preview/resolvePreviewComponent';\nexport { AtomGallery, atomGalleryFamily } from './preview/AtomGallery';\nexport type { AtomGalleryFamily } from './preview/AtomGallery';\nexport { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './preview/ParityHarness';\nexport type { ParityMeasurement, ParityReport } from './preview/ParityHarness';\nexport { LiquidGlassDemo } from './preview/LiquidGlassDemo';\nexport { MotionDemo } from './preview/MotionDemo';\nexport * from './theme';\n`,
 );
 
 console.log(`✓ Generated ${FINAL_CATALOG.length} components in packages/components/src`);

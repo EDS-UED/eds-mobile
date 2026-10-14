@@ -1,17 +1,40 @@
-export { componentCatalog } from './catalog';
-export { buildComponentAnchorItems, catalogSectionId, componentAnchorItems } from './anchors';
+export type {
+  DocCustomizeControl,
+  DocCustomizeBooleanControl,
+  DocCustomizeSelectControl,
+  DocCustomizeTextControl,
+  DocCustomizeHeadingControl,
+  DocPropRow,
+} from './types.js';
+export type { RnDocConfig } from './rnDocRegistry.js';
 export {
-  defaultComponentSlug,
-  findCatalogChildPage,
-  findCatalogItem,
-  getCatalogChildAnchorIds,
-  getCatalogPageAnchorIds,
-  getCatalogChildLabel,
-  getCatalogChildPageSlug,
-  getComponentRouteSlug,
-  getMoleculeLandingPageSlug,
-  isValidComponentSlug,
-  iterCatalogItems,
-  moleculeUsesChildPages,
-} from './navigation';
-export type { CatalogItemLocation } from './navigation';
+  familyBodyPreviewSlug,
+  rnDocBySlug,
+  resolveRnDocConfig,
+} from './rnDocRegistry.js';
+export {
+  filterDocCustomizeControls,
+  isAllowedTypeCustomizeControl,
+  isControlVisible,
+} from './types.js';
+export { buildRnSelfClosingSnippet } from './buildRnUsageSnippet.js';
+export { mergeCatalogPreviewProps } from './mergeCatalogPreviewProps.js';
+export {
+  buildComponentCatalogNav,
+  componentCatalogNav,
+  findFamilyNav,
+  FAMILY_LABELS,
+  TIER_LABELS,
+  TIER_ORDER,
+  type CatalogTier,
+  type ComponentFamilyNav,
+  type ComponentTierNav,
+} from './buildComponentCatalogNav.js';
+export {
+  findShowcaseCatalogEntry,
+  getShowcaseComponentCatalog,
+  isShowcaseEntryImplemented,
+  isShowcaseInfraEntry,
+} from './showcaseCatalog.js';
+export { SHOWCASE_INFRA_CATALOG } from './showcaseInfraCatalog.js';
+export { resolveShowcasePreviewComponent } from './showcasePreviewRegistry.js';

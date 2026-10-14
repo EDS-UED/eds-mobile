@@ -1,2 +1,2 @@
-export { EgIconFloderFavoriteFill } from './EgIconFloderFavoriteFill';
-export type { EgIconFloderFavoriteFillProps } from './EgIconFloderFavoriteFill.types';
+export { EgIconFloderFavoriteFill } from './EgIconFloderFavoriteFill.js';
+export type { EgIconFloderFavoriteFillProps } from './EgIconFloderFavoriteFill.types.js';

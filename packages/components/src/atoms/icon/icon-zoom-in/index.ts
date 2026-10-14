@@ -1,2 +1,2 @@
-export { EgIconZoomIn } from './EgIconZoomIn';
-export type { EgIconZoomInProps } from './EgIconZoomIn.types';
+export { EgIconZoomIn } from './EgIconZoomIn.js';
+export type { EgIconZoomInProps } from './EgIconZoomIn.types.js';

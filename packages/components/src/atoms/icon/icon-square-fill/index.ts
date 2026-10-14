@@ -1,2 +1,2 @@
-export { EgIconSquareFill } from './EgIconSquareFill';
-export type { EgIconSquareFillProps } from './EgIconSquareFill.types';
+export { EgIconSquareFill } from './EgIconSquareFill.js';
+export type { EgIconSquareFillProps } from './EgIconSquareFill.types.js';

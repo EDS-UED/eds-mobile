@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconUsdPaymentProps } from './EgIconUsdPayment.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconUsdPaymentProps } from './EgIconUsdPayment.types.js';
 
-/** RN implementation — eds-usd-payment (component) */
+/** RN icon — eds-usd-payment */
 export function EgIconUsdPayment(props: EgIconUsdPaymentProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-usd-payment' } style={style} accessibilityLabel="eds-usd-payment" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-usd-payment"
+      testID={testID ?? 'icon-eds-usd-payment'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-usd-payment"}
+    />
+  );
 }

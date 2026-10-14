@@ -1,2 +1,2 @@
-export { EgIconLockDollar } from './EgIconLockDollar';
-export type { EgIconLockDollarProps } from './EgIconLockDollar.types';
+export { EgIconLockDollar } from './EgIconLockDollar.js';
+export type { EgIconLockDollarProps } from './EgIconLockDollar.types.js';

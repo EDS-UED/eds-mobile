@@ -1,2 +1,2 @@
-export { EgTitleComboTitle } from './EgTitleComboTitle';
-export type { EgTitleComboTitleProps } from './EgTitleComboTitle.types';
+export { EgTitleComboTitle } from './EgTitleComboTitle.js';
+export type { EgTitleComboTitleProps } from './EgTitleComboTitle.types.js';

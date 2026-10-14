@@ -1,2 +1,2 @@
-export { EgIconClose } from './EgIconClose';
-export type { EgIconCloseProps } from './EgIconClose.types';
+export { EgIconClose } from './EgIconClose.js';
+export type { EgIconCloseProps } from './EgIconClose.types.js';

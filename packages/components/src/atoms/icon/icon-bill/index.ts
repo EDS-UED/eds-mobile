@@ -1,2 +1,2 @@
-export { EgIconBill } from './EgIconBill';
-export type { EgIconBillProps } from './EgIconBill.types';
+export { EgIconBill } from './EgIconBill.js';
+export type { EgIconBillProps } from './EgIconBill.types.js';

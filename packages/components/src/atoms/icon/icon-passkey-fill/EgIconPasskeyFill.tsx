@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconPasskeyFillProps } from './EgIconPasskeyFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconPasskeyFillProps } from './EgIconPasskeyFill.types.js';
 
-/** RN implementation — eds-passkey-fill (component) */
+/** RN icon — eds-passkey-fill */
 export function EgIconPasskeyFill(props: EgIconPasskeyFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-passkey-fill' } style={style} accessibilityLabel="eds-passkey-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-passkey-fill"
+      testID={testID ?? 'icon-eds-passkey-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-passkey-fill"}
+    />
+  );
 }

@@ -1,2 +1,2 @@
-export { EgFormSubmissionFeedback } from './EgFormSubmissionFeedback';
-export type { EgFormSubmissionFeedbackProps } from './EgFormSubmissionFeedback.types';
+export { EgFormSubmissionFeedback } from './EgFormSubmissionFeedback.js';
+export type { EgFormSubmissionFeedbackProps } from './EgFormSubmissionFeedback.types.js';

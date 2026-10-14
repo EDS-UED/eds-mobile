@@ -1,2 +1,2 @@
-export { EgIconListLatticeMobileFill } from './EgIconListLatticeMobileFill';
-export type { EgIconListLatticeMobileFillProps } from './EgIconListLatticeMobileFill.types';
+export { EgIconListLatticeMobileFill } from './EgIconListLatticeMobileFill.js';
+export type { EgIconListLatticeMobileFillProps } from './EgIconListLatticeMobileFill.types.js';

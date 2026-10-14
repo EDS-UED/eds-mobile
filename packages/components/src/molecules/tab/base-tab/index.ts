@@ -1,2 +1,2 @@
-export { EgBaseTab } from './EgBaseTab';
-export type { EgBaseTabProps } from './EgBaseTab.types';
+export { EgBaseTab } from './EgBaseTab.js';
+export type { EgBaseTabProps } from './EgBaseTab.types.js';

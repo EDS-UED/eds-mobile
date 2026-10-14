@@ -1,2 +1,2 @@
-export { EgTextDisplay } from './EgTextDisplay';
-export type { EgTextDisplayProps } from './EgTextDisplay.types';
+export { EgTextDisplay } from './EgTextDisplay.js';
+export type { EgTextDisplayProps } from './EgTextDisplay.types.js';

@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconUsdSettlementProps } from './EgIconUsdSettlement.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconUsdSettlementProps } from './EgIconUsdSettlement.types.js';
 
-/** RN implementation — eds-usd-settlement (component) */
+/** RN icon — eds-usd-settlement */
 export function EgIconUsdSettlement(props: EgIconUsdSettlementProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-usd-settlement' } style={style} accessibilityLabel="eds-usd-settlement" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-usd-settlement"
+      testID={testID ?? 'icon-eds-usd-settlement'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-usd-settlement"}
+    />
+  );
 }

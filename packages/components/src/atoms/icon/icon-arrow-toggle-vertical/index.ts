@@ -1,2 +1,2 @@
-export { EgIconArrowToggleVertical } from './EgIconArrowToggleVertical';
-export type { EgIconArrowToggleVerticalProps } from './EgIconArrowToggleVertical.types';
+export { EgIconArrowToggleVertical } from './EgIconArrowToggleVertical.js';
+export type { EgIconArrowToggleVerticalProps } from './EgIconArrowToggleVertical.types.js';

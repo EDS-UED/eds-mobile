@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowGoFirstProps } from './EgIconArrowGoFirst.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowGoFirstProps } from './EgIconArrowGoFirst.types.js';
 
-/** RN implementation — eds-arrow-go-first (component) */
+/** RN icon — eds-arrow-go-first */
 export function EgIconArrowGoFirst(props: EgIconArrowGoFirstProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-go-first' } style={style} accessibilityLabel="eds-arrow-go-first" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-go-first"
+      testID={testID ?? 'icon-eds-arrow-go-first'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-go-first"}
+    />
+  );
 }

@@ -1,2 +1,2 @@
-export { EgIconArrowLaunchSquare } from './EgIconArrowLaunchSquare';
-export type { EgIconArrowLaunchSquareProps } from './EgIconArrowLaunchSquare.types';
+export { EgIconArrowLaunchSquare } from './EgIconArrowLaunchSquare.js';
+export type { EgIconArrowLaunchSquareProps } from './EgIconArrowLaunchSquare.types.js';

@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconListLatticeMobileProps } from './EgIconListLatticeMobile.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconListLatticeMobileProps } from './EgIconListLatticeMobile.types.js';
 
-/** RN implementation — eds-list-lattice-mobile (component) */
+/** RN icon — eds-list-lattice-mobile */
 export function EgIconListLatticeMobile(props: EgIconListLatticeMobileProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-list-lattice-mobile' } style={style} accessibilityLabel="eds-list-lattice-mobile" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-list-lattice-mobile"
+      testID={testID ?? 'icon-eds-list-lattice-mobile'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-list-lattice-mobile"}
+    />
+  );
 }

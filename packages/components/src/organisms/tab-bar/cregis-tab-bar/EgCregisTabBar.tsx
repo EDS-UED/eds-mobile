@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgCregisTabBarProps } from './EgCregisTabBar.types';
+import type { EgCregisTabBarProps } from './EgCregisTabBar.types.js';
 
 /** RN implementation — Apply_TabBar@Cregis (set · 2 variants) */
 export function EgCregisTabBar(props: EgCregisTabBarProps & Pick<ViewProps, 'style'>) {

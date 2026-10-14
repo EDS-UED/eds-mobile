@@ -1,5 +1,9 @@
-/** Figma: System · Tag 标签✅ */
-export type EgSystemTagProps = {
-  /** Figma component set — variants synced from EDS Mobile */
-  testID?: string;
-};
+import type { EgCommonProps, EgLabelProps, SystemTagType, TagSize } from '../../../shared/types.js';
+import type { TagStatus } from '../../../shared/tagPalette.js';
+
+export type EgSystemTagProps = EgCommonProps &
+  EgLabelProps & {
+    size?: TagSize;
+    systemType?: SystemTagType;
+    status?: TagStatus;
+  };

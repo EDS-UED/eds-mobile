@@ -1,2 +1,2 @@
-export { EgIconArrowDownMiniIos } from './EgIconArrowDownMiniIos';
-export type { EgIconArrowDownMiniIosProps } from './EgIconArrowDownMiniIos.types';
+export { EgIconArrowDownMiniIos } from './EgIconArrowDownMiniIos.js';
+export type { EgIconArrowDownMiniIosProps } from './EgIconArrowDownMiniIos.types.js';

@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconReductionProps } from './EgIconReduction.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconReductionProps } from './EgIconReduction.types.js';
 
-/** RN implementation — eds-reduction (component) */
+/** RN icon — eds-reduction */
 export function EgIconReduction(props: EgIconReductionProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-reduction' } style={style} accessibilityLabel="eds-reduction" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-reduction"
+      testID={testID ?? 'icon-eds-reduction'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-reduction"}
+    />
+  );
 }

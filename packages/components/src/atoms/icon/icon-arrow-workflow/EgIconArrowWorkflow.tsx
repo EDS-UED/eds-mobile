@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowWorkflowProps } from './EgIconArrowWorkflow.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowWorkflowProps } from './EgIconArrowWorkflow.types.js';
 
-/** RN implementation — eds-arrow-workflow (component) */
+/** RN icon — eds-arrow-workflow */
 export function EgIconArrowWorkflow(props: EgIconArrowWorkflowProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-workflow' } style={style} accessibilityLabel="eds-arrow-workflow" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-workflow"
+      testID={testID ?? 'icon-eds-arrow-workflow'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-workflow"}
+    />
+  );
 }

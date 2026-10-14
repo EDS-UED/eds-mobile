@@ -1,5 +1,2 @@
-/** Figma: Option · Button 按钮 ✅ */
-export type EgOptionButtonProps = {
-  /** Figma component set — variants synced from EDS Mobile */
-  testID?: string;
-};
+import type { EgSceneButtonProps } from '../../_shared/props.js';
+export type EgOptionButtonProps = EgSceneButtonProps;

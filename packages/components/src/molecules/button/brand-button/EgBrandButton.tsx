@@ -1,8 +1,8 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgBrandButtonProps } from './EgBrandButton.types';
+import type { EgSceneButtonProps } from '../../_shared/props.js';
+import { EgButtonBase } from '../_shared/EgButtonBase.js';
 
-/** RN implementation — Brand (set · 60 variants) */
-export function EgBrandButton(props: EgBrandButtonProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'button-brand' } style={style} accessibilityLabel="Brand" />;
+export type EgBrandButtonProps = EgSceneButtonProps;
+
+export function EgBrandButton(props: EgBrandButtonProps) {
+  return <EgButtonBase {...props} tone="brand" testID={props.testID ?? 'button-brand'} />;
 }

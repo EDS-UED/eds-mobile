@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconUserCheckValidateProps } from './EgIconUserCheckValidate.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconUserCheckValidateProps } from './EgIconUserCheckValidate.types.js';
 
-/** RN implementation — eds-user-check-validate (component) */
+/** RN icon — eds-user-check-validate */
 export function EgIconUserCheckValidate(props: EgIconUserCheckValidateProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-user-check-validate' } style={style} accessibilityLabel="eds-user-check-validate" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-user-check-validate"
+      testID={testID ?? 'icon-eds-user-check-validate'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-user-check-validate"}
+    />
+  );
 }

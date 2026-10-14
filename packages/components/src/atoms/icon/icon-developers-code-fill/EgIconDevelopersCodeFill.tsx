@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconDevelopersCodeFillProps } from './EgIconDevelopersCodeFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconDevelopersCodeFillProps } from './EgIconDevelopersCodeFill.types.js';
 
-/** RN implementation — eds-developers-code-fill (component) */
+/** RN icon — eds-developers-code-fill */
 export function EgIconDevelopersCodeFill(props: EgIconDevelopersCodeFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-developers-code-fill' } style={style} accessibilityLabel="eds-developers-code-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-developers-code-fill"
+      testID={testID ?? 'icon-eds-developers-code-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-developers-code-fill"}
+    />
+  );
 }

@@ -1,2 +1,2 @@
-export { EgIconArrowRight } from './EgIconArrowRight';
-export type { EgIconArrowRightProps } from './EgIconArrowRight.types';
+export { EgIconArrowRight } from './EgIconArrowRight.js';
+export type { EgIconArrowRightProps } from './EgIconArrowRight.types.js';

@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconInformationProps } from './EgIconInformation.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconInformationProps } from './EgIconInformation.types.js';
 
-/** RN implementation — eds-information (component) */
+/** RN icon — eds-information */
 export function EgIconInformation(props: EgIconInformationProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-information' } style={style} accessibilityLabel="eds-information" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-information"
+      testID={testID ?? 'icon-eds-information'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-information"}
+    />
+  );
 }

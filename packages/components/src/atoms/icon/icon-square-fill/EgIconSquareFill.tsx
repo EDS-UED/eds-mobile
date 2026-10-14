@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconSquareFillProps } from './EgIconSquareFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconSquareFillProps } from './EgIconSquareFill.types.js';
 
-/** RN implementation — eds-square-fill (component) */
+/** RN icon — eds-square-fill */
 export function EgIconSquareFill(props: EgIconSquareFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-square-fill' } style={style} accessibilityLabel="eds-square-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-square-fill"
+      testID={testID ?? 'icon-eds-square-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-square-fill"}
+    />
+  );
 }

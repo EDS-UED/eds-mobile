@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgFormSubmissionFeedbackProps } from './EgFormSubmissionFeedback.types';
+import type { EgFormSubmissionFeedbackProps } from './EgFormSubmissionFeedback.types.js';
 
 /** RN implementation — Form Submission (set · 2 variants) */
 export function EgFormSubmissionFeedback(props: EgFormSubmissionFeedbackProps & Pick<ViewProps, 'style'>) {

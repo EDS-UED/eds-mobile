@@ -1,9 +1,9 @@
 node_modules/
 .expo/
-apps/playground/.expo/
+apps/showcase/.expo/
 .pnpm-store/
 dist/
-packages/mobile-animations/src/generated/
+packages/animations/src/generated/
 storybook-static/
 .tmp-video-frames/
 package-lock.json
@@ -15,3 +15,6 @@ package-lock.json
 *.log
 .turbo/
 .build/
+
+# Parity probe reports
+artifacts/

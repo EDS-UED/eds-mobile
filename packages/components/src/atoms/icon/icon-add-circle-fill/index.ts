@@ -1,2 +1,2 @@
-export { EgIconAddCircleFill } from './EgIconAddCircleFill';
-export type { EgIconAddCircleFillProps } from './EgIconAddCircleFill.types';
+export { EgIconAddCircleFill } from './EgIconAddCircleFill.js';
+export type { EgIconAddCircleFillProps } from './EgIconAddCircleFill.types.js';

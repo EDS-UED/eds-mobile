@@ -1,5 +1,9 @@
 /** Figma: eds-passkey-fill · iCons 图标 ✅🕒 */
+/** Figma atom — synced from EDS Mobile */
 export type EgIconPasskeyFillProps = {
-  /** Figma component set — variants synced from EDS Mobile */
   testID?: string;
+  mode?: 'light' | 'dark';
+  size?: 'sm' | 'md' | 'lg';
+  fillTone?: 'primary' | 'brand';
+  accessibilityLabel?: string;
 };

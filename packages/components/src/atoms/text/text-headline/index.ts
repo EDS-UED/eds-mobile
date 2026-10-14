@@ -1,2 +1,2 @@
-export { EgTextHeadline } from './EgTextHeadline';
-export type { EgTextHeadlineProps } from './EgTextHeadline.types';
+export { EgTextHeadline } from './EgTextHeadline.js';
+export type { EgTextHeadlineProps } from './EgTextHeadline.types.js';

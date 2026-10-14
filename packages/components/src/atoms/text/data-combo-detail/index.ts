@@ -1,2 +1,2 @@
-export { EgDataComboDetail } from './EgDataComboDetail';
-export type { EgDataComboDetailProps } from './EgDataComboDetail.types';
+export { EgDataComboDetail } from './EgDataComboDetail.js';
+export type { EgDataComboDetailProps } from './EgDataComboDetail.types.js';

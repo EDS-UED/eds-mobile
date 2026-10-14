@@ -1,2 +1,2 @@
-export { EgSegmentedControl } from './EgSegmentedControl';
-export type { EgSegmentedControlProps } from './EgSegmentedControl.types';
+export { EgSegmentedControl } from './EgSegmentedControl.js';
+export type { EgSegmentedControlProps } from './EgSegmentedControl.types.js';

@@ -1,2 +1,2 @@
-export { EgIconCategorizationFill } from './EgIconCategorizationFill';
-export type { EgIconCategorizationFillProps } from './EgIconCategorizationFill.types';
+export { EgIconCategorizationFill } from './EgIconCategorizationFill.js';
+export type { EgIconCategorizationFillProps } from './EgIconCategorizationFill.types.js';

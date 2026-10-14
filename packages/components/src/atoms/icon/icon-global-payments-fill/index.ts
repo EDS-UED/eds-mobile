@@ -1,2 +1,2 @@
-export { EgIconGlobalPaymentsFill } from './EgIconGlobalPaymentsFill';
-export type { EgIconGlobalPaymentsFillProps } from './EgIconGlobalPaymentsFill.types';
+export { EgIconGlobalPaymentsFill } from './EgIconGlobalPaymentsFill.js';
+export type { EgIconGlobalPaymentsFillProps } from './EgIconGlobalPaymentsFill.types.js';

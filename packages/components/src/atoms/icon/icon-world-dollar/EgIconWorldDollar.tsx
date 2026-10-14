@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconWorldDollarProps } from './EgIconWorldDollar.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconWorldDollarProps } from './EgIconWorldDollar.types.js';
 
-/** RN implementation — eds-world-dollar (component) */
+/** RN icon — eds-world-dollar */
 export function EgIconWorldDollar(props: EgIconWorldDollarProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-world-dollar' } style={style} accessibilityLabel="eds-world-dollar" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-world-dollar"
+      testID={testID ?? 'icon-eds-world-dollar'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-world-dollar"}
+    />
+  );
 }

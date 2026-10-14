@@ -1,2 +1,2 @@
-export { EgTextDetail } from './EgTextDetail';
-export type { EgTextDetailProps } from './EgTextDetail.types';
+export { EgTextDetail } from './EgTextDetail.js';
+export type { EgTextDetailProps } from './EgTextDetail.types.js';

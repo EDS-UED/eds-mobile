@@ -1,2 +1,2 @@
-export { EgIconArrowMarketDown } from './EgIconArrowMarketDown';
-export type { EgIconArrowMarketDownProps } from './EgIconArrowMarketDown.types';
+export { EgIconArrowMarketDown } from './EgIconArrowMarketDown.js';
+export type { EgIconArrowMarketDownProps } from './EgIconArrowMarketDown.types.js';

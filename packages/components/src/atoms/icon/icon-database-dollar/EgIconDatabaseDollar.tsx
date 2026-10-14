@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconDatabaseDollarProps } from './EgIconDatabaseDollar.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconDatabaseDollarProps } from './EgIconDatabaseDollar.types.js';
 
-/** RN implementation — eds-database-dollar (component) */
+/** RN icon — eds-database-dollar */
 export function EgIconDatabaseDollar(props: EgIconDatabaseDollarProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-database-dollar' } style={style} accessibilityLabel="eds-database-dollar" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-database-dollar"
+      testID={testID ?? 'icon-eds-database-dollar'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-database-dollar"}
+    />
+  );
 }

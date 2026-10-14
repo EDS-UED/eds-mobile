@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgDataComboDetailProps } from './EgDataComboDetail.types';
+import type { EgDataComboDetailProps } from './EgDataComboDetail.types.js';
 
 /** RN implementation — Data Combo/Detail (set · 8 variants) */
 export function EgDataComboDetail(props: EgDataComboDetailProps & Pick<ViewProps, 'style'>) {

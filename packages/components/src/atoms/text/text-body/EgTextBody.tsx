@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTextBodyProps } from './EgTextBody.types';
+import type { EgTextBodyProps } from './EgTextBody.types.js';
 
 /** RN implementation — 4-Body (set · 18 variants) */
 export function EgTextBody(props: EgTextBodyProps & Pick<ViewProps, 'style'>) {

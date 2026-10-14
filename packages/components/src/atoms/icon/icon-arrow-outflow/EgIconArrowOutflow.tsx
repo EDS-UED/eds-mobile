@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowOutflowProps } from './EgIconArrowOutflow.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowOutflowProps } from './EgIconArrowOutflow.types.js';
 
-/** RN implementation — eds-arrow-outflow (component) */
+/** RN icon — eds-arrow-outflow */
 export function EgIconArrowOutflow(props: EgIconArrowOutflowProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-outflow' } style={style} accessibilityLabel="eds-arrow-outflow" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-outflow"
+      testID={testID ?? 'icon-eds-arrow-outflow'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-outflow"}
+    />
+  );
 }

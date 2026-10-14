@@ -1,8 +1,45 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgLinkButtonProps } from './EgLinkButton.types';
+import { Text, type ViewStyle } from 'react-native';
+import type { ControlSize, EgCommonProps, EgLabelProps } from '../../../shared/types.js';
+import { MotionPressable } from '../../../shared/MotionPressable.js';
+import { createLinkButtonStyles } from '../_shared/linkButtonStyles.js';
 
-/** RN implementation — Link (set · 9 variants) */
-export function EgLinkButton(props: EgLinkButtonProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'button-link' } style={style} accessibilityLabel="Link" />;
+export type EgLinkButtonProps = EgCommonProps &
+  EgLabelProps & {
+    size?: Extract<ControlSize, 'lg' | 'md' | 'sm'>;
+    disabled?: boolean;
+    onPress?: () => void;
+    style?: ViewStyle;
+  };
+
+export function EgLinkButton({
+  size = 'lg',
+  disabled = false,
+  label,
+  children,
+  onPress,
+  testID,
+  mode = 'light',
+  style,
+  accessibilityLabel,
+}: EgLinkButtonProps) {
+  const content = children ?? label ?? 'Link';
+
+  return (
+    <MotionPressable
+      testID={testID ?? 'button-link'}
+      accessibilityLabel={accessibilityLabel ?? (typeof content === 'string' ? content : 'Link')}
+      accessibilityRole="link"
+      disabled={disabled}
+      onPress={onPress}
+      style={({ pressed }) => {
+        const visual = createLinkButtonStyles(mode, size, disabled, pressed);
+        return [visual.container, style];
+      }}
+    >
+      {({ pressed }) => {
+        const visual = createLinkButtonStyles(mode, size, disabled, pressed);
+        return <Text style={visual.label}>{content}</Text>;
+      }}
+    </MotionPressable>
+  );
 }

@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconCategorizationFillProps } from './EgIconCategorizationFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconCategorizationFillProps } from './EgIconCategorizationFill.types.js';
 
-/** RN implementation — eds-categorization-fill (component) */
+/** RN icon — eds-categorization-fill */
 export function EgIconCategorizationFill(props: EgIconCategorizationFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-categorization-fill' } style={style} accessibilityLabel="eds-categorization-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-categorization-fill"
+      testID={testID ?? 'icon-eds-categorization-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-categorization-fill"}
+    />
+  );
 }

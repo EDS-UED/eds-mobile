@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconLocationDollarProps } from './EgIconLocationDollar.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconLocationDollarProps } from './EgIconLocationDollar.types.js';
 
-/** RN implementation — eds-location-dollar (component) */
+/** RN icon — eds-location-dollar */
 export function EgIconLocationDollar(props: EgIconLocationDollarProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-location-dollar' } style={style} accessibilityLabel="eds-location-dollar" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-location-dollar"
+      testID={testID ?? 'icon-eds-location-dollar'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-location-dollar"}
+    />
+  );
 }

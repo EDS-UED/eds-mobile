@@ -1,0 +1,44 @@
+{
+  "$description": "GlassSurface / GlassControlShell RN presets（regular · prominent · clear）。仅写入 mobileTheme.glass.surface，不产出 CSS。",
+  "container": {
+    "morphDuration": "420ms",
+    "morphIntensity": "0.08",
+    "containerSpacing": "8px"
+  },
+  "variants": {
+    "regular": {
+      "surfaceOpacity": "0.72",
+      "tintOpacity": "0.04",
+      "borderOpacity": "0.20",
+      "highlightOpacity": "0.16",
+      "innerHighlightOpacity": "0.08",
+      "refraction": "0.08",
+      "shadow": "var(--eds-shadow-box-subtle)"
+    },
+    "prominent": {
+      "surfaceOpacity": "0.78",
+      "tintOpacity": "0.08",
+      "borderOpacity": "0.24",
+      "highlightOpacity": "0.20",
+      "innerHighlightOpacity": "0.10",
+      "refraction": "0.10",
+      "shadow": "var(--eds-shadow-box-shallow)"
+    },
+    "clear": {
+      "surfaceOpacity": "0.40",
+      "tintOpacity": "0.02",
+      "borderOpacity": "0.14",
+      "highlightOpacity": "0.10",
+      "innerHighlightOpacity": "0.04",
+      "refraction": "0",
+      "shadow": "var(--eds-shadow-box-subtle)"
+    }
+  },
+  "shapes": {
+    "capsule": "var(--radius-full)",
+    "small": "var(--radius-sm)",
+    "medium": "var(--radius-md)",
+    "large": "var(--radius-lg)",
+    "circle": "50%"
+  }
+}

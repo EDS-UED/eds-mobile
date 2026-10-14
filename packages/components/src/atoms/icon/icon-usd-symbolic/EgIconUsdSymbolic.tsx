@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconUsdSymbolicProps } from './EgIconUsdSymbolic.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconUsdSymbolicProps } from './EgIconUsdSymbolic.types.js';
 
-/** RN implementation — eds-usd-symbolic (component) */
+/** RN icon — eds-usd-symbolic */
 export function EgIconUsdSymbolic(props: EgIconUsdSymbolicProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-usd-symbolic' } style={style} accessibilityLabel="eds-usd-symbolic" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-usd-symbolic"
+      testID={testID ?? 'icon-eds-usd-symbolic'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-usd-symbolic"}
+    />
+  );
 }

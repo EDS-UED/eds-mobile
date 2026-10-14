@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTextFootnoteProps } from './EgTextFootnote.types';
+import type { EgTextFootnoteProps } from './EgTextFootnote.types.js';
 
 /** RN implementation — 6-Footnote (set · 6 variants) */
 export function EgTextFootnote(props: EgTextFootnoteProps & Pick<ViewProps, 'style'>) {

@@ -3,18 +3,18 @@
   "$description": "EDS Mobile Motion Base — duration / easing / distance / scale / opacity。仅物理量，无场景语义。",
   "groups": [
     {
-      "comment": "Duration ladder（--eds-motion-N · ms）",
+      "comment": "Duration ladder（--motion-N · ms）",
       "tokens": {
-        "eds-motion-0": "0ms",
-        "eds-motion-1": "100ms",
-        "eds-motion-2": "180ms",
-        "eds-motion-3": "280ms",
-        "eds-motion-4": "400ms",
-        "eds-motion-5": "500ms",
-        "eds-motion-6": "250ms",
-        "eds-motion-7": "350ms",
-        "eds-motion-8": "800ms",
-        "eds-motion-9": "2000ms"
+        "motion-0": "0ms",
+        "motion-1": "100ms",
+        "motion-2": "180ms",
+        "motion-3": "280ms",
+        "motion-4": "400ms",
+        "motion-5": "500ms",
+        "motion-6": "250ms",
+        "motion-7": "350ms",
+        "motion-8": "800ms",
+        "motion-9": "2000ms"
       },
       "usageNotes": [
         "0 instant · 1 micro (press/selection) · 2 fast (fade/icon)",
@@ -23,17 +23,17 @@
       ]
     },
     {
-      "comment": "Easing（--eds-motion-ease-N）",
+      "comment": "Easing（--motion-ease-N）",
       "tokens": {
-        "eds-motion-ease-1": "cubic-bezier(0.42, 0, 0.58, 1)",
-        "eds-motion-ease-2": "cubic-bezier(0.2, 0, 0, 1)",
-        "eds-motion-ease-3": "cubic-bezier(0.4, 0, 1, 1)",
-        "eds-motion-ease-4": "cubic-bezier(0.4, 0, 0.2, 1)",
-        "eds-motion-ease-5": "linear",
-        "eds-motion-ease-6": "cubic-bezier(0.34, 1.4, 0.64, 1)",
-        "eds-motion-ease-7": "cubic-bezier(0.34, 1.45, 0.64, 1)",
-        "eds-motion-ease-8": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "eds-motion-ease-9": "cubic-bezier(0.32, 0.72, 0, 1)"
+        "motion-ease-1": "cubic-bezier(0.42, 0, 0.58, 1)",
+        "motion-ease-2": "cubic-bezier(0.2, 0, 0, 1)",
+        "motion-ease-3": "cubic-bezier(0.4, 0, 1, 1)",
+        "motion-ease-4": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "motion-ease-5": "linear",
+        "motion-ease-6": "cubic-bezier(0.34, 1.4, 0.64, 1)",
+        "motion-ease-7": "cubic-bezier(0.34, 1.45, 0.64, 1)",
+        "motion-ease-8": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "motion-ease-9": "cubic-bezier(0.32, 0.72, 0, 1)"
       },
       "usageNotes": [
         "ease-1 standard · ease-2 entrance · ease-3 exit · ease-4 product",
@@ -47,7 +47,8 @@
         { "name": "motion-opacity-hidden", "value": "0" },
         { "name": "motion-opacity-dim", "value": "0.4" },
         { "name": "motion-opacity-subtle", "value": "0.7" },
-        { "name": "motion-opacity-visible", "value": "1" }
+        { "name": "motion-opacity-visible", "value": "1" },
+        { "name": "motion-opacity-disabled", "value": "0.5" }
       ]
     },
     {
@@ -57,6 +58,13 @@
         { "name": "motion-scale-subtle", "value": "0.98" },
         { "name": "motion-scale-emphasis", "value": "1.04" },
         { "name": "motion-scale-present", "value": "0.96", "comment": "Sheet / Modal / Popover 入场" }
+      ]
+    },
+    {
+      "comment": "Glass（Liquid Glass 交互基线）",
+      "tokenList": [
+        { "name": "motion-glass-scale-press", "value": "0.975", "comment": "Glass 按压缩放；比普通 Tap 更克制" },
+        { "name": "motion-glass-opacity-shimmer", "value": "0.10", "comment": "Glass Shimmer 最大透明度" }
       ]
     },
     {

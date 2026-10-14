@@ -1,2 +1,2 @@
-export { EgIconEditor } from './EgIconEditor';
-export type { EgIconEditorProps } from './EgIconEditor.types';
+export { EgIconEditor } from './EgIconEditor.js';
+export type { EgIconEditorProps } from './EgIconEditor.types.js';

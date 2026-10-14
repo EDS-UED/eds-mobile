@@ -1,2 +1,2 @@
-export { EgIconNoticeFill } from './EgIconNoticeFill';
-export type { EgIconNoticeFillProps } from './EgIconNoticeFill.types';
+export { EgIconNoticeFill } from './EgIconNoticeFill.js';
+export type { EgIconNoticeFillProps } from './EgIconNoticeFill.types.js';

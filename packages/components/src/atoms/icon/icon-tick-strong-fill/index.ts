@@ -1,2 +1,2 @@
-export { EgIconTickStrongFill } from './EgIconTickStrongFill';
-export type { EgIconTickStrongFillProps } from './EgIconTickStrongFill.types';
+export { EgIconTickStrongFill } from './EgIconTickStrongFill.js';
+export type { EgIconTickStrongFillProps } from './EgIconTickStrongFill.types.js';

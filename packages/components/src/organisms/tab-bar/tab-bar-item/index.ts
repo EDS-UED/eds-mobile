@@ -1,2 +1,2 @@
-export { EgTabBarItem } from './EgTabBarItem';
-export type { EgTabBarItemProps } from './EgTabBarItem.types';
+export { EgTabBarItem } from './EgTabBarItem.js';
+export type { EgTabBarItemProps } from './EgTabBarItem.types.js';

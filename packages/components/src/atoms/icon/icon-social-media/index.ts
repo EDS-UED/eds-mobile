@@ -1,2 +1,2 @@
-export { EgIconSocialMedia } from './EgIconSocialMedia';
-export type { EgIconSocialMediaProps } from './EgIconSocialMedia.types';
+export { EgIconSocialMedia } from './EgIconSocialMedia.js';
+export type { EgIconSocialMediaProps } from './EgIconSocialMedia.types.js';

@@ -1,2 +1,2 @@
-export { EgIconWorldDollar } from './EgIconWorldDollar';
-export type { EgIconWorldDollarProps } from './EgIconWorldDollar.types';
+export { EgIconWorldDollar } from './EgIconWorldDollar.js';
+export type { EgIconWorldDollarProps } from './EgIconWorldDollar.types.js';

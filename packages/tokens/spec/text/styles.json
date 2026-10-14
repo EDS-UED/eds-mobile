@@ -83,6 +83,24 @@
       }
     },
     {
+      "title": "Detail",
+      "className": "typography-detail",
+      "properties": {
+        "font-size": "var(--eds-detail-size)",
+        "font-weight": "var(--eds-detail-weight)",
+        "line-height": "var(--eds-detail-line-height)"
+      }
+    },
+    {
+      "title": "Detail Strong",
+      "className": "typography-detail-strong",
+      "properties": {
+        "font-size": "var(--eds-detail-strong-size)",
+        "font-weight": "var(--eds-detail-strong-weight)",
+        "line-height": "var(--eds-detail-strong-line-height)"
+      }
+    },
+    {
       "title": "Footnote",
       "className": "typography-footnote",
       "properties": {

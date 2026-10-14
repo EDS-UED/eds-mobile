@@ -1,2 +1,2 @@
-export { EgIconOvalTickMini } from './EgIconOvalTickMini';
-export type { EgIconOvalTickMiniProps } from './EgIconOvalTickMini.types';
+export { EgIconOvalTickMini } from './EgIconOvalTickMini.js';
+export type { EgIconOvalTickMiniProps } from './EgIconOvalTickMini.types.js';

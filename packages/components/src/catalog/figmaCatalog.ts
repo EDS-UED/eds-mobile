@@ -1,4 +1,4 @@
-/** Auto-generated from EDS Mobile Figma — 202 components */
+/** Auto-generated from EDS Mobile Figma — 204 components */
 export type FigmaComponentEntry = {
   figmaName: string;
   exportName: string;
@@ -295,6 +295,17 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "figmaId": "101:4752"
   },
   {
+    "figmaName": "Glass",
+    "tier": "molecules",
+    "family": "button",
+    "slug": "button-glass",
+    "figmaPage": "Button 按钮 ✅",
+    "kind": "set",
+    "variantCount": 2,
+    "figmaId": "710:900",
+    "exportName": "EgButtonGlass"
+  },
+  {
     "figmaName": "Input",
     "exportName": "EgInput",
     "tier": "molecules",
@@ -307,7 +318,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Search",
-    "exportName": "EgSearchInput",
+    "exportName": "EgSearch",
     "tier": "molecules",
     "family": "input",
     "slug": "input-search",
@@ -318,7 +329,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Textarea",
-    "exportName": "EgTextareaInput",
+    "exportName": "EgTextarea",
     "tier": "molecules",
     "family": "input",
     "slug": "input-textarea",
@@ -607,6 +618,15 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "kind": "set",
     "variantCount": 2,
     "figmaId": "710:615"
+  },
+  {
+    "figmaName": "NavBar",
+    "exportName": "EgNavBar",
+    "tier": "organisms",
+    "family": "tab-bar",
+    "slug": "tab-bar-nav-bar",
+    "figmaPage": "TabBar✅",
+    "kind": "component"
   },
   {
     "figmaName": "Notes",

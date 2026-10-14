@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconEditorProps } from './EgIconEditor.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconEditorProps } from './EgIconEditor.types.js';
 
-/** RN implementation — eds-editor (component) */
+/** RN icon — eds-editor */
 export function EgIconEditor(props: EgIconEditorProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-editor' } style={style} accessibilityLabel="eds-editor" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-editor"
+      testID={testID ?? 'icon-eds-editor'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-editor"}
+    />
+  );
 }

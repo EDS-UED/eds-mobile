@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTitleComboHeadlineProps } from './EgTitleComboHeadline.types';
+import type { EgTitleComboHeadlineProps } from './EgTitleComboHeadline.types.js';
 
 /** RN implementation — Title Combo/2-Headline (set · 3 variants) */
 export function EgTitleComboHeadline(props: EgTitleComboHeadlineProps & Pick<ViewProps, 'style'>) {

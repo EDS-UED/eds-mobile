@@ -1,2 +1,2 @@
-export { EgIconDisableFill } from './EgIconDisableFill';
-export type { EgIconDisableFillProps } from './EgIconDisableFill.types';
+export { EgIconDisableFill } from './EgIconDisableFill.js';
+export type { EgIconDisableFillProps } from './EgIconDisableFill.types.js';

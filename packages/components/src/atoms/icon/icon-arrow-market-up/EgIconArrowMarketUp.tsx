@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowMarketUpProps } from './EgIconArrowMarketUp.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowMarketUpProps } from './EgIconArrowMarketUp.types.js';
 
-/** RN implementation — eds-arrow-market-up (component) */
+/** RN icon — eds-arrow-market-up */
 export function EgIconArrowMarketUp(props: EgIconArrowMarketUpProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-market-up' } style={style} accessibilityLabel="eds-arrow-market-up" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-market-up"
+      testID={testID ?? 'icon-eds-arrow-market-up'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-market-up"}
+    />
+  );
 }

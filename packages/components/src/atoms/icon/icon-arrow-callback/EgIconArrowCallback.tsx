@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowCallbackProps } from './EgIconArrowCallback.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowCallbackProps } from './EgIconArrowCallback.types.js';
 
-/** RN implementation — eds-arrow-callback (component) */
+/** RN icon — eds-arrow-callback */
 export function EgIconArrowCallback(props: EgIconArrowCallbackProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-callback' } style={style} accessibilityLabel="eds-arrow-callback" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-callback"
+      testID={testID ?? 'icon-eds-arrow-callback'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-callback"}
+    />
+  );
 }

@@ -1,2 +1,2 @@
-export { EgIconArrowUpdate } from './EgIconArrowUpdate';
-export type { EgIconArrowUpdateProps } from './EgIconArrowUpdate.types';
+export { EgIconArrowUpdate } from './EgIconArrowUpdate.js';
+export type { EgIconArrowUpdateProps } from './EgIconArrowUpdate.types.js';

@@ -1,73 +1,54 @@
 {
-  "$description": "EDS Effect System base tokens. Effect color primitives (--effect-vulvar-shadow, etc.) live in spec/color/semantic.json; shadow layers reference scale semantic blur/depth tokens.",
+  "$description": "EDS Effect System base tokens — Box 阴影 + 毛玻璃 backdrop（RN 用 expo-blur  Frosted，非液态玻璃基座）。Effect 色见 spec/color/semantic.json。",
   "groups": [
     {
-      "comment": "阴影系统（Shadow System）",
+      "comment": "阴影系统（Box Shadow）",
       "tokens": [
         {
-          "name": "eds-shadow-deep",
-          "title": "Deep Shadows（系统级）",
+          "name": "eds-shadow-box-subtle",
+          "title": "Box Subtle（浅阴影）",
           "layers": [
-            "0 0 0 0.5px var(--stroke-outline-deep)",
-            "0 var(--blur-shallow) var(--blur-deep) 0 var(--effect-vulvar-shadow)"
+            "0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset",
+            "0 var(--depth-sm) var(--blur-sm) 0 var(--effect-vulvar-subtle)"
           ],
           "usageNotes": [
-            "容器使用，该特效不用于业务。使用该特效时：",
-            "1、正确：添加背景色",
-            "2、正确：添加圆角",
-            "3、错误：添加边框"
+            "浅阴影 — Button Box：内光 inset + 外 vulvar-subtle。"
           ]
         },
         {
-          "name": "eds-shadow-light",
-          "title": "Light Shadows（业务级）",
+          "name": "eds-shadow-box-shallow",
+          "title": "Box Shallow（中等阴影）",
           "layers": [
-            "0 0 0 0.5px var(--stroke-outline-shallow)",
-            "0 var(--depth-shallow) var(--blur-shallow) 0 var(--effect-vulvar-shadow)"
+            "0 var(--depth-md) var(--blur-md) 0 var(--effect-inner-light) inset",
+            "0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep)"
           ],
           "usageNotes": [
-            "业务级 Card / Panel / Flotation 投影。使用该特效时：",
-            "1、正确：添加背景色",
-            "2、正确：添加圆角",
-            "3、Flotation/Popup 仍须同白 border（material-same-white-quaternary），与 shadow 首层 stroke-outline 并存"
+            "中等阴影 — Flotation Box：内光 depth-md / blur-md + 外 vulvar-deep。"
           ]
         },
         {
-          "name": "eds-shadow-subtle",
-          "title": "Subtle Shadows（结构级）",
+          "name": "eds-shadow-box-deep",
+          "title": "Box Deep（深阴影）",
           "layers": [
-            "0 0 0 0.5px var(--stroke-outline-subtle)",
-            "0 var(--depth-subtle) var(--blur-subtle) 0 var(--effect-vulvar-shadow-subtle)"
+            "0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset",
+            "0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep)"
           ],
           "usageNotes": [
-            "极浅阴影，视觉弱化，用于模块、大卡片等。使用该特效时：",
-            "1、正确：添加背景色",
-            "2、正确：添加圆角",
-            "3、描边已含于 shadow 首层（stroke-outline-subtle），勿再添加 border"
-          ]
-        },
-        {
-          "name": "eds-shadow-molde",
-          "title": "Molde Shadows（模块层级）",
-          "layers": [
-            "-2px 0 var(--blur-subtle) 0 var(--effect-vulvar-shadow-subtle)"
-          ],
-          "usageNotes": [
-            "用于模块左弱阴影。使用该特效时：",
-            "1、直接添加"
+            "深阴影 — TabBar Box：内光 inset + 外 vulvar-deep。",
+            "深阴影 — 系统级容器面板。须背景色 + 圆角；勿额外 border。"
           ]
         }
       ]
     },
     {
-      "comment": "玻璃材质系统（Glass System）",
+      "comment": "玻璃效果（Glass Effect）",
       "tokens": [
         {
-          "name": "eds-blur-bg",
-          "title": "Blurred BG —— 背景模糊",
-          "value": "saturate(360%) blur(50px)",
+          "name": "eds-blur-glass",
+          "title": "模糊玻璃（Blur Glass）",
+          "value": "blur(calc(var(--blur-md) / 2))",
           "usageNotes": [
-            "用于背景模糊与滚动遮罩层"
+            "Web：backdrop-filter / -webkit-backdrop-filter。RN 暂无液态玻璃公共 token，业务用 expo-blur 毛玻璃。"
           ]
         }
       ]

@@ -1,2 +1,2 @@
-export { EgIconMerchant } from './EgIconMerchant';
-export type { EgIconMerchantProps } from './EgIconMerchant.types';
+export { EgIconMerchant } from './EgIconMerchant.js';
+export type { EgIconMerchantProps } from './EgIconMerchant.types.js';

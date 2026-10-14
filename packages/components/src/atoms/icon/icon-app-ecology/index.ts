@@ -1,2 +1,2 @@
-export { EgIconAppEcology } from './EgIconAppEcology';
-export type { EgIconAppEcologyProps } from './EgIconAppEcology.types';
+export { EgIconAppEcology } from './EgIconAppEcology.js';
+export type { EgIconAppEcologyProps } from './EgIconAppEcology.types.js';

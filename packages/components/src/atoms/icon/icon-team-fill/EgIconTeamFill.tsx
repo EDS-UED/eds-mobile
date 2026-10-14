@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconTeamFillProps } from './EgIconTeamFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconTeamFillProps } from './EgIconTeamFill.types.js';
 
-/** RN implementation — eds-team-fill (component) */
+/** RN icon — eds-team-fill */
 export function EgIconTeamFill(props: EgIconTeamFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-team-fill' } style={style} accessibilityLabel="eds-team-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-team-fill"
+      testID={testID ?? 'icon-eds-team-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-team-fill"}
+    />
+  );
 }

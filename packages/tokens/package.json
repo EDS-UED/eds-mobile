@@ -25,6 +25,12 @@
     "./effect": "./dist/css/effect/index.css",
     "./effect/light": "./dist/css/effect/themes/light.css",
     "./effect/dark": "./dist/css/effect/themes/dark.css",
+    "./liquid-glass": {
+      "import": "./dist/js/liquid-glass.js"
+    },
+    "./liquid-glass/css": "./dist/css/liquid-glass/index.css",
+    "./liquid-glass/system": "./dist/json/liquid-glass/system.json",
+    "./liquid-glass/surface": "./dist/json/liquid-glass/surface.json",
     "./color": "./dist/css/color/index.css",
     "./color/light": "./dist/css/color/themes/light.css",
     "./color/dark": "./dist/css/color/themes/dark.css",
@@ -36,6 +42,10 @@
     "./theme": {
       "import": "./dist/js/theme.js",
       "types": "./dist/js/theme.d.ts"
+    },
+    "./fonts-native": {
+      "import": "./dist/js/fonts-native.js",
+      "types": "./dist/js/fonts-native.d.ts"
     }
   },
   "files": [

@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgStatusCardFeedbackProps } from './EgStatusCardFeedback.types';
+import type { EgStatusCardFeedbackProps } from './EgStatusCardFeedback.types.js';
 
 /** RN implementation — Status Card (set · 2 variants) */
 export function EgStatusCardFeedback(props: EgStatusCardFeedbackProps & Pick<ViewProps, 'style'>) {

@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowLaunchSquareProps } from './EgIconArrowLaunchSquare.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowLaunchSquareProps } from './EgIconArrowLaunchSquare.types.js';
 
-/** RN implementation — eds-arrow-launch-square (component) */
+/** RN icon — eds-arrow-launch-square */
 export function EgIconArrowLaunchSquare(props: EgIconArrowLaunchSquareProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-launch-square' } style={style} accessibilityLabel="eds-arrow-launch-square" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-launch-square"
+      testID={testID ?? 'icon-eds-arrow-launch-square'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-launch-square"}
+    />
+  );
 }

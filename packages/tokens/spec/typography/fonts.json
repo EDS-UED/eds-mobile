@@ -1,0 +1,27 @@
+{
+  "comment": "Bundled font faces. Single source for web @font-face and RN font registration.",
+  "families": [
+    {
+      "name": "EDS Text",
+      "role": "sans",
+      "comment": "UI font (Regular / Medium / SemiBold / Bold).",
+      "faces": [
+        { "weight": 400, "family": "EDSText-Regular", "file": "EDSText-Regular.ttf" },
+        { "weight": 500, "family": "EDSText-Medium", "file": "EDSText-Medium.ttf" },
+        { "weight": 600, "family": "EDSText-SemiBold", "file": "EDSText-SemiBold.ttf" },
+        { "weight": 700, "family": "EDSText-Bold", "file": "EDSText-Bold.ttf" }
+      ]
+    },
+    {
+      "name": "IBM Plex Mono",
+      "role": "mono",
+      "comment": "Code font (Regular / Medium / SemiBold / Bold).",
+      "faces": [
+        { "weight": 400, "family": "IBMPlexMono-Regular", "file": "IBMPlexMono-Regular.ttf" },
+        { "weight": 500, "family": "IBMPlexMono-Medium", "file": "IBMPlexMono-Medium.ttf" },
+        { "weight": 600, "family": "IBMPlexMono-SemiBold", "file": "IBMPlexMono-SemiBold.ttf" },
+        { "weight": 700, "family": "IBMPlexMono-Bold", "file": "IBMPlexMono-Bold.ttf" }
+      ]
+    }
+  ]
+}

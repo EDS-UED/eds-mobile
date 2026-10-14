@@ -1,8 +1,11 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgComboActionButtonAltProps } from './EgComboActionButtonAlt.types';
+import type { EgComboActionButtonProps } from '../combo-action-button/EgComboActionButton.js';
+import { EgComboActionButton } from '../combo-action-button/EgComboActionButton.js';
 
-/** RN implementation — Combo/Action (set · 2 variants) */
-export function EgComboActionButtonAlt(props: EgComboActionButtonAltProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'button-combo-action-alt' } style={style} accessibilityLabel="Combo/Action" />;
+export type EgComboActionButtonAltProps = EgComboActionButtonProps;
+
+export function EgComboActionButtonAlt({
+  layout = 'horizontal',
+  ...props
+}: EgComboActionButtonAltProps) {
+  return <EgComboActionButton {...props} layout={layout} testID={props.testID ?? 'button-combo-action-alt'} />;
 }

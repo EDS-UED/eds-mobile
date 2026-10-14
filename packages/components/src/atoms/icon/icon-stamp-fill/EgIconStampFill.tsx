@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconStampFillProps } from './EgIconStampFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconStampFillProps } from './EgIconStampFill.types.js';
 
-/** RN implementation — eds-stamp-fill (component) */
+/** RN icon — eds-stamp-fill */
 export function EgIconStampFill(props: EgIconStampFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-stamp-fill' } style={style} accessibilityLabel="eds-stamp-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-stamp-fill"
+      testID={testID ?? 'icon-eds-stamp-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-stamp-fill"}
+    />
+  );
 }

@@ -1,2 +1,2 @@
-export { EgIconArrowIntegratedSort } from './EgIconArrowIntegratedSort';
-export type { EgIconArrowIntegratedSortProps } from './EgIconArrowIntegratedSort.types';
+export { EgIconArrowIntegratedSort } from './EgIconArrowIntegratedSort.js';
+export type { EgIconArrowIntegratedSortProps } from './EgIconArrowIntegratedSort.types.js';

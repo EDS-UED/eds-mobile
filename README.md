@@ -5,7 +5,6 @@ EverGreen Design System（**EDS**）— React Native 端。Figma 同步 token + 
 | | |
 |---|---|
 | **GitHub** | [EDS-UED/eds-mobile](https://github.com/EDS-UED/eds-mobile) |
-| **Live Showcase** | https://eds-ued.github.io/eds-mobile/ |
 | **Figma** | [EDS Mobile](https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-) |
 | **npm** | [`@eds-evergreen/mobile`](https://www.npmjs.com/package/@eds-evergreen/mobile) |
 | **规范** | `.cursor/rules/work.mdc` · `AGENTS.md` |
@@ -20,49 +19,62 @@ EverGreen Design System（**EDS**）— React Native 端。Figma 同步 token + 
 ```bash
 pnpm install
 pnpm build:tokens
-pnpm dev:playground     # RN preview — Expo · 模拟器 / 真机扫码
-pnpm dev:showcase       # Web 文档（Vue 过渡）→ http://localhost:5178
+pnpm dev                # Showcase → Expo · 模拟器 / 真机
+pnpm dev:showcase
 ```
 
-## Structure
+## Project structure
+
+Monorepo 目录与 `eds-desktop` 对齐：
 
 ```
 eds-mobile/
 ├── packages/
-│   ├── tokens/             @eds/mobile-tokens — Figma → CSS + RN theme
-│   ├── components/         @eds/mobile-components — 202 RN components (Figma 1:1)
-│   ├── mobile-animations/  @eds/mobile-animations — Motion presets (Reanimated)
-│   └── mobile/             @eds-evergreen/mobile — unified npm package
-├── apps/playground/        RN Playground — component live preview（Expo · 真源）
-├── apps/showcase/          Web 文档壳（Vue · 过渡）— Tokens · Animations · Components…
-└── figma.config.json       Mobile Figma fileKey LlB2jT8KdxM6taf5wOSAEM
+│   ├── mobile/              @eds-evergreen/mobile — **唯一对外发布的 npm 总包**
+│   ├── tokens/              @eds/mobile-tokens
+│   ├── animations/          @eds/mobile-animations
+│   ├── components/          @eds/mobile-components — 202 Eg*
+│   ├── patterns/            @eds/mobile-patterns（持续扩展）
+│   └── workflows/           @eds/mobile-workflows（持续扩展）
+├── apps/
+│   └── showcase/            Native Showcase（Expo）— 与 desktop apps/showcase 同构
+└── figma.config.json
+```
+
+### `apps/showcase/src/`（与 desktop showcase 同构）
+
+```
+src/
+├── data/           # 导航、组件文档 registry、tokens/animations 数据
+├── views/          # tokens · components · animations · patterns · workflows · scenes
+├── navigation/     # React Navigation（对应 desktop router/）
+├── hooks/          # 对应 desktop composables/
+├── lib/
+└── layout/         # 壳层（持续扩展）
 ```
 
 ## Figma sync
 
 ```bash
-# After updating variables in Mobile Figma (Dev Mode):
 node packages/tokens/scripts/import-mobile-figma.mjs
 pnpm build:tokens
-node packages/components/scripts/generate-catalog.mjs  # if components changed
+node packages/components/scripts/generate-catalog.mjs
 ```
 
 ## Consumer usage
 
 ```bash
-pnpm add @eds-evergreen/mobile react react-native react-native-svg react-native-reanimated
+pnpm add @eds-evergreen/mobile
 ```
 
 ```ts
-import { mobileTheme, EgBrandButton } from '@eds-evergreen/mobile';
-import { getThemeColors } from '@eds-evergreen/mobile/components';
+import { EgButtonBrand, mobileTheme } from '@eds-evergreen/mobile';
+import { mobileMotion } from '@eds-evergreen/mobile/animations';
 ```
 
-## Isolation guarantee
+## Build & publish
 
-- This repo never modifies [EDS-UED/eds-desktop](https://github.com/EDS-UED/eds-desktop)
-- `pnpm sync` only discovers consumers linking `@eds/mobile-*` or `@eds-evergreen/mobile`
-
-## License
-
-MIT
+```bash
+pnpm build:mobile
+pnpm publish:mobile
+```

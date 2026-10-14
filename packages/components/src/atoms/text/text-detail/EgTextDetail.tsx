@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgTextDetailProps } from './EgTextDetail.types';
+import type { EgTextDetailProps } from './EgTextDetail.types.js';
 
 /** RN implementation — 5-Detail (set · 6 variants) */
 export function EgTextDetail(props: EgTextDetailProps & Pick<ViewProps, 'style'>) {

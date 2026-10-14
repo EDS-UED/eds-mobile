@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconNoticeFillProps } from './EgIconNoticeFill.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconNoticeFillProps } from './EgIconNoticeFill.types.js';
 
-/** RN implementation — eds-notice-fill (component) */
+/** RN icon — eds-notice-fill */
 export function EgIconNoticeFill(props: EgIconNoticeFillProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-notice-fill' } style={style} accessibilityLabel="eds-notice-fill" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-notice-fill"
+      testID={testID ?? 'icon-eds-notice-fill'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-notice-fill"}
+    />
+  );
 }

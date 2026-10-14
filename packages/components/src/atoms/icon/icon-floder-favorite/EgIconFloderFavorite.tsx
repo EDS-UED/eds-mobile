@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconFloderFavoriteProps } from './EgIconFloderFavorite.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconFloderFavoriteProps } from './EgIconFloderFavorite.types.js';
 
-/** RN implementation — eds-floder-favorite (component) */
+/** RN icon — eds-floder-favorite */
 export function EgIconFloderFavorite(props: EgIconFloderFavoriteProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-floder-favorite' } style={style} accessibilityLabel="eds-floder-favorite" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-floder-favorite"
+      testID={testID ?? 'icon-eds-floder-favorite'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-floder-favorite"}
+    />
+  );
 }

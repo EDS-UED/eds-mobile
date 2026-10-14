@@ -1,2 +1,2 @@
-export { EgIconUsdAccountingFill } from './EgIconUsdAccountingFill';
-export type { EgIconUsdAccountingFillProps } from './EgIconUsdAccountingFill.types';
+export { EgIconUsdAccountingFill } from './EgIconUsdAccountingFill.js';
+export type { EgIconUsdAccountingFillProps } from './EgIconUsdAccountingFill.types.js';

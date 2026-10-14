@@ -1,8 +1,8 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgSystemTagAltProps } from './EgSystemTagAlt.types';
+import type { EgSystemTagProps } from '../system-tag/EgSystemTag.js';
+import { EgSystemTag } from '../system-tag/EgSystemTag.js';
 
-/** RN implementation — System (set · 15 variants) */
-export function EgSystemTagAlt(props: EgSystemTagAltProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'tag-system-alt' } style={style} accessibilityLabel="System" />;
+export type EgSystemTagAltProps = EgSystemTagProps;
+
+export function EgSystemTagAlt(props: EgSystemTagAltProps) {
+  return <EgSystemTag {...props} alt testID={props.testID ?? 'tag-system-alt'} label={props.label ?? 'Tag'} />;
 }

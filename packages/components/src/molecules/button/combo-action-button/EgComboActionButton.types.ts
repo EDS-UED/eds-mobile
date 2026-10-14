@@ -1,5 +1,2 @@
 /** Figma: Combo/Action · Button 按钮 ✅ */
-export type EgComboActionButtonProps = {
-  /** Figma component set — variants synced from EDS Mobile */
-  testID?: string;
-};
+export type { EgComboActionButtonProps } from './EgComboActionButton.js';

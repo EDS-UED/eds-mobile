@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconBlockchainProps } from './EgIconBlockchain.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconBlockchainProps } from './EgIconBlockchain.types.js';
 
-/** RN implementation — eds-blockchain (component) */
+/** RN icon — eds-blockchain */
 export function EgIconBlockchain(props: EgIconBlockchainProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-blockchain' } style={style} accessibilityLabel="eds-blockchain" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-blockchain"
+      testID={testID ?? 'icon-eds-blockchain'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-blockchain"}
+    />
+  );
 }

@@ -1,8 +1,8 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgDangerButtonProps } from './EgDangerButton.types';
+import type { EgSceneButtonProps } from '../../_shared/props.js';
+import { EgButtonBase } from '../_shared/EgButtonBase.js';
 
-/** RN implementation — Danger (set · 60 variants) */
-export function EgDangerButton(props: EgDangerButtonProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'button-danger' } style={style} accessibilityLabel="Danger" />;
+export type EgDangerButtonProps = EgSceneButtonProps;
+
+export function EgDangerButton(props: EgDangerButtonProps) {
+  return <EgButtonBase {...props} tone="danger" testID={props.testID ?? 'button-danger'} />;
 }

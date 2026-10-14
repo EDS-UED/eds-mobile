@@ -1,2 +1,2 @@
-export { EgIconAddEmployer } from './EgIconAddEmployer';
-export type { EgIconAddEmployerProps } from './EgIconAddEmployer.types';
+export { EgIconAddEmployer } from './EgIconAddEmployer.js';
+export type { EgIconAddEmployerProps } from './EgIconAddEmployer.types.js';

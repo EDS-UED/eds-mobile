@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowLeftMiniIosProps } from './EgIconArrowLeftMiniIos.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowLeftMiniIosProps } from './EgIconArrowLeftMiniIos.types.js';
 
-/** RN implementation — eds-arrow-left-mini-ios (component) */
+/** RN icon — eds-arrow-left-mini-ios */
 export function EgIconArrowLeftMiniIos(props: EgIconArrowLeftMiniIosProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-left-mini-ios' } style={style} accessibilityLabel="eds-arrow-left-mini-ios" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-left-mini-ios"
+      testID={testID ?? 'icon-eds-arrow-left-mini-ios'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-left-mini-ios"}
+    />
+  );
 }

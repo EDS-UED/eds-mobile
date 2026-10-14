@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconArrowEntryProps } from './EgIconArrowEntry.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconArrowEntryProps } from './EgIconArrowEntry.types.js';
 
-/** RN implementation — eds-arrow-entry (component) */
+/** RN icon — eds-arrow-entry */
 export function EgIconArrowEntry(props: EgIconArrowEntryProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-arrow-entry' } style={style} accessibilityLabel="eds-arrow-entry" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-arrow-entry"
+      testID={testID ?? 'icon-eds-arrow-entry'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-arrow-entry"}
+    />
+  );
 }

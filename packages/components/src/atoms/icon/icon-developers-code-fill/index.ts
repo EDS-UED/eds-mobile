@@ -1,2 +1,2 @@
-export { EgIconDevelopersCodeFill } from './EgIconDevelopersCodeFill';
-export type { EgIconDevelopersCodeFillProps } from './EgIconDevelopersCodeFill.types';
+export { EgIconDevelopersCodeFill } from './EgIconDevelopersCodeFill.js';
+export type { EgIconDevelopersCodeFillProps } from './EgIconDevelopersCodeFill.types.js';

@@ -1,8 +1,15 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgOptionButtonProps } from './EgOptionButton.types';
+import type { EgSceneButtonProps } from '../../_shared/props.js';
+import { EgButtonBase } from '../_shared/EgButtonBase.js';
 
-/** RN implementation — Option (set · 20 variants) */
-export function EgOptionButton(props: EgOptionButtonProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'button-option' } style={style} accessibilityLabel="Option" />;
+export type EgOptionButtonProps = EgSceneButtonProps;
+
+export function EgOptionButton(props: EgOptionButtonProps) {
+  return (
+    <EgButtonBase
+      {...props}
+      tone="subtle"
+      figmaType={props.figmaType ?? 'primary'}
+      testID={props.testID ?? 'button-option'}
+    />
+  );
 }

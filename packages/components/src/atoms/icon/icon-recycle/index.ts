@@ -1,2 +1,2 @@
-export { EgIconRecycle } from './EgIconRecycle';
-export type { EgIconRecycleProps } from './EgIconRecycle.types';
+export { EgIconRecycle } from './EgIconRecycle.js';
+export type { EgIconRecycleProps } from './EgIconRecycle.types.js';

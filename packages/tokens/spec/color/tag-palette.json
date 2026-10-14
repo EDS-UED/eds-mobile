@@ -151,5 +151,61 @@
       "light": { "bg": "#020304", "text": "#020304", "bar": "#ff9e80" },
       "dark": { "bg": "#020304", "text": "#020304", "bar": "#ff9e80" }
     }
+  },
+  "mobileColor": {
+    "green": {
+      "light": { "bg": "#bff5dc", "text": "#0a5537", "altBg": "#ffffff" },
+      "dark": { "bg": "#08462d", "text": "#00d888", "altBg": "#020304" }
+    },
+    "yellow": {
+      "light": { "bg": "#fff0be", "text": "#78370f", "altBg": "#ffffff" },
+      "dark": { "bg": "#55412d", "text": "#ffc373", "altBg": "#020304" }
+    },
+    "red": {
+      "light": { "bg": "#ffd2d2", "text": "#6e2319", "altBg": "#ffffff" },
+      "dark": { "bg": "#50302a", "text": "#ff6262", "altBg": "#020304" }
+    },
+    "blue": {
+      "light": { "bg": "#c8d7fa", "text": "#0f3269", "altBg": "#ffffff" },
+      "dark": { "bg": "#263b5b", "text": "#297eff", "altBg": "#020304" }
+    },
+    "purple": {
+      "light": { "bg": "#e5d7fa", "text": "#690f69", "altBg": "#ffffff" },
+      "dark": { "bg": "#3a3a6f", "text": "#9b87ff", "altBg": "#020304" }
+    },
+    "blueGrey": {
+      "light": { "bg": "#d7d9db", "text": "#56585a", "altBg": "#ffffff" },
+      "dark": { "bg": "#3e454a", "text": "#7f8993", "altBg": "#020304" }
+    },
+    "emeraldGreen": {
+      "light": { "bg": "#a8f858", "text": "#284908", "altBg": "#ffffff" },
+      "dark": { "bg": "#2b4a22", "text": "#7fff5d", "altBg": "#020304" }
+    },
+    "gray": {
+      "light": { "bg": "#ffffff", "text": "#020304", "altBg": "#0203040d" },
+      "dark": { "bg": "#ffffff12", "text": "#ffffff", "altBg": "#ffffff12" }
+    }
+  },
+  "mobileStatus": {
+    "danger": {
+      "light": { "bg": "#ffd2d2", "text": "#6e2319" },
+      "dark": { "bg": "#50302a", "text": "#ff6262" }
+    },
+    "warning": {
+      "light": { "bg": "#fff0be", "text": "#78370f" },
+      "dark": { "bg": "#55412d", "text": "#ffc373" }
+    },
+    "success": {
+      "light": { "bg": "#bff5dc", "text": "#0a5537" },
+      "dark": { "bg": "#08462d", "text": "#00d888" }
+    },
+    "ready": {
+      "light": { "bg": "#c8d7fa", "text": "#0f3269" },
+      "dark": { "bg": "#263b5b", "text": "#297eff" }
+    },
+    "invalid": {
+      "light": { "bg": "#d7d9db", "text": "#56585a" },
+      "dark": { "bg": "#3e454a", "text": "#7f8993" }
+    }
   }
 }

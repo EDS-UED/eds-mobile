@@ -1,2 +1,6 @@
-export { EgDivider } from './EgDivider';
-export type { EgDividerProps } from './EgDivider.types';
+export { EgDivider } from './EgDivider.js';
+export type {
+  EgDividerOrientation,
+  EgDividerProps,
+  EgDividerVariant,
+} from './EgDivider.types.js';

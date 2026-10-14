@@ -1,2 +1,2 @@
-export { EgIconTeamFill } from './EgIconTeamFill';
-export type { EgIconTeamFillProps } from './EgIconTeamFill.types';
+export { EgIconTeamFill } from './EgIconTeamFill.js';
+export type { EgIconTeamFillProps } from './EgIconTeamFill.types.js';

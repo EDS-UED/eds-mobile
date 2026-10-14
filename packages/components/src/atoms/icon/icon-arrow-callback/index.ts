@@ -1,2 +1,2 @@
-export { EgIconArrowCallback } from './EgIconArrowCallback';
-export type { EgIconArrowCallbackProps } from './EgIconArrowCallback.types';
+export { EgIconArrowCallback } from './EgIconArrowCallback.js';
+export type { EgIconArrowCallbackProps } from './EgIconArrowCallback.types.js';

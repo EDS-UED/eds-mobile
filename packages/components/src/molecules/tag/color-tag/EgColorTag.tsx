@@ -1,8 +1,12 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgColorTagProps } from './EgColorTag.types';
+import type { ColorTagType, EgCommonProps, EgLabelProps, TagSize } from '../../../shared/types.js';
+import { EgTagBase } from '../_shared/EgTagBase.js';
 
-/** RN implementation — Color (set · 24 variants) */
-export function EgColorTag(props: EgColorTagProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'tag-color' } style={style} accessibilityLabel="Color" />;
+export type EgColorTagProps = EgCommonProps &
+  EgLabelProps & {
+    size?: TagSize;
+    colorType?: ColorTagType;
+  };
+
+export function EgColorTag({ colorType = 'green', label = 'Tag', ...props }: EgColorTagProps) {
+  return <EgTagBase {...props} colorType={colorType} label={label} testID={props.testID ?? 'tag-color'} />;
 }

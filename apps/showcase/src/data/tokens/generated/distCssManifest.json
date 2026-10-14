@@ -1,0 +1,2893 @@
+{
+  "vars": {
+    "scale": {
+      "scale-base": "4px",
+      "scale-0": "calc(0 * var(--scale-base))",
+      "scale-0125": "calc(0.125 * var(--scale-base))",
+      "scale-025": "calc(0.25 * var(--scale-base))",
+      "scale-0375": "calc(0.375 * var(--scale-base))",
+      "scale-05": "calc(0.5 * var(--scale-base))",
+      "scale-1": "calc(1 * var(--scale-base))",
+      "scale-1-5": "calc(1.5 * var(--scale-base))",
+      "scale-2": "calc(2 * var(--scale-base))",
+      "scale-2-5": "calc(2.5 * var(--scale-base))",
+      "scale-3": "calc(3 * var(--scale-base))",
+      "scale-4": "calc(4 * var(--scale-base))",
+      "scale-5": "calc(5 * var(--scale-base))",
+      "scale-5-5": "calc(5.5 * var(--scale-base))",
+      "scale-6": "calc(6 * var(--scale-base))",
+      "scale-7": "calc(7 * var(--scale-base))",
+      "scale-8": "calc(8 * var(--scale-base))",
+      "scale-9": "calc(9 * var(--scale-base))",
+      "scale-10": "calc(10 * var(--scale-base))",
+      "scale-11": "calc(11 * var(--scale-base))",
+      "scale-12": "calc(12 * var(--scale-base))",
+      "scale-13": "calc(13 * var(--scale-base))",
+      "scale-14": "calc(14 * var(--scale-base))",
+      "scale-15": "calc(15 * var(--scale-base))",
+      "scale-16": "calc(16 * var(--scale-base))",
+      "scale-17": "calc(17 * var(--scale-base))",
+      "scale-18": "calc(18 * var(--scale-base))",
+      "scale-19": "calc(19 * var(--scale-base))",
+      "scale-20": "calc(20 * var(--scale-base))",
+      "scale-30": "calc(30 * var(--scale-base))",
+      "scale-40": "calc(40 * var(--scale-base))",
+      "scale-50": "calc(50 * var(--scale-base))",
+      "scale-full": "888px",
+      "spacing-0": "var(--scale-0)",
+      "spacing-05": "var(--scale-05)",
+      "spacing-1": "var(--scale-1)",
+      "spacing-1-5": "var(--scale-1-5)",
+      "spacing-2": "var(--scale-2)",
+      "spacing-2-5": "var(--scale-2-5)",
+      "spacing-3": "var(--scale-3)",
+      "spacing-4": "var(--scale-4)",
+      "spacing-5": "var(--scale-5)",
+      "spacing-6": "var(--scale-6)",
+      "spacing-7": "var(--scale-7)",
+      "spacing-8": "var(--scale-8)",
+      "spacing-9": "var(--scale-9)",
+      "spacing-10": "var(--scale-10)",
+      "spacing-12": "var(--scale-12)",
+      "spacing-14": "var(--scale-14)",
+      "spacing-16": "var(--scale-16)",
+      "spacing-18": "var(--scale-18)",
+      "spacing-20": "var(--scale-20)",
+      "radius-0": "var(--scale-0)",
+      "radius-xs": "var(--scale-2)",
+      "radius-sm": "var(--scale-3)",
+      "radius-md": "var(--scale-4)",
+      "radius-lg": "var(--scale-6)",
+      "radius-xl": "var(--scale-8)",
+      "radius-full": "var(--scale-full)",
+      "stroke-xs": "0.2px",
+      "stroke-sm": "var(--scale-025)",
+      "stroke-md": "var(--scale-0375)",
+      "stroke-lg": "var(--scale-05)",
+      "blur-xs": "var(--scale-0)",
+      "blur-sm": "var(--scale-2)",
+      "blur-md": "var(--scale-4)",
+      "blur-lg": "var(--scale-20)",
+      "depth-xs": "var(--scale-0125)",
+      "depth-sm": "var(--scale-05)",
+      "depth-md": "var(--scale-1)",
+      "depth-lg": "var(--scale-4)",
+      "capsule-xs": "var(--scale-9)",
+      "capsule-sm": "var(--scale-10)",
+      "capsule-md": "var(--scale-12)",
+      "capsule-lg": "var(--scale-13)",
+      "capsule-xl": "var(--scale-14)",
+      "symbol-xs": "var(--scale-4)",
+      "symbol-sm": "var(--scale-5)",
+      "symbol-md": "var(--scale-5-5)",
+      "symbol-lg": "var(--scale-6)",
+      "avatar-xs": "var(--scale-4)",
+      "avatar-sm": "var(--scale-6)",
+      "avatar-md": "var(--scale-8)",
+      "avatar-lg": "var(--scale-9)",
+      "avatar-xl": "var(--scale-10)",
+      "button-xs": "var(--scale-8)",
+      "button-sm": "var(--scale-10)",
+      "button-md": "var(--scale-12)",
+      "button-lg": "var(--scale-14)",
+      "button-xl": "var(--scale-15)",
+      "input-xs": "var(--scale-8)",
+      "input-sm": "var(--scale-10)",
+      "input-md": "var(--scale-12)",
+      "input-lg": "var(--scale-13)",
+      "input-xl": "var(--scale-14)",
+      "dropdown-xs": "var(--scale-8)",
+      "dropdown-sm": "var(--scale-10)",
+      "dropdown-md": "var(--scale-12)",
+      "dropdown-lg": "var(--scale-13)",
+      "dropdown-xl": "var(--scale-14)",
+      "tag-sm": "var(--scale-4)",
+      "tag-md": "var(--scale-5)",
+      "tag-lg": "var(--scale-6)",
+      "checkbox-sm": "var(--scale-4)",
+      "checkbox-md": "var(--scale-5)",
+      "checkbox-lg": "var(--scale-6)",
+      "radio-sm": "var(--scale-4)",
+      "radio-md": "var(--scale-5)",
+      "radio-lg": "var(--scale-6)",
+      "switch-sm": "var(--scale-4)",
+      "switch-md": "var(--scale-5)",
+      "switch-lg": "var(--scale-6)"
+    },
+    "typography": {
+      "size-display": "34px",
+      "size-headline": "26px",
+      "size-title": "21px",
+      "size-body-large": "19px",
+      "size-body-medium": "17px",
+      "size-body-small": "15px",
+      "size-detail": "14px",
+      "size-footnote": "13px",
+      "size-bar": "10px",
+      "size-toggle-mark-md": "12px",
+      "line-height-display": "44px",
+      "line-height-headline": "32px",
+      "line-height-title": "28px",
+      "line-height-body-large": "26px",
+      "line-height-body-medium": "24px",
+      "line-height-body-small": "20px",
+      "line-height-detail": "18px",
+      "line-height-footnote": "16px",
+      "line-height-bar": "14px",
+      "line-height-toggle-mark-md": "12px",
+      "weight-regular": "400",
+      "weight-medium": "500",
+      "weight-semibold": "600",
+      "weight-bold": "700",
+      "eds-family-sans": "\"EDS Text\", \"PingFang SC\", SourceHanSansSC, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+      "eds-family-mono": "\"IBM Plex Mono\", ui-monospace, monospace",
+      "eds-display-size": "var(--size-display)",
+      "eds-display-weight": "var(--weight-bold)",
+      "eds-display-line-height": "var(--line-height-display)",
+      "eds-headline-size": "var(--size-headline)",
+      "eds-headline-weight": "var(--weight-bold)",
+      "eds-headline-line-height": "var(--line-height-headline)",
+      "eds-title-size": "var(--size-title)",
+      "eds-title-weight": "var(--weight-bold)",
+      "eds-title-line-height": "var(--line-height-title)",
+      "eds-body-large-size": "var(--size-body-large)",
+      "eds-body-large-weight": "var(--weight-regular)",
+      "eds-body-large-line-height": "var(--line-height-body-large)",
+      "eds-body-large-strong-size": "var(--size-body-large)",
+      "eds-body-large-strong-weight": "var(--weight-semibold)",
+      "eds-body-large-strong-line-height": "var(--line-height-body-large)",
+      "eds-body-medium-size": "var(--size-body-medium)",
+      "eds-body-medium-weight": "var(--weight-regular)",
+      "eds-body-medium-line-height": "var(--line-height-body-medium)",
+      "eds-body-medium-strong-size": "var(--size-body-medium)",
+      "eds-body-medium-strong-weight": "var(--weight-semibold)",
+      "eds-body-medium-strong-line-height": "var(--line-height-body-medium)",
+      "eds-body-small-size": "var(--size-body-small)",
+      "eds-body-small-weight": "var(--weight-regular)",
+      "eds-body-small-line-height": "var(--line-height-body-small)",
+      "eds-body-small-strong-size": "var(--size-body-small)",
+      "eds-body-small-strong-weight": "var(--weight-semibold)",
+      "eds-body-small-strong-line-height": "var(--line-height-body-small)",
+      "eds-detail-size": "var(--size-detail)",
+      "eds-detail-weight": "var(--weight-regular)",
+      "eds-detail-line-height": "var(--line-height-detail)",
+      "eds-detail-strong-size": "var(--size-detail)",
+      "eds-detail-strong-weight": "var(--weight-semibold)",
+      "eds-detail-strong-line-height": "var(--line-height-detail)",
+      "eds-footnote-size": "var(--size-footnote)",
+      "eds-footnote-weight": "var(--weight-regular)",
+      "eds-footnote-line-height": "var(--line-height-footnote)",
+      "eds-footnote-strong-size": "var(--size-footnote)",
+      "eds-footnote-strong-weight": "var(--weight-semibold)",
+      "eds-footnote-strong-line-height": "var(--line-height-footnote)",
+      "eds-bar-size": "var(--size-bar)",
+      "eds-bar-weight": "var(--weight-medium)",
+      "eds-bar-line-height": "var(--line-height-bar)",
+      "eds-bar-strong-size": "var(--size-bar)",
+      "eds-bar-strong-weight": "var(--weight-semibold)",
+      "eds-bar-strong-line-height": "var(--line-height-bar)"
+    },
+    "effect": {
+      "eds-shadow-box-subtle": "0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset, 0 var(--depth-sm) var(--blur-sm) 0 var(--effect-vulvar-subtle)",
+      "eds-shadow-box-shallow": "0 var(--depth-md) var(--blur-md) 0 var(--effect-inner-light) inset, 0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep)",
+      "eds-shadow-box-deep": "0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset, 0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep)",
+      "eds-blur-glass": "blur(calc(var(--blur-md) / 2))"
+    },
+    "motion": {
+      "motion-0": "0ms",
+      "motion-1": "100ms",
+      "motion-2": "180ms",
+      "motion-3": "280ms",
+      "motion-4": "400ms",
+      "motion-5": "500ms",
+      "motion-6": "250ms",
+      "motion-7": "350ms",
+      "motion-8": "800ms",
+      "motion-9": "2000ms",
+      "motion-ease-1": "cubic-bezier(0.42, 0, 0.58, 1)",
+      "motion-ease-2": "cubic-bezier(0.2, 0, 0, 1)",
+      "motion-ease-3": "cubic-bezier(0.4, 0, 1, 1)",
+      "motion-ease-4": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "motion-ease-5": "linear",
+      "motion-ease-6": "cubic-bezier(0.34, 1.4, 0.64, 1)",
+      "motion-ease-7": "cubic-bezier(0.34, 1.45, 0.64, 1)",
+      "motion-ease-8": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "motion-ease-9": "cubic-bezier(0.32, 0.72, 0, 1)",
+      "motion-opacity-hidden": "0",
+      "motion-opacity-dim": "0.4",
+      "motion-opacity-subtle": "0.7",
+      "motion-opacity-visible": "1",
+      "motion-opacity-disabled": "0.5",
+      "motion-scale-press": "0.96",
+      "motion-scale-subtle": "0.98",
+      "motion-scale-emphasis": "1.04",
+      "motion-scale-present": "0.96",
+      "motion-glass-scale-press": "0.975",
+      "motion-glass-opacity-shimmer": "0.10",
+      "motion-distance-xs": "4px",
+      "motion-distance-sm": "8px",
+      "motion-distance-md": "16px",
+      "motion-distance-lg": "24px",
+      "motion-distance-xl": "40px",
+      "motion-offset-small": "var(--motion-distance-sm)",
+      "motion-offset-flotation-y": "calc(-1 * var(--spacing-2-5))",
+      "motion-offset-page-push": "30%",
+      "motion-offset-layout-deform-y": "var(--spacing-2-5)",
+      "motion-base-spring-default-response": "0.55",
+      "motion-base-spring-default-damping-fraction": "0.82",
+      "motion-base-spring-default-blend-duration": "0.15s",
+      "ios-spring-default": "damping:19,stiffness:130,mass:1",
+      "motion-base-spring-interactive-response": "0.15",
+      "motion-base-spring-interactive-damping-fraction": "0.86",
+      "motion-base-spring-interactive-blend-duration": "0.25s",
+      "ios-spring-interactive": "damping:72,stiffness:1755,mass:1",
+      "motion-base-spring-navigation-response": "0.38",
+      "motion-base-spring-navigation-damping-fraction": "0.88",
+      "motion-base-spring-navigation-blend-duration": "0.2s",
+      "ios-spring-navigation": "damping:29,stiffness:273,mass:1",
+      "motion-base-spring-sheet-response": "0.48",
+      "motion-base-spring-sheet-damping-fraction": "0.86",
+      "motion-base-spring-sheet-blend-duration": "0.2s",
+      "ios-spring-sheet": "damping:23,stiffness:171,mass:1",
+      "motion-base-spring-modal-response": "0.38",
+      "motion-base-spring-modal-damping-fraction": "0.9",
+      "motion-base-spring-modal-blend-duration": "0.15s",
+      "ios-spring-modal": "damping:30,stiffness:273,mass:1",
+      "motion-base-spring-control-response": "0.28",
+      "motion-base-spring-control-damping-fraction": "0.82",
+      "motion-base-spring-control-blend-duration": "0.1s",
+      "ios-spring-control": "damping:37,stiffness:503,mass:1",
+      "motion-base-spring-press-response": "0.18",
+      "motion-base-spring-press-damping-fraction": "0.9",
+      "motion-base-spring-press-blend-duration": "0.05s",
+      "ios-spring-press": "damping:63,stiffness:1218,mass:1",
+      "motion-base-spring-drag-response": "0.32",
+      "motion-base-spring-drag-damping-fraction": "0.82",
+      "motion-base-spring-drag-blend-duration": "0.1s",
+      "ios-spring-drag": "damping:32,stiffness:385,mass:1",
+      "motion-base-spring-bouncy-response": "0.42",
+      "motion-base-spring-bouncy-damping-fraction": "0.68",
+      "motion-base-spring-bouncy-blend-duration": "0.1s",
+      "ios-spring-bouncy": "damping:20,stiffness:224,mass:1",
+      "motion-base-spring-gentle-response": "0.6",
+      "motion-base-spring-gentle-damping-fraction": "0.92",
+      "motion-base-spring-gentle-blend-duration": "0.2s",
+      "ios-spring-gentle": "damping:19,stiffness:110,mass:1",
+      "motion-base-haptic-selection": "\"selection\"",
+      "motion-base-haptic-light": "\"light\"",
+      "motion-base-haptic-medium": "\"medium\"",
+      "motion-base-haptic-heavy": "\"heavy\"",
+      "motion-base-haptic-success": "\"success\"",
+      "motion-base-haptic-warning": "\"warning\"",
+      "motion-base-haptic-error": "\"error\"",
+      "ios-navigation-push": "duration:350,easing:cubic-bezier(0.32,0.72,0,1)",
+      "ios-ease-in-out": "duration:350,easing:cubic-bezier(0.42,0,0.58,1)",
+      "ios-ease-out": "duration:300,easing:cubic-bezier(0,0,0.58,1)",
+      "ios-ease-in": "duration:250,easing:cubic-bezier(0.42,0,1,1)",
+      "motion-base-interaction-velocity-aware": "1",
+      "motion-base-interaction-interruptible": "1",
+      "motion-base-interaction-preserve-velocity": "1",
+      "motion-duration-instant": "var(--motion-0)",
+      "motion-duration-micro": "var(--motion-0)",
+      "motion-duration-fast": "var(--motion-0)",
+      "motion-duration-normal": "var(--motion-0)",
+      "motion-duration-slow": "var(--motion-0)",
+      "motion-duration-emphasis": "var(--motion-0)",
+      "motion-duration-control": "var(--motion-0)",
+      "motion-duration-navigation": "var(--motion-0)",
+      "motion-duration-spin": "var(--motion-0)",
+      "motion-duration-spin-slow": "var(--motion-0)",
+      "motion-duration-fade": "var(--motion-0)",
+      "motion-duration-enter": "var(--motion-0)",
+      "motion-duration-exit": "var(--motion-0)",
+      "motion-duration-tap": "var(--motion-0)",
+      "motion-duration-shift": "var(--motion-0)",
+      "motion-duration-scroll-fade": "var(--motion-0)",
+      "motion-duration-layout-deform": "var(--motion-0)",
+      "motion-duration-layout-deform-content": "var(--motion-0)",
+      "motion-delay-layout-deform-content-swap": "var(--motion-0)",
+      "motion-delay-feedback-tick": "var(--motion-0)",
+      "motion-glass-duration-press": "var(--motion-2)",
+      "motion-glass-duration-release": "260ms",
+      "motion-glass-duration-shimmer": "var(--motion-3)",
+      "motion-glass-duration-morph": "420ms",
+      "motion-easing-standard": "var(--motion-ease-1)",
+      "motion-easing-enter": "var(--motion-ease-2)",
+      "motion-easing-exit": "var(--motion-ease-3)",
+      "motion-easing-product": "var(--motion-ease-4)",
+      "motion-easing-linear": "var(--motion-ease-5)",
+      "motion-easing-spring": "var(--motion-ease-6)",
+      "motion-easing-spring-emphasis": "var(--motion-ease-7)",
+      "motion-easing-decelerate": "var(--motion-ease-8)",
+      "motion-easing-navigation": "var(--motion-ease-9)",
+      "motion-property-paint": "background-color, color, border-color, box-shadow, opacity, outline-color, fill",
+      "motion-property-geometry": "flex, max-width, width, min-width, max-height, transform, left, padding",
+      "motion-property-fade": "opacity",
+      "motion-property-transform": "transform, opacity",
+      "motion-recipe-fade": "opacity var(--motion-duration-fade) var(--motion-easing-standard)",
+      "motion-recipe-enter": "opacity var(--motion-duration-enter) var(--motion-easing-enter), transform var(--motion-duration-enter) var(--motion-easing-enter)",
+      "motion-recipe-exit": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-exit) var(--motion-easing-exit)",
+      "motion-recipe-tap": "background-color var(--motion-duration-tap) var(--motion-easing-standard), color var(--motion-duration-tap) var(--motion-easing-standard), border-color var(--motion-duration-tap) var(--motion-easing-standard), opacity var(--motion-duration-tap) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-tap) var(--motion-easing-standard)",
+      "motion-recipe-flotation-enter": "opacity var(--motion-duration-enter) var(--motion-easing-standard), transform var(--motion-duration-emphasis) var(--motion-easing-spring-emphasis)",
+      "motion-recipe-flotation-exit": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-fast) var(--motion-easing-decelerate)",
+      "motion-recipe-control": "transform var(--motion-duration-control) var(--motion-easing-product), width var(--motion-duration-control) var(--motion-easing-product)",
+      "motion-recipe-shift": "flex var(--motion-duration-shift) var(--motion-easing-standard), max-width var(--motion-duration-shift) var(--motion-easing-standard), width var(--motion-duration-shift) var(--motion-easing-standard), min-width var(--motion-duration-shift) var(--motion-easing-standard), max-height var(--motion-duration-shift) var(--motion-easing-standard), transform var(--motion-duration-shift) var(--motion-easing-standard), left var(--motion-duration-shift) var(--motion-easing-standard), padding var(--motion-duration-shift) var(--motion-easing-standard)",
+      "motion-recipe-scroll-fade": "opacity var(--motion-duration-scroll-fade) var(--motion-easing-decelerate)",
+      "motion-recipe-scroll-fade-background": "background var(--motion-duration-scroll-fade) var(--motion-easing-decelerate)",
+      "motion-recipe-page-push": "opacity var(--motion-duration-navigation) var(--motion-easing-navigation), transform var(--motion-duration-navigation) var(--motion-easing-navigation)",
+      "motion-recipe-layout-deform-shell": "height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), width var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-width var(--motion-duration-layout-deform) var(--motion-easing-decelerate)",
+      "motion-recipe-layout-deform-content": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-decelerate)",
+      "motion-recipe-glass-press": "transform var(--motion-glass-duration-press) var(--motion-easing-standard)",
+      "motion-recipe-glass-shimmer": "opacity var(--motion-glass-duration-shimmer) var(--motion-easing-standard)",
+      "motion-recipe-glass-morph": "var(--motion-recipe-layout-deform-shell)",
+      "motion-displace-from-bottom": "translateY(var(--motion-distance-sm))",
+      "motion-displace-from-top": "translateY(calc(-1 * var(--motion-distance-sm)))",
+      "motion-displace-from-left": "translateX(calc(-1 * var(--motion-distance-sm)))",
+      "motion-displace-from-right": "translateX(var(--motion-distance-sm))"
+    }
+  },
+  "sourceRefs": {
+    "scale": {
+      "scale-base": {
+        "file": "base.css",
+        "startLine": 11,
+        "endLine": 11,
+        "snippet": "  --scale-base: 4px;"
+      },
+      "scale-0": {
+        "file": "base.css",
+        "startLine": 14,
+        "endLine": 14,
+        "snippet": "  --scale-0: calc(0 * var(--scale-base)); /* 0 × 4px */"
+      },
+      "scale-0125": {
+        "file": "base.css",
+        "startLine": 15,
+        "endLine": 15,
+        "snippet": "  --scale-0125: calc(0.125 * var(--scale-base)); /* 0.125 × 4px */"
+      },
+      "scale-025": {
+        "file": "base.css",
+        "startLine": 16,
+        "endLine": 16,
+        "snippet": "  --scale-025: calc(0.25 * var(--scale-base)); /* 0.25 × 4px */"
+      },
+      "scale-0375": {
+        "file": "base.css",
+        "startLine": 17,
+        "endLine": 17,
+        "snippet": "  --scale-0375: calc(0.375 * var(--scale-base)); /* 0.375 × 4px */"
+      },
+      "scale-05": {
+        "file": "base.css",
+        "startLine": 18,
+        "endLine": 18,
+        "snippet": "  --scale-05: calc(0.5 * var(--scale-base)); /* 0.5 × 4px */"
+      },
+      "scale-1": {
+        "file": "base.css",
+        "startLine": 19,
+        "endLine": 19,
+        "snippet": "  --scale-1: calc(1 * var(--scale-base)); /* 1 × 4px */"
+      },
+      "scale-1-5": {
+        "file": "base.css",
+        "startLine": 20,
+        "endLine": 20,
+        "snippet": "  --scale-1-5: calc(1.5 * var(--scale-base)); /* 1.5 × 4px */"
+      },
+      "scale-2": {
+        "file": "base.css",
+        "startLine": 21,
+        "endLine": 21,
+        "snippet": "  --scale-2: calc(2 * var(--scale-base)); /* 2 × 4px */"
+      },
+      "scale-2-5": {
+        "file": "base.css",
+        "startLine": 22,
+        "endLine": 22,
+        "snippet": "  --scale-2-5: calc(2.5 * var(--scale-base)); /* 2.5 × 4px */"
+      },
+      "scale-3": {
+        "file": "base.css",
+        "startLine": 23,
+        "endLine": 23,
+        "snippet": "  --scale-3: calc(3 * var(--scale-base)); /* 3 × 4px */"
+      },
+      "scale-4": {
+        "file": "base.css",
+        "startLine": 24,
+        "endLine": 24,
+        "snippet": "  --scale-4: calc(4 * var(--scale-base)); /* 4 × 4px */"
+      },
+      "scale-5": {
+        "file": "base.css",
+        "startLine": 25,
+        "endLine": 25,
+        "snippet": "  --scale-5: calc(5 * var(--scale-base)); /* 5 × 4px */"
+      },
+      "scale-5-5": {
+        "file": "base.css",
+        "startLine": 26,
+        "endLine": 26,
+        "snippet": "  --scale-5-5: calc(5.5 * var(--scale-base)); /* 5.5 × 4px */"
+      },
+      "scale-6": {
+        "file": "base.css",
+        "startLine": 27,
+        "endLine": 27,
+        "snippet": "  --scale-6: calc(6 * var(--scale-base)); /* 6 × 4px */"
+      },
+      "scale-7": {
+        "file": "base.css",
+        "startLine": 28,
+        "endLine": 28,
+        "snippet": "  --scale-7: calc(7 * var(--scale-base)); /* 7 × 4px */"
+      },
+      "scale-8": {
+        "file": "base.css",
+        "startLine": 29,
+        "endLine": 29,
+        "snippet": "  --scale-8: calc(8 * var(--scale-base)); /* 8 × 4px */"
+      },
+      "scale-9": {
+        "file": "base.css",
+        "startLine": 30,
+        "endLine": 30,
+        "snippet": "  --scale-9: calc(9 * var(--scale-base)); /* 9 × 4px */"
+      },
+      "scale-10": {
+        "file": "base.css",
+        "startLine": 31,
+        "endLine": 31,
+        "snippet": "  --scale-10: calc(10 * var(--scale-base)); /* 10 × 4px */"
+      },
+      "scale-11": {
+        "file": "base.css",
+        "startLine": 32,
+        "endLine": 32,
+        "snippet": "  --scale-11: calc(11 * var(--scale-base)); /* 11 × 4px */"
+      },
+      "scale-12": {
+        "file": "base.css",
+        "startLine": 33,
+        "endLine": 33,
+        "snippet": "  --scale-12: calc(12 * var(--scale-base)); /* 12 × 4px */"
+      },
+      "scale-13": {
+        "file": "base.css",
+        "startLine": 34,
+        "endLine": 34,
+        "snippet": "  --scale-13: calc(13 * var(--scale-base)); /* 13 × 4px */"
+      },
+      "scale-14": {
+        "file": "base.css",
+        "startLine": 35,
+        "endLine": 35,
+        "snippet": "  --scale-14: calc(14 * var(--scale-base)); /* 14 × 4px */"
+      },
+      "scale-15": {
+        "file": "base.css",
+        "startLine": 36,
+        "endLine": 36,
+        "snippet": "  --scale-15: calc(15 * var(--scale-base)); /* 15 × 4px */"
+      },
+      "scale-16": {
+        "file": "base.css",
+        "startLine": 37,
+        "endLine": 37,
+        "snippet": "  --scale-16: calc(16 * var(--scale-base)); /* 16 × 4px */"
+      },
+      "scale-17": {
+        "file": "base.css",
+        "startLine": 38,
+        "endLine": 38,
+        "snippet": "  --scale-17: calc(17 * var(--scale-base)); /* 17 × 4px */"
+      },
+      "scale-18": {
+        "file": "base.css",
+        "startLine": 39,
+        "endLine": 39,
+        "snippet": "  --scale-18: calc(18 * var(--scale-base)); /* 18 × 4px */"
+      },
+      "scale-19": {
+        "file": "base.css",
+        "startLine": 40,
+        "endLine": 40,
+        "snippet": "  --scale-19: calc(19 * var(--scale-base)); /* 19 × 4px */"
+      },
+      "scale-20": {
+        "file": "base.css",
+        "startLine": 41,
+        "endLine": 41,
+        "snippet": "  --scale-20: calc(20 * var(--scale-base)); /* 20 × 4px */"
+      },
+      "scale-30": {
+        "file": "base.css",
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --scale-30: calc(30 * var(--scale-base)); /* 30 × 4px */"
+      },
+      "scale-40": {
+        "file": "base.css",
+        "startLine": 43,
+        "endLine": 43,
+        "snippet": "  --scale-40: calc(40 * var(--scale-base)); /* 40 × 4px */"
+      },
+      "scale-50": {
+        "file": "base.css",
+        "startLine": 44,
+        "endLine": 44,
+        "snippet": "  --scale-50: calc(50 * var(--scale-base)); /* 50 × 4px */"
+      },
+      "scale-full": {
+        "file": "base.css",
+        "startLine": 45,
+        "endLine": 45,
+        "snippet": "  --scale-full: 888px;"
+      },
+      "spacing-0": {
+        "file": "semantic.css",
+        "startLine": 10,
+        "endLine": 10,
+        "snippet": "  --spacing-0: var(--scale-0);"
+      },
+      "spacing-05": {
+        "file": "semantic.css",
+        "startLine": 11,
+        "endLine": 11,
+        "snippet": "  --spacing-05: var(--scale-05);"
+      },
+      "spacing-1": {
+        "file": "semantic.css",
+        "startLine": 12,
+        "endLine": 12,
+        "snippet": "  --spacing-1: var(--scale-1);"
+      },
+      "spacing-1-5": {
+        "file": "semantic.css",
+        "startLine": 13,
+        "endLine": 13,
+        "snippet": "  --spacing-1-5: var(--scale-1-5);"
+      },
+      "spacing-2": {
+        "file": "semantic.css",
+        "startLine": 14,
+        "endLine": 14,
+        "snippet": "  --spacing-2: var(--scale-2);"
+      },
+      "spacing-2-5": {
+        "file": "semantic.css",
+        "startLine": 15,
+        "endLine": 15,
+        "snippet": "  --spacing-2-5: var(--scale-2-5); /* 10px */"
+      },
+      "spacing-3": {
+        "file": "semantic.css",
+        "startLine": 16,
+        "endLine": 16,
+        "snippet": "  --spacing-3: var(--scale-3);"
+      },
+      "spacing-4": {
+        "file": "semantic.css",
+        "startLine": 17,
+        "endLine": 17,
+        "snippet": "  --spacing-4: var(--scale-4);"
+      },
+      "spacing-5": {
+        "file": "semantic.css",
+        "startLine": 18,
+        "endLine": 18,
+        "snippet": "  --spacing-5: var(--scale-5);"
+      },
+      "spacing-6": {
+        "file": "semantic.css",
+        "startLine": 19,
+        "endLine": 19,
+        "snippet": "  --spacing-6: var(--scale-6);"
+      },
+      "spacing-7": {
+        "file": "semantic.css",
+        "startLine": 20,
+        "endLine": 20,
+        "snippet": "  --spacing-7: var(--scale-7);"
+      },
+      "spacing-8": {
+        "file": "semantic.css",
+        "startLine": 21,
+        "endLine": 21,
+        "snippet": "  --spacing-8: var(--scale-8);"
+      },
+      "spacing-9": {
+        "file": "semantic.css",
+        "startLine": 22,
+        "endLine": 22,
+        "snippet": "  --spacing-9: var(--scale-9);"
+      },
+      "spacing-10": {
+        "file": "semantic.css",
+        "startLine": 23,
+        "endLine": 23,
+        "snippet": "  --spacing-10: var(--scale-10);"
+      },
+      "spacing-12": {
+        "file": "semantic.css",
+        "startLine": 24,
+        "endLine": 24,
+        "snippet": "  --spacing-12: var(--scale-12);"
+      },
+      "spacing-14": {
+        "file": "semantic.css",
+        "startLine": 25,
+        "endLine": 25,
+        "snippet": "  --spacing-14: var(--scale-14);"
+      },
+      "spacing-16": {
+        "file": "semantic.css",
+        "startLine": 26,
+        "endLine": 26,
+        "snippet": "  --spacing-16: var(--scale-16);"
+      },
+      "spacing-18": {
+        "file": "semantic.css",
+        "startLine": 27,
+        "endLine": 27,
+        "snippet": "  --spacing-18: var(--scale-18);"
+      },
+      "spacing-20": {
+        "file": "semantic.css",
+        "startLine": 28,
+        "endLine": 28,
+        "snippet": "  --spacing-20: var(--scale-20);"
+      },
+      "radius-0": {
+        "file": "semantic.css",
+        "startLine": 31,
+        "endLine": 31,
+        "snippet": "  --radius-0: var(--scale-0);"
+      },
+      "radius-xs": {
+        "file": "semantic.css",
+        "startLine": 32,
+        "endLine": 32,
+        "snippet": "  --radius-xs: var(--scale-2);    /* 8px */"
+      },
+      "radius-sm": {
+        "file": "semantic.css",
+        "startLine": 33,
+        "endLine": 33,
+        "snippet": "  --radius-sm: var(--scale-3);    /* 12px */"
+      },
+      "radius-md": {
+        "file": "semantic.css",
+        "startLine": 34,
+        "endLine": 34,
+        "snippet": "  --radius-md: var(--scale-4);    /* 16px */"
+      },
+      "radius-lg": {
+        "file": "semantic.css",
+        "startLine": 35,
+        "endLine": 35,
+        "snippet": "  --radius-lg: var(--scale-6);    /* 24px */"
+      },
+      "radius-xl": {
+        "file": "semantic.css",
+        "startLine": 36,
+        "endLine": 36,
+        "snippet": "  --radius-xl: var(--scale-8);    /* 32px */"
+      },
+      "radius-full": {
+        "file": "semantic.css",
+        "startLine": 37,
+        "endLine": 37,
+        "snippet": "  --radius-full: var(--scale-full); /* 888px */"
+      },
+      "stroke-xs": {
+        "file": "semantic.css",
+        "startLine": 40,
+        "endLine": 40,
+        "snippet": "  --stroke-xs: 0.2px;             /* 0.2px */"
+      },
+      "stroke-sm": {
+        "file": "semantic.css",
+        "startLine": 41,
+        "endLine": 41,
+        "snippet": "  --stroke-sm: var(--scale-025);  /* 1px */"
+      },
+      "stroke-md": {
+        "file": "semantic.css",
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --stroke-md: var(--scale-0375); /* 1.5px */"
+      },
+      "stroke-lg": {
+        "file": "semantic.css",
+        "startLine": 43,
+        "endLine": 43,
+        "snippet": "  --stroke-lg: var(--scale-05);   /* 2px */"
+      },
+      "blur-xs": {
+        "file": "semantic.css",
+        "startLine": 46,
+        "endLine": 46,
+        "snippet": "  --blur-xs: var(--scale-0);      /* 0px */"
+      },
+      "blur-sm": {
+        "file": "semantic.css",
+        "startLine": 47,
+        "endLine": 47,
+        "snippet": "  --blur-sm: var(--scale-2);      /* 8px */"
+      },
+      "blur-md": {
+        "file": "semantic.css",
+        "startLine": 48,
+        "endLine": 48,
+        "snippet": "  --blur-md: var(--scale-4);      /* 16px */"
+      },
+      "blur-lg": {
+        "file": "semantic.css",
+        "startLine": 49,
+        "endLine": 49,
+        "snippet": "  --blur-lg: var(--scale-20);     /* 80px */"
+      },
+      "depth-xs": {
+        "file": "semantic.css",
+        "startLine": 52,
+        "endLine": 52,
+        "snippet": "  --depth-xs: var(--scale-0125);  /* 0.5px */"
+      },
+      "depth-sm": {
+        "file": "semantic.css",
+        "startLine": 53,
+        "endLine": 53,
+        "snippet": "  --depth-sm: var(--scale-05);    /* 2px */"
+      },
+      "depth-md": {
+        "file": "semantic.css",
+        "startLine": 54,
+        "endLine": 54,
+        "snippet": "  --depth-md: var(--scale-1);     /* 4px */"
+      },
+      "depth-lg": {
+        "file": "semantic.css",
+        "startLine": 55,
+        "endLine": 55,
+        "snippet": "  --depth-lg: var(--scale-4);     /* 16px */"
+      },
+      "capsule-xs": {
+        "file": "semantic.css",
+        "startLine": 58,
+        "endLine": 58,
+        "snippet": "  --capsule-xs: var(--scale-9);   /* 36px */"
+      },
+      "capsule-sm": {
+        "file": "semantic.css",
+        "startLine": 59,
+        "endLine": 59,
+        "snippet": "  --capsule-sm: var(--scale-10);  /* 40px */"
+      },
+      "capsule-md": {
+        "file": "semantic.css",
+        "startLine": 60,
+        "endLine": 60,
+        "snippet": "  --capsule-md: var(--scale-12);  /* 48px */"
+      },
+      "capsule-lg": {
+        "file": "semantic.css",
+        "startLine": 61,
+        "endLine": 61,
+        "snippet": "  --capsule-lg: var(--scale-13);  /* 52px */"
+      },
+      "capsule-xl": {
+        "file": "semantic.css",
+        "startLine": 62,
+        "endLine": 62,
+        "snippet": "  --capsule-xl: var(--scale-14);  /* 56px */"
+      },
+      "symbol-xs": {
+        "file": "semantic.css",
+        "startLine": 65,
+        "endLine": 65,
+        "snippet": "  --symbol-xs: var(--scale-4);    /* 16px */"
+      },
+      "symbol-sm": {
+        "file": "semantic.css",
+        "startLine": 66,
+        "endLine": 66,
+        "snippet": "  --symbol-sm: var(--scale-5);    /* 20px */"
+      },
+      "symbol-md": {
+        "file": "semantic.css",
+        "startLine": 67,
+        "endLine": 67,
+        "snippet": "  --symbol-md: var(--scale-5-5);  /* 22px */"
+      },
+      "symbol-lg": {
+        "file": "semantic.css",
+        "startLine": 68,
+        "endLine": 68,
+        "snippet": "  --symbol-lg: var(--scale-6);    /* 24px */"
+      },
+      "avatar-xs": {
+        "file": "semantic.css",
+        "startLine": 71,
+        "endLine": 71,
+        "snippet": "  --avatar-xs: var(--scale-4);    /* 16px */"
+      },
+      "avatar-sm": {
+        "file": "semantic.css",
+        "startLine": 72,
+        "endLine": 72,
+        "snippet": "  --avatar-sm: var(--scale-6);    /* 24px */"
+      },
+      "avatar-md": {
+        "file": "semantic.css",
+        "startLine": 73,
+        "endLine": 73,
+        "snippet": "  --avatar-md: var(--scale-8);    /* 32px */"
+      },
+      "avatar-lg": {
+        "file": "semantic.css",
+        "startLine": 74,
+        "endLine": 74,
+        "snippet": "  --avatar-lg: var(--scale-9);    /* 36px */"
+      },
+      "avatar-xl": {
+        "file": "semantic.css",
+        "startLine": 75,
+        "endLine": 75,
+        "snippet": "  --avatar-xl: var(--scale-10);   /* 40px */"
+      },
+      "button-xs": {
+        "file": "semantic.css",
+        "startLine": 78,
+        "endLine": 78,
+        "snippet": "  --button-xs: var(--scale-8);    /* 32px */"
+      },
+      "button-sm": {
+        "file": "semantic.css",
+        "startLine": 79,
+        "endLine": 79,
+        "snippet": "  --button-sm: var(--scale-10);   /* 40px */"
+      },
+      "button-md": {
+        "file": "semantic.css",
+        "startLine": 80,
+        "endLine": 80,
+        "snippet": "  --button-md: var(--scale-12);   /* 48px */"
+      },
+      "button-lg": {
+        "file": "semantic.css",
+        "startLine": 81,
+        "endLine": 81,
+        "snippet": "  --button-lg: var(--scale-14);   /* 56px */"
+      },
+      "button-xl": {
+        "file": "semantic.css",
+        "startLine": 82,
+        "endLine": 82,
+        "snippet": "  --button-xl: var(--scale-15);   /* 60px */"
+      },
+      "input-xs": {
+        "file": "semantic.css",
+        "startLine": 85,
+        "endLine": 85,
+        "snippet": "  --input-xs: var(--scale-8);     /* 32px */"
+      },
+      "input-sm": {
+        "file": "semantic.css",
+        "startLine": 86,
+        "endLine": 86,
+        "snippet": "  --input-sm: var(--scale-10);    /* 40px */"
+      },
+      "input-md": {
+        "file": "semantic.css",
+        "startLine": 87,
+        "endLine": 87,
+        "snippet": "  --input-md: var(--scale-12);    /* 48px */"
+      },
+      "input-lg": {
+        "file": "semantic.css",
+        "startLine": 88,
+        "endLine": 88,
+        "snippet": "  --input-lg: var(--scale-13);    /* 52px */"
+      },
+      "input-xl": {
+        "file": "semantic.css",
+        "startLine": 89,
+        "endLine": 89,
+        "snippet": "  --input-xl: var(--scale-14);    /* 56px */"
+      },
+      "dropdown-xs": {
+        "file": "semantic.css",
+        "startLine": 90,
+        "endLine": 90,
+        "snippet": "  --dropdown-xs: var(--scale-8);  /* 32px */"
+      },
+      "dropdown-sm": {
+        "file": "semantic.css",
+        "startLine": 91,
+        "endLine": 91,
+        "snippet": "  --dropdown-sm: var(--scale-10); /* 40px */"
+      },
+      "dropdown-md": {
+        "file": "semantic.css",
+        "startLine": 92,
+        "endLine": 92,
+        "snippet": "  --dropdown-md: var(--scale-12); /* 48px */"
+      },
+      "dropdown-lg": {
+        "file": "semantic.css",
+        "startLine": 93,
+        "endLine": 93,
+        "snippet": "  --dropdown-lg: var(--scale-13); /* 52px */"
+      },
+      "dropdown-xl": {
+        "file": "semantic.css",
+        "startLine": 94,
+        "endLine": 94,
+        "snippet": "  --dropdown-xl: var(--scale-14); /* 56px */"
+      },
+      "tag-sm": {
+        "file": "semantic.css",
+        "startLine": 97,
+        "endLine": 97,
+        "snippet": "  --tag-sm: var(--scale-4);       /* 16px */"
+      },
+      "tag-md": {
+        "file": "semantic.css",
+        "startLine": 98,
+        "endLine": 98,
+        "snippet": "  --tag-md: var(--scale-5);       /* 20px */"
+      },
+      "tag-lg": {
+        "file": "semantic.css",
+        "startLine": 99,
+        "endLine": 99,
+        "snippet": "  --tag-lg: var(--scale-6);       /* 24px */"
+      },
+      "checkbox-sm": {
+        "file": "semantic.css",
+        "startLine": 100,
+        "endLine": 100,
+        "snippet": "  --checkbox-sm: var(--scale-4);  /* 16px */"
+      },
+      "checkbox-md": {
+        "file": "semantic.css",
+        "startLine": 101,
+        "endLine": 101,
+        "snippet": "  --checkbox-md: var(--scale-5);  /* 20px */"
+      },
+      "checkbox-lg": {
+        "file": "semantic.css",
+        "startLine": 102,
+        "endLine": 102,
+        "snippet": "  --checkbox-lg: var(--scale-6);  /* 24px */"
+      },
+      "radio-sm": {
+        "file": "semantic.css",
+        "startLine": 103,
+        "endLine": 103,
+        "snippet": "  --radio-sm: var(--scale-4);     /* 16px */"
+      },
+      "radio-md": {
+        "file": "semantic.css",
+        "startLine": 104,
+        "endLine": 104,
+        "snippet": "  --radio-md: var(--scale-5);     /* 20px */"
+      },
+      "radio-lg": {
+        "file": "semantic.css",
+        "startLine": 105,
+        "endLine": 105,
+        "snippet": "  --radio-lg: var(--scale-6);     /* 24px */"
+      },
+      "switch-sm": {
+        "file": "semantic.css",
+        "startLine": 106,
+        "endLine": 106,
+        "snippet": "  --switch-sm: var(--scale-4);    /* 16px */"
+      },
+      "switch-md": {
+        "file": "semantic.css",
+        "startLine": 107,
+        "endLine": 107,
+        "snippet": "  --switch-md: var(--scale-5);    /* 20px */"
+      },
+      "switch-lg": {
+        "file": "semantic.css",
+        "startLine": 108,
+        "endLine": 108,
+        "snippet": "  --switch-lg: var(--scale-6);    /* 24px */"
+      }
+    },
+    "typography": {
+      "size-display": {
+        "file": "base.css",
+        "startLine": 11,
+        "endLine": 11,
+        "snippet": "  --size-display: 34px;"
+      },
+      "size-headline": {
+        "file": "base.css",
+        "startLine": 12,
+        "endLine": 12,
+        "snippet": "  --size-headline: 26px;"
+      },
+      "size-title": {
+        "file": "base.css",
+        "startLine": 13,
+        "endLine": 13,
+        "snippet": "  --size-title: 21px;"
+      },
+      "size-body-large": {
+        "file": "base.css",
+        "startLine": 14,
+        "endLine": 14,
+        "snippet": "  --size-body-large: 19px;"
+      },
+      "size-body-medium": {
+        "file": "base.css",
+        "startLine": 15,
+        "endLine": 15,
+        "snippet": "  --size-body-medium: 17px;"
+      },
+      "size-body-small": {
+        "file": "base.css",
+        "startLine": 16,
+        "endLine": 16,
+        "snippet": "  --size-body-small: 15px;"
+      },
+      "size-detail": {
+        "file": "base.css",
+        "startLine": 17,
+        "endLine": 17,
+        "snippet": "  --size-detail: 14px;"
+      },
+      "size-footnote": {
+        "file": "base.css",
+        "startLine": 18,
+        "endLine": 18,
+        "snippet": "  --size-footnote: 13px;"
+      },
+      "size-bar": {
+        "file": "base.css",
+        "startLine": 19,
+        "endLine": 19,
+        "snippet": "  --size-bar: 10px;"
+      },
+      "size-toggle-mark-md": {
+        "file": "base.css",
+        "startLine": 20,
+        "endLine": 20,
+        "snippet": "  --size-toggle-mark-md: 12px;"
+      },
+      "line-height-display": {
+        "file": "base.css",
+        "startLine": 23,
+        "endLine": 23,
+        "snippet": "  --line-height-display: 44px;"
+      },
+      "line-height-headline": {
+        "file": "base.css",
+        "startLine": 24,
+        "endLine": 24,
+        "snippet": "  --line-height-headline: 32px;"
+      },
+      "line-height-title": {
+        "file": "base.css",
+        "startLine": 25,
+        "endLine": 25,
+        "snippet": "  --line-height-title: 28px;"
+      },
+      "line-height-body-large": {
+        "file": "base.css",
+        "startLine": 26,
+        "endLine": 26,
+        "snippet": "  --line-height-body-large: 26px;"
+      },
+      "line-height-body-medium": {
+        "file": "base.css",
+        "startLine": 27,
+        "endLine": 27,
+        "snippet": "  --line-height-body-medium: 24px;"
+      },
+      "line-height-body-small": {
+        "file": "base.css",
+        "startLine": 28,
+        "endLine": 28,
+        "snippet": "  --line-height-body-small: 20px;"
+      },
+      "line-height-detail": {
+        "file": "base.css",
+        "startLine": 29,
+        "endLine": 29,
+        "snippet": "  --line-height-detail: 18px;"
+      },
+      "line-height-footnote": {
+        "file": "base.css",
+        "startLine": 30,
+        "endLine": 30,
+        "snippet": "  --line-height-footnote: 16px;"
+      },
+      "line-height-bar": {
+        "file": "base.css",
+        "startLine": 31,
+        "endLine": 31,
+        "snippet": "  --line-height-bar: 14px;"
+      },
+      "line-height-toggle-mark-md": {
+        "file": "base.css",
+        "startLine": 32,
+        "endLine": 32,
+        "snippet": "  --line-height-toggle-mark-md: 12px;"
+      },
+      "weight-regular": {
+        "file": "base.css",
+        "startLine": 35,
+        "endLine": 35,
+        "snippet": "  --weight-regular: 400;"
+      },
+      "weight-medium": {
+        "file": "base.css",
+        "startLine": 36,
+        "endLine": 36,
+        "snippet": "  --weight-medium: 500;"
+      },
+      "weight-semibold": {
+        "file": "base.css",
+        "startLine": 37,
+        "endLine": 37,
+        "snippet": "  --weight-semibold: 600;"
+      },
+      "weight-bold": {
+        "file": "base.css",
+        "startLine": 38,
+        "endLine": 38,
+        "snippet": "  --weight-bold: 700;"
+      },
+      "eds-family-sans": {
+        "file": "base.css",
+        "startLine": 41,
+        "endLine": 41,
+        "snippet": "  --eds-family-sans: \"EDS Text\", \"PingFang SC\", SourceHanSansSC, \"Apple Color Emoji\", \"Segoe UI Emoji\";"
+      },
+      "eds-family-mono": {
+        "file": "base.css",
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --eds-family-mono: \"IBM Plex Mono\", ui-monospace, monospace;"
+      },
+      "eds-display-size": {
+        "file": "semantic.css",
+        "startLine": 10,
+        "endLine": 10,
+        "snippet": "  --eds-display-size: var(--size-display); /* 34px */"
+      },
+      "eds-display-weight": {
+        "file": "semantic.css",
+        "startLine": 11,
+        "endLine": 11,
+        "snippet": "  --eds-display-weight: var(--weight-bold); /* 700 */"
+      },
+      "eds-display-line-height": {
+        "file": "semantic.css",
+        "startLine": 12,
+        "endLine": 12,
+        "snippet": "  --eds-display-line-height: var(--line-height-display); /* 44px */"
+      },
+      "eds-headline-size": {
+        "file": "semantic.css",
+        "startLine": 15,
+        "endLine": 15,
+        "snippet": "  --eds-headline-size: var(--size-headline); /* 26px */"
+      },
+      "eds-headline-weight": {
+        "file": "semantic.css",
+        "startLine": 16,
+        "endLine": 16,
+        "snippet": "  --eds-headline-weight: var(--weight-bold); /* 700 */"
+      },
+      "eds-headline-line-height": {
+        "file": "semantic.css",
+        "startLine": 17,
+        "endLine": 17,
+        "snippet": "  --eds-headline-line-height: var(--line-height-headline); /* 32px */"
+      },
+      "eds-title-size": {
+        "file": "semantic.css",
+        "startLine": 20,
+        "endLine": 20,
+        "snippet": "  --eds-title-size: var(--size-title); /* 21px */"
+      },
+      "eds-title-weight": {
+        "file": "semantic.css",
+        "startLine": 21,
+        "endLine": 21,
+        "snippet": "  --eds-title-weight: var(--weight-bold); /* 700 */"
+      },
+      "eds-title-line-height": {
+        "file": "semantic.css",
+        "startLine": 22,
+        "endLine": 22,
+        "snippet": "  --eds-title-line-height: var(--line-height-title); /* 28px */"
+      },
+      "eds-body-large-size": {
+        "file": "semantic.css",
+        "startLine": 25,
+        "endLine": 25,
+        "snippet": "  --eds-body-large-size: var(--size-body-large); /* 19px */"
+      },
+      "eds-body-large-weight": {
+        "file": "semantic.css",
+        "startLine": 26,
+        "endLine": 26,
+        "snippet": "  --eds-body-large-weight: var(--weight-regular); /* 400 */"
+      },
+      "eds-body-large-line-height": {
+        "file": "semantic.css",
+        "startLine": 27,
+        "endLine": 27,
+        "snippet": "  --eds-body-large-line-height: var(--line-height-body-large); /* 26px */"
+      },
+      "eds-body-large-strong-size": {
+        "file": "semantic.css",
+        "startLine": 30,
+        "endLine": 30,
+        "snippet": "  --eds-body-large-strong-size: var(--size-body-large); /* 19px */"
+      },
+      "eds-body-large-strong-weight": {
+        "file": "semantic.css",
+        "startLine": 31,
+        "endLine": 31,
+        "snippet": "  --eds-body-large-strong-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-body-large-strong-line-height": {
+        "file": "semantic.css",
+        "startLine": 32,
+        "endLine": 32,
+        "snippet": "  --eds-body-large-strong-line-height: var(--line-height-body-large); /* 26px */"
+      },
+      "eds-body-medium-size": {
+        "file": "semantic.css",
+        "startLine": 35,
+        "endLine": 35,
+        "snippet": "  --eds-body-medium-size: var(--size-body-medium); /* 17px */"
+      },
+      "eds-body-medium-weight": {
+        "file": "semantic.css",
+        "startLine": 36,
+        "endLine": 36,
+        "snippet": "  --eds-body-medium-weight: var(--weight-regular); /* 400 */"
+      },
+      "eds-body-medium-line-height": {
+        "file": "semantic.css",
+        "startLine": 37,
+        "endLine": 37,
+        "snippet": "  --eds-body-medium-line-height: var(--line-height-body-medium); /* 24px */"
+      },
+      "eds-body-medium-strong-size": {
+        "file": "semantic.css",
+        "startLine": 40,
+        "endLine": 40,
+        "snippet": "  --eds-body-medium-strong-size: var(--size-body-medium); /* 17px */"
+      },
+      "eds-body-medium-strong-weight": {
+        "file": "semantic.css",
+        "startLine": 41,
+        "endLine": 41,
+        "snippet": "  --eds-body-medium-strong-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-body-medium-strong-line-height": {
+        "file": "semantic.css",
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --eds-body-medium-strong-line-height: var(--line-height-body-medium); /* 24px */"
+      },
+      "eds-body-small-size": {
+        "file": "semantic.css",
+        "startLine": 45,
+        "endLine": 45,
+        "snippet": "  --eds-body-small-size: var(--size-body-small); /* 15px */"
+      },
+      "eds-body-small-weight": {
+        "file": "semantic.css",
+        "startLine": 46,
+        "endLine": 46,
+        "snippet": "  --eds-body-small-weight: var(--weight-regular); /* 400 */"
+      },
+      "eds-body-small-line-height": {
+        "file": "semantic.css",
+        "startLine": 47,
+        "endLine": 47,
+        "snippet": "  --eds-body-small-line-height: var(--line-height-body-small); /* 20px */"
+      },
+      "eds-body-small-strong-size": {
+        "file": "semantic.css",
+        "startLine": 50,
+        "endLine": 50,
+        "snippet": "  --eds-body-small-strong-size: var(--size-body-small); /* 15px */"
+      },
+      "eds-body-small-strong-weight": {
+        "file": "semantic.css",
+        "startLine": 51,
+        "endLine": 51,
+        "snippet": "  --eds-body-small-strong-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-body-small-strong-line-height": {
+        "file": "semantic.css",
+        "startLine": 52,
+        "endLine": 52,
+        "snippet": "  --eds-body-small-strong-line-height: var(--line-height-body-small); /* 20px */"
+      },
+      "eds-detail-size": {
+        "file": "semantic.css",
+        "startLine": 55,
+        "endLine": 55,
+        "snippet": "  --eds-detail-size: var(--size-detail); /* 14px */"
+      },
+      "eds-detail-weight": {
+        "file": "semantic.css",
+        "startLine": 56,
+        "endLine": 56,
+        "snippet": "  --eds-detail-weight: var(--weight-regular); /* 400 */"
+      },
+      "eds-detail-line-height": {
+        "file": "semantic.css",
+        "startLine": 57,
+        "endLine": 57,
+        "snippet": "  --eds-detail-line-height: var(--line-height-detail); /* 18px */"
+      },
+      "eds-detail-strong-size": {
+        "file": "semantic.css",
+        "startLine": 60,
+        "endLine": 60,
+        "snippet": "  --eds-detail-strong-size: var(--size-detail); /* 14px */"
+      },
+      "eds-detail-strong-weight": {
+        "file": "semantic.css",
+        "startLine": 61,
+        "endLine": 61,
+        "snippet": "  --eds-detail-strong-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-detail-strong-line-height": {
+        "file": "semantic.css",
+        "startLine": 62,
+        "endLine": 62,
+        "snippet": "  --eds-detail-strong-line-height: var(--line-height-detail); /* 18px */"
+      },
+      "eds-footnote-size": {
+        "file": "semantic.css",
+        "startLine": 65,
+        "endLine": 65,
+        "snippet": "  --eds-footnote-size: var(--size-footnote); /* 13px */"
+      },
+      "eds-footnote-weight": {
+        "file": "semantic.css",
+        "startLine": 66,
+        "endLine": 66,
+        "snippet": "  --eds-footnote-weight: var(--weight-regular); /* 400 */"
+      },
+      "eds-footnote-line-height": {
+        "file": "semantic.css",
+        "startLine": 67,
+        "endLine": 67,
+        "snippet": "  --eds-footnote-line-height: var(--line-height-footnote); /* 16px */"
+      },
+      "eds-footnote-strong-size": {
+        "file": "semantic.css",
+        "startLine": 70,
+        "endLine": 70,
+        "snippet": "  --eds-footnote-strong-size: var(--size-footnote); /* 13px */"
+      },
+      "eds-footnote-strong-weight": {
+        "file": "semantic.css",
+        "startLine": 71,
+        "endLine": 71,
+        "snippet": "  --eds-footnote-strong-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-footnote-strong-line-height": {
+        "file": "semantic.css",
+        "startLine": 72,
+        "endLine": 72,
+        "snippet": "  --eds-footnote-strong-line-height: var(--line-height-footnote); /* 16px */"
+      },
+      "eds-bar-size": {
+        "file": "semantic.css",
+        "startLine": 75,
+        "endLine": 75,
+        "snippet": "  --eds-bar-size: var(--size-bar); /* 10px */"
+      },
+      "eds-bar-weight": {
+        "file": "semantic.css",
+        "startLine": 76,
+        "endLine": 76,
+        "snippet": "  --eds-bar-weight: var(--weight-medium); /* 500 */"
+      },
+      "eds-bar-line-height": {
+        "file": "semantic.css",
+        "startLine": 77,
+        "endLine": 77,
+        "snippet": "  --eds-bar-line-height: var(--line-height-bar); /* 14px */"
+      },
+      "eds-bar-strong-size": {
+        "file": "semantic.css",
+        "startLine": 80,
+        "endLine": 80,
+        "snippet": "  --eds-bar-strong-size: var(--size-bar); /* 10px */"
+      },
+      "eds-bar-strong-weight": {
+        "file": "semantic.css",
+        "startLine": 81,
+        "endLine": 81,
+        "snippet": "  --eds-bar-strong-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-bar-strong-line-height": {
+        "file": "semantic.css",
+        "startLine": 82,
+        "endLine": 82,
+        "snippet": "  --eds-bar-strong-line-height: var(--line-height-bar); /* 14px */"
+      },
+      "typography-display": {
+        "file": "semantic.css",
+        "startLine": 87,
+        "endLine": 91,
+        "snippet": ".typography-display\nfont-size: var(--eds-display-size); /* 34px */\nfont-weight: var(--eds-display-weight); /* 700 */\nline-height: var(--eds-display-line-height); /* 44px */"
+      },
+      "typography-headline": {
+        "file": "semantic.css",
+        "startLine": 93,
+        "endLine": 97,
+        "snippet": ".typography-headline\nfont-size: var(--eds-headline-size); /* 26px */\nfont-weight: var(--eds-headline-weight); /* 700 */\nline-height: var(--eds-headline-line-height); /* 32px */"
+      },
+      "typography-title": {
+        "file": "semantic.css",
+        "startLine": 99,
+        "endLine": 103,
+        "snippet": ".typography-title\nfont-size: var(--eds-title-size); /* 21px */\nfont-weight: var(--eds-title-weight); /* 700 */\nline-height: var(--eds-title-line-height); /* 28px */"
+      },
+      "typography-body-large": {
+        "file": "semantic.css",
+        "startLine": 105,
+        "endLine": 109,
+        "snippet": ".typography-body-large\nfont-size: var(--eds-body-large-size); /* 19px */\nfont-weight: var(--eds-body-large-weight); /* 400 */\nline-height: var(--eds-body-large-line-height); /* 26px */"
+      },
+      "typography-body-large-strong": {
+        "file": "semantic.css",
+        "startLine": 111,
+        "endLine": 115,
+        "snippet": ".typography-body-large-strong\nfont-size: var(--eds-body-large-strong-size); /* 19px */\nfont-weight: var(--eds-body-large-strong-weight); /* 600 */\nline-height: var(--eds-body-large-strong-line-height); /* 26px */"
+      },
+      "typography-body-medium": {
+        "file": "semantic.css",
+        "startLine": 117,
+        "endLine": 121,
+        "snippet": ".typography-body-medium\nfont-size: var(--eds-body-medium-size); /* 17px */\nfont-weight: var(--eds-body-medium-weight); /* 400 */\nline-height: var(--eds-body-medium-line-height); /* 24px */"
+      },
+      "typography-body-medium-strong": {
+        "file": "semantic.css",
+        "startLine": 123,
+        "endLine": 127,
+        "snippet": ".typography-body-medium-strong\nfont-size: var(--eds-body-medium-strong-size); /* 17px */\nfont-weight: var(--eds-body-medium-strong-weight); /* 600 */\nline-height: var(--eds-body-medium-strong-line-height); /* 24px */"
+      },
+      "typography-body-small": {
+        "file": "semantic.css",
+        "startLine": 129,
+        "endLine": 133,
+        "snippet": ".typography-body-small\nfont-size: var(--eds-body-small-size); /* 15px */\nfont-weight: var(--eds-body-small-weight); /* 400 */\nline-height: var(--eds-body-small-line-height); /* 20px */"
+      },
+      "typography-body-small-strong": {
+        "file": "semantic.css",
+        "startLine": 135,
+        "endLine": 139,
+        "snippet": ".typography-body-small-strong\nfont-size: var(--eds-body-small-strong-size); /* 15px */\nfont-weight: var(--eds-body-small-strong-weight); /* 600 */\nline-height: var(--eds-body-small-strong-line-height); /* 20px */"
+      },
+      "typography-detail": {
+        "file": "semantic.css",
+        "startLine": 141,
+        "endLine": 145,
+        "snippet": ".typography-detail\nfont-size: var(--eds-detail-size); /* 14px */\nfont-weight: var(--eds-detail-weight); /* 400 */\nline-height: var(--eds-detail-line-height); /* 18px */"
+      },
+      "typography-detail-strong": {
+        "file": "semantic.css",
+        "startLine": 147,
+        "endLine": 151,
+        "snippet": ".typography-detail-strong\nfont-size: var(--eds-detail-strong-size); /* 14px */\nfont-weight: var(--eds-detail-strong-weight); /* 600 */\nline-height: var(--eds-detail-strong-line-height); /* 18px */"
+      },
+      "typography-footnote": {
+        "file": "semantic.css",
+        "startLine": 153,
+        "endLine": 157,
+        "snippet": ".typography-footnote\nfont-size: var(--eds-footnote-size); /* 13px */\nfont-weight: var(--eds-footnote-weight); /* 400 */\nline-height: var(--eds-footnote-line-height); /* 16px */"
+      },
+      "typography-footnote-strong": {
+        "file": "semantic.css",
+        "startLine": 159,
+        "endLine": 163,
+        "snippet": ".typography-footnote-strong\nfont-size: var(--eds-footnote-strong-size); /* 13px */\nfont-weight: var(--eds-footnote-strong-weight); /* 600 */\nline-height: var(--eds-footnote-strong-line-height); /* 16px */"
+      },
+      "typography-bar": {
+        "file": "semantic.css",
+        "startLine": 165,
+        "endLine": 177,
+        "snippet": ".typography-bar\ndisplay: inline-block;\nbox-sizing: border-box;\nfont-family: var(--eds-family-sans); /* \"EDS Text\", \"PingFang SC\", SourceHanSansSC, \"Apple Color Emoji\", \"Segoe UI Emoji\" */\nfont-size: calc(var(--eds-bar-size) * 2);\nfont-weight: var(--eds-bar-weight); /* 500 */\nline-height: calc(var(--eds-bar-line-height) * 2);\ntransform: scale(0.5);\ntransform-origin: top center;\nmargin-bottom: calc(var(--eds-bar-line-height) * -1);\n-webkit-font-smoothing: antialiased;\n-moz-osx-font-smoothing: grayscale;"
+      }
+    },
+    "effect": {
+      "eds-shadow-box-subtle": {
+        "file": "base.css",
+        "startLine": 15,
+        "endLine": 15,
+        "snippet": "  --eds-shadow-box-subtle: 0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset, 0 var(--depth-sm) var(--blur-sm) 0 var(--effect-vulvar-subtle);"
+      },
+      "eds-shadow-box-shallow": {
+        "file": "base.css",
+        "startLine": 19,
+        "endLine": 19,
+        "snippet": "  --eds-shadow-box-shallow: 0 var(--depth-md) var(--blur-md) 0 var(--effect-inner-light) inset, 0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep);"
+      },
+      "eds-shadow-box-deep": {
+        "file": "base.css",
+        "startLine": 23,
+        "endLine": 23,
+        "snippet": "  --eds-shadow-box-deep: 0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset, 0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep);"
+      },
+      "eds-blur-glass": {
+        "file": "base.css",
+        "startLine": 34,
+        "endLine": 34,
+        "snippet": "  --eds-blur-glass: blur(calc(var(--blur-md) / 2));"
+      }
+    },
+    "motion": {
+      "motion-0": {
+        "file": "base.css",
+        "startLine": 10,
+        "endLine": 10,
+        "snippet": "  --motion-0: 0ms;"
+      },
+      "motion-1": {
+        "file": "base.css",
+        "startLine": 11,
+        "endLine": 11,
+        "snippet": "  --motion-1: 100ms;"
+      },
+      "motion-2": {
+        "file": "base.css",
+        "startLine": 12,
+        "endLine": 12,
+        "snippet": "  --motion-2: 180ms;"
+      },
+      "motion-3": {
+        "file": "base.css",
+        "startLine": 13,
+        "endLine": 13,
+        "snippet": "  --motion-3: 280ms;"
+      },
+      "motion-4": {
+        "file": "base.css",
+        "startLine": 14,
+        "endLine": 14,
+        "snippet": "  --motion-4: 400ms;"
+      },
+      "motion-5": {
+        "file": "base.css",
+        "startLine": 15,
+        "endLine": 15,
+        "snippet": "  --motion-5: 500ms;"
+      },
+      "motion-6": {
+        "file": "base.css",
+        "startLine": 16,
+        "endLine": 16,
+        "snippet": "  --motion-6: 250ms;"
+      },
+      "motion-7": {
+        "file": "base.css",
+        "startLine": 17,
+        "endLine": 17,
+        "snippet": "  --motion-7: 350ms;"
+      },
+      "motion-8": {
+        "file": "base.css",
+        "startLine": 18,
+        "endLine": 18,
+        "snippet": "  --motion-8: 800ms;"
+      },
+      "motion-9": {
+        "file": "base.css",
+        "startLine": 19,
+        "endLine": 19,
+        "snippet": "  --motion-9: 2000ms;"
+      },
+      "motion-ease-1": {
+        "file": "base.css",
+        "startLine": 26,
+        "endLine": 26,
+        "snippet": "  --motion-ease-1: cubic-bezier(0.42, 0, 0.58, 1);"
+      },
+      "motion-ease-2": {
+        "file": "base.css",
+        "startLine": 27,
+        "endLine": 27,
+        "snippet": "  --motion-ease-2: cubic-bezier(0.2, 0, 0, 1);"
+      },
+      "motion-ease-3": {
+        "file": "base.css",
+        "startLine": 28,
+        "endLine": 28,
+        "snippet": "  --motion-ease-3: cubic-bezier(0.4, 0, 1, 1);"
+      },
+      "motion-ease-4": {
+        "file": "base.css",
+        "startLine": 29,
+        "endLine": 29,
+        "snippet": "  --motion-ease-4: cubic-bezier(0.4, 0, 0.2, 1);"
+      },
+      "motion-ease-5": {
+        "file": "base.css",
+        "startLine": 30,
+        "endLine": 30,
+        "snippet": "  --motion-ease-5: linear;"
+      },
+      "motion-ease-6": {
+        "file": "base.css",
+        "startLine": 31,
+        "endLine": 31,
+        "snippet": "  --motion-ease-6: cubic-bezier(0.34, 1.4, 0.64, 1);"
+      },
+      "motion-ease-7": {
+        "file": "base.css",
+        "startLine": 32,
+        "endLine": 32,
+        "snippet": "  --motion-ease-7: cubic-bezier(0.34, 1.45, 0.64, 1);"
+      },
+      "motion-ease-8": {
+        "file": "base.css",
+        "startLine": 33,
+        "endLine": 33,
+        "snippet": "  --motion-ease-8: cubic-bezier(0.22, 1, 0.36, 1);"
+      },
+      "motion-ease-9": {
+        "file": "base.css",
+        "startLine": 34,
+        "endLine": 34,
+        "snippet": "  --motion-ease-9: cubic-bezier(0.32, 0.72, 0, 1);"
+      },
+      "motion-opacity-hidden": {
+        "file": "base.css",
+        "startLine": 41,
+        "endLine": 41,
+        "snippet": "  --motion-opacity-hidden: 0;"
+      },
+      "motion-opacity-dim": {
+        "file": "base.css",
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --motion-opacity-dim: 0.4;"
+      },
+      "motion-opacity-subtle": {
+        "file": "base.css",
+        "startLine": 43,
+        "endLine": 43,
+        "snippet": "  --motion-opacity-subtle: 0.7;"
+      },
+      "motion-opacity-visible": {
+        "file": "base.css",
+        "startLine": 44,
+        "endLine": 44,
+        "snippet": "  --motion-opacity-visible: 1;"
+      },
+      "motion-opacity-disabled": {
+        "file": "base.css",
+        "startLine": 45,
+        "endLine": 45,
+        "snippet": "  --motion-opacity-disabled: 0.5;"
+      },
+      "motion-scale-press": {
+        "file": "base.css",
+        "startLine": 48,
+        "endLine": 48,
+        "snippet": "  --motion-scale-press: 0.96;"
+      },
+      "motion-scale-subtle": {
+        "file": "base.css",
+        "startLine": 49,
+        "endLine": 49,
+        "snippet": "  --motion-scale-subtle: 0.98;"
+      },
+      "motion-scale-emphasis": {
+        "file": "base.css",
+        "startLine": 50,
+        "endLine": 50,
+        "snippet": "  --motion-scale-emphasis: 1.04;"
+      },
+      "motion-scale-present": {
+        "file": "base.css",
+        "startLine": 51,
+        "endLine": 51,
+        "snippet": "  --motion-scale-present: 0.96;   /* Sheet / Modal / Popover 入场 */"
+      },
+      "motion-glass-scale-press": {
+        "file": "base.css",
+        "startLine": 54,
+        "endLine": 54,
+        "snippet": "  --motion-glass-scale-press: 0.975; /* Glass 按压缩放；比普通 Tap 更克制 */"
+      },
+      "motion-glass-opacity-shimmer": {
+        "file": "base.css",
+        "startLine": 55,
+        "endLine": 55,
+        "snippet": "  --motion-glass-opacity-shimmer: 0.10; /* Glass Shimmer 最大透明度 */"
+      },
+      "motion-distance-xs": {
+        "file": "base.css",
+        "startLine": 58,
+        "endLine": 58,
+        "snippet": "  --motion-distance-xs: 4px;"
+      },
+      "motion-distance-sm": {
+        "file": "base.css",
+        "startLine": 59,
+        "endLine": 59,
+        "snippet": "  --motion-distance-sm: 8px;"
+      },
+      "motion-distance-md": {
+        "file": "base.css",
+        "startLine": 60,
+        "endLine": 60,
+        "snippet": "  --motion-distance-md: 16px;"
+      },
+      "motion-distance-lg": {
+        "file": "base.css",
+        "startLine": 61,
+        "endLine": 61,
+        "snippet": "  --motion-distance-lg: 24px;"
+      },
+      "motion-distance-xl": {
+        "file": "base.css",
+        "startLine": 62,
+        "endLine": 62,
+        "snippet": "  --motion-distance-xl: 40px;"
+      },
+      "motion-offset-small": {
+        "file": "base.css",
+        "startLine": 63,
+        "endLine": 63,
+        "snippet": "  --motion-offset-small: var(--motion-distance-sm);"
+      },
+      "motion-offset-flotation-y": {
+        "file": "base.css",
+        "startLine": 64,
+        "endLine": 64,
+        "snippet": "  --motion-offset-flotation-y: calc(-1 * var(--spacing-2-5));"
+      },
+      "motion-offset-page-push": {
+        "file": "base.css",
+        "startLine": 65,
+        "endLine": 65,
+        "snippet": "  --motion-offset-page-push: 30%;"
+      },
+      "motion-offset-layout-deform-y": {
+        "file": "base.css",
+        "startLine": 66,
+        "endLine": 66,
+        "snippet": "  --motion-offset-layout-deform-y: var(--spacing-2-5);"
+      },
+      "motion-base-spring-default-response": {
+        "file": "base.css",
+        "startLine": 69,
+        "endLine": 69,
+        "snippet": "  --motion-base-spring-default-response: 0.55;"
+      },
+      "motion-base-spring-default-damping-fraction": {
+        "file": "base.css",
+        "startLine": 70,
+        "endLine": 70,
+        "snippet": "  --motion-base-spring-default-damping-fraction: 0.82;"
+      },
+      "motion-base-spring-default-blend-duration": {
+        "file": "base.css",
+        "startLine": 71,
+        "endLine": 71,
+        "snippet": "  --motion-base-spring-default-blend-duration: 0.15s;"
+      },
+      "ios-spring-default": {
+        "file": "base.css",
+        "startLine": 72,
+        "endLine": 72,
+        "snippet": "  --ios-spring-default: damping:19,stiffness:130,mass:1;"
+      },
+      "motion-base-spring-interactive-response": {
+        "file": "base.css",
+        "startLine": 73,
+        "endLine": 73,
+        "snippet": "  --motion-base-spring-interactive-response: 0.15;"
+      },
+      "motion-base-spring-interactive-damping-fraction": {
+        "file": "base.css",
+        "startLine": 74,
+        "endLine": 74,
+        "snippet": "  --motion-base-spring-interactive-damping-fraction: 0.86;"
+      },
+      "motion-base-spring-interactive-blend-duration": {
+        "file": "base.css",
+        "startLine": 75,
+        "endLine": 75,
+        "snippet": "  --motion-base-spring-interactive-blend-duration: 0.25s;"
+      },
+      "ios-spring-interactive": {
+        "file": "base.css",
+        "startLine": 76,
+        "endLine": 76,
+        "snippet": "  --ios-spring-interactive: damping:72,stiffness:1755,mass:1;"
+      },
+      "motion-base-spring-navigation-response": {
+        "file": "base.css",
+        "startLine": 77,
+        "endLine": 77,
+        "snippet": "  --motion-base-spring-navigation-response: 0.38;"
+      },
+      "motion-base-spring-navigation-damping-fraction": {
+        "file": "base.css",
+        "startLine": 78,
+        "endLine": 78,
+        "snippet": "  --motion-base-spring-navigation-damping-fraction: 0.88;"
+      },
+      "motion-base-spring-navigation-blend-duration": {
+        "file": "base.css",
+        "startLine": 79,
+        "endLine": 79,
+        "snippet": "  --motion-base-spring-navigation-blend-duration: 0.2s;"
+      },
+      "ios-spring-navigation": {
+        "file": "base.css",
+        "startLine": 80,
+        "endLine": 80,
+        "snippet": "  --ios-spring-navigation: damping:29,stiffness:273,mass:1;"
+      },
+      "motion-base-spring-sheet-response": {
+        "file": "base.css",
+        "startLine": 81,
+        "endLine": 81,
+        "snippet": "  --motion-base-spring-sheet-response: 0.48;"
+      },
+      "motion-base-spring-sheet-damping-fraction": {
+        "file": "base.css",
+        "startLine": 82,
+        "endLine": 82,
+        "snippet": "  --motion-base-spring-sheet-damping-fraction: 0.86;"
+      },
+      "motion-base-spring-sheet-blend-duration": {
+        "file": "base.css",
+        "startLine": 83,
+        "endLine": 83,
+        "snippet": "  --motion-base-spring-sheet-blend-duration: 0.2s;"
+      },
+      "ios-spring-sheet": {
+        "file": "base.css",
+        "startLine": 84,
+        "endLine": 84,
+        "snippet": "  --ios-spring-sheet: damping:23,stiffness:171,mass:1;"
+      },
+      "motion-base-spring-modal-response": {
+        "file": "base.css",
+        "startLine": 85,
+        "endLine": 85,
+        "snippet": "  --motion-base-spring-modal-response: 0.38;"
+      },
+      "motion-base-spring-modal-damping-fraction": {
+        "file": "base.css",
+        "startLine": 86,
+        "endLine": 86,
+        "snippet": "  --motion-base-spring-modal-damping-fraction: 0.9;"
+      },
+      "motion-base-spring-modal-blend-duration": {
+        "file": "base.css",
+        "startLine": 87,
+        "endLine": 87,
+        "snippet": "  --motion-base-spring-modal-blend-duration: 0.15s;"
+      },
+      "ios-spring-modal": {
+        "file": "base.css",
+        "startLine": 88,
+        "endLine": 88,
+        "snippet": "  --ios-spring-modal: damping:30,stiffness:273,mass:1;"
+      },
+      "motion-base-spring-control-response": {
+        "file": "base.css",
+        "startLine": 89,
+        "endLine": 89,
+        "snippet": "  --motion-base-spring-control-response: 0.28;"
+      },
+      "motion-base-spring-control-damping-fraction": {
+        "file": "base.css",
+        "startLine": 90,
+        "endLine": 90,
+        "snippet": "  --motion-base-spring-control-damping-fraction: 0.82;"
+      },
+      "motion-base-spring-control-blend-duration": {
+        "file": "base.css",
+        "startLine": 91,
+        "endLine": 91,
+        "snippet": "  --motion-base-spring-control-blend-duration: 0.1s;"
+      },
+      "ios-spring-control": {
+        "file": "base.css",
+        "startLine": 92,
+        "endLine": 92,
+        "snippet": "  --ios-spring-control: damping:37,stiffness:503,mass:1;"
+      },
+      "motion-base-spring-press-response": {
+        "file": "base.css",
+        "startLine": 93,
+        "endLine": 93,
+        "snippet": "  --motion-base-spring-press-response: 0.18;"
+      },
+      "motion-base-spring-press-damping-fraction": {
+        "file": "base.css",
+        "startLine": 94,
+        "endLine": 94,
+        "snippet": "  --motion-base-spring-press-damping-fraction: 0.9;"
+      },
+      "motion-base-spring-press-blend-duration": {
+        "file": "base.css",
+        "startLine": 95,
+        "endLine": 95,
+        "snippet": "  --motion-base-spring-press-blend-duration: 0.05s;"
+      },
+      "ios-spring-press": {
+        "file": "base.css",
+        "startLine": 96,
+        "endLine": 96,
+        "snippet": "  --ios-spring-press: damping:63,stiffness:1218,mass:1;"
+      },
+      "motion-base-spring-drag-response": {
+        "file": "base.css",
+        "startLine": 97,
+        "endLine": 97,
+        "snippet": "  --motion-base-spring-drag-response: 0.32;"
+      },
+      "motion-base-spring-drag-damping-fraction": {
+        "file": "base.css",
+        "startLine": 98,
+        "endLine": 98,
+        "snippet": "  --motion-base-spring-drag-damping-fraction: 0.82;"
+      },
+      "motion-base-spring-drag-blend-duration": {
+        "file": "base.css",
+        "startLine": 99,
+        "endLine": 99,
+        "snippet": "  --motion-base-spring-drag-blend-duration: 0.1s;"
+      },
+      "ios-spring-drag": {
+        "file": "base.css",
+        "startLine": 100,
+        "endLine": 100,
+        "snippet": "  --ios-spring-drag: damping:32,stiffness:385,mass:1;"
+      },
+      "motion-base-spring-bouncy-response": {
+        "file": "base.css",
+        "startLine": 101,
+        "endLine": 101,
+        "snippet": "  --motion-base-spring-bouncy-response: 0.42;"
+      },
+      "motion-base-spring-bouncy-damping-fraction": {
+        "file": "base.css",
+        "startLine": 102,
+        "endLine": 102,
+        "snippet": "  --motion-base-spring-bouncy-damping-fraction: 0.68;"
+      },
+      "motion-base-spring-bouncy-blend-duration": {
+        "file": "base.css",
+        "startLine": 103,
+        "endLine": 103,
+        "snippet": "  --motion-base-spring-bouncy-blend-duration: 0.1s;"
+      },
+      "ios-spring-bouncy": {
+        "file": "base.css",
+        "startLine": 104,
+        "endLine": 104,
+        "snippet": "  --ios-spring-bouncy: damping:20,stiffness:224,mass:1;"
+      },
+      "motion-base-spring-gentle-response": {
+        "file": "base.css",
+        "startLine": 105,
+        "endLine": 105,
+        "snippet": "  --motion-base-spring-gentle-response: 0.6;"
+      },
+      "motion-base-spring-gentle-damping-fraction": {
+        "file": "base.css",
+        "startLine": 106,
+        "endLine": 106,
+        "snippet": "  --motion-base-spring-gentle-damping-fraction: 0.92;"
+      },
+      "motion-base-spring-gentle-blend-duration": {
+        "file": "base.css",
+        "startLine": 107,
+        "endLine": 107,
+        "snippet": "  --motion-base-spring-gentle-blend-duration: 0.2s;"
+      },
+      "ios-spring-gentle": {
+        "file": "base.css",
+        "startLine": 108,
+        "endLine": 108,
+        "snippet": "  --ios-spring-gentle: damping:19,stiffness:110,mass:1;"
+      },
+      "motion-base-haptic-selection": {
+        "file": "base.css",
+        "startLine": 111,
+        "endLine": 111,
+        "snippet": "  --motion-base-haptic-selection: \"selection\";"
+      },
+      "motion-base-haptic-light": {
+        "file": "base.css",
+        "startLine": 112,
+        "endLine": 112,
+        "snippet": "  --motion-base-haptic-light: \"light\";"
+      },
+      "motion-base-haptic-medium": {
+        "file": "base.css",
+        "startLine": 113,
+        "endLine": 113,
+        "snippet": "  --motion-base-haptic-medium: \"medium\";"
+      },
+      "motion-base-haptic-heavy": {
+        "file": "base.css",
+        "startLine": 114,
+        "endLine": 114,
+        "snippet": "  --motion-base-haptic-heavy: \"heavy\";"
+      },
+      "motion-base-haptic-success": {
+        "file": "base.css",
+        "startLine": 115,
+        "endLine": 115,
+        "snippet": "  --motion-base-haptic-success: \"success\";"
+      },
+      "motion-base-haptic-warning": {
+        "file": "base.css",
+        "startLine": 116,
+        "endLine": 116,
+        "snippet": "  --motion-base-haptic-warning: \"warning\";"
+      },
+      "motion-base-haptic-error": {
+        "file": "base.css",
+        "startLine": 117,
+        "endLine": 117,
+        "snippet": "  --motion-base-haptic-error: \"error\";"
+      },
+      "ios-navigation-push": {
+        "file": "base.css",
+        "startLine": 120,
+        "endLine": 120,
+        "snippet": "  --ios-navigation-push: duration:350,easing:cubic-bezier(0.32,0.72,0,1);"
+      },
+      "ios-ease-in-out": {
+        "file": "base.css",
+        "startLine": 121,
+        "endLine": 121,
+        "snippet": "  --ios-ease-in-out: duration:350,easing:cubic-bezier(0.42,0,0.58,1);"
+      },
+      "ios-ease-out": {
+        "file": "base.css",
+        "startLine": 122,
+        "endLine": 122,
+        "snippet": "  --ios-ease-out: duration:300,easing:cubic-bezier(0,0,0.58,1);"
+      },
+      "ios-ease-in": {
+        "file": "base.css",
+        "startLine": 123,
+        "endLine": 123,
+        "snippet": "  --ios-ease-in: duration:250,easing:cubic-bezier(0.42,0,1,1);"
+      },
+      "motion-base-interaction-velocity-aware": {
+        "file": "base.css",
+        "startLine": 126,
+        "endLine": 126,
+        "snippet": "  --motion-base-interaction-velocity-aware: 1;"
+      },
+      "motion-base-interaction-interruptible": {
+        "file": "base.css",
+        "startLine": 127,
+        "endLine": 127,
+        "snippet": "  --motion-base-interaction-interruptible: 1;"
+      },
+      "motion-base-interaction-preserve-velocity": {
+        "file": "base.css",
+        "startLine": 128,
+        "endLine": 128,
+        "snippet": "  --motion-base-interaction-preserve-velocity: 1;"
+      },
+      "motion-duration-instant": {
+        "file": "recipe.css",
+        "startLine": 10,
+        "endLine": 10,
+        "snippet": "  --motion-duration-instant: var(--motion-0);"
+      },
+      "motion-duration-micro": {
+        "file": "recipe.css",
+        "startLine": 79,
+        "endLine": 79,
+        "snippet": "    --motion-duration-micro: var(--motion-0);"
+      },
+      "motion-duration-fast": {
+        "file": "recipe.css",
+        "startLine": 80,
+        "endLine": 80,
+        "snippet": "    --motion-duration-fast: var(--motion-0);"
+      },
+      "motion-duration-normal": {
+        "file": "recipe.css",
+        "startLine": 81,
+        "endLine": 81,
+        "snippet": "    --motion-duration-normal: var(--motion-0);"
+      },
+      "motion-duration-slow": {
+        "file": "recipe.css",
+        "startLine": 82,
+        "endLine": 82,
+        "snippet": "    --motion-duration-slow: var(--motion-0);"
+      },
+      "motion-duration-emphasis": {
+        "file": "recipe.css",
+        "startLine": 83,
+        "endLine": 83,
+        "snippet": "    --motion-duration-emphasis: var(--motion-0);"
+      },
+      "motion-duration-control": {
+        "file": "recipe.css",
+        "startLine": 84,
+        "endLine": 84,
+        "snippet": "    --motion-duration-control: var(--motion-0);"
+      },
+      "motion-duration-navigation": {
+        "file": "recipe.css",
+        "startLine": 85,
+        "endLine": 85,
+        "snippet": "    --motion-duration-navigation: var(--motion-0);"
+      },
+      "motion-duration-spin": {
+        "file": "recipe.css",
+        "startLine": 92,
+        "endLine": 92,
+        "snippet": "    --motion-duration-spin: var(--motion-0);"
+      },
+      "motion-duration-spin-slow": {
+        "file": "recipe.css",
+        "startLine": 93,
+        "endLine": 93,
+        "snippet": "    --motion-duration-spin-slow: var(--motion-0);"
+      },
+      "motion-duration-fade": {
+        "file": "recipe.css",
+        "startLine": 86,
+        "endLine": 86,
+        "snippet": "    --motion-duration-fade: var(--motion-0);"
+      },
+      "motion-duration-enter": {
+        "file": "recipe.css",
+        "startLine": 87,
+        "endLine": 87,
+        "snippet": "    --motion-duration-enter: var(--motion-0);"
+      },
+      "motion-duration-exit": {
+        "file": "recipe.css",
+        "startLine": 88,
+        "endLine": 88,
+        "snippet": "    --motion-duration-exit: var(--motion-0);"
+      },
+      "motion-duration-tap": {
+        "file": "recipe.css",
+        "startLine": 89,
+        "endLine": 89,
+        "snippet": "    --motion-duration-tap: var(--motion-0);"
+      },
+      "motion-duration-shift": {
+        "file": "recipe.css",
+        "startLine": 90,
+        "endLine": 90,
+        "snippet": "    --motion-duration-shift: var(--motion-0);"
+      },
+      "motion-duration-scroll-fade": {
+        "file": "recipe.css",
+        "startLine": 91,
+        "endLine": 91,
+        "snippet": "    --motion-duration-scroll-fade: var(--motion-0);"
+      },
+      "motion-duration-layout-deform": {
+        "file": "recipe.css",
+        "startLine": 94,
+        "endLine": 94,
+        "snippet": "    --motion-duration-layout-deform: var(--motion-0);"
+      },
+      "motion-duration-layout-deform-content": {
+        "file": "recipe.css",
+        "startLine": 95,
+        "endLine": 95,
+        "snippet": "    --motion-duration-layout-deform-content: var(--motion-0);"
+      },
+      "motion-delay-layout-deform-content-swap": {
+        "file": "recipe.css",
+        "startLine": 96,
+        "endLine": 96,
+        "snippet": "    --motion-delay-layout-deform-content-swap: var(--motion-0);"
+      },
+      "motion-delay-feedback-tick": {
+        "file": "recipe.css",
+        "startLine": 97,
+        "endLine": 97,
+        "snippet": "    --motion-delay-feedback-tick: var(--motion-0);"
+      },
+      "motion-glass-duration-press": {
+        "file": "recipe.css",
+        "startLine": 30,
+        "endLine": 30,
+        "snippet": "  --motion-glass-duration-press: var(--motion-2);"
+      },
+      "motion-glass-duration-release": {
+        "file": "recipe.css",
+        "startLine": 31,
+        "endLine": 31,
+        "snippet": "  --motion-glass-duration-release: 260ms;"
+      },
+      "motion-glass-duration-shimmer": {
+        "file": "recipe.css",
+        "startLine": 32,
+        "endLine": 32,
+        "snippet": "  --motion-glass-duration-shimmer: var(--motion-3);"
+      },
+      "motion-glass-duration-morph": {
+        "file": "recipe.css",
+        "startLine": 33,
+        "endLine": 33,
+        "snippet": "  --motion-glass-duration-morph: 420ms;"
+      },
+      "motion-easing-standard": {
+        "file": "recipe.css",
+        "startLine": 36,
+        "endLine": 36,
+        "snippet": "  --motion-easing-standard: var(--motion-ease-1);"
+      },
+      "motion-easing-enter": {
+        "file": "recipe.css",
+        "startLine": 37,
+        "endLine": 37,
+        "snippet": "  --motion-easing-enter: var(--motion-ease-2);"
+      },
+      "motion-easing-exit": {
+        "file": "recipe.css",
+        "startLine": 38,
+        "endLine": 38,
+        "snippet": "  --motion-easing-exit: var(--motion-ease-3);"
+      },
+      "motion-easing-product": {
+        "file": "recipe.css",
+        "startLine": 39,
+        "endLine": 39,
+        "snippet": "  --motion-easing-product: var(--motion-ease-4);"
+      },
+      "motion-easing-linear": {
+        "file": "recipe.css",
+        "startLine": 40,
+        "endLine": 40,
+        "snippet": "  --motion-easing-linear: var(--motion-ease-5);"
+      },
+      "motion-easing-spring": {
+        "file": "recipe.css",
+        "startLine": 41,
+        "endLine": 41,
+        "snippet": "  --motion-easing-spring: var(--motion-ease-6);"
+      },
+      "motion-easing-spring-emphasis": {
+        "file": "recipe.css",
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --motion-easing-spring-emphasis: var(--motion-ease-7);"
+      },
+      "motion-easing-decelerate": {
+        "file": "recipe.css",
+        "startLine": 43,
+        "endLine": 43,
+        "snippet": "  --motion-easing-decelerate: var(--motion-ease-8);"
+      },
+      "motion-easing-navigation": {
+        "file": "recipe.css",
+        "startLine": 44,
+        "endLine": 44,
+        "snippet": "  --motion-easing-navigation: var(--motion-ease-9);"
+      },
+      "motion-property-paint": {
+        "file": "recipe.css",
+        "startLine": 47,
+        "endLine": 47,
+        "snippet": "  --motion-property-paint: background-color, color, border-color, box-shadow, opacity, outline-color, fill;"
+      },
+      "motion-property-geometry": {
+        "file": "recipe.css",
+        "startLine": 48,
+        "endLine": 48,
+        "snippet": "  --motion-property-geometry: flex, max-width, width, min-width, max-height, transform, left, padding;"
+      },
+      "motion-property-fade": {
+        "file": "recipe.css",
+        "startLine": 49,
+        "endLine": 49,
+        "snippet": "  --motion-property-fade: opacity;"
+      },
+      "motion-property-transform": {
+        "file": "recipe.css",
+        "startLine": 50,
+        "endLine": 50,
+        "snippet": "  --motion-property-transform: transform, opacity;"
+      },
+      "motion-recipe-fade": {
+        "file": "recipe.css",
+        "startLine": 53,
+        "endLine": 53,
+        "snippet": "  --motion-recipe-fade: opacity var(--motion-duration-fade) var(--motion-easing-standard);"
+      },
+      "motion-recipe-enter": {
+        "file": "recipe.css",
+        "startLine": 54,
+        "endLine": 54,
+        "snippet": "  --motion-recipe-enter: opacity var(--motion-duration-enter) var(--motion-easing-enter), transform var(--motion-duration-enter) var(--motion-easing-enter);"
+      },
+      "motion-recipe-exit": {
+        "file": "recipe.css",
+        "startLine": 55,
+        "endLine": 55,
+        "snippet": "  --motion-recipe-exit: opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-exit) var(--motion-easing-exit);"
+      },
+      "motion-recipe-tap": {
+        "file": "recipe.css",
+        "startLine": 56,
+        "endLine": 56,
+        "snippet": "  --motion-recipe-tap: background-color var(--motion-duration-tap) var(--motion-easing-standard), color var(--motion-duration-tap) var(--motion-easing-standard), border-color var(--motion-duration-tap) var(--motion-easing-standard), opacity var(--motion-duration-tap) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-tap) var(--motion-easing-standard);"
+      },
+      "motion-recipe-flotation-enter": {
+        "file": "recipe.css",
+        "startLine": 57,
+        "endLine": 57,
+        "snippet": "  --motion-recipe-flotation-enter: opacity var(--motion-duration-enter) var(--motion-easing-standard), transform var(--motion-duration-emphasis) var(--motion-easing-spring-emphasis);"
+      },
+      "motion-recipe-flotation-exit": {
+        "file": "recipe.css",
+        "startLine": 58,
+        "endLine": 58,
+        "snippet": "  --motion-recipe-flotation-exit: opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-fast) var(--motion-easing-decelerate);"
+      },
+      "motion-recipe-control": {
+        "file": "recipe.css",
+        "startLine": 59,
+        "endLine": 59,
+        "snippet": "  --motion-recipe-control: transform var(--motion-duration-control) var(--motion-easing-product), width var(--motion-duration-control) var(--motion-easing-product);"
+      },
+      "motion-recipe-shift": {
+        "file": "recipe.css",
+        "startLine": 60,
+        "endLine": 60,
+        "snippet": "  --motion-recipe-shift: flex var(--motion-duration-shift) var(--motion-easing-standard), max-width var(--motion-duration-shift) var(--motion-easing-standard), width var(--motion-duration-shift) var(--motion-easing-standard), min-width var(--motion-duration-shift) var(--motion-easing-standard), max-height var(--motion-duration-shift) var(--motion-easing-standard), transform var(--motion-duration-shift) var(--motion-easing-standard), left var(--motion-duration-shift) var(--motion-easing-standard), padding var(--motion-duration-shift) var(--motion-easing-standard);"
+      },
+      "motion-recipe-scroll-fade": {
+        "file": "recipe.css",
+        "startLine": 61,
+        "endLine": 61,
+        "snippet": "  --motion-recipe-scroll-fade: opacity var(--motion-duration-scroll-fade) var(--motion-easing-decelerate);"
+      },
+      "motion-recipe-scroll-fade-background": {
+        "file": "recipe.css",
+        "startLine": 62,
+        "endLine": 62,
+        "snippet": "  --motion-recipe-scroll-fade-background: background var(--motion-duration-scroll-fade) var(--motion-easing-decelerate);"
+      },
+      "motion-recipe-page-push": {
+        "file": "recipe.css",
+        "startLine": 63,
+        "endLine": 63,
+        "snippet": "  --motion-recipe-page-push: opacity var(--motion-duration-navigation) var(--motion-easing-navigation), transform var(--motion-duration-navigation) var(--motion-easing-navigation);"
+      },
+      "motion-recipe-layout-deform-shell": {
+        "file": "recipe.css",
+        "startLine": 64,
+        "endLine": 64,
+        "snippet": "  --motion-recipe-layout-deform-shell: height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), width var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-width var(--motion-duration-layout-deform) var(--motion-easing-decelerate);"
+      },
+      "motion-recipe-layout-deform-content": {
+        "file": "recipe.css",
+        "startLine": 65,
+        "endLine": 65,
+        "snippet": "  --motion-recipe-layout-deform-content: opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-decelerate);"
+      },
+      "motion-recipe-glass-press": {
+        "file": "recipe.css",
+        "startLine": 66,
+        "endLine": 66,
+        "snippet": "  --motion-recipe-glass-press: transform var(--motion-glass-duration-press) var(--motion-easing-standard);"
+      },
+      "motion-recipe-glass-shimmer": {
+        "file": "recipe.css",
+        "startLine": 67,
+        "endLine": 67,
+        "snippet": "  --motion-recipe-glass-shimmer: opacity var(--motion-glass-duration-shimmer) var(--motion-easing-standard);"
+      },
+      "motion-recipe-glass-morph": {
+        "file": "recipe.css",
+        "startLine": 68,
+        "endLine": 68,
+        "snippet": "  --motion-recipe-glass-morph: var(--motion-recipe-layout-deform-shell);"
+      },
+      "motion-displace-from-bottom": {
+        "file": "recipe.css",
+        "startLine": 71,
+        "endLine": 71,
+        "snippet": "  --motion-displace-from-bottom: translateY(var(--motion-distance-sm));"
+      },
+      "motion-displace-from-top": {
+        "file": "recipe.css",
+        "startLine": 72,
+        "endLine": 72,
+        "snippet": "  --motion-displace-from-top: translateY(calc(-1 * var(--motion-distance-sm)));"
+      },
+      "motion-displace-from-left": {
+        "file": "recipe.css",
+        "startLine": 73,
+        "endLine": 73,
+        "snippet": "  --motion-displace-from-left: translateX(calc(-1 * var(--motion-distance-sm)));"
+      },
+      "motion-displace-from-right": {
+        "file": "recipe.css",
+        "startLine": 74,
+        "endLine": 74,
+        "snippet": "  --motion-displace-from-right: translateX(var(--motion-distance-sm));"
+      },
+      "motion-tap": {
+        "file": "semantic.css",
+        "startLine": 15,
+        "endLine": 17,
+        "snippet": ".motion-tap\ntransition: var(--motion-recipe-tap);"
+      },
+      "motion-focus": {
+        "file": "semantic.css",
+        "startLine": 30,
+        "endLine": 32,
+        "snippet": ".motion-focus\ntransition: var(--motion-recipe-enter);"
+      },
+      "motion-layout": {
+        "file": "semantic.css",
+        "startLine": 39,
+        "endLine": 43,
+        "snippet": ".motion-layout\ntransition: var(--motion-recipe-enter);\nopacity: var(--motion-opacity-hidden);\ntransform: translateY(var(--motion-distance-sm));"
+      },
+      "motion-flotation": {
+        "file": "semantic.css",
+        "startLine": 56,
+        "endLine": 60,
+        "snippet": ".motion-flotation\ntransition: var(--motion-recipe-flotation-enter);\nopacity: var(--motion-opacity-hidden);\ntransform: translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-present));"
+      },
+      "motion-deform": {
+        "file": "semantic.css",
+        "startLine": 74,
+        "endLine": 76,
+        "snippet": ".motion-deform\ntransition: var(--motion-recipe-control);"
+      },
+      "motion-page": {
+        "file": "semantic.css",
+        "startLine": 84,
+        "endLine": 86,
+        "snippet": ".motion-page\ntransition: var(--motion-recipe-page-push);"
+      },
+      "motion-layout-deform": {
+        "file": "semantic.css",
+        "startLine": 93,
+        "endLine": 96,
+        "snippet": ".motion-layout-deform\noverflow: hidden;\ntransition: var(--motion-recipe-layout-deform-shell);"
+      },
+      "motion-glass-interactive": {
+        "file": "semantic.css",
+        "startLine": 104,
+        "endLine": 106,
+        "snippet": ".motion-glass-interactive\ntransition: var(--motion-recipe-glass-press);"
+      },
+      "motion-glass-shimmer": {
+        "file": "semantic.css",
+        "startLine": 114,
+        "endLine": 116,
+        "snippet": ".motion-glass-shimmer\ntransition: var(--motion-recipe-glass-shimmer);"
+      },
+      "motion-glass-morph": {
+        "file": "semantic.css",
+        "startLine": 119,
+        "endLine": 122,
+        "snippet": ".motion-glass-morph\noverflow: hidden;\ntransition: var(--motion-recipe-glass-morph);"
+      },
+      "motion-glass-none": {
+        "file": "semantic.css",
+        "startLine": 126,
+        "endLine": 129,
+        "snippet": ".motion-glass-none\ntransition: none;\nanimation: none;"
+      },
+      "motion-none": {
+        "file": "utilities.css",
+        "startLine": 13,
+        "endLine": 15,
+        "snippet": ".motion-none\ntransition: none;"
+      },
+      "motion-reduced-fade": {
+        "file": "utilities.css",
+        "startLine": 19,
+        "endLine": 21,
+        "snippet": ".motion-reduced-fade\ntransition: opacity var(--motion-duration-fade) var(--motion-easing-standard);"
+      }
+    }
+  },
+  "classes": {
+    "typography": {
+      "typography-display": [
+        {
+          "selector": ".typography-display",
+          "lines": [
+            "font-size: var(--eds-display-size);",
+            "font-weight: var(--eds-display-weight);",
+            "line-height: var(--eds-display-line-height);"
+          ]
+        }
+      ],
+      "typography-headline": [
+        {
+          "selector": ".typography-headline",
+          "lines": [
+            "font-size: var(--eds-headline-size);",
+            "font-weight: var(--eds-headline-weight);",
+            "line-height: var(--eds-headline-line-height);"
+          ]
+        }
+      ],
+      "typography-title": [
+        {
+          "selector": ".typography-title",
+          "lines": [
+            "font-size: var(--eds-title-size);",
+            "font-weight: var(--eds-title-weight);",
+            "line-height: var(--eds-title-line-height);"
+          ]
+        }
+      ],
+      "typography-body-large": [
+        {
+          "selector": ".typography-body-large",
+          "lines": [
+            "font-size: var(--eds-body-large-size);",
+            "font-weight: var(--eds-body-large-weight);",
+            "line-height: var(--eds-body-large-line-height);"
+          ]
+        }
+      ],
+      "typography-body-large-strong": [
+        {
+          "selector": ".typography-body-large-strong",
+          "lines": [
+            "font-size: var(--eds-body-large-strong-size);",
+            "font-weight: var(--eds-body-large-strong-weight);",
+            "line-height: var(--eds-body-large-strong-line-height);"
+          ]
+        }
+      ],
+      "typography-body-medium": [
+        {
+          "selector": ".typography-body-medium",
+          "lines": [
+            "font-size: var(--eds-body-medium-size);",
+            "font-weight: var(--eds-body-medium-weight);",
+            "line-height: var(--eds-body-medium-line-height);"
+          ]
+        }
+      ],
+      "typography-body-medium-strong": [
+        {
+          "selector": ".typography-body-medium-strong",
+          "lines": [
+            "font-size: var(--eds-body-medium-strong-size);",
+            "font-weight: var(--eds-body-medium-strong-weight);",
+            "line-height: var(--eds-body-medium-strong-line-height);"
+          ]
+        }
+      ],
+      "typography-body-small": [
+        {
+          "selector": ".typography-body-small",
+          "lines": [
+            "font-size: var(--eds-body-small-size);",
+            "font-weight: var(--eds-body-small-weight);",
+            "line-height: var(--eds-body-small-line-height);"
+          ]
+        }
+      ],
+      "typography-body-small-strong": [
+        {
+          "selector": ".typography-body-small-strong",
+          "lines": [
+            "font-size: var(--eds-body-small-strong-size);",
+            "font-weight: var(--eds-body-small-strong-weight);",
+            "line-height: var(--eds-body-small-strong-line-height);"
+          ]
+        }
+      ],
+      "typography-detail": [
+        {
+          "selector": ".typography-detail",
+          "lines": [
+            "font-size: var(--eds-detail-size);",
+            "font-weight: var(--eds-detail-weight);",
+            "line-height: var(--eds-detail-line-height);"
+          ]
+        }
+      ],
+      "typography-detail-strong": [
+        {
+          "selector": ".typography-detail-strong",
+          "lines": [
+            "font-size: var(--eds-detail-strong-size);",
+            "font-weight: var(--eds-detail-strong-weight);",
+            "line-height: var(--eds-detail-strong-line-height);"
+          ]
+        }
+      ],
+      "typography-footnote": [
+        {
+          "selector": ".typography-footnote",
+          "lines": [
+            "font-size: var(--eds-footnote-size);",
+            "font-weight: var(--eds-footnote-weight);",
+            "line-height: var(--eds-footnote-line-height);"
+          ]
+        }
+      ],
+      "typography-footnote-strong": [
+        {
+          "selector": ".typography-footnote-strong",
+          "lines": [
+            "font-size: var(--eds-footnote-strong-size);",
+            "font-weight: var(--eds-footnote-strong-weight);",
+            "line-height: var(--eds-footnote-strong-line-height);"
+          ]
+        }
+      ],
+      "typography-bar": [
+        {
+          "selector": ".typography-bar",
+          "lines": [
+            "display: inline-block;",
+            "box-sizing: border-box;",
+            "font-family: var(--eds-family-sans);",
+            "font-size: calc(var(--eds-bar-size) * 2);",
+            "font-weight: var(--eds-bar-weight);",
+            "line-height: calc(var(--eds-bar-line-height) * 2);",
+            "transform: scale(0.5);",
+            "transform-origin: top center;",
+            "margin-bottom: calc(var(--eds-bar-line-height) * -1);",
+            "-webkit-font-smoothing: antialiased;",
+            "-moz-osx-font-smoothing: grayscale;"
+          ]
+        }
+      ]
+    },
+    "effect": {
+      "glass-button-box": [
+        {
+          "selector": "[data-theme=\"light\"] .glass-button-box",
+          "lines": [
+            "border-radius: var(--radius-xl);",
+            "border: var(--stroke-xs) solid var(--stroke-base-quaternary);",
+            "background: linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box);",
+            "box-shadow: var(--eds-shadow-box-subtle);",
+            "backdrop-filter: var(--eds-blur-glass);",
+            "-webkit-backdrop-filter: var(--eds-blur-glass);"
+          ]
+        }
+      ],
+      "glass-flotation-box": [
+        {
+          "selector": "[data-theme=\"light\"] .glass-flotation-box",
+          "lines": [
+            "border-radius: var(--radius-xl);",
+            "border: var(--stroke-xs) solid var(--stroke-base-quaternary);",
+            "background: linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box);",
+            "box-shadow: var(--eds-shadow-box-shallow);",
+            "backdrop-filter: var(--eds-blur-glass);",
+            "-webkit-backdrop-filter: var(--eds-blur-glass);"
+          ]
+        }
+      ],
+      "glass-tabbar-box": [
+        {
+          "selector": "[data-theme=\"light\"] .glass-tabbar-box",
+          "lines": [
+            "border-radius: var(--radius-xl);",
+            "border: var(--stroke-xs) solid var(--stroke-base-quaternary);",
+            "background: linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box);",
+            "box-shadow: var(--eds-shadow-box-deep);",
+            "backdrop-filter: var(--eds-blur-glass);",
+            "-webkit-backdrop-filter: var(--eds-blur-glass);"
+          ]
+        }
+      ],
+      "glass-tabbar-bg": [
+        {
+          "selector": "[data-theme=\"light\"] .glass-tabbar-bg",
+          "lines": [
+            "background: linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-deep) 70%);"
+          ]
+        }
+      ],
+      "glass-mask-box": [
+        {
+          "selector": "[data-theme=\"light\"] .glass-mask-box",
+          "lines": [
+            "background: linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box);",
+            "backdrop-filter: var(--eds-blur-glass);",
+            "-webkit-backdrop-filter: var(--eds-blur-glass);"
+          ]
+        }
+      ]
+    },
+    "motion": {
+      "motion-tap": [
+        {
+          "selector": ".motion-tap",
+          "lines": [
+            "transition: var(--motion-recipe-tap);"
+          ]
+        },
+        {
+          "selector": ".motion-tap.is-active",
+          "lines": [
+            "transform: scale(var(--motion-scale-press));"
+          ]
+        }
+      ],
+      "motion-focus": [
+        {
+          "selector": ".motion-focus",
+          "lines": [
+            "transition: var(--motion-recipe-enter);"
+          ]
+        }
+      ],
+      "motion-layout": [
+        {
+          "selector": ".motion-layout",
+          "lines": [
+            "transition: var(--motion-recipe-enter);",
+            "opacity: var(--motion-opacity-hidden);",
+            "transform: translateY(var(--motion-distance-sm));"
+          ]
+        },
+        {
+          "selector": ".motion-layout.is-active, .is-active .motion-layout",
+          "lines": [
+            "opacity: var(--motion-opacity-visible);",
+            "transform: translateY(0);"
+          ]
+        }
+      ],
+      "motion-flotation": [
+        {
+          "selector": ".motion-flotation",
+          "lines": [
+            "transition: var(--motion-recipe-flotation-enter);",
+            "opacity: var(--motion-opacity-hidden);",
+            "transform: translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-present));"
+          ]
+        },
+        {
+          "selector": ".motion-flotation.is-active, .is-active .motion-flotation",
+          "lines": [
+            "opacity: var(--motion-opacity-visible);",
+            "transform: translateY(0) scale(1);"
+          ]
+        }
+      ],
+      "motion-deform": [
+        {
+          "selector": ".motion-deform",
+          "lines": [
+            "transition: var(--motion-recipe-control);"
+          ]
+        }
+      ],
+      "motion-page": [
+        {
+          "selector": ".motion-page",
+          "lines": [
+            "transition: var(--motion-recipe-page-push);"
+          ]
+        }
+      ],
+      "motion-layout-deform": [
+        {
+          "selector": ".motion-layout-deform",
+          "lines": [
+            "overflow: hidden;",
+            "transition: var(--motion-recipe-layout-deform-shell);"
+          ]
+        }
+      ],
+      "motion-glass-interactive": [
+        {
+          "selector": ".motion-glass-interactive",
+          "lines": [
+            "transition: var(--motion-recipe-glass-press);"
+          ]
+        },
+        {
+          "selector": ".motion-glass-interactive.is-active",
+          "lines": [
+            "transform: scale(var(--motion-glass-scale-press));"
+          ]
+        }
+      ],
+      "motion-glass-shimmer": [
+        {
+          "selector": ".motion-glass-shimmer",
+          "lines": [
+            "transition: var(--motion-recipe-glass-shimmer);"
+          ]
+        }
+      ],
+      "motion-glass-morph": [
+        {
+          "selector": ".motion-glass-morph",
+          "lines": [
+            "overflow: hidden;",
+            "transition: var(--motion-recipe-glass-morph);"
+          ]
+        }
+      ],
+      "motion-glass-none": [
+        {
+          "selector": ".motion-glass-none",
+          "lines": [
+            "transition: none;",
+            "animation: none;"
+          ]
+        }
+      ],
+      "motion-none": [
+        {
+          "selector": ".motion-none",
+          "lines": [
+            "transition: none;"
+          ]
+        }
+      ],
+      "motion-reduced-fade": [
+        {
+          "selector": ".motion-reduced-fade",
+          "lines": [
+            "transition: opacity var(--motion-duration-fade) var(--motion-easing-standard);"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,2 +1,2 @@
-export { EgIconListCurriculum } from './EgIconListCurriculum';
-export type { EgIconListCurriculumProps } from './EgIconListCurriculum.types';
+export { EgIconListCurriculum } from './EgIconListCurriculum.js';
+export type { EgIconListCurriculumProps } from './EgIconListCurriculum.types.js';

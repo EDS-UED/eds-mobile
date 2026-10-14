@@ -1,0 +1,57 @@
+{
+  "$description": "Liquid Glass — EDS Mobile 玻璃材质栈（effect · RN · 平台增强）。",
+  "architectureSummary": "玻璃材质 = effect token（Glass Box）+ RN 默认（blur + overlay 叠层）+ 平台增强 → packages/components Glass 栈，业务只认 Eg* / GlassSurface",
+  "conceptTitle": "Liquid Glass",
+  "trunk": [
+    {
+      "id": "api",
+      "label": "公共 API",
+      "primary": "EgGlass",
+      "secondary": "样式即 Effect Glass Box（glass-*-box）· resolveGlassBoxComposition · expo-blur + token overlay；系统 Liquid Glass 见 GlassSurface / GlassControlShell"
+    }
+  ],
+  "stacks": [
+    {
+      "id": "token",
+      "label": "Token 真源",
+      "primary": "resolveGlassBoxComposition · resolveGlassVariant",
+      "secondary": "packages/tokens/spec/effect/semantic.json → packages/tokens/dist/css/effect/semantic.css · packages/tokens/spec/liquid-glass/surface.json → @eds/mobile-tokens/theme · packages/components/src/atoms/glass/resolveGlassBox.ts · resolveGlassSurfacePresets.ts"
+    },
+    {
+      "id": "rn-default",
+      "label": "RN 默认实现",
+      "primary": "GlassBoxEffectLayers · getNativeBlurView · GlassBoxInsetInnerLightLayer",
+      "secondary": "packages/components/src/atoms/glass/GlassBoxEffectLayers.tsx · nativeBlur.ts · GlassBoxInsetInnerLightLayer.tsx · packages/tokens/dist/css/effect/semantic.css（.glass-*-box class）"
+    }
+  ],
+  "platformSplit": {
+    "label": "平台增强",
+    "branches": [
+      {
+        "id": "ios",
+        "label": "iOS 增强",
+        "primary": "expo-glass-effect · GlassView · GlassBoxPlatformBackdrop",
+        "secondary": "packages/components/src/atoms/glass/nativeLiquidGlass.tsx · GlassBoxPlatformBackdrop.tsx"
+      },
+      {
+        "id": "android",
+        "label": "Android 增强",
+        "primary": "react-native-android-liquid-glass · LiquidGlassAndroidView",
+        "secondary": "packages/components/src/atoms/glass/nativeAndroidLiquidGlass.tsx · GlassBoxPlatformBackdrop.tsx"
+      },
+      {
+        "id": "web",
+        "label": "Web 增强",
+        "primary": "attachLiquidGlass · detachLiquidGlass",
+        "secondary": "packages/tokens/src/liquid-glass.js → @eds/mobile-tokens/liquid-glass · packages/tokens/dist/css/liquid-glass/index.css"
+      }
+    ]
+  },
+  "cssImports": {
+    "effect": "packages/tokens/dist/css/effect/index.css",
+    "liquidGlass": "packages/tokens/dist/css/liquid-glass/index.css"
+  },
+  "rendererSpec": "packages/tokens/spec/effect/liquid-glass.json",
+  "readySelector": "[data-liquid-glass-ready]",
+  "boxSelector": "[data-liquid-glass-box]"
+}

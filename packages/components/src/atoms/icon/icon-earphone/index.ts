@@ -1,2 +1,2 @@
-export { EgIconEarphone } from './EgIconEarphone';
-export type { EgIconEarphoneProps } from './EgIconEarphone.types';
+export { EgIconEarphone } from './EgIconEarphone.js';
+export type { EgIconEarphoneProps } from './EgIconEarphone.types.js';

@@ -1,2 +1,2 @@
-export { EgIconCirculation } from './EgIconCirculation';
-export type { EgIconCirculationProps } from './EgIconCirculation.types';
+export { EgIconCirculation } from './EgIconCirculation.js';
+export type { EgIconCirculationProps } from './EgIconCirculation.types.js';

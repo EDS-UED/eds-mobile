@@ -5,340 +5,135 @@
     {
       "comment": "间距（Spacing）",
       "tokens": [
-        {
-          "name": "spacing-0",
-          "value": "0px"
-        },
-        {
-          "name": "spacing-05",
-          "value": "2px"
-        },
-        {
-          "name": "spacing-1",
-          "value": "4px"
-        },
-        {
-          "name": "spacing-1-5",
-          "value": "6px"
-        },
-        {
-          "name": "spacing-2",
-          "value": "8px"
-        },
-        {
-          "name": "spacing-3",
-          "value": "12px"
-        },
-        {
-          "name": "spacing-4",
-          "value": "16px"
-        },
-        {
-          "name": "spacing-5",
-          "value": "20px"
-        },
-        {
-          "name": "spacing-6",
-          "value": "24px"
-        },
-        {
-          "name": "spacing-7",
-          "value": "28px"
-        },
-        {
-          "name": "spacing-8",
-          "value": "32px"
-        },
-        {
-          "name": "spacing-9",
-          "value": "36px"
-        },
-        {
-          "name": "spacing-10",
-          "value": "40px"
-        },
-        {
-          "name": "spacing-12",
-          "value": "48px"
-        },
-        {
-          "name": "spacing-14",
-          "value": "56px"
-        },
-        {
-          "name": "spacing-16",
-          "value": "64px"
-        },
-        {
-          "name": "spacing-18",
-          "value": "72px"
-        },
-        {
-          "name": "spacing-20",
-          "value": "80px"
-        }
+        { "name": "spacing-0", "value": "var(--scale-0)" },
+        { "name": "spacing-05", "value": "var(--scale-05)" },
+        { "name": "spacing-1", "value": "var(--scale-1)" },
+        { "name": "spacing-1-5", "value": "var(--scale-1-5)" },
+        { "name": "spacing-2", "value": "var(--scale-2)" },
+        { "name": "spacing-2-5", "value": "var(--scale-2-5)", "comment": "10px" },
+        { "name": "spacing-3", "value": "var(--scale-3)" },
+        { "name": "spacing-4", "value": "var(--scale-4)" },
+        { "name": "spacing-5", "value": "var(--scale-5)" },
+        { "name": "spacing-6", "value": "var(--scale-6)" },
+        { "name": "spacing-7", "value": "var(--scale-7)" },
+        { "name": "spacing-8", "value": "var(--scale-8)" },
+        { "name": "spacing-9", "value": "var(--scale-9)" },
+        { "name": "spacing-10", "value": "var(--scale-10)" },
+        { "name": "spacing-12", "value": "var(--scale-12)" },
+        { "name": "spacing-14", "value": "var(--scale-14)" },
+        { "name": "spacing-16", "value": "var(--scale-16)" },
+        { "name": "spacing-18", "value": "var(--scale-18)" },
+        { "name": "spacing-20", "value": "var(--scale-20)" }
       ]
     },
     {
       "comment": "圆角（Radius）",
       "tokens": [
-        {
-          "name": "radius-0",
-          "value": "0px"
-        },
-        {
-          "name": "radius-xs",
-          "value": "4px"
-        },
-        {
-          "name": "radius-sm",
-          "value": "8px"
-        },
-        {
-          "name": "radius-md",
-          "value": "12px"
-        },
-        {
-          "name": "radius-lg",
-          "value": "16px"
-        },
-        {
-          "name": "radius-xl",
-          "value": "20px"
-        },
-        {
-          "name": "radius-full",
-          "value": "888px"
-        }
+        { "name": "radius-0", "value": "var(--scale-0)" },
+        { "name": "radius-xs", "value": "var(--scale-2)", "comment": "8px" },
+        { "name": "radius-sm", "value": "var(--scale-3)", "comment": "12px" },
+        { "name": "radius-md", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "radius-lg", "value": "var(--scale-6)", "comment": "24px" },
+        { "name": "radius-xl", "value": "var(--scale-8)", "comment": "32px" },
+        { "name": "radius-full", "value": "var(--scale-full)", "comment": "888px" }
       ]
     },
     {
       "comment": "描边（Stroke）",
       "tokens": [
-        {
-          "name": "stroke-sm",
-          "value": "1px"
-        },
-        {
-          "name": "stroke-md",
-          "value": "1.5px"
-        },
-        {
-          "name": "stroke-lg",
-          "value": "2px"
-        }
+        { "name": "stroke-xs", "value": "0.2px", "comment": "0.2px" },
+        { "name": "stroke-sm", "value": "var(--scale-025)", "comment": "1px" },
+        { "name": "stroke-md", "value": "var(--scale-0375)", "comment": "1.5px" },
+        { "name": "stroke-lg", "value": "var(--scale-05)", "comment": "2px" }
       ]
     },
     {
       "comment": "模糊（Blur）",
       "tokens": [
-        {
-          "name": "blur-deep",
-          "value": "40px"
-        },
-        {
-          "name": "blur-moderate",
-          "value": "80px"
-        },
-        {
-          "name": "blur-shallow",
-          "value": "200px"
-        }
+        { "name": "blur-xs", "value": "var(--scale-0)", "comment": "0px" },
+        { "name": "blur-sm", "value": "var(--scale-2)", "comment": "8px" },
+        { "name": "blur-md", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "blur-lg", "value": "var(--scale-20)", "comment": "80px" }
       ]
     },
     {
-      "comment": "层级（Depth）",
+      "comment": "深度（Depth）",
       "tokens": [
-        {
-          "name": "depth-deep",
-          "value": "8px"
-        },
-        {
-          "name": "depth-moderate",
-          "value": "16px"
-        },
-        {
-          "name": "depth-shallow",
-          "value": "32px"
-        }
+        { "name": "depth-xs", "value": "var(--scale-0125)", "comment": "0.5px" },
+        { "name": "depth-sm", "value": "var(--scale-05)", "comment": "2px" },
+        { "name": "depth-md", "value": "var(--scale-1)", "comment": "4px" },
+        { "name": "depth-lg", "value": "var(--scale-4)", "comment": "16px" }
       ]
     },
     {
-      "comment": "图标（Icon）",
+      "comment": "胶囊（Capsule）",
       "tokens": [
-        {
-          "name": "icon-sm",
-          "value": "16px"
-        },
-        {
-          "name": "icon-md",
-          "value": "20px"
-        },
-        {
-          "name": "icon-lg",
-          "value": "22px"
-        },
-        {
-          "name": "icon-xl",
-          "value": "24px"
-        },
-        {
-          "name": "icon-root",
-          "value": "32px"
-        }
+        { "name": "capsule-xs", "value": "var(--scale-9)", "comment": "36px" },
+        { "name": "capsule-sm", "value": "var(--scale-10)", "comment": "40px" },
+        { "name": "capsule-md", "value": "var(--scale-12)", "comment": "48px" },
+        { "name": "capsule-lg", "value": "var(--scale-13)", "comment": "52px" },
+        { "name": "capsule-xl", "value": "var(--scale-14)", "comment": "56px" }
       ]
     },
     {
-      "comment": "控件高度 — Button",
+      "comment": "图标（Symbol）",
       "tokens": [
-        {
-          "name": "button-xs",
-          "value": "32px"
-        },
-        {
-          "name": "button-sm",
-          "value": "40px"
-        },
-        {
-          "name": "button-md",
-          "value": "48px"
-        },
-        {
-          "name": "button-lg",
-          "value": "56px"
-        },
-        {
-          "name": "button-xl",
-          "value": "60px"
-        }
+        { "name": "symbol-xs", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "symbol-sm", "value": "var(--scale-5)", "comment": "20px" },
+        { "name": "symbol-md", "value": "var(--scale-5-5)", "comment": "22px" },
+        { "name": "symbol-lg", "value": "var(--scale-6)", "comment": "24px" }
       ]
     },
     {
-      "comment": "控件高度 — Input / Drop-Down",
+      "comment": "头像（Avatar）",
       "tokens": [
-        {
-          "name": "input-xs",
-          "value": "32px"
-        },
-        {
-          "name": "input-sm",
-          "value": "40px"
-        },
-        {
-          "name": "input-md",
-          "value": "48px"
-        },
-        {
-          "name": "input-lg",
-          "value": "52px"
-        },
-        {
-          "name": "input-xl",
-          "value": "56px"
-        },
-        {
-          "name": "dropdown-xs",
-          "value": "32px"
-        },
-        {
-          "name": "dropdown-sm",
-          "value": "40px"
-        },
-        {
-          "name": "dropdown-md",
-          "value": "48px"
-        },
-        {
-          "name": "dropdown-lg",
-          "value": "52px"
-        },
-        {
-          "name": "dropdown-xl",
-          "value": "56px"
-        }
+        { "name": "avatar-xs", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "avatar-sm", "value": "var(--scale-6)", "comment": "24px" },
+        { "name": "avatar-md", "value": "var(--scale-8)", "comment": "32px" },
+        { "name": "avatar-lg", "value": "var(--scale-9)", "comment": "36px" },
+        { "name": "avatar-xl", "value": "var(--scale-10)", "comment": "40px" }
       ]
     },
     {
-      "comment": "控件尺寸 — Toggle / Tag / Checkbox / Radio / Switch",
+      "comment": "按钮（Button）",
       "tokens": [
-        {
-          "name": "checkbox-sm",
-          "value": "16px"
-        },
-        {
-          "name": "checkbox-md",
-          "value": "20px"
-        },
-        {
-          "name": "checkbox-lg",
-          "value": "24px"
-        },
-        {
-          "name": "radio-sm",
-          "value": "16px"
-        },
-        {
-          "name": "radio-md",
-          "value": "20px"
-        },
-        {
-          "name": "radio-lg",
-          "value": "24px"
-        },
-        {
-          "name": "switch-sm",
-          "value": "16px"
-        },
-        {
-          "name": "switch-md",
-          "value": "20px"
-        },
-        {
-          "name": "switch-lg",
-          "value": "24px"
-        },
-        {
-          "name": "tag-sm",
-          "value": "16px"
-        },
-        {
-          "name": "tag-md",
-          "value": "20px"
-        },
-        {
-          "name": "tag-lg",
-          "value": "24px"
-        },
-        {
-          "name": "icon-container-xs",
-          "value": "36px"
-        },
-        {
-          "name": "icon-container-sm",
-          "value": "40px"
-        },
-        {
-          "name": "icon-container-md",
-          "value": "48px"
-        },
-        {
-          "name": "icon-container-lg",
-          "value": "52px"
-        },
-        {
-          "name": "icon-container-xl",
-          "value": "56px"
-        }
+        { "name": "button-xs", "value": "var(--scale-8)", "comment": "32px" },
+        { "name": "button-sm", "value": "var(--scale-10)", "comment": "40px" },
+        { "name": "button-md", "value": "var(--scale-12)", "comment": "48px" },
+        { "name": "button-lg", "value": "var(--scale-14)", "comment": "56px" },
+        { "name": "button-xl", "value": "var(--scale-15)", "comment": "60px" }
       ]
     },
     {
-      "comment": "Avatar",
+      "comment": "输入（Input / Drop-Down）",
       "tokens": [
-        { "name": "avatar-xs", "value": "16px" },
-        { "name": "avatar-sm", "value": "24px" },
-        { "name": "avatar-md", "value": "32px" },
-        { "name": "avatar-lg", "value": "36px" },
-        { "name": "avatar-xl", "value": "40px" }
+        { "name": "input-xs", "value": "var(--scale-8)", "comment": "32px" },
+        { "name": "input-sm", "value": "var(--scale-10)", "comment": "40px" },
+        { "name": "input-md", "value": "var(--scale-12)", "comment": "48px" },
+        { "name": "input-lg", "value": "var(--scale-13)", "comment": "52px" },
+        { "name": "input-xl", "value": "var(--scale-14)", "comment": "56px" },
+        { "name": "dropdown-xs", "value": "var(--scale-8)", "comment": "32px" },
+        { "name": "dropdown-sm", "value": "var(--scale-10)", "comment": "40px" },
+        { "name": "dropdown-md", "value": "var(--scale-12)", "comment": "48px" },
+        { "name": "dropdown-lg", "value": "var(--scale-13)", "comment": "52px" },
+        { "name": "dropdown-xl", "value": "var(--scale-14)", "comment": "56px" }
+      ]
+    },
+    {
+      "comment": "切换（Toggle / Tag / Checkbox / Radio / Switch）",
+      "tokens": [
+        { "name": "tag-sm", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "tag-md", "value": "var(--scale-5)", "comment": "20px" },
+        { "name": "tag-lg", "value": "var(--scale-6)", "comment": "24px" },
+        { "name": "checkbox-sm", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "checkbox-md", "value": "var(--scale-5)", "comment": "20px" },
+        { "name": "checkbox-lg", "value": "var(--scale-6)", "comment": "24px" },
+        { "name": "radio-sm", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "radio-md", "value": "var(--scale-5)", "comment": "20px" },
+        { "name": "radio-lg", "value": "var(--scale-6)", "comment": "24px" },
+        { "name": "switch-sm", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "switch-md", "value": "var(--scale-5)", "comment": "20px" },
+        { "name": "switch-lg", "value": "var(--scale-6)", "comment": "24px" }
       ]
     }
   ]

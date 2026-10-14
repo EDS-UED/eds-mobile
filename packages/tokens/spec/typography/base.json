@@ -3,7 +3,7 @@
   "$description": "Typography base — Mobile Figma text styles.",
   "groups": [
     {
-      "comment": "字号",
+      "comment": "字号（Font Size）",
       "tokens": {
         "size-display": "34px",
         "size-headline": "26px",
@@ -13,11 +13,12 @@
         "size-body-small": "15px",
         "size-detail": "14px",
         "size-footnote": "13px",
-        "size-bar": "10px"
+        "size-bar": "10px",
+        "size-toggle-mark-md": "12px"
       }
     },
     {
-      "comment": "行高",
+      "comment": "行高（Line Height）",
       "tokens": {
         "line-height-display": "44px",
         "line-height-headline": "32px",
@@ -27,11 +28,12 @@
         "line-height-body-small": "20px",
         "line-height-detail": "18px",
         "line-height-footnote": "16px",
-        "line-height-bar": "14px"
+        "line-height-bar": "14px",
+        "line-height-toggle-mark-md": "12px"
       }
     },
     {
-      "comment": "字重",
+      "comment": "字重（Font Weight）",
       "tokens": {
         "weight-regular": "400",
         "weight-medium": "500",
@@ -40,9 +42,10 @@
       }
     },
     {
-      "comment": "字体家族",
+      "comment": "字体家族（Font Family）",
       "tokens": {
-        "eds-family-sans": "\"EDS Text\", \"PingFang SC\", SourceHanSansSC, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+        "eds-family-sans": "\"EDS Text\", \"PingFang SC\", SourceHanSansSC, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+        "eds-family-mono": "\"IBM Plex Mono\", ui-monospace, monospace"
       }
     }
   ]

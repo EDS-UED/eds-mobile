@@ -1,2 +1,2 @@
-export { EgIconUsdSymbolic } from './EgIconUsdSymbolic';
-export type { EgIconUsdSymbolicProps } from './EgIconUsdSymbolic.types';
+export { EgIconUsdSymbolic } from './EgIconUsdSymbolic.js';
+export type { EgIconUsdSymbolicProps } from './EgIconUsdSymbolic.types.js';

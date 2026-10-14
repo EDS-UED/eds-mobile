@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgSegmentedControlProps } from './EgSegmentedControl.types';
+import type { EgSegmentedControlProps } from './EgSegmentedControl.types.js';
 
 /** RN implementation — Segmented Control (set · 6 variants) */
 export function EgSegmentedControl(props: EgSegmentedControlProps & Pick<ViewProps, 'style'>) {

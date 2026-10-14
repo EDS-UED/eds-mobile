@@ -1,2 +1,2 @@
-export { EgIconScanCode } from './EgIconScanCode';
-export type { EgIconScanCodeProps } from './EgIconScanCode.types';
+export { EgIconScanCode } from './EgIconScanCode.js';
+export type { EgIconScanCodeProps } from './EgIconScanCode.types.js';

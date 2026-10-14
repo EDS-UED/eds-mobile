@@ -1,2 +1,2 @@
-export { EgIconWallet } from './EgIconWallet';
-export type { EgIconWalletProps } from './EgIconWallet.types';
+export { EgIconWallet } from './EgIconWallet.js';
+export type { EgIconWalletProps } from './EgIconWallet.types.js';

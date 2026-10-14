@@ -1,2 +1,2 @@
-export { EgNotesPopover } from './EgNotesPopover';
-export type { EgNotesPopoverProps } from './EgNotesPopover.types';
+export { EgNotesPopover } from './EgNotesPopover.js';
+export type { EgNotesPopoverProps } from './EgNotesPopover.types.js';

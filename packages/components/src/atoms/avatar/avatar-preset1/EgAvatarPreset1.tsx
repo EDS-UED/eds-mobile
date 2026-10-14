@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgAvatarPreset1Props } from './EgAvatarPreset1.types';
+import type { EgAvatarPreset1Props } from './EgAvatarPreset1.types.js';
 
 /** RN implementation — eds-avatar-1 (component) */
 export function EgAvatarPreset1(props: EgAvatarPreset1Props & Pick<ViewProps, 'style'>) {

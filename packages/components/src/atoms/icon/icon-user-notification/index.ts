@@ -1,2 +1,2 @@
-export { EgIconUserNotification } from './EgIconUserNotification';
-export type { EgIconUserNotificationProps } from './EgIconUserNotification.types';
+export { EgIconUserNotification } from './EgIconUserNotification.js';
+export type { EgIconUserNotificationProps } from './EgIconUserNotification.types.js';

@@ -5,13 +5,14 @@ alwaysApply: true
 
 # EDS Mobile — 工作约定（唯一真源）
 
-> **§0** 执行（含 §0.1 协作方式） · **§1** token · **§2** 公共 API · **§3** 组件命名 · **§4** Showcase · **§5** 包与同步 · **§6** Mobile 专项 · **§7** Desktop 对照 · **§8** 场景真封装 · **§9** 验证 · **§19** 变更
+> **§0** 执行（含 §0.1 协作方式） · **§1** token · **§2** 公共 API · **§3** 组件命名 · **§4** Preview（含 §4.3 块默认） · **§5** 包与同步 · **§6** Mobile（§6.0 RN 默认栈 · §6.1 玻璃） · **§7** Desktop 对照 · **§8** 场景真封装 · **§9** 验证 · **§10** 推送 · **§19** 变更
 >
 > Mobile 与 Desktop **完全独立**。禁止修改 `eds-desktop` 或其 consumer。术语统一 **EDS**（禁单独写「DS」指本设计系统）。
 
 ## 0. Agent 执行范围
 
 - 只改 `eds-mobile` 仓库；**最小 diff**
+- **RN 默认栈** → §6.0（无明确原生增强声明，一律 RN 同路径；禁止默认分叉）
 - token 无 spec → **停改**，先问
 - Figma 真源：[EDS Mobile Figma](https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/) · fileKey `LlB2jT8KdxM6taf5wOSAEM`
 - 「同步」→ §5；不确定先问
@@ -20,6 +21,7 @@ alwaysApply: true
 |--------|----|----|
 | 对齐 Desktop 命名 | §7 对照表；**不**强行改 Mobile export | 把 Mobile slug 改成 `-scene-`  unless 用户明确要求 |
 | 同步 | §5 全流程 | touch `eds-desktop` / `@eds/desktop-*` |
+| **推送** | **§10** 全流程（§9 → 全量 commit → push；本地/worktree 不剩） | 只 commit 不 push、漏 add、推前跳过 §9、未确认就问「要不要 push」 |
 
 ### 0.1 Agent 协作方式
 
@@ -36,7 +38,7 @@ alwaysApply: true
 - 真源：`packages/tokens/spec/*.json`
 - 同步：`node packages/tokens/scripts/import-mobile-figma.mjs` → `pnpm build:tokens`
 - RN：`@eds/mobile-tokens/theme` → `mobileTheme`（StyleSheet 数值）
-- Web Showcase：`@eds/mobile-tokens` CSS + JSON
+- Token 文档：`packages/tokens/spec/**`（无 Web showcase）
 - **禁止**私造 token；**禁止**引用 desktop token
 
 ## 2. 公共 API 与废弃
@@ -44,7 +46,7 @@ alwaysApply: true
 - **不留 `@deprecated`**：`packages/components` 公共 export 一旦废弃就**当轮删干净** — prop、类型、`index.ts`、内部兼容分支一并移除。
 - **破坏性变更必须同轮迁移 consumer**（若有）：删/改 export 后 §5 sync + §9 验证。
 - **名字互换要先让位再占位**；全仓扫描须 `rg --hidden`。
-- Showcase / chrome 内 `@deprecated` 同样当轮清；**不得**留「先标记后清理」。
+- showcase / packages 内 `@deprecated` 同样当轮清；**不得**留「先标记后清理」。
 - **`generate-catalog.mjs` 不得覆盖已实现组件**：见 §3.3。
 
 ## 3. 组件命名与 catalog
@@ -52,7 +54,7 @@ alwaysApply: true
 - **202 个 Figma 组件必须全在 catalog**（`packages/components/src/catalog/figmaCatalog.ts`）
 - 样式：`StyleSheet` + `mobileTheme`；禁止 NativeWind/Tamagui
 - 图标：`react-native-svg`；动画：`react-native-reanimated` + iOS spring（`@eds/mobile-animations`）
-- 变更 Figma 组件 → 更新 `generate-catalog.mjs` → `pnpm --filter @eds/mobile-components generate` → `pnpm --filter @eds/mobile-showcase generate`
+- 变更 Figma 组件 → 更新 `generate-catalog.mjs` → `pnpm --filter @eds/mobile-components generate`
 
 ### 3.1 场景化 export：`Eg{场景}{族类型}`
 
@@ -87,8 +89,7 @@ alwaysApply: true
 
 生成链路：
 1. `packages/components/scripts/generate-catalog.mjs` → `figmaCatalog.ts` + RN scaffold
-2. `apps/showcase/scripts/generate-mobile-showcase-data.mjs` → `catalog.ts` + `previews/index.ts`
-3. `apps/showcase/src/data/components/routeRedirects.ts` — 旧 slug 仅 router 重定向
+2. `apps/showcase/src/data/components/rnDocRegistry.ts` — Customize / Props / snippet（手维或与 catalog 同轮更新）
 
 ### 3.3 Generator 与实现保护
 
@@ -96,22 +97,64 @@ alwaysApply: true
 - **已实现组件**（`.tsx` 不含 generator 脚手架标记 `RN implementation —`）→ **skip 覆盖**
 - 从 scaffold 升级为真实现后，该文件不再被 `generate` 回滚
 
-## 4. Preview（RN 真源 · Web 过渡）
+## 4. Preview（showcase 唯一 · 电脑只开发）
 
-Mobile 与 Desktop **技术栈不同**：Desktop = Vue 全链路；Mobile = **React Native + iOS/Android 原生混编**（consumer 为 RN App，非 Vue）。
+**EDS 在电脑上只做 packages 开发与构建；全部 preview 在 showcase（模拟器/真机）。**
 
 | 层 | 栈 | 职责 |
 |----|-----|------|
-| **`apps/playground`** | Expo / RN | **组件 live preview 真源** — 模拟器 / 真机；直接渲染 `@eds/mobile-components` |
-| **`apps/showcase`** | Vue（自 Desktop 复制的**过渡**文档壳） | Token / catalog IA / 文档文案；**不是** RN 运行时 |
-| **`packages/*`** | RN | EDS 本体；consumer 与 playground 同源 |
+| **`packages/components`** | RN | **唯一组件真源** — `@eds/mobile-components` |
+| **`apps/showcase`** | Expo / RN | **EDS 唯一 preview** — Live · Customize · Props/API · Inspect |
 
-- Playground：`pnpm dev:playground` → Expo；catalog 来自 `figmaComponentCatalog`，与 consumer 同 import 路径
-- Showcase 顶栏 IA（与 Desktop 对齐）：**Tokens · Animations · Components · Patterns · Workflows** · Port **5178**
-- Showcase 只消费 `@eds/mobile-*`；**禁止** `@eds/desktop-*`、禁止把 Desktop Vue 组件 preview 当 Mobile 真源
-- **禁止**在 Showcase 新增 Vue 版组件 live preview；新 preview 只在 playground / RN consumer 验收
-- **禁止**保留 Desktop-only preset — Mobile 业务 preset 进 `packages/components` 场景封装（§8）
-- Consumer 为 **RN + 原生混编**；完整业务能力（原生 Module / SDK）在 consumer 真机验，playground 验 EDS 组件层
+| 用途 | 命令 |
+|------|------|
+| EDS 组件 preview | `pnpm dev:showcase` |
+
+**showcase 必须提供**
+
+- Live：`createCatalogPreviewProps` + Customize merge（`mergeCatalogPreviewProps`）
+- Customize / Props / Usage：`apps/showcase/src/data/components/`
+- Inspect：Preview / Inspect 模式 · `onLayout` 实测 · Styles · Motion（`__DEV__`）
+
+**边界**
+
+- catalog：`figmaComponentCatalog`；showcase / consumer 同 export
+- 画布：`catalogPreviewCanvasStyle` 单源；禁止假宽度（如 350）
+- 禁止 `@eds/desktop-*`；**禁止** Web 组件 preview（showcase / rn-preview 已删）
+
+### 4.1 精度（不靠肉眼）
+
+- showcase Inspect + Customize 态 Styles
+- 可选：`pnpm parity:native` + Playground「Layout parity probe」
+
+详案：`docs/preview-architecture.md`。
+
+### 4.2 圆角 — 必须平滑（squircle）
+
+Figma `--corner-smoothing`（60%）在 RN 上 **禁止** 裸写 `borderRadius: theme.radius.*` 或硬编码 px。
+
+| 场景 | ✅ | ❌ |
+|------|----|----|
+| 非胶囊圆角 | `theme.smoothRadius.{sm,md,lg,xl}` 或 `edsSmoothRadius('radius-*')` | 仅 `borderRadius`、无 `borderCurve` |
+| 胶囊 / 全圆 | `theme.radius.full` + `borderRadius`（**不加** `borderCurve`） | 对 `radius-full` 套 `smoothRadius` |
+
+- 真源：`resolveEdsTheme.ts` → `edsSmoothRadius`（`borderRadius` + `borderCurve: 'continuous'`）
+- showcase 新 UI、改圆角时一律走 `smoothRadius`；`packages/components` 新增 RN 圆角同理
+- Web/CSS 侧仍用 `@eds/mobile-tokens/corner-smoothing` + `--radius-*`（另栈，勿混用裸圆角）
+
+### 4.3 Showcase 块 — 默认内边距与圆角
+
+**除非用户特别声明**，showcase 卡片 / 列表组 / 代码块 / 搜索框等**浅底块**（`material-card-shallow`）统一：
+
+| 属性 | Token | RN 单源 |
+|------|-------|---------|
+| 圆角 | `radius-xl`（20px） | `showcaseTheme.blockRadius`（`edsSmoothRadius('radius-xl')`） |
+| 内边距左右 | `spacing-5`（20px） | `showcaseTheme.layout.cardPaddingHorizontal` |
+| 内边距上下 | `spacing-4`（16px） | `showcaseTheme.layout.cardPaddingVertical` |
+
+- 新块 **禁止** 硬编码 px；复用上述 layout / `blockRadius`，或 `ShowcaseCardRow` / `ShowcaseListGroup` / `HighlightedCssSnippet` 等已有壳。
+- **特例**（须注释或 § 写明）：Color Base 色块 tile（`tokenBaseTilePadding*` · `spacing-8`）、胶囊 chip（`radius-full`）、Inspect 描边等——**不**套用本默认。
+
 
 ## 5. 包名与同步
 
@@ -120,6 +163,8 @@ Mobile 与 Desktop **技术栈不同**：Desktop = Vue 全链路；Mobile = **Re
 | tokens | `@eds/mobile-tokens` |
 | components | `@eds/mobile-components` |
 | animations | `@eds/mobile-animations` |
+| patterns | `@eds/mobile-patterns` |
+| workflows | `@eds/mobile-workflows` |
 | 对外 npm | `@eds-evergreen/mobile` |
 
 | 用户说 | 行为 |
@@ -131,8 +176,57 @@ Mobile 与 Desktop **技术栈不同**：Desktop = Vue 全链路；Mobile = **Re
 
 ## 6. Mobile 专项
 
+### 6.0 RN 默认栈（原生增强闸门）— **重要**
+
+**没有用户 / 任务 / spec 明确声明「原生增强」时，一律走 React Native 技术栈方案。**  
+「明确声明」= 点名走原生增强入口或模块（例如 `GlassSurface` / `GlassControlShell`、指定的 Expo native module、自研 native 材质等），而不是 Agent 或实现者自行判断「某端更好看」。
+
+| ✅ 默认（双端同路径） | ❌ 禁止作为默认 |
+|----------------------|----------------|
+| `StyleSheet` + `mobileTheme` / token 解析 | 为预览或观感默认写 `Platform.OS` 双组件、双 export |
+| RN `boxShadow`（含 inset）、`borderCurve` / `smoothRadius` | 用 Android `elevation`、legacy shadow 或 Skia **替代** token 阴影语义 |
+| expo-blur、Reanimated、`@eds/mobile-animations` | 第三方平行 glass API、静默叠 `expo-glass-effect`（Effect `EgGlass` 等未声明处） |
+| 同一 token / class 语义在 iOS、Android 同实现链 | 无声明时在 consumer 或 showcase 分叉「iOS 原生 / Android 凑合」 |
+
+- Agent 认为**必须**上原生增强 → **先问用户或写进 spec**，不得静默分叉。
+- **已声明**的原生增强：仅在该组件 / 场景入口内叠加；**不得**改 token 语义或 Eg* 对外契约；原生不可用 → 仍呈现 RN + token 外观（见 §6.1），**不得空白**。
+
+### 6.1 EDSGlassView 顶层原则
+
+RN **只做**：统一 API（`EdsGlassView` / `GlassView`）、token 解析、材质与动效**兜底**。业务 **禁止** `Platform.OS` 双组件、禁止第三方平行 glass export。
+
+| # | 原则 |
+|---|------|
+| 1 | **React Native 栈** — API + 解析 + 兜底；consumer 只引 Eg* / `EdsGlassView`。 |
+| 2 | **Token 真源** — `effect` Glass Box + `spec/liquid-glass/surface.json` → `mobileTheme.glass.surface`；**禁止** `dist/css/material` / `material-glass-*` CSS 叙事；Android 与无增强 iOS **同一套数值**。 |
+| 3 | **iOS 增强** — 消费该样式时，可在 `EdsGlassView` **内部**接原生材质；不可用 → 仍用第 2 步外观，**不得空白**。 |
+| 4 | **动效** — `motion` spec（`glass-press` / `glass-shimmer` / `glass-morph`）为兜底；iOS 可叠原生交互，**语义仍走 recipe**。 |
+
+**渲染栈（默认）**
+
+```
+EdsGlassView
+  → iOS: UIVisualEffectView / UIBlurEffect（expo-blur）
+  → Android: 系统 blur（expo-blur）
+  → EDS Material Layer（token tint · 高光 · 描边）
+  → children
+```
+
+**话术** — 禁止「fallback / 降级」；称 frost / liquid **preset**、native-blur / tint 档位。
+
+**Showcase** — 动效 → 液态玻璃页顶 `EdsMobileRnPrincipleCallout` 与 §6.1 同步（文案：`apps/showcase/src/content/edsGlassPrinciples.ts`）。
+
+#### 6.1.1 对话待处理（玻璃）
+
+1. effect 收敛**单一语义档**（如 `effect-glass-liquid`），替代分散 atomic 叙事。  
+2. **样式名 → `resolveGlassAppearance()`** 单链；iOS 增强由样式触发。  
+3. Android blur 观感 / expo-blur 参数调优。  
+4. iOS 26+ 系统液态材质增强（**自研 native**，非 Callstack 平行 API）。  
+5. RN 默认路径与 Web `liquid-glass.js` 边界写清 spec；清理 Skia shader 默认叙事。  
+6. 真机 demo：限制同时 active blur；列表/Tab 默认 frost preset。
+
 - Event 语义：`event-tap*`（非 desktop `event-hover`）
-- Brand 色：`#5f2243`（Mobile Figma；sRGB + `color(display-p3)`）
+- Brand 基色：真源 `spec/color/base.json` → `--eds-brand`（Mobile Figma 默认；**consumer 项目自行覆盖**，非全局固定 hex）
 - 控件高度 token：`button-*` / `input-*` / `dropdown-*`（Figma Scale）
 - **Motion 三层（同架构文档 · Semantic 沿用现有 class）** — `Base → Recipe → Semantic` · 见 `spec/motion/README.md`：
   - **Base** — 唯一底层参数（duration / spring / haptic / opacity / scale …）→ `base.css`
@@ -165,7 +259,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 | 状态 | 规则 |
 |------|------|
 | **当前** | 202 组件均为 Figma 对齐 **scaffold**（`View` + `testID`） |
-| **升级** | 场景组件（如 `EgCregisTabBar`、`EgNotesPopover`）须在 `packages/components` 内锁 preset / 默认 props，非 showcase 手搓 |
+| **升级** | 场景组件（如 `EgCregisTabBar`、`EgNotesPopover`）须在 `packages/components` 内锁 preset / 默认 props，非 showcase 手搓 layout |
 | **consumer** | 仅传 `translate`、业务 override；动态数据用 optional `groups` 类 prop（比照 Desktop `EgCregisModuleMenu`） |
 
 ## 9. 验证与交付
@@ -177,12 +271,29 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 | `packages/components/**` | `pnpm build:components` |
 | `packages/tokens/**` | `pnpm build:tokens` |
 | `packages/mobile/**`（npm _bundle） | `pnpm build:mobile` |
-| `apps/showcase/**` | `pnpm --filter @eds/mobile-showcase build` |
-| `apps/playground/**` | `pnpm --filter @eds/mobile-playground typecheck` |
+| `apps/showcase/**` | `pnpm --filter @eds/mobile-showcase typecheck` |
 | 公共 export 增删改名（§2） | 上述 + `pnpm sync` + consumer typecheck |
 
 - 批量改名后 `rg --hidden` 回扫残留
 - 报告须区分「本次引入」与「预先存在」失败
+
+## 10. 推送（GitHub）
+
+用户说 **「推送」** = **本仓改动全部上 GitHub**；本地与工作区**不得**遗留未 push 的 commit、未暂存改动或未跟踪且应纳入的文件（除非用户**当场**另指定分支、远程或排除路径）。
+
+**顺序（不得跳步）**
+
+1. **§9** — 按本次 diff 跑齐必跑项；汇报区分「本次引入」与「预先存在」失败；有本次引入失败 → **不推送**，先修。
+2. **`git status`** — 已改 / 未跟踪：默认**全部**纳入 commit；用户明确排除的 path 除外。禁止留 unstaged、禁止「只 commit 一部分」除非用户当场限定范围。
+3. **commit** — `git add` 含相关 untracked；message 聚焦 why。默认分支 **`main`**（用户指定则用指定分支）。
+4. **`git push`** — 首次 `git push -u origin <branch>`；之后 `git push`。禁止只 commit 不 push。
+5. **Pages / 站点** — **本仓（eds-mobile）无 GitHub Pages**（§4 已移除 Web preview / `deploy-pages.yml`）；push **不**触发文档站。Preview 真源：`pnpm dev:showcase`（原生）。若用户同时要 **EDS Desktop** 文档站（`eds-desktop` · `deploy-pages.yml` → [eds-desktop GitHub Pages](https://eds-ued.github.io/eds-desktop/)），须**单独**在 desktop 仓按该仓约定推送；**禁止**为「触发 Pages」默认改 `eds-desktop` 或其 consumer。
+
+**禁止**
+
+- 问「要不要 push / 是否推送」——用户已说推送即执行 §10。
+- 漏 add、漏 push、推前跳过 §9。
+- 对 **`main`** 做 `git push --force`（除非用户**明确要求**）。
 
 ## 19. 变更记录
 
@@ -192,4 +303,12 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 - 2026-09-15：§4 定调 RN playground 为 preview 真源；Showcase 降为 Vue 过渡文档壳；明确 RN + 原生混编 consumer。
 - 2026-09-15：术语排查 — 源码中独立「DS」缩写清零；文档「设计系统」指 EDS 时统一写 EDS / EDS Mobile。
 - 2026-09-15：Motion 公开 CSS 对齐 Desktop（base · recipe · semantic · utilities）；RN runtime 由内部 spec 生成；移除 hover，新增 tap/focus。
-- 更早见 git history。
+- 2026-09-17：§4 — 一套 RN 代码多种预览模式：`apps/rn-preview`（RN-Web）+ Showcase iframe；禁止 Vue 分子 preview。
+- 2026-09-17：§4.1 — 浏览器/原生 1:1 契约：同源 RN + token + 品牌字体，不模拟设备外壳；几何用 `parity:*` 门禁。
+- 2026-09-20：§4 — **移除 Web preview**（删 Vue showcase / rn-preview、Pages CI、parity:web）；Native showcase 为 EDS 唯一 preview；目录与 eds-desktop 对齐（`packages/animations`、`apps/showcase` 等）。
+- 2026-09-23：§4.2 — showcase / RN 非胶囊圆角必须 `smoothRadius`（`borderCurve: continuous`），对齐 Figma `--corner-smoothing`。
+- 2026-09-24：§4.3 — showcase 浅底块默认 `blockRadius`（radius-xl）+ 内边距 spacing-5 × spacing-4；Color Base tile 等特例除外。
+- 2026-10-09：§6.0 — EDSGlassView 顶层原则（RN API + token 外观 + iOS 内嵌增强 + motion 兜底）；showcase `edsGlassPrinciples.ts`；§6.0.1 玻璃待办清单。
+- 2026-10-12：移除 `dist/css/material`、`spec/material/`、`mobileTheme.glass.material`；GlassSurface preset 迁至 `spec/liquid-glass/surface.json` → `glass.surface`；showcase 无 Material token 页。
+- 2026-10-12：§6.0 **RN 默认栈（原生增强闸门）** — 无明确声明不得默认原生分叉；原 EDSGlassView 原则顺延 §6.1。
+- 2026-10-14：§10 **推送** — 「推送」= §9 全绿 → 全量 commit（默认 main）→ push；本仓无 Pages；Desktop Pages 另仓；禁止只 commit / 漏文件 / 默认 force push main。

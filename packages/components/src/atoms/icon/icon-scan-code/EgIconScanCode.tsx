@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconScanCodeProps } from './EgIconScanCode.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconScanCodeProps } from './EgIconScanCode.types.js';
 
-/** RN implementation — eds-scan-code (component) */
+/** RN icon — eds-scan-code */
 export function EgIconScanCode(props: EgIconScanCodeProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-scan-code' } style={style} accessibilityLabel="eds-scan-code" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-scan-code"
+      testID={testID ?? 'icon-eds-scan-code'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-scan-code"}
+    />
+  );
 }

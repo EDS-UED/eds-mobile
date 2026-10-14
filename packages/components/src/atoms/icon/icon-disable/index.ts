@@ -1,2 +1,2 @@
-export { EgIconDisable } from './EgIconDisable';
-export type { EgIconDisableProps } from './EgIconDisable.types';
+export { EgIconDisable } from './EgIconDisable.js';
+export type { EgIconDisableProps } from './EgIconDisable.types.js';

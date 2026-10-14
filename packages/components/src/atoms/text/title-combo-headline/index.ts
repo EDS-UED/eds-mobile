@@ -1,2 +1,2 @@
-export { EgTitleComboHeadline } from './EgTitleComboHeadline';
-export type { EgTitleComboHeadlineProps } from './EgTitleComboHeadline.types';
+export { EgTitleComboHeadline } from './EgTitleComboHeadline.js';
+export type { EgTitleComboHeadlineProps } from './EgTitleComboHeadline.types.js';

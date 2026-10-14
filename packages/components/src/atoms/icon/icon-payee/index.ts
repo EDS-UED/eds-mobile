@@ -1,2 +1,2 @@
-export { EgIconPayee } from './EgIconPayee';
-export type { EgIconPayeeProps } from './EgIconPayee.types';
+export { EgIconPayee } from './EgIconPayee.js';
+export type { EgIconPayeeProps } from './EgIconPayee.types.js';

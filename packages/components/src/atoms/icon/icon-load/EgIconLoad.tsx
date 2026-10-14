@@ -1,8 +1,19 @@
-import { View, type ViewProps } from 'react-native';
-import type { EgIconLoadProps } from './EgIconLoad.types';
+import type { ViewProps } from 'react-native';
+import { EgSymbol } from '../../_shared/symbol/EgSymbol.js';
+import type { EgIconLoadProps } from './EgIconLoad.types.js';
 
-/** RN implementation — eds-load (component) */
+/** RN icon — eds-load */
 export function EgIconLoad(props: EgIconLoadProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'icon-eds-load' } style={style} accessibilityLabel="eds-load" />;
+  const { testID, mode, size, fillTone, style, accessibilityLabel } = props;
+  return (
+    <EgSymbol
+      name="eds-load"
+      testID={testID ?? 'icon-eds-load'}
+      mode={mode}
+      size={size}
+      fillTone={fillTone}
+      style={style}
+      accessibilityLabel={accessibilityLabel ?? "eds-load"}
+    />
+  );
 }

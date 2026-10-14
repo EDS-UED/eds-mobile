@@ -1,2 +1,2 @@
-export { EgIconSuspiciousDollar } from './EgIconSuspiciousDollar';
-export type { EgIconSuspiciousDollarProps } from './EgIconSuspiciousDollar.types';
+export { EgIconSuspiciousDollar } from './EgIconSuspiciousDollar.js';
+export type { EgIconSuspiciousDollarProps } from './EgIconSuspiciousDollar.types.js';

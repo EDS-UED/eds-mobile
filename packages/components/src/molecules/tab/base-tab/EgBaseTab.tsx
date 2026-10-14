@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native';
-import type { EgBaseTabProps } from './EgBaseTab.types';
+import type { EgBaseTabProps } from './EgBaseTab.types.js';
 
 /** RN implementation — Base_ Tab (set · 2 variants) */
 export function EgBaseTab(props: EgBaseTabProps & Pick<ViewProps, 'style'>) {

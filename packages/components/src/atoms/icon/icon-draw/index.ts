@@ -1,2 +1,2 @@
-export { EgIconDraw } from './EgIconDraw';
-export type { EgIconDrawProps } from './EgIconDraw.types';
+export { EgIconDraw } from './EgIconDraw.js';
+export type { EgIconDrawProps } from './EgIconDraw.types.js';

@@ -1,2 +1,2 @@
-export { EgIconDatabaseSafetyFill } from './EgIconDatabaseSafetyFill';
-export type { EgIconDatabaseSafetyFillProps } from './EgIconDatabaseSafetyFill.types';
+export { EgIconDatabaseSafetyFill } from './EgIconDatabaseSafetyFill.js';
+export type { EgIconDatabaseSafetyFillProps } from './EgIconDatabaseSafetyFill.types.js';

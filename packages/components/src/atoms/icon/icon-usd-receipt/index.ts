@@ -1,2 +1,2 @@
-export { EgIconUsdReceipt } from './EgIconUsdReceipt';
-export type { EgIconUsdReceiptProps } from './EgIconUsdReceipt.types';
+export { EgIconUsdReceipt } from './EgIconUsdReceipt.js';
+export type { EgIconUsdReceiptProps } from './EgIconUsdReceipt.types.js';

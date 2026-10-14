@@ -2,28 +2,53 @@
   "name": "@eds/mobile-showcase",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "main": "expo-router/entry",
   "scripts": {
-    "predev": "pnpm --dir ../.. build:tokens && pnpm --dir ../.. build:animations && node scripts/generate-mobile-showcase-data.mjs",
-    "dev": "vite",
-    "prebuild": "pnpm --dir ../.. build:tokens && pnpm --dir ../.. build:animations && pnpm --dir ../.. build:components",
-    "build": "vue-tsc --noEmit && vite build",
-    "build:pages": "vite build && cp dist/index.html dist/404.html && touch dist/.nojekyll",
-    "preview": "vite preview",
-    "typecheck": "vue-tsc --noEmit"
+    "predev": "node ../../scripts/ensure-built.mjs @eds/mobile-tokens @eds/mobile-components && node scripts/extract-dist-css-manifest.mjs",
+    "dev": "expo start --port 8080",
+    "start": "expo start --port 8080",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "typecheck": "tsc --noEmit",
+    "verify:color-tokens": "node scripts/verify-color-token-catalog.mjs",
+    "verify:tokens": "node scripts/verify-token-catalog.mjs"
   },
   "dependencies": {
     "@eds/mobile-animations": "workspace:*",
-    "@eds/mobile-tokens": "link:../../packages/tokens",
-    "highlight.js": "^11.11.1",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "@eds/mobile-components": "workspace:*",
+    "@eds/mobile-tokens": "workspace:*",
+    "@react-native-segmented-control/segmented-control": "^2.5.7",
+    "@react-navigation/native": "^7.0.14",
+    "@shopify/react-native-skia": "2.6.2",
+    "expo": "~57.0.27",
+    "expo-blur": "~57.0.3",
+    "expo-clipboard": "^57.0.2",
+    "expo-constants": "~57.0.21",
+    "expo-font": "~57.0.4",
+    "expo-glass-effect": "~57.0.4",
+    "expo-linear-gradient": "~57.0.2",
+    "expo-linking": "~57.0.12",
+    "expo-router": "~57.0.25",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-android-liquid-glass": "^0.2.1",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-reanimated": "~4.5.1",
+    "react-native-safe-area-context": "5.7.0",
+    "react-native-screens": "~4.26.2",
+    "react-native-svg": "15.15.4",
+    "react-native-worklets": "~0.10.1",
+    "semver": "^7.8.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "postcss-prefix-selector": "^2.1.1",
-    "typescript": "^5.7.3",
-    "vite": "^6.0.7",
-    "vue-tsc": "^2.2.0"
+    "@babel/core": "^7.26.0",
+    "@types/react": "~19.2.17",
+    "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "react-dom": "19.2.3"
+    }
   }
 }

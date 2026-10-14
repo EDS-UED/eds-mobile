@@ -1,2 +1,2 @@
-export { EgIconArrowWorkflow } from './EgIconArrowWorkflow';
-export type { EgIconArrowWorkflowProps } from './EgIconArrowWorkflow.types';
+export { EgIconArrowWorkflow } from './EgIconArrowWorkflow.js';
+export type { EgIconArrowWorkflowProps } from './EgIconArrowWorkflow.types.js';

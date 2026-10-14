@@ -1,2 +1,2 @@
-export { EgIconInterfaceUnlock } from './EgIconInterfaceUnlock';
-export type { EgIconInterfaceUnlockProps } from './EgIconInterfaceUnlock.types';
+export { EgIconInterfaceUnlock } from './EgIconInterfaceUnlock.js';
+export type { EgIconInterfaceUnlockProps } from './EgIconInterfaceUnlock.types.js';

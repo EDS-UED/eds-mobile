@@ -1,2 +1,2 @@
-export { EgIconUserMeSet } from './EgIconUserMeSet';
-export type { EgIconUserMeSetProps } from './EgIconUserMeSet.types';
+export { EgIconUserMeSet } from './EgIconUserMeSet.js';
+export type { EgIconUserMeSetProps } from './EgIconUserMeSet.types.js';

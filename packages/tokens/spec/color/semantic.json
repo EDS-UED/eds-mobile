@@ -1,46 +1,51 @@
 {
   "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
-  "$description": "Color System semantic colors — resolved from Mobile Figma Color System.",
+  "$description": "Color System semantic colors — reference var(--eds-*) via color-mix at build time.",
   "tokens": [
     {
       "name": "box-page",
-      "light": "#ffffff",
-      "dark": "#020304"
+      "light": "color(var(--eds-page) / 1)",
+      "dark": "color(var(--eds-page) / 1)"
     },
     {
       "name": "box-flotation",
-      "light": "#ffffff",
-      "dark": "#1c1d1f"
+      "light": "color(var(--eds-flotation) / 1)",
+      "dark": "color(var(--eds-flotation) / 1)"
     },
     {
       "name": "stroke-hide",
-      "light": "#02030400",
-      "dark": "#ffffff00"
+      "light": "color(var(--eds-base) / 0)",
+      "dark": "color(var(--eds-base) / 0)"
     },
     {
-      "name": "stroke-divider",
-      "light": "#0203040d",
-      "dark": "#ffffff0d"
+      "name": "stroke-divider-module",
+      "light": "color(var(--eds-base) / 0.1)",
+      "dark": "color(var(--eds-base) / 0.1)"
+    },
+    {
+      "name": "stroke-divider-page",
+      "light": "color(var(--eds-base) / 0.08)",
+      "dark": "color(var(--eds-base) / 0.1)"
     },
     {
       "name": "stroke-base-primary",
-      "light": "#020304",
-      "dark": "#ffffff"
+      "light": "color(var(--eds-base) / 1)",
+      "dark": "color(var(--eds-base) / 1)"
     },
     {
       "name": "stroke-base-secondary",
-      "light": "#02030499",
-      "dark": "#ffffff99"
+      "light": "color(var(--eds-base) / 0.6)",
+      "dark": "color(var(--eds-base) / 0.6)"
     },
     {
       "name": "stroke-base-tertiary",
-      "light": "#02030466",
-      "dark": "#ffffff66"
+      "light": "color(var(--eds-base) / 0.4)",
+      "dark": "color(var(--eds-base) / 0.4)"
     },
     {
       "name": "stroke-base-quaternary",
-      "light": "#02030433",
-      "dark": "#ffffff33"
+      "light": "color(var(--eds-base) / 0.2)",
+      "dark": "color(var(--eds-base) / 0.2)"
     },
     {
       "name": "stroke-color-brand",
@@ -49,33 +54,33 @@
     },
     {
       "name": "stroke-color-danger",
-      "light": "#d7462d",
-      "dark": "#fa6950"
+      "light": "color(var(--eds-danger) / 1)",
+      "dark": "color(var(--eds-danger) / 1)"
     },
     {
       "name": "stroke-same-white",
-      "light": "#ffffff",
-      "dark": "#ffffff"
+      "light": "color(var(--eds-same-white) / 1)",
+      "dark": "color(var(--eds-same-white) / 1)"
     },
     {
       "name": "text-base-primary",
-      "light": "#020304",
-      "dark": "#ffffff"
+      "light": "color(var(--eds-base) / 1)",
+      "dark": "color(var(--eds-base) / 1)"
     },
     {
       "name": "text-base-secondary",
-      "light": "#02030499",
-      "dark": "#ffffff99"
+      "light": "color(var(--eds-base) / 0.6)",
+      "dark": "color(var(--eds-base) / 0.6)"
     },
     {
       "name": "text-base-tertiary",
-      "light": "#02030466",
-      "dark": "#ffffff66"
+      "light": "color(var(--eds-base) / 0.4)",
+      "dark": "color(var(--eds-base) / 0.4)"
     },
     {
       "name": "text-base-quaternary",
-      "light": "#02030433",
-      "dark": "#ffffff33"
+      "light": "color(var(--eds-base) / 0.2)",
+      "dark": "color(var(--eds-base) / 0.2)"
     },
     {
       "name": "text-brand",
@@ -84,78 +89,78 @@
     },
     {
       "name": "text-face-primary",
-      "light": "#ffffff",
-      "dark": "#020304"
+      "light": "color(var(--eds-face) / 1)",
+      "dark": "color(var(--eds-face) / 1)"
     },
     {
       "name": "text-face-secondary",
-      "light": "#ffffff99",
-      "dark": "#02030499"
+      "light": "color(var(--eds-face) / 0.6)",
+      "dark": "color(var(--eds-face) / 0.6)"
     },
     {
       "name": "text-face-tertiary",
-      "light": "#ffffff66",
-      "dark": "#02030466"
+      "light": "color(var(--eds-face) / 0.4)",
+      "dark": "color(var(--eds-face) / 0.4)"
     },
     {
       "name": "text-face-quaternary",
-      "light": "#ffffff33",
-      "dark": "#02030433"
+      "light": "color(var(--eds-face) / 0.2)",
+      "dark": "color(var(--eds-face) / 0.2)"
     },
     {
       "name": "text-same-black",
-      "light": "#020304",
-      "dark": "#020304"
+      "light": "color(var(--eds-same-black) / 1)",
+      "dark": "color(var(--eds-same-black) / 1)"
     },
     {
       "name": "text-same-white",
-      "light": "#ffffff",
-      "dark": "#ffffff"
+      "light": "color(var(--eds-same-white) / 1)",
+      "dark": "color(var(--eds-same-white) / 1)"
     },
     {
       "name": "text-same-white-weaken",
-      "light": "#ffffff66",
-      "dark": "#ffffff66"
+      "light": "color(var(--eds-same-white) / 0.4)",
+      "dark": "color(var(--eds-same-white) / 0.4)"
     },
     {
       "name": "material-hide",
-      "light": "#02030400",
-      "dark": "#ffffff00"
+      "light": "color(var(--eds-base) / 0)",
+      "dark": "color(var(--eds-base) / 0)"
     },
     {
       "name": "material-base-primary",
-      "light": "#020304",
-      "dark": "#ffffff"
+      "light": "color(var(--eds-base) / 1)",
+      "dark": "color(var(--eds-base) / 1)"
     },
     {
       "name": "material-base-secondary",
-      "light": "#02030499",
-      "dark": "#ffffff99"
+      "light": "color(var(--eds-base) / 0.6)",
+      "dark": "color(var(--eds-base) / 0.6)"
     },
     {
       "name": "material-base-tertiary",
-      "light": "#02030466",
-      "dark": "#ffffff66"
+      "light": "color(var(--eds-base) / 0.4)",
+      "dark": "color(var(--eds-base) / 0.4)"
     },
     {
       "name": "material-base-quaternary",
-      "light": "#02030433",
-      "dark": "#ffffff33"
+      "light": "color(var(--eds-base) / 0.2)",
+      "dark": "color(var(--eds-base) / 0.2)"
     },
     {
       "name": "material-card-shallow",
-      "light": "#02030408",
-      "dark": "#ffffff0d"
+      "light": "color(var(--eds-base) / 0.03)",
+      "dark": "color(var(--eds-base) / 0.05)"
     },
     {
       "name": "material-card-moderate",
-      "light": "#0203040d",
-      "dark": "#ffffff12"
+      "light": "color(var(--eds-base) / 0.05)",
+      "dark": "color(var(--eds-base) / 0.07)"
     },
     {
       "name": "material-card-deep",
-      "light": "#02030412",
-      "dark": "#ffffff17"
+      "light": "color(var(--eds-base) / 0.07)",
+      "dark": "color(var(--eds-base) / 0.09)"
     },
     {
       "name": "material-brand",
@@ -169,72 +174,72 @@
     },
     {
       "name": "material-match",
-      "light": "#003a6d",
-      "dark": "#004178"
+      "light": "color(var(--eds-match) / 1)",
+      "dark": "color(var(--eds-match) / 1)"
     },
     {
       "name": "material-match-weaken",
-      "light": "#003a6d1f",
-      "dark": "#0041781f"
+      "light": "color(var(--eds-match) / 0.12)",
+      "dark": "color(var(--eds-match) / 0.12)"
     },
     {
       "name": "material-decor",
-      "light": "#022d0d",
-      "dark": "#ffffff"
+      "light": "color(var(--eds-decor) / 1)",
+      "dark": "color(var(--eds-decor) / 1)"
     },
     {
       "name": "material-decor-weaken",
-      "light": "#022d0d1f",
-      "dark": "#ffffff1f"
+      "light": "color(var(--eds-decor) / 0.12)",
+      "dark": "color(var(--eds-decor) / 0.12)"
     },
     {
       "name": "material-face-primary",
-      "light": "#ffffff",
-      "dark": "#020304"
+      "light": "color(var(--eds-face) / 1)",
+      "dark": "color(var(--eds-face) / 1)"
     },
     {
       "name": "material-face-secondary",
-      "light": "#ffffff99",
-      "dark": "#02030499"
+      "light": "color(var(--eds-face) / 0.6)",
+      "dark": "color(var(--eds-face) / 0.6)"
     },
     {
       "name": "material-face-tertiary",
-      "light": "#ffffff66",
-      "dark": "#02030466"
+      "light": "color(var(--eds-face) / 0.4)",
+      "dark": "color(var(--eds-face) / 0.4)"
     },
     {
       "name": "material-face-quaternary",
-      "light": "#ffffff33",
-      "dark": "#02030433"
+      "light": "color(var(--eds-face) / 0.2)",
+      "dark": "color(var(--eds-face) / 0.2)"
     },
     {
       "name": "material-same-black",
-      "light": "#02030480",
-      "dark": "#020304b2"
+      "light": "color(var(--eds-same-black) / 0.5)",
+      "dark": "color(var(--eds-same-black) / 0.7)"
     },
     {
       "name": "material-same-black-weaken",
-      "light": "#02030433",
-      "dark": "#0203044d"
+      "light": "color(var(--eds-same-black) / 0.2)",
+      "dark": "color(var(--eds-same-black) / 0.3)"
     },
     {
       "name": "material-same-white",
-      "light": "#ffffff",
-      "dark": "#ffffff"
+      "light": "color(var(--eds-same-white) / 1)",
+      "dark": "color(var(--eds-same-white) / 1)"
     },
     {
       "name": "material-same-white-weaken",
-      "light": "#ffffff",
-      "dark": "#ffffff1f"
+      "light": "color(var(--eds-same-white) / 1)",
+      "dark": "color(var(--eds-same-white) / 0.12)"
     },
     {
       "name": "status-disable-base",
-      "light": "#02030433",
+      "light": "color(var(--eds-base) / 0.2)",
       "dark": "color(var(--eds-brand) / 0.2)"
     },
     {
       "name": "status-disable-base-weaken",
-      "light": "#0203040d",
+      "light": "color(var(--eds-base) / 0.05)",
       "dark": "color(var(--eds-brand) / 0.07)"
     },
     {
@@ -249,93 +254,138 @@
     },
     {
       "name": "status-disable-same-white",
-      "light": "#ffffff",
+      "light": "color(var(--eds-same-white) / 1)",
       "dark": "color(var(--eds-brand) / 0.2)"
     },
     {
       "name": "status-success",
-      "light": "#1fc35a",
-      "dark": "#1fc35a"
+      "light": "color(var(--eds-success) / 1)",
+      "dark": "color(var(--eds-success) / 1)"
     },
     {
       "name": "status-success-weaken",
-      "light": "#1fc35a1f",
-      "dark": "#1fc35a1f"
+      "light": "color(var(--eds-success) / 0.12)",
+      "dark": "color(var(--eds-success) / 0.12)"
     },
     {
       "name": "status-danger",
-      "light": "#d7462d",
-      "dark": "#fa6950"
+      "light": "color(var(--eds-danger) / 1)",
+      "dark": "color(var(--eds-danger) / 1)"
     },
     {
       "name": "status-danger-weaken",
-      "light": "#d7462d1f",
-      "dark": "#fa69501f"
+      "light": "color(var(--eds-danger) / 0.12)",
+      "dark": "color(var(--eds-danger) / 0.12)"
     },
     {
       "name": "status-warning",
-      "light": "#eb9114",
-      "dark": "#ffaa32"
+      "light": "color(var(--eds-warning) / 1)",
+      "dark": "color(var(--eds-warning) / 1)"
     },
     {
       "name": "status-warning-weaken",
-      "light": "#eb91141f",
-      "dark": "#ffaa321f"
+      "light": "color(var(--eds-warning) / 0.12)",
+      "dark": "color(var(--eds-warning) / 0.12)"
     },
     {
-      "name": "effect-shallow",
-      "light": "#0203041a",
-      "dark": "#02030499"
+      "name": "effect-vulvar-subtle",
+      "light": "color(var(--eds-same-black) / 0.02)",
+      "dark": "color(var(--eds-same-black) / 0.2)"
     },
     {
-      "name": "effect-moderate",
-      "light": "#0203041f",
-      "dark": "#02030433"
+      "name": "effect-vulvar-shallow",
+      "light": "color(var(--eds-same-black) / 0.12)",
+      "dark": "color(var(--eds-same-black) / 0.2)"
     },
     {
-      "name": "effect-deep",
-      "light": "#02030433",
-      "dark": "#02030499"
+      "name": "effect-vulvar-deep",
+      "light": "color(var(--eds-same-black) / 0.13)",
+      "dark": "color(var(--eds-same-black) / 0.6)"
+    },
+    {
+      "name": "effect-vulvar-line",
+      "light": "color(var(--eds-same-white) / 0.06)",
+      "dark": "color(var(--eds-same-white) / 0.1)"
+    },
+    {
+      "name": "effect-inner-light",
+      "light": "color(var(--eds-same-white) / 1)",
+      "dark": "color(var(--eds-same-white) / 0.1)"
     },
     {
       "name": "effect-prompt",
-      "light": "#020304cc",
-      "dark": "#ffffff33"
+      "light": "color(var(--eds-base) / 0.8)",
+      "dark": "color(var(--eds-base) / 0.2)"
+    },
+    {
+      "name": "effect-box",
+      "light": "color(var(--eds-flotation) / 0.6)",
+      "dark": "color(var(--eds-flotation) / 0.6)"
+    },
+    {
+      "name": "effect-overlay-subtle",
+      "light": "color(var(--eds-overlay) / 0)",
+      "dark": "color(var(--eds-overlay) / 0)"
+    },
+    {
+      "name": "effect-overlay-shallow",
+      "light": "color(var(--eds-overlay) / 0.4)",
+      "dark": "color(var(--eds-overlay) / 0.2)"
+    },
+    {
+      "name": "effect-overlay-deep",
+      "light": "color(var(--eds-overlay) / 0.88)",
+      "dark": "color(var(--eds-overlay) / 0.88)"
+    },
+    {
+      "name": "stroke-outline-subtle",
+      "light": "color(var(--eds-same-black) / 0.03)",
+      "dark": "color(var(--eds-same-black) / 0.6)"
+    },
+    {
+      "name": "stroke-outline-shallow",
+      "light": "color(var(--eds-same-black) / 0.12)",
+      "dark": "color(var(--eds-same-black) / 0.2)"
+    },
+    {
+      "name": "stroke-outline-deep",
+      "light": "color(var(--eds-same-black) / 0.13)",
+      "dark": "color(var(--eds-same-black) / 0.6)"
     },
     {
       "name": "event-tap",
-      "light": "#0203041a",
-      "dark": "#ffffff1a"
+      "light": "color(var(--eds-base) / 0.1)",
+      "dark": "color(var(--eds-base) / 0.1)"
     },
     {
       "name": "event-tap-brand",
-      "light": "color(var(--eds-brand) / 0.6)",
-      "dark": "color(var(--eds-brand) / 0.6)"
+      "light": "color(var(--eds-brand) / 0.4)",
+      "dark": "color(var(--eds-brand) / 0.4)"
     },
     {
       "name": "event-tap-decor",
-      "light": "#022d0d99",
-      "dark": "#ffffff99"
+      "light": "color(var(--eds-decor) / 0.4)",
+      "dark": "color(var(--eds-decor) / 0.4)"
     },
     {
       "name": "event-tap-danger",
-      "light": "#d7462d99",
-      "dark": "#fa695099"
+      "light": "color(var(--eds-danger) / 0.4)",
+      "dark": "color(var(--eds-danger) / 0.4)"
     },
     {
       "name": "event-tap-base",
-      "light": "#02030499",
-      "dark": "#ffffff99"
+      "light": "color(var(--eds-base) / 0.4)",
+      "dark": "color(var(--eds-base) / 0.4)"
     },
     {
       "name": "event-tap-face",
-      "light": "#ffffff99",
-      "dark": "#02030499"
+      "light": "color(var(--eds-face) / 0.4)",
+      "dark": "color(var(--eds-face) / 0.4)"
     },
     {
       "name": "event-focus",
-      "light": "#0203040d",
-      "dark": "#ffffff14"
+      "light": "color(var(--eds-base) / 0.05)",
+      "dark": "color(var(--eds-base) / 0.08)"
     },
     {
       "name": "event-focus-brand",

@@ -1,2 +1,2 @@
-export { EgIconCategorization } from './EgIconCategorization';
-export type { EgIconCategorizationProps } from './EgIconCategorization.types';
+export { EgIconCategorization } from './EgIconCategorization.js';
+export type { EgIconCategorizationProps } from './EgIconCategorization.types.js';

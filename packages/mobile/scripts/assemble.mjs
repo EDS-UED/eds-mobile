@@ -9,7 +9,7 @@ const distRoot = join(mobileRoot, 'dist');
 
 const SOURCES = [
   { from: join(repoRoot, 'tokens/dist'), to: join(distRoot, 'tokens') },
-  { from: join(repoRoot, 'mobile-animations/dist'), to: join(distRoot, 'animations') },
+  { from: join(repoRoot, 'animations/dist'), to: join(distRoot, 'animations') },
   { from: join(repoRoot, 'components/dist'), to: join(distRoot, 'components') },
 ];
 

@@ -1,5 +1,6 @@
-/** Figma: Color · Tag 标签✅ */
-export type EgColorTagProps = {
-  /** Figma component set — variants synced from EDS Mobile */
-  testID?: string;
-};
+import type { ColorTagType, EgCommonProps, EgLabelProps, TagSize } from '../../../shared/types.js';
+export type EgColorTagProps = EgCommonProps &
+  EgLabelProps & {
+    size?: TagSize;
+    colorType?: ColorTagType;
+  };

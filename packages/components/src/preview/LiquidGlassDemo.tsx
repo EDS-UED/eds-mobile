@@ -1,10 +1,11 @@
 import { useState, type ReactNode } from 'react';
 import { ScrollView, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import { GlassBlurBackdrop, GlassBlurScope } from '../atoms/glass/GlassBlurScope.js';
-import { EgTabBar } from '../organisms/tab-bar/tab-bar/EgTabBar.js';
+import { EgTabBarRn } from '../organisms/tab-bar/tab-bar/EgTabBarRn.js';
 import { GlassContainer, GlassInteraction, GlassSurface } from '../atoms/glass/index.js';
 import { GlassToolbarDemo } from './GlassToolbarDemo.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
+import { motionGlassPressScale } from '../shared/themeScalars.js';
 import { getThemeColors, mobileTheme, type ThemeMode } from '../theme/index.js';
 import type { GlassVariant } from '../atoms/glass/types.js';
 
@@ -174,7 +175,7 @@ export function LiquidGlassDemo({ mode = 'light', style, prepend }: LiquidGlassD
             style={styles.interactivePill}
           >
             <Text style={[styles.interactiveLabel, { color: colors['text-base-primary'] as string }]}>
-              Press · scale 0.975 · {pressCount}
+              Press · scale {motionGlassPressScale()} · {pressCount}
             </Text>
           </GlassSurface>
         </GlassInteraction>
@@ -202,7 +203,7 @@ export function LiquidGlassDemo({ mode = 'light', style, prepend }: LiquidGlassD
         <Text style={[styles.sectionTitle, { color: colors['text-base-primary'] as string }]}>
           EgTabBar
         </Text>
-        <EgTabBar mode={mode} edgeToEdge forceRnImplementation style={styles.tabBarGlass} />
+        <EgTabBarRn mode={mode} edgeToEdge style={styles.tabBarGlass} />
 
         <Text style={[styles.sectionTitle, { color: colors['text-base-primary'] as string }]}>
           Scroll checkpoint

@@ -1,7 +1,17 @@
 export { EgNavBar, shouldUseEgNavBarNativeStack } from './EgNavBar.js';
-export { egNavBarNativeStackOptions } from './egNavBarNativeStackOptions.js';
+export {
+  egNavBarNativeStackOptions,
+  egNavBarNativeStackScreenOptions,
+  resolveEgNavBarNativeStackTitle,
+} from './egNavBarNativeStackOptions.js';
 export { useEgNavBarScroll } from './useEgNavBarScroll.js';
-export { egNavBarContentHeight, egNavBarScrollContentReserve } from './egNavBarMetrics.js';
+export {
+  EG_NAV_BAR_PADDING_BOTTOM,
+  EG_NAV_BAR_PADDING_HORIZONTAL,
+  EG_NAV_BAR_PADDING_TOP,
+  egNavBarContentHeight,
+  egNavBarScrollContentReserve,
+} from './egNavBarMetrics.js';
 export type {
   EgNavBarProps,
   EgNavBarAction,
@@ -11,4 +21,5 @@ export type {
 export type {
   EgNavBarNativeStackOptions,
   EgNavBarNativeStackOptionsInput,
+  EgNavBarNativeStackScreenOptionsInput,
 } from './egNavBarNativeStackOptions.js';

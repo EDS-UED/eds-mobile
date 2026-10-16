@@ -11,6 +11,9 @@ const INFRA_PAGE = 'EDS Showcase';
 /** Glass 族唯一详情入口 — 跳过族列表页。 */
 export const SHOWCASE_GLASS_EG_SLUG = 'glass-eg';
 
+/** Icon/Crypto 运行时入口 — Atoms · `atoms/_shared/symbol`。 */
+export const SHOWCASE_SYMBOL_BODY_SLUG = 'symbol-body';
+
 export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
   {
     figmaName: 'EgGlass',
@@ -19,6 +22,16 @@ export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
     tier: 'atoms',
     family: 'glass',
     slug: SHOWCASE_GLASS_EG_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgSymbol',
+    showcaseLabel: 'Icon/Crypto 统一渲染（name → SVG 资产）',
+    exportName: 'EgSymbol',
+    tier: 'atoms',
+    family: 'symbol',
+    slug: SHOWCASE_SYMBOL_BODY_SLUG,
     figmaPage: INFRA_PAGE,
     kind: 'component',
   },

@@ -24,7 +24,8 @@ export type ShowcaseNavBarDemoParams = {
   showRight?: string;
   rightIconCount?: string;
   background?: string;
-  forceRn?: string;
+  /** `cregis-home` — 无可见标题 + 左品牌文案 + 右双 icon（scroll edge 验收）。 */
+  scenario?: string;
 };
 
 const DEMO_ROWS = Array.from({ length: 24 }, (_, index) => `列表项 ${index + 1}`);
@@ -38,7 +39,7 @@ function flag(value: string | undefined, fallback: boolean): boolean {
 
 /**
  * 全屏演示 — 真实状态栏 + 导航栏：
- * iOS 26+ 交给系统 UINavigationBar（`egNavBarNativeStackOptions`）；其它平台 / 强制 RN → `EgNavBar`。
+ * iOS 26+ 系统 UINavigationBar（`egNavBarNativeStackOptions`）；其它平台 `EgNavBar`（RN）。
  */
 export function ShowcaseNavBarDemoView() {
   const params = useLocalSearchParams<ShowcaseNavBarDemoParams>();
@@ -47,9 +48,10 @@ export function ShowcaseNavBarDemoView() {
   const insets = useSafeAreaInsets();
   const { scrollOffset, onScroll, scrollEventThrottle } = useEgNavBarScroll();
 
-  const title = params.title ?? '标题';
+  const cregisHome = params.scenario === 'cregis-home';
+  const title = params.title ?? (cregisHome ? '主页' : '标题');
   const showLeft = flag(params.showLeft, true);
-  const showTitle = flag(params.showTitle, true);
+  const showTitle = flag(params.showTitle, cregisHome ? false : true);
   const showRight = flag(params.showRight, true);
   const background = BACKGROUNDS.find((item) => item === params.background) ?? 'auto';
   const right: EgNavBarAction = {
@@ -59,7 +61,23 @@ export function ShowcaseNavBarDemoView() {
     iconAlt: 'eds-add',
     accessibilityLabel: '更多',
   };
-  const native = shouldUseEgNavBarNativeStack() && !flag(params.forceRn, false);
+  const left: EgNavBarAction | undefined = cregisHome
+    ? {
+        kind: 'text',
+        label: 'Cregis UED',
+        size: 'md',
+        accessibilityLabel: 'Cregis UED',
+        onPress: () => undefined,
+      }
+    : showLeft
+      ? {
+          kind: 'icon',
+          icon: 'eds-arrow-left-ios',
+          accessibilityLabel: '返回',
+          onPress: () => router.back(),
+        }
+      : undefined;
+  const native = shouldUseEgNavBarNativeStack();
   const pageBackground = colors.page as string;
 
   const content = (
@@ -85,8 +103,9 @@ export function ShowcaseNavBarDemoView() {
           options={{
             ...egNavBarNativeStackOptions({
               title,
+              left,
               right,
-              showLeft,
+              showLeft: cregisHome ? true : showLeft,
               showTitle,
               showRight,
               background,
@@ -125,14 +144,13 @@ export function ShowcaseNavBarDemoView() {
         <EgNavBar
           mode={colorTheme}
           title={title}
-          left={{ kind: 'icon', icon: 'eds-arrow-left-ios', accessibilityLabel: '返回', onPress: () => router.back() }}
+          left={left}
           right={right}
-          showLeft={showLeft}
+          showLeft={cregisHome ? true : showLeft}
           showTitle={showTitle}
           showRight={showRight}
           background={background}
           scrollOffset={scrollOffset}
-          forceRnImplementation
         />
       </GlassBlurScope>
     </View>

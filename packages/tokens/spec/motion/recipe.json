@@ -3,6 +3,13 @@
   "$description": "EDS Mobile Motion Recipe — 组合 Base 参数为可复用配方；Semantic 只引用 recipe id + css var。",
   "namedRecipes": [
     { "id": "press", "label": "Press", "springRef": "press", "hapticRef": "light", "cssRecipe": "motion-recipe-tap", "semanticClass": "motion-tap" },
+    {
+      "id": "press-scale-out",
+      "label": "Press Scale Out",
+      "springRef": "press-release",
+      "cssRecipe": "motion-recipe-tap",
+      "notes": "松手回弹 · sm/md/lg/xl 共用"
+    },
     { "id": "interactive", "label": "Interactive", "springRef": "interactive", "hapticRef": "selection", "velocityAware": true, "interruptible": true },
     { "id": "navigation", "label": "Navigation", "springRef": "navigation", "timingRef": "navigationPush", "cssRecipe": "motion-recipe-page-push", "semanticClass": "motion-page" },
     { "id": "sheet", "label": "Sheet", "springRef": "sheet", "hapticRef": "selection", "cssRecipe": "motion-recipe-flotation-enter", "semanticClass": "motion-flotation" },
@@ -47,8 +54,8 @@
         { "name": "motion-duration-layout-deform-content", "value": "var(--motion-2)" },
         { "name": "motion-delay-layout-deform-content-swap", "value": "120ms" },
         { "name": "motion-delay-feedback-tick", "value": "var(--motion-3)" },
-        { "name": "motion-glass-duration-press", "value": "var(--motion-2)" },
-        { "name": "motion-glass-duration-release", "value": "260ms" },
+        { "name": "motion-glass-duration-press", "value": "150ms" },
+        { "name": "motion-glass-duration-release", "value": "220ms" },
         { "name": "motion-glass-duration-shimmer", "value": "var(--motion-3)" },
         { "name": "motion-glass-duration-morph", "value": "420ms" }
       ]

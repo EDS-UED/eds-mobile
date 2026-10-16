@@ -12,7 +12,8 @@
       "@eds/mobile-components/preview/liquid-glass": ["../../packages/components/dist/preview/LiquidGlassDemo.d.ts"],
       "@eds/mobile-components/preview/motion": ["../../packages/components/dist/preview/MotionDemo.d.ts"],
       "@eds/mobile-components/preview/atom-gallery": ["../../packages/components/dist/preview/AtomGallery.d.ts"],
-      "@eds/mobile-components/preview/parity": ["../../packages/components/dist/preview/ParityHarness.d.ts"]
+      "@eds/mobile-components/preview/parity": ["../../packages/components/dist/preview/ParityHarness.d.ts"],
+      "@eds/mobile-components/preview/rn": ["../../packages/components/dist/preview/rnImplementations.d.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]

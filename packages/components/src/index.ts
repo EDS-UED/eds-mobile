@@ -11,8 +11,26 @@ export { EgTitleComboHeadline } from './atoms/text/title-combo-headline';
 export { EgTitleComboTitle } from './atoms/text/title-combo-title';
 export { EgTitleComboBody } from './atoms/text/title-combo-body';
 export { EgDivider } from './atoms/divider/divider';
-export { EgAvatarPreset0 } from './atoms/avatar/avatar-preset0';
-export { EgAvatarPreset1 } from './atoms/avatar/avatar-preset1';
+export {
+  EgAvatar,
+  EgAvatarPreset0,
+  EgAvatarPreset1,
+  AVATAR_NATIVE_PALETTE,
+  AVATAR_NATIVE_PALETTE_SIZE,
+  AVATAR_ROBOT_ASSET_NAME,
+  formatAvatarPaletteName,
+  pickAvatarColorIndex,
+  resolveAvatarAssetName,
+  resolveAvatarInitials,
+} from './atoms/avatar';
+export type {
+  EgAvatarProps,
+  EgAvatarSize,
+  EgAvatarVariant,
+  EgAvatarPreset0Props,
+  EgAvatarPreset1Props,
+  AvatarPaletteColor,
+} from './atoms/avatar';
 export { EgCryptoBitcoinLightning } from './atoms/crypto/crypto-bitcoin-lightning';
 export { EgCryptoBtc } from './atoms/crypto/crypto-btc';
 export { EgIconDraw } from './atoms/icon/icon-draw';
@@ -26,6 +44,10 @@ export { EgComboActionButtonAlt } from './molecules/button/combo-action-button-a
 export { EgIconContainerButton } from './molecules/button/icon-container-button';
 export {
   EgButtonGlass,
+  EgButtonGlassNavAvatarFrame,
+  EgButtonGlassNavIconPlusSlotContent,
+  egButtonGlassAvatarElementMarginPx,
+  egButtonGlassAvatarInsetPx,
   shouldUseEgButtonGlassNativeStack,
 } from './molecules/button/button-glass';
 export type {
@@ -61,6 +83,8 @@ export {
   EgTabBar,
   EgTabBarBottomTabsDock,
   EgTabBarNativeLayout,
+  EgTabBarNativeView,
+  EG_TAB_BAR_NATIVE_TABS,
   shouldUseEgTabBarNativeStack,
   egTabBarScrollContentReserve,
   egTabBarScrollContentReserveWithSafeArea,
@@ -77,7 +101,9 @@ export {
 export type {
   EgTabBarNativeLayoutProps,
   EgTabBarNativeTabSpec,
+  EgTabBarNativeImageSource,
   EgTabBarNativeTriggerIcon,
+  EgTabBarNativeViewProps,
   EgTabBarBottomTabNavigation,
   EgTabBarBottomTabNavigationState,
   EgTabBarBottomTabRoute,
@@ -85,13 +111,29 @@ export type {
 } from './organisms/tab-bar/tab-bar';
 export { EgTabBarItem } from './organisms/tab-bar/tab-bar-item';
 export { EgTabBarGlassBg } from './organisms/tab-bar/tab-bar-glass-bg';
-export { EgCregisTabBar } from './organisms/tab-bar/cregis-tab-bar';
+export {
+  EgCregisTabBar,
+  EgCregisTabBarNativeLayout,
+  CREGIS_TAB_BAR_ITEMS,
+  CREGIS_TAB_BAR_NATIVE_TABS,
+  createEgCregisTabBarBottomTabsBinding,
+  egCregisTabBarNativeBottomTabsScreenOptions,
+} from './organisms/tab-bar/cregis-tab-bar';
+export type {
+  EgCregisTabBarProps,
+  EgCregisTabBarNativeLayoutProps,
+  EgCregisTabBarNativeBottomTabsScreenOptions,
+} from './organisms/tab-bar/cregis-tab-bar';
 export { EgUDunTabBar } from './organisms/tab-bar/udun-tab-bar';
 export {
   EgNavBar,
   shouldUseEgNavBarNativeStack,
   egNavBarNativeStackOptions,
+  egNavBarNativeStackScreenOptions,
   useEgNavBarScroll,
+  EG_NAV_BAR_PADDING_BOTTOM,
+  EG_NAV_BAR_PADDING_HORIZONTAL,
+  EG_NAV_BAR_PADDING_TOP,
   egNavBarContentHeight,
   egNavBarScrollContentReserve,
 } from './organisms/tab-bar/nav-bar';
@@ -102,6 +144,7 @@ export type {
   EgNavBarScrollOffset,
   EgNavBarNativeStackOptions,
   EgNavBarNativeStackOptionsInput,
+  EgNavBarNativeStackScreenOptionsInput,
 } from './organisms/tab-bar/nav-bar';
 export { EgNotesPopover } from './molecules/popovers/notes-popover';
 export { EgMode } from './templates/index/mode';

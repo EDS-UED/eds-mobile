@@ -54,7 +54,6 @@ export function createCatalogPreviewProps(
         kind: 'text',
         size: 'md',
         label: '编辑',
-        forceRnImplementation: false,
       };
     case 'tab-bar-nav-bar':
       return {
@@ -64,7 +63,6 @@ export function createCatalogPreviewProps(
         topInset: 0,
         manageStatusBar: false,
         background: 'visible',
-        forceRnImplementation: false,
       };
 
     case 'divider':
@@ -73,6 +71,31 @@ export function createCatalogPreviewProps(
         variant: 'page',
         orientation: 'horizontal',
         visible: true,
+      };
+
+    case 'symbol-body':
+      return {
+        ...base,
+        name: 'eds-wallet',
+        size: 'lg',
+      };
+
+    case 'avatar-body':
+      return {
+        ...base,
+        name: 'Nancy',
+        size: 'lg',
+        variant: 'initials',
+        colorIndexMode: 'auto',
+        randomColor: false,
+      };
+    case 'avatar-preset-0':
+      return { ...base, size: 'lg' };
+    case 'avatar-preset-1':
+      return {
+        ...base,
+        name: 'Nancy',
+        size: 'lg',
       };
 
     case 'input-input':
@@ -127,7 +150,6 @@ export function createCatalogPreviewProps(
     case 'tab-bar-base':
       return {
         ...base,
-        forceRnImplementation: true,
         defaultSelectedIndex: 0,
         items: [
           { key: '1', label: 'Label' },
@@ -136,6 +158,11 @@ export function createCatalogPreviewProps(
           { key: '4', label: 'Label' },
           { key: '5', label: 'Label' },
         ],
+      };
+    case 'tab-bar-cregis':
+      return {
+        ...base,
+        defaultSelectedIndex: 0,
       };
     case 'tab-bar-item':
       return { ...base, label: 'Label', selected: true };

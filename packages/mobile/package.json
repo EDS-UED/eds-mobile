@@ -36,6 +36,17 @@
       "types": "./dist/tokens/js/theme.d.ts"
     },
     "./tokens/css": "./dist/tokens/css/index.css",
-    "./tokens/json": "./dist/tokens/json/tokens.json"
+    "./tokens/json": "./dist/tokens/json/tokens.json",
+    "./tokens/corner-smoothing": {
+      "import": "./dist/tokens/js/corner-smoothing.js"
+    },
+    "./tokens/fonts-native": {
+      "import": "./dist/tokens/js/fonts-native.js",
+      "types": "./dist/tokens/js/fonts-native.d.ts"
+    },
+    "./tokens/liquid-glass": {
+      "import": "./dist/tokens/js/liquid-glass.js"
+    },
+    "./tokens/motion/catalog": "./dist/tokens/json/motion/catalog.json"
   }
 }

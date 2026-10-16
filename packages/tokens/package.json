@@ -46,7 +46,13 @@
     "./fonts-native": {
       "import": "./dist/js/fonts-native.js",
       "types": "./dist/js/fonts-native.d.ts"
+    },
+    "./corner-smoothing": {
+      "import": "./dist/js/corner-smoothing.js"
     }
+  },
+  "dependencies": {
+    "figma-squircle": "^1.1.0"
   },
   "files": [
     "dist",

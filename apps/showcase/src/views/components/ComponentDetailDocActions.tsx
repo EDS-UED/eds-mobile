@@ -8,6 +8,7 @@ export type ComponentDetailDocPanel = 'usage' | 'props';
 
 type ComponentDetailDocActionsProps = {
   onOpen: (panel: ComponentDetailDocPanel) => void;
+  onCopyAiPrompt?: () => void;
 };
 
 function createDocActionStyles(colors: ShowcaseColorMap) {
@@ -24,6 +25,7 @@ function createDocActionStyles(colors: ShowcaseColorMap) {
       justifyContent: 'center',
       paddingVertical: theme.layout.cardPaddingVertical,
       ...showcaseShallowBlockSurface(colors['material-card-shallow'] as string),
+      ...theme.blockRadius,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: colors['stroke-divider-page'] as string,
     },

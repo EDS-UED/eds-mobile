@@ -1,3 +1,8 @@
+import {
+  AVATAR_NATIVE_PALETTE_SIZE,
+  formatAvatarPaletteName,
+} from '@eds/mobile-components';
+
 import type { DocCustomizeControl, DocPropRow } from './types.js';
 import { buildRnSelfClosingSnippet } from './buildRnUsageSnippet.js';
 import {
@@ -312,6 +317,262 @@ function familyDoc(family: string): RnDocConfig {
   };
 }
 
+function symbolBodyDoc(): RnDocConfig {
+  const defaults = {
+    name: 'eds-wallet',
+    size: 'lg',
+    fillTone: '',
+    strokeColorToken: '',
+  };
+  return {
+    componentTag: 'EgSymbol',
+    previewSlug: 'symbol-body',
+    importCode: `import { EgSymbol } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      { kind: 'text', key: 'name', label: 'name（资产名）', placeholder: 'eds-wallet' },
+      {
+        kind: 'select',
+        key: 'size',
+        label: '尺寸',
+        options: [
+          { value: 'xs', label: 'xs' },
+          { value: 'sm', label: 'sm' },
+          { value: 'md', label: 'md' },
+          { value: 'lg', label: 'lg' },
+        ],
+      },
+      {
+        kind: 'select',
+        key: 'fillTone',
+        label: 'fillTone',
+        options: [
+          { value: '', label: '默认' },
+          { value: 'primary', label: 'primary' },
+          { value: 'brand', label: 'brand' },
+        ],
+      },
+      {
+        kind: 'text',
+        key: 'strokeColorToken',
+        label: 'strokeColorToken',
+        placeholder: 'stroke-base-primary',
+      },
+    ],
+    propRows: [
+      { name: 'name', type: 'string', defaultValue: 'required', description: 'icon/crypto 资产名' },
+      { name: 'size', type: 'EgSymbolSize', defaultValue: "'md'", description: 'symbol-xs … symbol-lg' },
+      { name: 'fillTone', type: "'primary' | 'brand'", defaultValue: 'undefined', description: 'token icon 填色' },
+      { name: 'strokeColorToken', type: 'string', defaultValue: "'text-base-primary'", description: '描边 semantic token' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['name', 'size', 'fillTone', 'strokeColorToken'],
+    buildUsageSnippet: (state) => {
+      const payload: Record<string, unknown> = {
+        name: state.name ?? defaults.name,
+        size: state.size ?? defaults.size,
+      };
+      if (state.fillTone) payload.fillTone = state.fillTone;
+      if (state.strokeColorToken) payload.strokeColorToken = state.strokeColorToken;
+      return buildRnSelfClosingSnippet('EgSymbol', payload, {
+        defaults: { name: defaults.name, size: defaults.size },
+      });
+    },
+  };
+}
+
+function avatarBodyDoc(): RnDocConfig {
+  const avatarSizeOptions = [
+    { value: 'xs', label: 'xs · 16px' },
+    { value: 'sm', label: 'sm · 24px' },
+    { value: 'md', label: 'md · 32px' },
+    { value: 'lg', label: 'lg · 36px' },
+    { value: 'xl', label: 'xl · 40px' },
+    { value: '2xl', label: '2xl · 40px' },
+  ] as const;
+  const colorIndexOptions = [
+    { value: 'auto', label: '自动（按 name）' },
+    ...Array.from({ length: AVATAR_NATIVE_PALETTE_SIZE }, (_, index) => ({
+      value: String(index),
+      label: formatAvatarPaletteName(index),
+    })),
+  ];
+  const defaults = {
+    name: 'Nancy',
+    initials: '',
+    size: 'lg',
+    variant: 'initials',
+    colorIndexMode: 'auto',
+    randomColor: false,
+  };
+  return {
+    componentTag: 'EgAvatar',
+    previewSlug: 'avatar-body',
+    importCode: `import { EgAvatar } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      { kind: 'text', key: 'name', label: '姓名' },
+      { kind: 'text', key: 'initials', label: '缩写', placeholder: '留空则取首字' },
+      {
+        kind: 'select',
+        key: 'size',
+        label: '尺寸',
+        options: [...avatarSizeOptions],
+      },
+      {
+        kind: 'select',
+        key: 'variant',
+        label: '类型',
+        options: [
+          { value: 'initials', label: '首字（web3-avatar）' },
+          { value: 'robot', label: 'eds-avatar-0' },
+        ],
+      },
+      {
+        kind: 'select',
+        key: 'colorIndexMode',
+        label: '原色盘',
+        options: colorIndexOptions,
+      },
+      { kind: 'boolean', key: 'randomColor', label: '随机 web3-avatar' },
+    ],
+    propRows: [
+      { name: 'name', type: 'string', defaultValue: 'undefined', description: '姓名 seed' },
+      { name: 'initials', type: 'string', defaultValue: 'undefined', description: '显式首字' },
+      { name: 'size', type: 'EgAvatarSize', defaultValue: "'lg'", description: '尺寸 token' },
+      { name: 'variant', type: "'initials' | 'robot'", defaultValue: "'initials'", description: '首字 / 机器人' },
+      { name: 'source', type: 'ImageSourcePropType', defaultValue: 'undefined', description: '图片头像（企业 Logo 等），优先于 variant' },
+      { name: 'colorIndex', type: 'number', defaultValue: 'undefined', description: '0–19 原色索引' },
+      { name: 'randomColor', type: 'boolean', defaultValue: 'false', description: '随机原色' },
+      { name: 'colorSeed', type: 'string', defaultValue: 'undefined', description: '映射 seed' },
+    ],
+    propQueryKeys: ['name', 'initials', 'size', 'variant', 'colorIndexMode', 'randomColor'],
+    buildUsageSnippet: (state) => {
+      const payload: Record<string, unknown> = {
+        name: state.name,
+        size: state.size,
+        variant: state.variant,
+      };
+      if (state.initials) payload.initials = state.initials;
+      if (state.randomColor) {
+        payload.randomColor = true;
+      } else if (state.colorIndexMode !== 'auto') {
+        payload.colorIndex = Number(state.colorIndexMode);
+      }
+      return buildRnSelfClosingSnippet('EgAvatar', payload, {
+        defaults: { name: defaults.name, size: defaults.size, variant: defaults.variant },
+      });
+    },
+  };
+}
+
+function avatarPreset0Doc(): RnDocConfig {
+  const defaults = { size: 'lg' };
+  return {
+    componentTag: 'EgAvatarPreset0',
+    previewSlug: 'avatar-preset-0',
+    importCode: `import { EgAvatarPreset0 } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      {
+        kind: 'select',
+        key: 'size',
+        label: '尺寸',
+        options: [
+          { value: 'xs', label: 'xs' },
+          { value: 'sm', label: 'sm' },
+          { value: 'md', label: 'md' },
+          { value: 'lg', label: 'lg' },
+          { value: 'xl', label: 'xl' },
+          { value: '2xl', label: '2xl' },
+        ],
+      },
+    ],
+    propRows: [
+      { name: 'size', type: 'EgAvatarSize', defaultValue: "'lg'", description: '尺寸' },
+    ],
+    propQueryKeys: ['size'],
+    buildUsageSnippet: (state) =>
+      buildRnSelfClosingSnippet('EgAvatarPreset0', state, { defaults }),
+  };
+}
+
+function avatarPreset1Doc(): RnDocConfig {
+  const defaults = { name: 'Nancy', size: 'lg' };
+  return {
+    componentTag: 'EgAvatarPreset1',
+    previewSlug: 'avatar-preset-1',
+    importCode: `import { EgAvatarPreset1 } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      { kind: 'text', key: 'name', label: '姓名' },
+      {
+        kind: 'select',
+        key: 'size',
+        label: '尺寸',
+        options: [
+          { value: 'xs', label: 'xs' },
+          { value: 'sm', label: 'sm' },
+          { value: 'md', label: 'md' },
+          { value: 'lg', label: 'lg' },
+          { value: 'xl', label: 'xl' },
+          { value: '2xl', label: '2xl' },
+        ],
+      },
+    ],
+    propRows: [
+      { name: 'name', type: 'string', defaultValue: 'undefined', description: '姓名' },
+      { name: 'size', type: 'EgAvatarSize', defaultValue: "'lg'", description: '尺寸' },
+    ],
+    propQueryKeys: ['name', 'size'],
+    buildUsageSnippet: (state) =>
+      buildRnSelfClosingSnippet('EgAvatarPreset1', state, { defaults }),
+  };
+}
+
+function cregisTabBarDoc(): RnDocConfig {
+  const tabIndexOptions = [
+    { value: '0', label: '主页' },
+    { value: '1', label: '钱包' },
+    { value: '2', label: '协作' },
+    { value: '3', label: '交易记录' },
+  ] as const;
+  const defaults = { defaultSelectedIndex: 0, disabled: false };
+  return {
+    componentTag: 'EgCregisTabBar',
+    previewSlug: 'tab-bar-cregis',
+    importCode: `// iOS 26+ 系统 Tab 条：根 _layout 用 Layout · 页内容器用 NativeView
+import { EgCregisTabBarNativeLayout, EgTabBarNativeView, CREGIS_TAB_BAR_NATIVE_TABS } from '@eds/mobile-components';
+// Android / iOS ≤25：RN
+import { EgCregisTabBar } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      {
+        kind: 'select',
+        key: 'defaultSelectedIndex',
+        label: '默认选中',
+        options: [...tabIndexOptions],
+      },
+      { kind: 'boolean', key: 'disabled', label: '禁用' },
+    ],
+    propRows: [
+      { name: 'items', type: 'EgTabBarItemData[]', defaultValue: 'CREGIS_TAB_BAR_ITEMS', description: '可选覆盖；默认主页 / 钱包 / 协作 / 交易记录' },
+      { name: 'selectedIndex', type: 'number', defaultValue: 'undefined', description: '受控选中索引' },
+      { name: 'defaultSelectedIndex', type: 'number', defaultValue: '0', description: '非受控默认选中' },
+      { name: 'onSelectedIndexChange', type: '(index: number) => void', defaultValue: 'undefined', description: '选中变化' },
+      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['defaultSelectedIndex', 'disabled'],
+    buildUsageSnippet: (state) => {
+      const index = Number(state.defaultSelectedIndex ?? 0);
+      return buildRnSelfClosingSnippet('EgCregisTabBar', { ...state, defaultSelectedIndex: index }, {
+        defaults,
+      });
+    },
+  };
+}
+
 function tabBarBaseDoc(): RnDocConfig {
   const tabIndexOptions = [
     { value: '0', label: 'Tab 1' },
@@ -324,7 +585,10 @@ function tabBarBaseDoc(): RnDocConfig {
   return {
     componentTag: 'EgTabBar',
     previewSlug: 'tab-bar-base',
-    importCode: `import { EgTabBar, EgTabBarNativeLayout } from '@eds/mobile-components';`,
+    importCode: `// iOS 26+ 系统 Tab 条：根 _layout 用 Layout · 页内容器用 NativeView
+import { EgTabBarNativeLayout, EgTabBarNativeView } from '@eds/mobile-components';
+// Android / iOS ≤25：RN
+import { EgTabBar } from '@eds/mobile-components';`,
     customizeDefaults: defaults,
     customizeControls: [
       {
@@ -342,12 +606,6 @@ function tabBarBaseDoc(): RnDocConfig {
       { name: 'onSelectedIndexChange', type: '(index: number) => void', defaultValue: 'undefined', description: '选中变化' },
       { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
-      {
-        name: 'forceRnImplementation',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'iOS 26+ 默认不渲染（根布局用 EgTabBarNativeLayout）；Preview 强制 RN',
-      },
     ],
     propQueryKeys: ['defaultSelectedIndex', 'disabled'],
     buildUsageSnippet: (state) => {
@@ -462,6 +720,8 @@ export const familyBodyPreviewSlug: Record<string, string> = {
   'dropdown-body': 'dropdown-trigger',
   'tab-bar-body': 'tab-bar-base',
   'tab-body': 'tab-base-tab',
+  'avatar-body': 'avatar-body',
+  'symbol-body': 'symbol-body',
 };
 
 const inputCustomizeControls: DocCustomizeControl[] = [
@@ -638,6 +898,7 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   'dropdown-trigger': fieldDoc('EgTriggerDropdown', 'dropdown-trigger', 'Trigger'),
   'tab-bar-body': tabBarBaseDoc(),
   'tab-bar-base': tabBarBaseDoc(),
+  'tab-bar-cregis': cregisTabBarDoc(),
   'tab-bar-item': tabBarItemDoc(),
   'toggle-body': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
   'toggle-switch': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
@@ -659,6 +920,7 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       iconCount: 1,
       iconAlt: 'eds-add',
       disabled: false,
+      showAvatarSlot: false,
       forceRnImplementation: false,
     },
     customizeControls: [
@@ -711,11 +973,19 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         label: 'Symbol 2',
         visibleWhen: (state) => state.kind === 'icon' && String(state.iconCount ?? '1') === '2',
       },
+      {
+        kind: 'boolean',
+        key: 'showAvatarSlot',
+        label: '头像槽（EgAvatar lg）',
+        visibleWhen: (state) =>
+          state.kind === 'text' ||
+          (state.kind === 'icon' && String(state.iconCount ?? '1') !== '2'),
+      },
       { kind: 'boolean', key: 'disabled', label: '禁用' },
       {
         kind: 'boolean',
         key: 'forceRnImplementation',
-        label: '强制 RN（iOS 26+ 默认系统 Liquid Glass）',
+        label: '文档对照：RN 实现（业务侧 iOS 26+ 强制系统 Liquid Glass）',
       },
     ],
     propRows: [
@@ -730,7 +1000,14 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         name: 'size',
         type: "'lg' | 'md' | 'sm' | 'xs'",
         defaultValue: "'md'",
-        description: '文本胶囊 — 与 EgButton 同边距 / 字号',
+        description:
+          'RN / iOS 26+ 原生：Pressable 边距同 token（文本同 EgButton；icon spacing-1 / 双 icon spacing-4）；勿在 GlassView 上叠 padding',
+      },
+      {
+        name: 'avatarSlot',
+        type: 'ReactNode',
+        defaultValue: 'undefined',
+        description: 'icon — count 1 替换 icon；count 2 替换右侧 iconAlt（EgAvatar lg）',
       },
       { name: 'icon', type: 'string', defaultValue: 'undefined', description: '主 icon symbol' },
       {
@@ -742,15 +1019,9 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       { name: 'iconAlt', type: 'string', defaultValue: 'undefined', description: '第二个 symbol（iconCount=2）' },
       { name: 'variant', type: "'regular' | 'prominent' | 'clear'", defaultValue: "'clear'", description: 'iOS 液态玻璃档位' },
       { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
-      {
-        name: 'forceRnImplementation',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'iOS 26+ 默认系统 Liquid Glass（原生交互 / 动效）；传 true 强制 RN + glass-button-box',
-      },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
-    propQueryKeys: ['kind', 'size', 'label', 'icon', 'iconCount', 'iconAlt', 'disabled', 'forceRnImplementation'],
+    propQueryKeys: ['kind', 'size', 'label', 'avatarSlot', 'icon', 'iconCount', 'iconAlt', 'disabled'],
     buildUsageSnippet: (state) => {
       const kind = String(state.kind ?? 'text');
       if (kind === 'icon') {
@@ -766,7 +1037,10 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   'tab-bar-nav-bar': {
     componentTag: 'EgNavBar',
     previewSlug: 'tab-bar-nav-bar',
-    importCode: `import { EgNavBar, useEgNavBarScroll, egNavBarNativeStackOptions } from '@eds/mobile-components';`,
+    importCode: `// iOS 26+：<Stack.Screen options={egNavBarNativeStackOptions({ title })} />
+import { egNavBarNativeStackOptions } from '@eds/mobile-components';
+// Android / iOS ≤25：RN
+import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
     customizeDefaults: {
       title: '标题',
       showLeft: true,
@@ -775,7 +1049,6 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       rightIconCount: 1,
       background: 'auto',
       statusBarZone: true,
-      forceRnImplementation: false,
     },
     customizeControls: [
       { kind: 'boolean', key: 'showLeft', label: '左侧（返回）' },
@@ -783,8 +1056,7 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       {
         kind: 'text',
         key: 'title',
-        label: '标题文案',
-        visibleWhen: (state) => state.showTitle !== false,
+        label: '标题文案（隐藏时 iOS 26+ 仍须非空 · VoiceOver）',
       },
       { kind: 'boolean', key: 'showRight', label: '右侧' },
       {
@@ -808,14 +1080,15 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         ],
       },
       { kind: 'boolean', key: 'statusBarZone', label: '状态栏区（safeArea.top）' },
-      {
-        kind: 'boolean',
-        key: 'forceRnImplementation',
-        label: '强制 RN（iOS 26+ 默认系统导航栏）',
-      },
     ],
     propRows: [
-      { name: 'title', type: 'string', defaultValue: 'undefined', description: '中间标题 · 17 / 600 · 单行截断' },
+      {
+        name: 'title',
+        type: 'string',
+        defaultValue: 'undefined',
+        description:
+          '中间标题 · 17 / 600。iOS 26+ 系统栏不可为空串；showTitle: false 时 EDS 透明隐藏，scroll edge 仍生效',
+      },
       {
         name: 'left',
         type: 'EgNavBarAction',
@@ -824,7 +1097,12 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       },
       { name: 'right', type: 'EgNavBarAction', defaultValue: 'undefined', description: '右侧 icon 胶囊，iconCount 1 / 2' },
       { name: 'showLeft', type: 'boolean', defaultValue: 'true', description: '显示左侧' },
-      { name: 'showTitle', type: 'boolean', defaultValue: 'true', description: '显示标题' },
+      {
+        name: 'showTitle',
+        type: 'boolean',
+        defaultValue: 'true',
+        description: '标题可见性；false 时不删 title（iOS 26+ scroll edge 依赖非空 title）',
+      },
       { name: 'showRight', type: 'boolean', defaultValue: 'true', description: '显示右侧' },
       {
         name: 'background',
@@ -846,12 +1124,6 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         defaultValue: 'true',
         description: '透明沉浸 StatusBar（修复 Android 状态栏一片黑）',
       },
-      {
-        name: 'forceRnImplementation',
-        type: 'boolean',
-        defaultValue: 'false',
-        description: 'iOS 26+ 默认交给系统导航栏（egNavBarNativeStackOptions）；Preview 强制 RN',
-      },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
     propQueryKeys: [
@@ -862,7 +1134,6 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       'rightIconCount',
       'background',
       'statusBarZone',
-      'forceRnImplementation',
     ],
     buildUsageSnippet: (state) =>
       buildRnSelfClosingSnippet(
@@ -882,6 +1153,10 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   'input-combo-textarea-input': minimalDoc('EgComboTextareaInput', 'input-combo-textarea-input'),
   divider: dividerDoc(),
   'glass-eg': egGlassShowcaseDoc(),
+  'avatar-body': avatarBodyDoc(),
+  'symbol-body': symbolBodyDoc(),
+  'avatar-preset-0': avatarPreset0Doc(),
+  'avatar-preset-1': avatarPreset1Doc(),
 };
 
 /** 旧 slug 深链 → 统一 EgButton 文档（默认 tone 对齐原场景）。 */
@@ -921,6 +1196,12 @@ export function resolveRnDocConfig(slug: string, exportName?: string): RnDocConf
   }
 
   if (exportName) {
+    const byComponentTag = Object.values(rnDocBySlug).find(
+      (config) => config.componentTag === exportName,
+    );
+    if (byComponentTag) {
+      return byComponentTag;
+    }
     return minimalDoc(exportName, slug);
   }
 

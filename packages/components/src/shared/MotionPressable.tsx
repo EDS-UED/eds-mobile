@@ -5,10 +5,11 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { resolveMotionRecipe } from '@eds/mobile-animations';
-import { motionPressScale } from './themeScalars.js';
-
-const pressMotion = resolveMotionRecipe('press');
+import { motionPressScale, type MotionPressIntensity } from './themeScalars.js';
+import {
+  pressScaleOutSpringConfig,
+  tapPressScaleInSpringConfig,
+} from './pressScaleSpring.js';
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export type MotionPressableProps = {
@@ -21,6 +22,8 @@ export type MotionPressableProps = {
   testID?: string;
   accessibilityLabel?: string;
   accessibilityRole?: 'button' | 'link' | 'none';
+  /** 点按放大强度 — 默认 `md`。 */
+  pressIntensity?: MotionPressIntensity;
 };
 
 function resolveStaticStyle(
@@ -41,6 +44,7 @@ export function MotionPressable({
   testID,
   accessibilityLabel,
   accessibilityRole = 'button',
+  pressIntensity = 'sm',
 }: MotionPressableProps) {
   const [pressed, setPressed] = useState(false);
   const scale = useSharedValue(1);
@@ -54,13 +58,13 @@ export function MotionPressable({
 
   const handlePressIn = useCallback(() => {
     setPressed(true);
-    scale.value = withSpring(motionPressScale(), pressMotion.springConfig);
+    scale.value = withSpring(motionPressScale(pressIntensity), tapPressScaleInSpringConfig);
     onPressIn?.();
-  }, [onPressIn, scale]);
+  }, [onPressIn, pressIntensity, scale]);
 
   const handlePressOut = useCallback(() => {
     setPressed(false);
-    scale.value = withSpring(1, pressMotion.springConfig);
+    scale.value = withSpring(1, pressScaleOutSpringConfig);
     onPressOut?.();
   }, [onPressOut, scale]);
 

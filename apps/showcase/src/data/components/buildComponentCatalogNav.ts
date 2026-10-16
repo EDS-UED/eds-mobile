@@ -48,6 +48,7 @@ export const FAMILY_LABELS: Record<string, string> = {
   'nav-bar': 'NavBar 导航栏',
   popovers: 'Popovers 浮层',
   index: 'Index 索引',
+  symbol: 'Symbol 图标',
 };
 
 const GALLERY_FAMILIES: Record<string, AtomGalleryFamily> = {
@@ -83,6 +84,10 @@ const SHOWCASE_NAV_FAMILY_BY_SLUG: Record<string, { family: string; directory: s
   'tab-bar-nav-bar': {
     family: 'nav-bar',
     directory: 'packages/components/src/organisms/tab-bar/nav-bar',
+  },
+  'symbol-body': {
+    family: 'symbol',
+    directory: 'packages/components/src/atoms/_shared/symbol',
   },
 };
 
@@ -175,12 +180,18 @@ export function familyTierRowHint(nav: ComponentFamilyNav): string {
   if (nav.family === 'glass') {
     return '容器玻璃材质';
   }
+  if (nav.family === 'symbol') {
+    return 'Icon/Crypto 运行时 API · EgIcon* / EgCrypto* 均委托于此';
+  }
   return `${nav.directory} · 已实现 ${nav.implementedCount}/${nav.entries.length}`;
 }
 
 export function familyTierPressHref(nav: ComponentFamilyNav): string {
   if (nav.family === 'glass') {
     return `/(components)/detail/${SHOWCASE_GLASS_EG_SLUG}`;
+  }
+  if (nav.family === 'symbol' && nav.entries.length === 1) {
+    return `/(components)/detail/${nav.entries[0]!.slug}`;
   }
   if (!nav.bodySlug && !nav.galleryFamily && nav.entries.length === 1) {
     return `/(components)/detail/${nav.entries[0]!.slug}`;

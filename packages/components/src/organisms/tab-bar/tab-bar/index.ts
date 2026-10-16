@@ -1,5 +1,7 @@
 export { EgTabBar } from './EgTabBar.js';
 export { EgTabBarNativeLayout } from './EgTabBarNativeLayout.js';
+export { EgTabBarNativeView } from './EgTabBarNativeView.js';
+export { EG_TAB_BAR_NATIVE_TABS } from './egTabBarNativePreset.js';
 export { shouldUseEgTabBarNativeStack } from '../_shared/resolveEgTabBarStack.js';
 export { EgTabBarBottomTabsDock } from '../_shared/EgTabBarBottomTabsDock.js';
 export {
@@ -29,5 +31,7 @@ export type { EgTabBarProps, EgTabBarItemData } from './EgTabBar.types.js';
 export type {
   EgTabBarNativeLayoutProps,
   EgTabBarNativeTabSpec,
+  EgTabBarNativeImageSource,
   EgTabBarNativeTriggerIcon,
+  EgTabBarNativeViewProps,
 } from './EgTabBarNativeLayout.types.js';

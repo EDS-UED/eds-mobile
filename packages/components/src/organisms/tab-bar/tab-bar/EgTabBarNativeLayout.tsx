@@ -1,8 +1,26 @@
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
 
-import { resolveColor } from '../../../shared/resolveColor.js';
 import { getThemeColors, resolveThemeMode, type ThemeMode } from '../../../theme/index.js';
-import type { EgTabBarNativeLayoutProps } from './EgTabBarNativeLayout.types.js';
+import { egTabBarNativeActiveTintColor } from '../_shared/tabBarSelectionAccent.js';
+import type {
+  EgTabBarNativeLayoutProps,
+  EgTabBarNativeTriggerIcon,
+} from './EgTabBarNativeLayout.types.js';
+
+function resolveNativeTabsSfProp(
+  sf: EgTabBarNativeTriggerIcon['sf'],
+): string | { default: string; selected: string } | undefined {
+  if (sf == null) {
+    return undefined;
+  }
+  if (typeof sf === 'string') {
+    return sf;
+  }
+  if (sf.default === sf.selected) {
+    return sf.default;
+  }
+  return sf;
+}
 
 /**
  * iOS 26+ EgTabBar 原生栈 — 动效 / 位置 / 交互由系统 Tab 条（Expo NativeTabs）负责。
@@ -13,20 +31,27 @@ export function EgTabBarNativeLayout({
   mode: modeProp,
   hidden = false,
   tintColor: tintColorProp,
+  selectionAccent = 'brand',
   minimizeBehavior = 'onScrollDown',
 }: EgTabBarNativeLayoutProps) {
   const mode: ThemeMode = modeProp ?? resolveThemeMode(undefined);
   const colors = getThemeColors(mode);
-  const tintColor = tintColorProp ?? resolveColor(colors, 'text-brand');
+  const tintColor =
+    tintColorProp ?? egTabBarNativeActiveTintColor(colors, selectionAccent);
 
   return (
     <NativeTabs hidden={hidden} minimizeBehavior={minimizeBehavior} tintColor={tintColor}>
       {tabs.map((tab) => (
         <NativeTabs.Trigger key={tab.routeName} name={tab.routeName} hidden={tab.hidden}>
-          {tab.icon ? (
+          {tab.icon?.src ? (
             <NativeTabs.Trigger.Icon
-              // EDS 侧用 string；Expo 类型为 SF Symbol / Material 字面量联合
-              sf={tab.icon.sf as never}
+              src={tab.icon.src as never}
+              renderingMode="template"
+              md={tab.icon.md as never}
+            />
+          ) : tab.icon ? (
+            <NativeTabs.Trigger.Icon
+              sf={resolveNativeTabsSfProp(tab.icon.sf) as never}
               md={tab.icon.md as never}
             />
           ) : null}

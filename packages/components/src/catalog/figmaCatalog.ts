@@ -1,4 +1,4 @@
-/** Auto-generated from EDS Mobile Figma — 204 components */
+/** Auto-generated from EDS Mobile Figma — 205 components */
 export type FigmaComponentEntry = {
   figmaName: string;
   exportName: string;
@@ -154,6 +154,16 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "kind": "set",
     "variantCount": 4,
     "figmaId": "279:2984"
+  },
+  {
+    "figmaName": "EgAvatar",
+    "exportName": "EgAvatar",
+    "tier": "atoms",
+    "family": "avatar",
+    "slug": "avatar-body",
+    "figmaPage": "Avatar 头像 ✅🕒",
+    "kind": "component",
+    "figmaId": "465:1721"
   },
   {
     "figmaName": "eds-avatar-0",

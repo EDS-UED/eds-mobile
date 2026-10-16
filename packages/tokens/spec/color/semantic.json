@@ -19,12 +19,12 @@
     },
     {
       "name": "stroke-divider-module",
-      "light": "color(var(--eds-base) / 0.1)",
+      "light": "color(var(--eds-base) / 0.09)",
       "dark": "color(var(--eds-base) / 0.1)"
     },
     {
       "name": "stroke-divider-page",
-      "light": "color(var(--eds-base) / 0.08)",
+      "light": "color(var(--eds-base) / 0.09)",
       "dark": "color(var(--eds-base) / 0.1)"
     },
     {
@@ -155,7 +155,7 @@
     {
       "name": "material-card-moderate",
       "light": "color(var(--eds-base) / 0.05)",
-      "dark": "color(var(--eds-base) / 0.07)"
+      "dark": "color(var(--eds-base) / 0.06)"
     },
     {
       "name": "material-card-deep",
@@ -329,7 +329,7 @@
     },
     {
       "name": "effect-overlay-shallow",
-      "light": "color(var(--eds-overlay) / 0.4)",
+      "light": "color(var(--eds-overlay) / 0.2)",
       "dark": "color(var(--eds-overlay) / 0.2)"
     },
     {
@@ -354,8 +354,8 @@
     },
     {
       "name": "event-tap",
-      "light": "color(var(--eds-base) / 0.1)",
-      "dark": "color(var(--eds-base) / 0.1)"
+      "light": "color(var(--eds-base) / 0.05)",
+      "dark": "color(var(--eds-base) / 0.06)"
     },
     {
       "name": "event-tap-brand",
@@ -389,8 +389,8 @@
     },
     {
       "name": "event-focus-brand",
-      "light": "color(var(--eds-brand) / 0.1)",
-      "dark": "color(var(--eds-brand) / 0.12)"
+      "light": "color(var(--eds-brand) / 0.12)",
+      "dark": "color(var(--eds-brand) / 0.14)"
     }
   ]
 }

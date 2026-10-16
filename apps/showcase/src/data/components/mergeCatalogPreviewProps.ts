@@ -8,6 +8,7 @@ export function mergeCatalogPreviewProps(
   mode: 'light' | 'dark' = 'light',
 ) {
   const base = createCatalogPreviewProps(entry, mode);
+
   return {
     ...base,
     ...customize,

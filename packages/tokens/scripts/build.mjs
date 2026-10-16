@@ -612,6 +612,8 @@ async function buildCornerSmoothingAssets() {
     platform: 'browser',
     target: 'es2022',
   });
+
+  console.log('✓ Corner smoothing bundled to dist/js/corner-smoothing.js');
 }
 
 function effectThemeSelector(themeName) {
@@ -1916,7 +1918,7 @@ async function buildAll() {
   buildRootIndex();
   buildJsonExport();
   buildRnTheme({ specDir, distDir });
-  // Mobile EDS — no squircle scanner bundle
+  await buildCornerSmoothingAssets();
 
   const colorErrors = verifyColorSpecAgainstDist();
   if (colorErrors.length > 0) {

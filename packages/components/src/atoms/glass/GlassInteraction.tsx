@@ -5,16 +5,18 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { resolveMotionRecipe } from '@eds/mobile-animations';
 import { motionGlassPressScale } from '../../shared/themeScalars.js';
+import {
+  glassPressScaleInSpringConfig,
+  pressScaleOutSpringConfig,
+} from '../../shared/pressScaleSpring.js';
 import { triggerGlassPressHaptic } from './glassPressHaptic.js';
 import type { GlassInteractionProps } from './types.js';
-
-const glassPressMotion = resolveMotionRecipe('glass-press');
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export function GlassInteraction({
   press = true,
+  pressIntensity = 'sm',
   shimmer: _shimmer = true,
   lightResponse: _lightResponse = true,
   deformation: _deformation = true,
@@ -39,17 +41,17 @@ export function GlassInteraction({
 
   const handlePressIn = useCallback(() => {
     if (press) {
-      scale.value = withSpring(motionGlassPressScale(), glassPressMotion.springConfig);
+      scale.value = withSpring(motionGlassPressScale(pressIntensity), glassPressScaleInSpringConfig);
     }
     if (haptic) {
       triggerGlassPressHaptic();
     }
     onPressIn?.();
-  }, [haptic, onPressIn, press, scale]);
+  }, [haptic, onPressIn, press, pressIntensity, scale]);
 
   const handlePressOut = useCallback(() => {
     if (press) {
-      scale.value = withSpring(1, glassPressMotion.springConfig);
+      scale.value = withSpring(1, pressScaleOutSpringConfig);
     }
     onPressOut?.();
   }, [onPressOut, press, scale]);

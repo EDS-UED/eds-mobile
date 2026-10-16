@@ -35,6 +35,15 @@ const SCROLL_EDGE: Record<EgNavBarBackground, ScrollEdgeEffect> = {
   hidden: 'hidden',
 };
 
+/**
+ * iOS 26+ 系统栏 scroll edge 依赖非空 `title`；`showTitle: false` 时仍须保留文案并透明隐藏。
+ * 未传或全空白时用单空格占位（勿下发 `''`）。
+ */
+export function resolveEgNavBarNativeStackTitle(title: string | undefined): string {
+  const trimmed = title?.trim();
+  return trimmed ? trimmed : ' ';
+}
+
 const itemGap = mobileTheme.spacing['spacing-4'] as number;
 
 function NativeBarItem({ action, color }: { action: EgNavBarAction; color: string }) {
@@ -79,23 +88,59 @@ export function egNavBarNativeStackOptions(input: EgNavBarNativeStackOptionsInpu
   const color = getThemeColors(mode)['text-base-primary'] as string;
   const titlePreset = presetBodyMediumStrong();
   const font = edsFontStyle('600') as { fontFamily?: string };
+  const nativeTitle = resolveEgNavBarNativeStackTitle(title);
 
   return {
     headerShown: true,
     headerTransparent: true,
     headerShadowVisible: false,
-    title: showTitle ? (title ?? '') : '',
+    title: nativeTitle,
     headerTitleAlign: 'center',
     headerTitleStyle: {
       fontSize: titlePreset.fontSize as number,
       fontWeight: '600',
       fontFamily: font.fontFamily,
-      color,
+      color: showTitle ? color : 'transparent',
     },
     headerBackVisible: showLeft && left == null,
     headerLeft: showLeft && left ? () => <NativeBarItem action={left} color={color} /> : showLeft ? undefined : () => null,
     headerRight: showRight && right ? () => <NativeBarItem action={right} color={color} /> : undefined,
     scrollEdgeEffects: { top: SCROLL_EDGE[background] },
+  };
+}
+
+export type EgNavBarNativeStackScreenOptionsInput = Pick<EgNavBarProps, 'background' | 'mode'> & {
+  /** 返回动作（Stack `screenOptions` 回调里的 `navigation.goBack`）。 */
+  onBack: () => void;
+};
+
+/**
+ * iOS 26+ — 整个 Stack 的 `screenOptions`：系统 `UINavigationBar` + EDS 标题 / 返回。
+ * 标题由各路由 `title` / `<Stack.Title>` 提供；栈底页无返回。
+ */
+export function egNavBarNativeStackScreenOptions({
+  onBack,
+  background = 'auto',
+  mode = 'light',
+}: EgNavBarNativeStackScreenOptionsInput) {
+  const { title: _title, headerLeft: _left, headerRight: _right, ...base } = egNavBarNativeStackOptions({
+    background,
+    mode,
+  });
+  const color = getThemeColors(mode)['text-base-primary'] as string;
+  const back: EgNavBarAction = {
+    kind: 'icon',
+    icon: 'eds-arrow-left-ios',
+    accessibilityLabel: '返回',
+    onPress: onBack,
+  };
+
+  return {
+    ...base,
+    headerLargeTitleEnabled: false,
+    headerBackVisible: false,
+    headerLeft: ({ canGoBack }: { canGoBack?: boolean }) =>
+      canGoBack ? <NativeBarItem action={back} color={color} /> : null,
   };
 }
 

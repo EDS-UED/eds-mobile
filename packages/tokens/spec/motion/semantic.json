@@ -21,7 +21,10 @@
               }
             }
           ],
-          "notes": ["Semantic → Recipe(press) → Base(spring.press · haptic.light)"]
+          "notes": [
+            "Semantic → Recipe(press) → Base(spring.press · haptic.light)",
+            "松手回弹 → Recipe(press-scale-out) · spring.press-release · sm/md/lg/xl 共用"
+          ]
         }
       ]
     },
@@ -144,7 +147,10 @@
               }
             }
           ],
-          "notes": ["Semantic → Recipe(glass-press) → Base(motion-glass-scale-press)"]
+          "notes": [
+            "Semantic → Recipe(glass-press) → Base(motion-glass-scale-press)",
+            "松手回弹 → press-scale-out · sm/md/lg/xl 共用"
+          ]
         },
         {
           "title": "Glass 光泽反馈 · Shimmer",

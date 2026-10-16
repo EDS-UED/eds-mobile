@@ -26,12 +26,16 @@ export type EgNavBarAction = {
 export type EgNavBarScrollOffset = { value: number };
 
 export type EgNavBarProps = {
-  /** 中间标题 — 17 / 600（body-medium-strong），单行截断。 */
+  /**
+   * 中间标题 — 17 / 600（body-medium-strong），单行截断。
+   * iOS 26+ 系统栏：`title` 不可为空串（否则 scroll edge 背景失效）；`showTitle: false` 时仍传真实文案，由 EDS 透明隐藏。
+   */
   title?: string;
   /** 左操作；缺省为返回（`eds-arrow-left-ios`）。 */
   left?: EgNavBarAction;
   right?: EgNavBarAction;
   showLeft?: boolean;
+  /** iOS 26+：仅控制标题可见性，不删 `title`（须非空以保留 scroll edge）。 */
   showTitle?: boolean;
   showRight?: boolean;
   /** 背景（`glass-mask-box`），贯穿状态栏区。默认 `auto`。 */
@@ -46,7 +50,10 @@ export type EgNavBarProps = {
   manageStatusBar?: boolean;
   mode?: ThemeMode;
   testID?: string;
-  /** Preview：强制 RN 路径（iOS 26+ 默认交给系统导航栏）。 */
+  /**
+   * Tab 根页等无 Stack 系统栏时 — iOS 26+ 仍绘制 RN 栏（不触发 native bypass）。
+   * Stack 内页请用 `egNavBarNativeStackOptions`，勿设此项。
+   */
   forceRnImplementation?: boolean;
   style?: ViewStyle;
 };

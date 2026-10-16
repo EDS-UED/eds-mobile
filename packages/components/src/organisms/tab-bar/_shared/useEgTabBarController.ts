@@ -95,14 +95,6 @@ export function useEgTabBarController(props: EgTabBarProps) {
     moveIndicator(displayedIndex, true);
   }, [displayedIndex, moveIndicator]);
 
-  const indicatorStyle = useAnimatedStyle(
-    () => ({
-      transform: [{ translateX: indicatorX.value }],
-      width: indicatorWidth.value,
-    }),
-    [indicatorX, indicatorWidth],
-  );
-
   const selectIndex = useCallback(
     (index: number) => {
       if (disabled || index < 0 || index >= items.length) return;
@@ -137,6 +129,14 @@ export function useEgTabBarController(props: EgTabBarProps) {
     selectIndex,
     haptic: !disabled,
   });
+
+  const indicatorStyle = useAnimatedStyle(
+    () => ({
+      transform: [{ translateX: indicatorX.value }],
+      width: indicatorWidth.value,
+    }),
+    [indicatorX, indicatorWidth],
+  );
 
   const visualSelectedIndex = previewIndex ?? displayedIndex;
 

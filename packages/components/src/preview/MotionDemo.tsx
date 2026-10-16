@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -10,7 +10,7 @@ import { resolveMotionRecipe } from '@eds/mobile-animations';
 import { EgSwitch } from '../molecules/toggle/switch/EgSwitch.js';
 import { MotionPressable } from '../shared/MotionPressable.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
-import { motionPressScale } from '../shared/themeScalars.js';
+import { motionPressScale, type MotionPressIntensity } from '../shared/themeScalars.js';
 import { getThemeColors, mobileTheme, type ThemeMode } from '../theme/index.js';
 
 type MotionDemoProps = {
@@ -138,13 +138,53 @@ function DemoCard({
   );
 }
 
+const PRESS_INTENSITY_OPTIONS: { id: MotionPressIntensity }[] = [
+  { id: 'xs' },
+  { id: 'sm' },
+  { id: 'md' },
+  { id: 'lg' },
+];
+
 function TapDemo({ mode }: { mode: ThemeMode }) {
   const colors = getThemeColors(mode);
   const [count, setCount] = useState(0);
+  const [pressIntensity, setPressIntensity] = useState<MotionPressIntensity>('sm');
+  const activeScale = motionPressScale(pressIntensity);
 
   return (
     <DemoCard mode={mode}>
+      <View style={styles.intensityRow}>
+        {PRESS_INTENSITY_OPTIONS.map((option) => {
+          const active = pressIntensity === option.id;
+          return (
+            <Pressable
+              key={option.id}
+              accessibilityRole="button"
+              onPress={() => setPressIntensity(option.id)}
+              style={[
+                styles.intensityChip,
+                {
+                  borderColor: colors['stroke-divider-page'] as string,
+                  backgroundColor: active
+                    ? (colors['event-focus'] as string)
+                    : (colors['material-card-moderate'] as string),
+                },
+              ]}
+            >
+              <Text
+                style={{
+                  color: colors['text-base-primary'] as string,
+                  ...styles.intensityChipLabel,
+                }}
+              >
+                {option.id} · {motionPressScale(option.id)}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
       <MotionPressable
+        pressIntensity={pressIntensity}
         onPress={() => setCount((value) => value + 1)}
         style={[
           styles.tapButton,
@@ -152,11 +192,11 @@ function TapDemo({ mode }: { mode: ThemeMode }) {
         ]}
       >
         <Text style={[styles.tapButtonLabel, { color: colors['text-same-white'] as string }]}>
-          Press me · scale {motionPressScale()} · {count}
+          Press me · scale {activeScale} · {count}
         </Text>
       </MotionPressable>
       <Text style={[styles.meta, { color: colors['text-base-tertiary'] as string }]}>
-        recipe: press · semantic: motion-tap
+        recipe: press · semantic: motion-tap · token: motion-scale-press-{pressIntensity}
       </Text>
     </DemoCard>
   );
@@ -537,6 +577,22 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 12,
     overflow: 'hidden',
+  },
+  intensityRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  intensityChip: {
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  intensityChipLabel: {
+    fontSize: 13,
+    lineHeight: 18,
+    ...edsFontStyle('500'),
   },
   tapButton: {
     alignSelf: 'flex-start',

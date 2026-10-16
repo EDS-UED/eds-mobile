@@ -94,7 +94,7 @@ function isNestedPathname(normalized: string) {
   return parts.length >= 2;
 }
 
-/** 内层 Stack 页隐藏底部 EgTabBar。 */
+/** 内层 Stack 页隐藏底部 Tab 条（EgTabBar / NativeTabs）。 */
 export function shouldHideShowcaseTabBar(pathname: string, segments: string[] = []) {
   if (segments.length > 0 && TAB_GROUP_NAMES.has(segments[0])) {
     return !isTabSectionHome(segments);

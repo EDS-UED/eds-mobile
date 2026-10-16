@@ -1,10 +1,6 @@
 import { Stack } from 'expo-router/stack';
 
-import {
-  showcaseDetailScreenOptions,
-  showcaseHomeScreenOptions,
-  useShowcaseStackScreenOptions,
-} from '@/hooks/useShowcaseStackScreenOptions';
+import { useShowcaseStackScreenOptions } from '@/hooks/useShowcaseStackScreenOptions';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 
 export default function WorkflowsLayout() {
@@ -12,11 +8,7 @@ export default function WorkflowsLayout() {
 
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen
-        name="index"
-        options={{ ...showcaseHomeScreenOptions, title: showcaseTabHomeTitles.workflows }}
-      />
-      <Stack.Screen name="parity" options={showcaseDetailScreenOptions} />
+      <Stack.Screen name="index" options={{ title: showcaseTabHomeTitles.workflows }} />
     </Stack>
   );
 }

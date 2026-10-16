@@ -23,18 +23,31 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = join(__dirname, '..');
 const assetsIcons = join(pkgRoot, 'src/atoms/_assets/icons');
 const assetsCrypto = join(pkgRoot, 'src/atoms/_assets/crypto');
-const desktopIcons = join(pkgRoot, '../../eds-desktop/packages/components/src/atoms/icons');
-const desktopCrypto = join(pkgRoot, '../../eds-desktop/packages/components/src/atoms/crypto');
+/** Sibling checkout: ~/Projects/eds-desktop — read-only copy source (override with EDS_DESKTOP_ROOT). */
+const desktopComponentsRoot = process.env.EDS_DESKTOP_ROOT
+  ? join(process.env.EDS_DESKTOP_ROOT, 'packages/components/src/atoms')
+  : join(pkgRoot, '../../../eds-desktop/packages/components/src/atoms');
+const desktopIcons = join(desktopComponentsRoot, 'icons');
+const desktopCrypto = join(desktopComponentsRoot, 'crypto');
 
 const ICON_CHUNK_COUNT = 8;
 const CRYPTO_CHUNK_COUNT = 16;
 
 function syncAssetsFromDesktop(sourceDir, targetDir) {
-  if (!existsSync(sourceDir)) return;
+  if (!existsSync(sourceDir)) {
+    console.warn(`⚠ Desktop assets not found (skip sync): ${sourceDir}`);
+    return;
+  }
   mkdirSync(targetDir, { recursive: true });
+  const synced = new Set();
   for (const file of readdirSync(sourceDir)) {
     if (!file.endsWith('.svg')) continue;
     cpSync(join(sourceDir, file), join(targetDir, file), { force: true });
+    synced.add(file);
+  }
+  for (const file of readdirSync(targetDir)) {
+    if (!file.endsWith('.svg') || synced.has(file)) continue;
+    rmSync(join(targetDir, file), { force: true });
   }
 }
 

@@ -327,7 +327,7 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | 变量 | 值 | 角色 |
 |------|-----|------|
 | `--eds-motion-0` | `0ms` | instant |
-| `--eds-motion-1` | `100ms` | micro / tap |
+| `--eds-motion-1` | `85ms` | micro / tap |
 | `--eds-motion-2` | `180ms` | fast / fade |
 | `--eds-motion-3` | `280ms` | normal / enter |
 | `--eds-motion-4` | `400ms` | slow |
@@ -355,7 +355,10 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | 变量 | 值 |
 |------|-----|
 | `--motion-opacity-hidden/dim/subtle/visible/disabled` | `0 / 0.4 / 0.7 / 1 / 0.5` |
-| `--motion-scale-press/subtle/emphasis/present` | `0.96 / 0.98 / 1.04 / 0.96` |
+| `--motion-scale-press`（default md） | `1.2` |
+| `--motion-scale-press-xs/sm/md/lg` | `1.02 / 1.04 / 1.2 / 1.35` |
+| `--motion-glass-scale-press-xs/sm/md/lg` | `1.02 / 1.04 / 1.2 / 1.35` |
+| `--motion-scale-subtle/emphasis/present` | `0.98 / 1.04 / 0.96` |
 | `--motion-distance-xs/sm/md/lg/xl` | `4 / 8 / 16 / 24 / 40` px |
 | `--motion-offset-flotation-y` | `calc(-1 * var(--spacing-2-5))` |
 | `--motion-offset-layout-deform-y` | `var(--spacing-2-5)` |
@@ -478,7 +481,7 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | `--material-base-tertiary` | `#02030466` |
 | `--material-base-quaternary` | `#02030433` |
 | `--material-card-shallow` | `#02030408` |
-| `--material-card-moderate` | `#0203040d` |
+| `--material-card-moderate` | `#0203040a` |
 | `--material-card-deep` | `#02030412` |
 | `--material-brand` | `var(--eds-brand)` |
 | `--material-brand-weaken` | `color-mix(in display-p3, var(--eds-brand) 12%, transparent)` |
@@ -539,8 +542,8 @@ Dark 与 Light **同名 token**，主色从 `#020304` 翻转为 `#ffffff` 系：
 | `--box-page` | `#ffffff` | `#020304` |
 | `--box-flotation` | `#ffffff` | `#1c1d1f` |
 | `--text-base-primary` | `#020304` | `#ffffff` |
-| `--material-card-moderate` | `#0203040d` | `#ffffff12` |
-| `--event-tap` | `#0203041a` | `#ffffff1a` |
+| `--material-card-moderate` | `#0203040a` | `#ffffff0f` |
+| `--event-tap` | light 5% base · dark 6% base |
 | `--status-danger` | `#d7462d` | `#fa6950` |
 | `--status-warning` | `#eb9114` | `#ffaa32` |
 
@@ -551,7 +554,7 @@ Dark 与 Light **同名 token**，主色从 `#020304` 翻转为 `#ffffff` 系：
     → var(--eds-brand) → #5f2243
 
 --event-tap-brand         → color-mix(brand 60%)
---event-focus-brand       → color-mix(brand 10% light / 12% dark)
+--event-focus-brand       → color-mix(brand 12% light / 14% dark)
 --material-brand-weaken   → color-mix(brand 12%)
 ```
 
@@ -697,7 +700,7 @@ RN：`mobileTheme.glass.boxes` · `resolveGlassBoxComposition`。
 
 | 场景 | CSS token | 值 |
 |------|-----------|-----|
-| Input/Search 背景 | `--material-card-moderate` | `#0203040d` |
+| Input/Search 背景 | `--material-card-moderate` | `#0203040a` |
 | 占位符 | `--text-base-tertiary` | `#02030466` |
 | 正文 | `--text-base-primary` | `#020304` |
 | Brand 文案 | `--text-brand` | `#5f2243` |
@@ -714,7 +717,7 @@ RN：`mobileTheme.glass.boxes` · `resolveGlassBoxComposition`。
 ```javascript
 import mobileTheme from '@eds/mobile-tokens/theme';
 
-mobileTheme.colors.light['material-card-moderate']  // "#0203040d"
+mobileTheme.colors.light['material-card-moderate']  // "#0203040a"
 mobileTheme.colors.light.brand                        // "#1fc35a"
 mobileTheme.spacing['input-xl']                      // 56
 mobileTheme.glass.boxes['glass-tabbar-box'].light.backdropBlur.nativeIntensity  // expo-blur
@@ -730,7 +733,8 @@ mobileTheme.glass.boxes['glass-tabbar-box'].light.backdropBlur.nativeIntensity  
 |------|-------|------|
 | `00` | 0% | hide |
 | `08` | ~3% | card-shallow |
-| `0d` | ~5% | card-moderate、divider |
+| `0a` | ~4% | card-moderate |
+| `0d` | ~5% | divider |
 | `12` | ~7% | card-deep |
 | `1a` | ~10% | event-tap |
 | `1f` | ~12% | effect-moderate |

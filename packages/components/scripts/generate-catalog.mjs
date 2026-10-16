@@ -29,6 +29,7 @@ const CATALOG = [
   { figmaName: 'Title Combo/3-Title', exportName: 'EgTitleComboTitle', tier: 'atoms', family: 'text', slug: 'title-combo-title', figmaPage: 'Text 文字✅', kind: 'set', variantCount: 3, figmaId: '139:1189' },
   { figmaName: 'Title Combo/4-Body', exportName: 'EgTitleComboBody', tier: 'atoms', family: 'text', slug: 'title-combo-body', figmaPage: 'Text 文字✅', kind: 'set', variantCount: 3, figmaId: '139:1209' },
   { figmaName: 'Divider', exportName: 'EgDivider', tier: 'atoms', family: 'divider', slug: 'divider', figmaPage: 'Divider 分割线✅', kind: 'set', variantCount: 4, figmaId: '279:2984' },
+  { figmaName: 'EgAvatar', exportName: 'EgAvatar', tier: 'atoms', family: 'avatar', slug: 'avatar-body', figmaPage: 'Avatar 头像 ✅🕒', kind: 'component', figmaId: '465:1721' },
   { figmaName: 'eds-avatar-0', exportName: 'EgAvatarPreset0', tier: 'atoms', family: 'avatar', slug: 'avatar-preset-0', figmaPage: 'Avatar 头像 ✅🕒', kind: 'component', figmaId: '465:1872' },
   { figmaName: 'eds-avatar-1', exportName: 'EgAvatarPreset1', tier: 'atoms', family: 'avatar', slug: 'avatar-preset-1', figmaPage: 'Avatar 头像 ✅🕒', kind: 'component', figmaId: '465:1905' },
   { figmaName: 'eds-bitcoin-lightning-network', exportName: 'EgCryptoBitcoinLightning', tier: 'atoms', family: 'crypto', slug: 'crypto-bitcoin-lightning', figmaPage: 'Crypto 币种 ✅🕒', kind: 'component', figmaId: '465:1619' },
@@ -430,10 +431,16 @@ writeFileSync(
 );
 
 // index.ts barrel exports
-const exports = FINAL_CATALOG.map((e) => {
+const exports = FINAL_CATALOG.filter(
+  (e) => e.exportName !== 'EgAvatarPreset0' && e.exportName !== 'EgAvatarPreset1',
+).map((e) => {
   if (e.exportName === 'EgButtonGlass') {
     return `export {
   EgButtonGlass,
+  EgButtonGlassNavAvatarFrame,
+  EgButtonGlassNavIconPlusSlotContent,
+  egButtonGlassAvatarElementMarginPx,
+  egButtonGlassAvatarInsetPx,
   shouldUseEgButtonGlassNativeStack,
 } from './molecules/button/button-glass';
 export type {
@@ -447,7 +454,11 @@ export type {
   EgNavBar,
   shouldUseEgNavBarNativeStack,
   egNavBarNativeStackOptions,
+  egNavBarNativeStackScreenOptions,
   useEgNavBarScroll,
+  EG_NAV_BAR_PADDING_BOTTOM,
+  EG_NAV_BAR_PADDING_HORIZONTAL,
+  EG_NAV_BAR_PADDING_TOP,
   egNavBarContentHeight,
   egNavBarScrollContentReserve,
 } from './organisms/tab-bar/nav-bar';
@@ -458,13 +469,53 @@ export type {
   EgNavBarScrollOffset,
   EgNavBarNativeStackOptions,
   EgNavBarNativeStackOptionsInput,
+  EgNavBarNativeStackScreenOptionsInput,
 } from './organisms/tab-bar/nav-bar';`;
+  }
+  if (e.exportName === 'EgAvatar') {
+    return `export {
+  EgAvatar,
+  EgAvatarPreset0,
+  EgAvatarPreset1,
+  AVATAR_NATIVE_PALETTE,
+  AVATAR_NATIVE_PALETTE_SIZE,
+  AVATAR_ROBOT_ASSET_NAME,
+  formatAvatarPaletteName,
+  pickAvatarColorIndex,
+  resolveAvatarAssetName,
+  resolveAvatarInitials,
+} from './atoms/avatar';
+export type {
+  EgAvatarProps,
+  EgAvatarSize,
+  EgAvatarVariant,
+  EgAvatarPreset0Props,
+  EgAvatarPreset1Props,
+  AvatarPaletteColor,
+} from './atoms/avatar';`;
+  }
+  if (e.exportName === 'EgCregisTabBar') {
+    return `export {
+  EgCregisTabBar,
+  EgCregisTabBarNativeLayout,
+  CREGIS_TAB_BAR_ITEMS,
+  CREGIS_TAB_BAR_NATIVE_TABS,
+  createEgCregisTabBarBottomTabsBinding,
+  egCregisTabBarNativeBottomTabsScreenOptions,
+} from './organisms/tab-bar/cregis-tab-bar';
+export type {
+  EgCregisTabBarProps,
+  EgCregisTabBarNativeLayoutProps,
+  EgCregisTabBarNativeBottomTabsScreenOptions,
+} from './organisms/tab-bar/cregis-tab-bar';`;
   }
   if (e.exportName === 'EgTabBar') {
     return `export {
   EgTabBar,
   EgTabBarBottomTabsDock,
   EgTabBarNativeLayout,
+  EgTabBarNativeView,
+  EG_TAB_BAR_NATIVE_TABS,
   shouldUseEgTabBarNativeStack,
   egTabBarScrollContentReserve,
   egTabBarScrollContentReserveWithSafeArea,
@@ -481,7 +532,9 @@ export type {
 export type {
   EgTabBarNativeLayoutProps,
   EgTabBarNativeTabSpec,
+  EgTabBarNativeImageSource,
   EgTabBarNativeTriggerIcon,
+  EgTabBarNativeViewProps,
   EgTabBarBottomTabNavigation,
   EgTabBarBottomTabNavigationState,
   EgTabBarBottomTabRoute,

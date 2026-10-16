@@ -94,7 +94,18 @@ declare module 'react-native' {
     children?: ReactNode;
   };
 
+  export type ImageSourcePropType = number | { uri: string };
+
+  export type ImageProps = {
+    source: ImageSourcePropType;
+    style?: StyleProp<ViewStyle>;
+    resizeMode?: 'cover' | 'contain' | 'stretch' | 'center';
+    accessibilityLabel?: string;
+    testID?: string;
+  };
+
   export const View: ComponentType<ViewProps>;
+  export const Image: ComponentType<ImageProps>;
   export const Text: ComponentType<TextProps>;
   export const TextInput: ComponentType<TextInputProps>;
   export const Pressable: ComponentType<PressableProps>;

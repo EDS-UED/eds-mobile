@@ -17,6 +17,7 @@ export const previewComponentLoaders: Record<string, PreviewLoader> = {
   EgTitleComboTitle: () => require('../atoms/text/title-combo-title/EgTitleComboTitle.js').EgTitleComboTitle,
   EgTitleComboBody: () => require('../atoms/text/title-combo-body/EgTitleComboBody.js').EgTitleComboBody,
   EgDivider: () => require('../atoms/divider/divider/EgDivider.js').EgDivider,
+  EgAvatar: () => require('../atoms/avatar/avatar/EgAvatar.js').EgAvatar,
   EgAvatarPreset0: () => require('../atoms/avatar/avatar-preset0/EgAvatarPreset0.js').EgAvatarPreset0,
   EgAvatarPreset1: () => require('../atoms/avatar/avatar-preset1/EgAvatarPreset1.js').EgAvatarPreset1,
   EgCryptoBitcoinLightning: () => require('../atoms/crypto/crypto-bitcoin-lightning/EgCryptoBitcoinLightning.js').EgCryptoBitcoinLightning,

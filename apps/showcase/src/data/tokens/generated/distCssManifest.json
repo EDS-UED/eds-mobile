@@ -195,7 +195,7 @@
     },
     "motion": {
       "motion-0": "0ms",
-      "motion-1": "100ms",
+      "motion-1": "85ms",
       "motion-2": "180ms",
       "motion-3": "280ms",
       "motion-4": "400ms",
@@ -218,11 +218,19 @@
       "motion-opacity-subtle": "0.7",
       "motion-opacity-visible": "1",
       "motion-opacity-disabled": "0.5",
-      "motion-scale-press": "0.96",
+      "motion-scale-press": "1.2",
+      "motion-scale-press-xs": "1.02",
+      "motion-scale-press-sm": "1.04",
+      "motion-scale-press-md": "1.2",
+      "motion-scale-press-lg": "1.35",
       "motion-scale-subtle": "0.98",
       "motion-scale-emphasis": "1.04",
       "motion-scale-present": "0.96",
-      "motion-glass-scale-press": "0.975",
+      "motion-glass-scale-press": "1.2",
+      "motion-glass-scale-press-xs": "1.02",
+      "motion-glass-scale-press-sm": "1.04",
+      "motion-glass-scale-press-md": "1.2",
+      "motion-glass-scale-press-lg": "1.35",
       "motion-glass-opacity-shimmer": "0.10",
       "motion-distance-xs": "4px",
       "motion-distance-sm": "8px",
@@ -257,10 +265,14 @@
       "motion-base-spring-control-damping-fraction": "0.82",
       "motion-base-spring-control-blend-duration": "0.1s",
       "ios-spring-control": "damping:37,stiffness:503,mass:1",
-      "motion-base-spring-press-response": "0.18",
-      "motion-base-spring-press-damping-fraction": "0.9",
-      "motion-base-spring-press-blend-duration": "0.05s",
-      "ios-spring-press": "damping:63,stiffness:1218,mass:1",
+      "motion-base-spring-press-response": "0.32",
+      "motion-base-spring-press-damping-fraction": "0.88",
+      "motion-base-spring-press-blend-duration": "0.12s",
+      "ios-spring-press": "damping:46,stiffness:560,mass:1",
+      "motion-base-spring-press-release-response": "0.44",
+      "motion-base-spring-press-release-damping-fraction": "0.66",
+      "motion-base-spring-press-release-blend-duration": "0.12s",
+      "ios-spring-press-release": "damping:17,stiffness:350,mass:1",
       "motion-base-spring-drag-response": "0.32",
       "motion-base-spring-drag-damping-fraction": "0.82",
       "motion-base-spring-drag-blend-duration": "0.1s",
@@ -307,8 +319,8 @@
       "motion-duration-layout-deform-content": "var(--motion-0)",
       "motion-delay-layout-deform-content-swap": "var(--motion-0)",
       "motion-delay-feedback-tick": "var(--motion-0)",
-      "motion-glass-duration-press": "var(--motion-2)",
-      "motion-glass-duration-release": "260ms",
+      "motion-glass-duration-press": "150ms",
+      "motion-glass-duration-release": "220ms",
       "motion-glass-duration-shimmer": "var(--motion-3)",
       "motion-glass-duration-morph": "420ms",
       "motion-easing-standard": "var(--motion-ease-1)",
@@ -1570,7 +1582,7 @@
         "file": "base.css",
         "startLine": 11,
         "endLine": 11,
-        "snippet": "  --motion-1: 100ms;"
+        "snippet": "  --motion-1: 85ms;"
       },
       "motion-2": {
         "file": "base.css",
@@ -1708,414 +1720,486 @@
         "file": "base.css",
         "startLine": 48,
         "endLine": 48,
-        "snippet": "  --motion-scale-press: 0.96;"
+        "snippet": "  --motion-scale-press: 1.2;      /* Tap press scale · default md */"
       },
-      "motion-scale-subtle": {
+      "motion-scale-press-xs": {
         "file": "base.css",
         "startLine": 49,
         "endLine": 49,
+        "snippet": "  --motion-scale-press-xs: 1.02;  /* Tap press · xs */"
+      },
+      "motion-scale-press-sm": {
+        "file": "base.css",
+        "startLine": 50,
+        "endLine": 50,
+        "snippet": "  --motion-scale-press-sm: 1.04;  /* Tap press · sm */"
+      },
+      "motion-scale-press-md": {
+        "file": "base.css",
+        "startLine": 51,
+        "endLine": 51,
+        "snippet": "  --motion-scale-press-md: 1.2;   /* Tap press · md */"
+      },
+      "motion-scale-press-lg": {
+        "file": "base.css",
+        "startLine": 52,
+        "endLine": 52,
+        "snippet": "  --motion-scale-press-lg: 1.35;  /* Tap press · lg */"
+      },
+      "motion-scale-subtle": {
+        "file": "base.css",
+        "startLine": 53,
+        "endLine": 53,
         "snippet": "  --motion-scale-subtle: 0.98;"
       },
       "motion-scale-emphasis": {
         "file": "base.css",
-        "startLine": 50,
-        "endLine": 50,
+        "startLine": 54,
+        "endLine": 54,
         "snippet": "  --motion-scale-emphasis: 1.04;"
       },
       "motion-scale-present": {
         "file": "base.css",
-        "startLine": 51,
-        "endLine": 51,
+        "startLine": 55,
+        "endLine": 55,
         "snippet": "  --motion-scale-present: 0.96;   /* Sheet / Modal / Popover 入场 */"
       },
       "motion-glass-scale-press": {
         "file": "base.css",
-        "startLine": 54,
-        "endLine": 54,
-        "snippet": "  --motion-glass-scale-press: 0.975; /* Glass 按压缩放；比普通 Tap 更克制 */"
+        "startLine": 58,
+        "endLine": 58,
+        "snippet": "  --motion-glass-scale-press: 1.2; /* Glass press scale · default md */"
+      },
+      "motion-glass-scale-press-xs": {
+        "file": "base.css",
+        "startLine": 59,
+        "endLine": 59,
+        "snippet": "  --motion-glass-scale-press-xs: 1.02; /* Glass press · xs */"
+      },
+      "motion-glass-scale-press-sm": {
+        "file": "base.css",
+        "startLine": 60,
+        "endLine": 60,
+        "snippet": "  --motion-glass-scale-press-sm: 1.04; /* Glass press · sm */"
+      },
+      "motion-glass-scale-press-md": {
+        "file": "base.css",
+        "startLine": 61,
+        "endLine": 61,
+        "snippet": "  --motion-glass-scale-press-md: 1.2; /* Glass press · md */"
+      },
+      "motion-glass-scale-press-lg": {
+        "file": "base.css",
+        "startLine": 62,
+        "endLine": 62,
+        "snippet": "  --motion-glass-scale-press-lg: 1.35; /* Glass press · lg · EgButtonGlass RN */"
       },
       "motion-glass-opacity-shimmer": {
         "file": "base.css",
-        "startLine": 55,
-        "endLine": 55,
+        "startLine": 63,
+        "endLine": 63,
         "snippet": "  --motion-glass-opacity-shimmer: 0.10; /* Glass Shimmer 最大透明度 */"
       },
       "motion-distance-xs": {
         "file": "base.css",
-        "startLine": 58,
-        "endLine": 58,
+        "startLine": 66,
+        "endLine": 66,
         "snippet": "  --motion-distance-xs: 4px;"
       },
       "motion-distance-sm": {
         "file": "base.css",
-        "startLine": 59,
-        "endLine": 59,
+        "startLine": 67,
+        "endLine": 67,
         "snippet": "  --motion-distance-sm: 8px;"
       },
       "motion-distance-md": {
         "file": "base.css",
-        "startLine": 60,
-        "endLine": 60,
+        "startLine": 68,
+        "endLine": 68,
         "snippet": "  --motion-distance-md: 16px;"
       },
       "motion-distance-lg": {
         "file": "base.css",
-        "startLine": 61,
-        "endLine": 61,
+        "startLine": 69,
+        "endLine": 69,
         "snippet": "  --motion-distance-lg: 24px;"
       },
       "motion-distance-xl": {
         "file": "base.css",
-        "startLine": 62,
-        "endLine": 62,
+        "startLine": 70,
+        "endLine": 70,
         "snippet": "  --motion-distance-xl: 40px;"
       },
       "motion-offset-small": {
         "file": "base.css",
-        "startLine": 63,
-        "endLine": 63,
+        "startLine": 71,
+        "endLine": 71,
         "snippet": "  --motion-offset-small: var(--motion-distance-sm);"
       },
       "motion-offset-flotation-y": {
         "file": "base.css",
-        "startLine": 64,
-        "endLine": 64,
+        "startLine": 72,
+        "endLine": 72,
         "snippet": "  --motion-offset-flotation-y: calc(-1 * var(--spacing-2-5));"
       },
       "motion-offset-page-push": {
         "file": "base.css",
-        "startLine": 65,
-        "endLine": 65,
+        "startLine": 73,
+        "endLine": 73,
         "snippet": "  --motion-offset-page-push: 30%;"
       },
       "motion-offset-layout-deform-y": {
         "file": "base.css",
-        "startLine": 66,
-        "endLine": 66,
+        "startLine": 74,
+        "endLine": 74,
         "snippet": "  --motion-offset-layout-deform-y: var(--spacing-2-5);"
       },
       "motion-base-spring-default-response": {
         "file": "base.css",
-        "startLine": 69,
-        "endLine": 69,
+        "startLine": 77,
+        "endLine": 77,
         "snippet": "  --motion-base-spring-default-response: 0.55;"
       },
       "motion-base-spring-default-damping-fraction": {
         "file": "base.css",
-        "startLine": 70,
-        "endLine": 70,
+        "startLine": 78,
+        "endLine": 78,
         "snippet": "  --motion-base-spring-default-damping-fraction: 0.82;"
       },
       "motion-base-spring-default-blend-duration": {
         "file": "base.css",
-        "startLine": 71,
-        "endLine": 71,
+        "startLine": 79,
+        "endLine": 79,
         "snippet": "  --motion-base-spring-default-blend-duration: 0.15s;"
       },
       "ios-spring-default": {
         "file": "base.css",
-        "startLine": 72,
-        "endLine": 72,
+        "startLine": 80,
+        "endLine": 80,
         "snippet": "  --ios-spring-default: damping:19,stiffness:130,mass:1;"
       },
       "motion-base-spring-interactive-response": {
         "file": "base.css",
-        "startLine": 73,
-        "endLine": 73,
+        "startLine": 81,
+        "endLine": 81,
         "snippet": "  --motion-base-spring-interactive-response: 0.15;"
       },
       "motion-base-spring-interactive-damping-fraction": {
         "file": "base.css",
-        "startLine": 74,
-        "endLine": 74,
+        "startLine": 82,
+        "endLine": 82,
         "snippet": "  --motion-base-spring-interactive-damping-fraction: 0.86;"
       },
       "motion-base-spring-interactive-blend-duration": {
         "file": "base.css",
-        "startLine": 75,
-        "endLine": 75,
+        "startLine": 83,
+        "endLine": 83,
         "snippet": "  --motion-base-spring-interactive-blend-duration: 0.25s;"
       },
       "ios-spring-interactive": {
         "file": "base.css",
-        "startLine": 76,
-        "endLine": 76,
+        "startLine": 84,
+        "endLine": 84,
         "snippet": "  --ios-spring-interactive: damping:72,stiffness:1755,mass:1;"
       },
       "motion-base-spring-navigation-response": {
         "file": "base.css",
-        "startLine": 77,
-        "endLine": 77,
+        "startLine": 85,
+        "endLine": 85,
         "snippet": "  --motion-base-spring-navigation-response: 0.38;"
       },
       "motion-base-spring-navigation-damping-fraction": {
         "file": "base.css",
-        "startLine": 78,
-        "endLine": 78,
+        "startLine": 86,
+        "endLine": 86,
         "snippet": "  --motion-base-spring-navigation-damping-fraction: 0.88;"
       },
       "motion-base-spring-navigation-blend-duration": {
         "file": "base.css",
-        "startLine": 79,
-        "endLine": 79,
+        "startLine": 87,
+        "endLine": 87,
         "snippet": "  --motion-base-spring-navigation-blend-duration: 0.2s;"
       },
       "ios-spring-navigation": {
         "file": "base.css",
-        "startLine": 80,
-        "endLine": 80,
+        "startLine": 88,
+        "endLine": 88,
         "snippet": "  --ios-spring-navigation: damping:29,stiffness:273,mass:1;"
       },
       "motion-base-spring-sheet-response": {
         "file": "base.css",
-        "startLine": 81,
-        "endLine": 81,
+        "startLine": 89,
+        "endLine": 89,
         "snippet": "  --motion-base-spring-sheet-response: 0.48;"
       },
       "motion-base-spring-sheet-damping-fraction": {
         "file": "base.css",
-        "startLine": 82,
-        "endLine": 82,
+        "startLine": 90,
+        "endLine": 90,
         "snippet": "  --motion-base-spring-sheet-damping-fraction: 0.86;"
       },
       "motion-base-spring-sheet-blend-duration": {
         "file": "base.css",
-        "startLine": 83,
-        "endLine": 83,
+        "startLine": 91,
+        "endLine": 91,
         "snippet": "  --motion-base-spring-sheet-blend-duration: 0.2s;"
       },
       "ios-spring-sheet": {
         "file": "base.css",
-        "startLine": 84,
-        "endLine": 84,
+        "startLine": 92,
+        "endLine": 92,
         "snippet": "  --ios-spring-sheet: damping:23,stiffness:171,mass:1;"
       },
       "motion-base-spring-modal-response": {
         "file": "base.css",
-        "startLine": 85,
-        "endLine": 85,
+        "startLine": 93,
+        "endLine": 93,
         "snippet": "  --motion-base-spring-modal-response: 0.38;"
       },
       "motion-base-spring-modal-damping-fraction": {
         "file": "base.css",
-        "startLine": 86,
-        "endLine": 86,
+        "startLine": 94,
+        "endLine": 94,
         "snippet": "  --motion-base-spring-modal-damping-fraction: 0.9;"
       },
       "motion-base-spring-modal-blend-duration": {
         "file": "base.css",
-        "startLine": 87,
-        "endLine": 87,
+        "startLine": 95,
+        "endLine": 95,
         "snippet": "  --motion-base-spring-modal-blend-duration: 0.15s;"
       },
       "ios-spring-modal": {
         "file": "base.css",
-        "startLine": 88,
-        "endLine": 88,
+        "startLine": 96,
+        "endLine": 96,
         "snippet": "  --ios-spring-modal: damping:30,stiffness:273,mass:1;"
       },
       "motion-base-spring-control-response": {
         "file": "base.css",
-        "startLine": 89,
-        "endLine": 89,
+        "startLine": 97,
+        "endLine": 97,
         "snippet": "  --motion-base-spring-control-response: 0.28;"
       },
       "motion-base-spring-control-damping-fraction": {
         "file": "base.css",
-        "startLine": 90,
-        "endLine": 90,
+        "startLine": 98,
+        "endLine": 98,
         "snippet": "  --motion-base-spring-control-damping-fraction: 0.82;"
       },
       "motion-base-spring-control-blend-duration": {
         "file": "base.css",
-        "startLine": 91,
-        "endLine": 91,
+        "startLine": 99,
+        "endLine": 99,
         "snippet": "  --motion-base-spring-control-blend-duration: 0.1s;"
       },
       "ios-spring-control": {
         "file": "base.css",
-        "startLine": 92,
-        "endLine": 92,
+        "startLine": 100,
+        "endLine": 100,
         "snippet": "  --ios-spring-control: damping:37,stiffness:503,mass:1;"
       },
       "motion-base-spring-press-response": {
         "file": "base.css",
-        "startLine": 93,
-        "endLine": 93,
-        "snippet": "  --motion-base-spring-press-response: 0.18;"
+        "startLine": 101,
+        "endLine": 101,
+        "snippet": "  --motion-base-spring-press-response: 0.32;"
       },
       "motion-base-spring-press-damping-fraction": {
         "file": "base.css",
-        "startLine": 94,
-        "endLine": 94,
-        "snippet": "  --motion-base-spring-press-damping-fraction: 0.9;"
+        "startLine": 102,
+        "endLine": 102,
+        "snippet": "  --motion-base-spring-press-damping-fraction: 0.88;"
       },
       "motion-base-spring-press-blend-duration": {
         "file": "base.css",
-        "startLine": 95,
-        "endLine": 95,
-        "snippet": "  --motion-base-spring-press-blend-duration: 0.05s;"
+        "startLine": 103,
+        "endLine": 103,
+        "snippet": "  --motion-base-spring-press-blend-duration: 0.12s;"
       },
       "ios-spring-press": {
         "file": "base.css",
-        "startLine": 96,
-        "endLine": 96,
-        "snippet": "  --ios-spring-press: damping:63,stiffness:1218,mass:1;"
+        "startLine": 104,
+        "endLine": 104,
+        "snippet": "  --ios-spring-press: damping:46,stiffness:560,mass:1;"
+      },
+      "motion-base-spring-press-release-response": {
+        "file": "base.css",
+        "startLine": 105,
+        "endLine": 105,
+        "snippet": "  --motion-base-spring-press-release-response: 0.44;"
+      },
+      "motion-base-spring-press-release-damping-fraction": {
+        "file": "base.css",
+        "startLine": 106,
+        "endLine": 106,
+        "snippet": "  --motion-base-spring-press-release-damping-fraction: 0.66;"
+      },
+      "motion-base-spring-press-release-blend-duration": {
+        "file": "base.css",
+        "startLine": 107,
+        "endLine": 107,
+        "snippet": "  --motion-base-spring-press-release-blend-duration: 0.12s;"
+      },
+      "ios-spring-press-release": {
+        "file": "base.css",
+        "startLine": 108,
+        "endLine": 108,
+        "snippet": "  --ios-spring-press-release: damping:17,stiffness:350,mass:1;"
       },
       "motion-base-spring-drag-response": {
         "file": "base.css",
-        "startLine": 97,
-        "endLine": 97,
+        "startLine": 109,
+        "endLine": 109,
         "snippet": "  --motion-base-spring-drag-response: 0.32;"
       },
       "motion-base-spring-drag-damping-fraction": {
         "file": "base.css",
-        "startLine": 98,
-        "endLine": 98,
+        "startLine": 110,
+        "endLine": 110,
         "snippet": "  --motion-base-spring-drag-damping-fraction: 0.82;"
       },
       "motion-base-spring-drag-blend-duration": {
         "file": "base.css",
-        "startLine": 99,
-        "endLine": 99,
+        "startLine": 111,
+        "endLine": 111,
         "snippet": "  --motion-base-spring-drag-blend-duration: 0.1s;"
       },
       "ios-spring-drag": {
         "file": "base.css",
-        "startLine": 100,
-        "endLine": 100,
+        "startLine": 112,
+        "endLine": 112,
         "snippet": "  --ios-spring-drag: damping:32,stiffness:385,mass:1;"
       },
       "motion-base-spring-bouncy-response": {
         "file": "base.css",
-        "startLine": 101,
-        "endLine": 101,
+        "startLine": 113,
+        "endLine": 113,
         "snippet": "  --motion-base-spring-bouncy-response: 0.42;"
       },
       "motion-base-spring-bouncy-damping-fraction": {
         "file": "base.css",
-        "startLine": 102,
-        "endLine": 102,
+        "startLine": 114,
+        "endLine": 114,
         "snippet": "  --motion-base-spring-bouncy-damping-fraction: 0.68;"
       },
       "motion-base-spring-bouncy-blend-duration": {
         "file": "base.css",
-        "startLine": 103,
-        "endLine": 103,
+        "startLine": 115,
+        "endLine": 115,
         "snippet": "  --motion-base-spring-bouncy-blend-duration: 0.1s;"
       },
       "ios-spring-bouncy": {
         "file": "base.css",
-        "startLine": 104,
-        "endLine": 104,
+        "startLine": 116,
+        "endLine": 116,
         "snippet": "  --ios-spring-bouncy: damping:20,stiffness:224,mass:1;"
       },
       "motion-base-spring-gentle-response": {
         "file": "base.css",
-        "startLine": 105,
-        "endLine": 105,
+        "startLine": 117,
+        "endLine": 117,
         "snippet": "  --motion-base-spring-gentle-response: 0.6;"
       },
       "motion-base-spring-gentle-damping-fraction": {
         "file": "base.css",
-        "startLine": 106,
-        "endLine": 106,
+        "startLine": 118,
+        "endLine": 118,
         "snippet": "  --motion-base-spring-gentle-damping-fraction: 0.92;"
       },
       "motion-base-spring-gentle-blend-duration": {
         "file": "base.css",
-        "startLine": 107,
-        "endLine": 107,
+        "startLine": 119,
+        "endLine": 119,
         "snippet": "  --motion-base-spring-gentle-blend-duration: 0.2s;"
       },
       "ios-spring-gentle": {
         "file": "base.css",
-        "startLine": 108,
-        "endLine": 108,
+        "startLine": 120,
+        "endLine": 120,
         "snippet": "  --ios-spring-gentle: damping:19,stiffness:110,mass:1;"
       },
       "motion-base-haptic-selection": {
         "file": "base.css",
-        "startLine": 111,
-        "endLine": 111,
+        "startLine": 123,
+        "endLine": 123,
         "snippet": "  --motion-base-haptic-selection: \"selection\";"
       },
       "motion-base-haptic-light": {
         "file": "base.css",
-        "startLine": 112,
-        "endLine": 112,
+        "startLine": 124,
+        "endLine": 124,
         "snippet": "  --motion-base-haptic-light: \"light\";"
       },
       "motion-base-haptic-medium": {
         "file": "base.css",
-        "startLine": 113,
-        "endLine": 113,
+        "startLine": 125,
+        "endLine": 125,
         "snippet": "  --motion-base-haptic-medium: \"medium\";"
       },
       "motion-base-haptic-heavy": {
         "file": "base.css",
-        "startLine": 114,
-        "endLine": 114,
+        "startLine": 126,
+        "endLine": 126,
         "snippet": "  --motion-base-haptic-heavy: \"heavy\";"
       },
       "motion-base-haptic-success": {
         "file": "base.css",
-        "startLine": 115,
-        "endLine": 115,
+        "startLine": 127,
+        "endLine": 127,
         "snippet": "  --motion-base-haptic-success: \"success\";"
       },
       "motion-base-haptic-warning": {
         "file": "base.css",
-        "startLine": 116,
-        "endLine": 116,
+        "startLine": 128,
+        "endLine": 128,
         "snippet": "  --motion-base-haptic-warning: \"warning\";"
       },
       "motion-base-haptic-error": {
         "file": "base.css",
-        "startLine": 117,
-        "endLine": 117,
+        "startLine": 129,
+        "endLine": 129,
         "snippet": "  --motion-base-haptic-error: \"error\";"
       },
       "ios-navigation-push": {
         "file": "base.css",
-        "startLine": 120,
-        "endLine": 120,
+        "startLine": 132,
+        "endLine": 132,
         "snippet": "  --ios-navigation-push: duration:350,easing:cubic-bezier(0.32,0.72,0,1);"
       },
       "ios-ease-in-out": {
         "file": "base.css",
-        "startLine": 121,
-        "endLine": 121,
+        "startLine": 133,
+        "endLine": 133,
         "snippet": "  --ios-ease-in-out: duration:350,easing:cubic-bezier(0.42,0,0.58,1);"
       },
       "ios-ease-out": {
         "file": "base.css",
-        "startLine": 122,
-        "endLine": 122,
+        "startLine": 134,
+        "endLine": 134,
         "snippet": "  --ios-ease-out: duration:300,easing:cubic-bezier(0,0,0.58,1);"
       },
       "ios-ease-in": {
         "file": "base.css",
-        "startLine": 123,
-        "endLine": 123,
+        "startLine": 135,
+        "endLine": 135,
         "snippet": "  --ios-ease-in: duration:250,easing:cubic-bezier(0.42,0,1,1);"
       },
       "motion-base-interaction-velocity-aware": {
         "file": "base.css",
-        "startLine": 126,
-        "endLine": 126,
+        "startLine": 138,
+        "endLine": 138,
         "snippet": "  --motion-base-interaction-velocity-aware: 1;"
       },
       "motion-base-interaction-interruptible": {
         "file": "base.css",
-        "startLine": 127,
-        "endLine": 127,
+        "startLine": 139,
+        "endLine": 139,
         "snippet": "  --motion-base-interaction-interruptible: 1;"
       },
       "motion-base-interaction-preserve-velocity": {
         "file": "base.css",
-        "startLine": 128,
-        "endLine": 128,
+        "startLine": 140,
+        "endLine": 140,
         "snippet": "  --motion-base-interaction-preserve-velocity: 1;"
       },
       "motion-duration-instant": {
@@ -2242,13 +2326,13 @@
         "file": "recipe.css",
         "startLine": 30,
         "endLine": 30,
-        "snippet": "  --motion-glass-duration-press: var(--motion-2);"
+        "snippet": "  --motion-glass-duration-press: 150ms;"
       },
       "motion-glass-duration-release": {
         "file": "recipe.css",
         "startLine": 31,
         "endLine": 31,
-        "snippet": "  --motion-glass-duration-release: 260ms;"
+        "snippet": "  --motion-glass-duration-release: 220ms;"
       },
       "motion-glass-duration-shimmer": {
         "file": "recipe.css",
@@ -2462,68 +2546,68 @@
       },
       "motion-tap": {
         "file": "semantic.css",
-        "startLine": 15,
-        "endLine": 17,
+        "startLine": 16,
+        "endLine": 18,
         "snippet": ".motion-tap\ntransition: var(--motion-recipe-tap);"
       },
       "motion-focus": {
         "file": "semantic.css",
-        "startLine": 30,
-        "endLine": 32,
+        "startLine": 31,
+        "endLine": 33,
         "snippet": ".motion-focus\ntransition: var(--motion-recipe-enter);"
       },
       "motion-layout": {
         "file": "semantic.css",
-        "startLine": 39,
-        "endLine": 43,
+        "startLine": 40,
+        "endLine": 44,
         "snippet": ".motion-layout\ntransition: var(--motion-recipe-enter);\nopacity: var(--motion-opacity-hidden);\ntransform: translateY(var(--motion-distance-sm));"
       },
       "motion-flotation": {
         "file": "semantic.css",
-        "startLine": 56,
-        "endLine": 60,
+        "startLine": 57,
+        "endLine": 61,
         "snippet": ".motion-flotation\ntransition: var(--motion-recipe-flotation-enter);\nopacity: var(--motion-opacity-hidden);\ntransform: translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-present));"
       },
       "motion-deform": {
         "file": "semantic.css",
-        "startLine": 74,
-        "endLine": 76,
+        "startLine": 75,
+        "endLine": 77,
         "snippet": ".motion-deform\ntransition: var(--motion-recipe-control);"
       },
       "motion-page": {
         "file": "semantic.css",
-        "startLine": 84,
-        "endLine": 86,
+        "startLine": 85,
+        "endLine": 87,
         "snippet": ".motion-page\ntransition: var(--motion-recipe-page-push);"
       },
       "motion-layout-deform": {
         "file": "semantic.css",
-        "startLine": 93,
-        "endLine": 96,
+        "startLine": 94,
+        "endLine": 97,
         "snippet": ".motion-layout-deform\noverflow: hidden;\ntransition: var(--motion-recipe-layout-deform-shell);"
       },
       "motion-glass-interactive": {
         "file": "semantic.css",
-        "startLine": 104,
-        "endLine": 106,
+        "startLine": 106,
+        "endLine": 108,
         "snippet": ".motion-glass-interactive\ntransition: var(--motion-recipe-glass-press);"
       },
       "motion-glass-shimmer": {
         "file": "semantic.css",
-        "startLine": 114,
-        "endLine": 116,
+        "startLine": 116,
+        "endLine": 118,
         "snippet": ".motion-glass-shimmer\ntransition: var(--motion-recipe-glass-shimmer);"
       },
       "motion-glass-morph": {
         "file": "semantic.css",
-        "startLine": 119,
-        "endLine": 122,
+        "startLine": 121,
+        "endLine": 124,
         "snippet": ".motion-glass-morph\noverflow: hidden;\ntransition: var(--motion-recipe-glass-morph);"
       },
       "motion-glass-none": {
         "file": "semantic.css",
-        "startLine": 126,
-        "endLine": 129,
+        "startLine": 128,
+        "endLine": 131,
         "snippet": ".motion-glass-none\ntransition: none;\nanimation: none;"
       },
       "motion-none": {

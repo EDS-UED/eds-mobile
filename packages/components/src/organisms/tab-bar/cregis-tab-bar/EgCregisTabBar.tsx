@@ -1,8 +1,17 @@
-import { View, type ViewProps } from 'react-native';
+import type { ViewProps } from 'react-native';
+
+import { EgTabBar } from '../tab-bar/EgTabBar.js';
+import { CREGIS_TAB_BAR_ITEMS } from './cregisTabBarPreset.js';
 import type { EgCregisTabBarProps } from './EgCregisTabBar.types.js';
 
-/** RN implementation — Apply_TabBar@Cregis (set · 2 variants) */
+/**
+ * Apply_TabBar@Cregis — `EgTabBar` + Cregis 四项。
+ * iOS 26+ 不绘制，根 `_layout` 用 `EgCregisTabBarNativeLayout`。
+ */
 export function EgCregisTabBar(props: EgCregisTabBarProps & Pick<ViewProps, 'style'>) {
-  const { testID, style } = props;
-  return <View testID={testID ?? 'tab-bar-cregis' } style={style} accessibilityLabel="Apply_TabBar@Cregis" />;
+  const { items = CREGIS_TAB_BAR_ITEMS, testID = 'tab-bar-cregis', ...rest } = props;
+
+  return (
+    <EgTabBar {...rest} testID={testID} items={items} selectionAccent="decor" />
+  );
 }

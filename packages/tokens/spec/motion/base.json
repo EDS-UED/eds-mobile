@@ -6,7 +6,7 @@
       "comment": "Duration ladder（--motion-N · ms）",
       "tokens": {
         "motion-0": "0ms",
-        "motion-1": "100ms",
+        "motion-1": "85ms",
         "motion-2": "180ms",
         "motion-3": "280ms",
         "motion-4": "400ms",
@@ -54,7 +54,15 @@
     {
       "comment": "Scale",
       "tokenList": [
-        { "name": "motion-scale-press", "value": "0.96" },
+        {
+          "name": "motion-scale-press",
+          "value": "1.2",
+          "comment": "Tap press scale · default md"
+        },
+        { "name": "motion-scale-press-xs", "value": "1.02", "comment": "Tap press · xs" },
+        { "name": "motion-scale-press-sm", "value": "1.04", "comment": "Tap press · sm" },
+        { "name": "motion-scale-press-md", "value": "1.2", "comment": "Tap press · md" },
+        { "name": "motion-scale-press-lg", "value": "1.35", "comment": "Tap press · lg" },
         { "name": "motion-scale-subtle", "value": "0.98" },
         { "name": "motion-scale-emphasis", "value": "1.04" },
         { "name": "motion-scale-present", "value": "0.96", "comment": "Sheet / Modal / Popover 入场" }
@@ -63,7 +71,15 @@
     {
       "comment": "Glass（Liquid Glass 交互基线）",
       "tokenList": [
-        { "name": "motion-glass-scale-press", "value": "0.975", "comment": "Glass 按压缩放；比普通 Tap 更克制" },
+        {
+          "name": "motion-glass-scale-press",
+          "value": "1.2",
+          "comment": "Glass press scale · default md"
+        },
+        { "name": "motion-glass-scale-press-xs", "value": "1.02", "comment": "Glass press · xs" },
+        { "name": "motion-glass-scale-press-sm", "value": "1.04", "comment": "Glass press · sm" },
+        { "name": "motion-glass-scale-press-md", "value": "1.2", "comment": "Glass press · md" },
+        { "name": "motion-glass-scale-press-lg", "value": "1.35", "comment": "Glass press · lg · EgButtonGlass RN" },
         { "name": "motion-glass-opacity-shimmer", "value": "0.10", "comment": "Glass Shimmer 最大透明度" }
       ]
     },
@@ -89,7 +105,14 @@
     "sheet": { "response": 0.48, "dampingFraction": 0.86, "blendDuration": 0.20, "reanimated": { "damping": 23, "stiffness": 171, "mass": 1 } },
     "modal": { "response": 0.38, "dampingFraction": 0.90, "blendDuration": 0.15, "reanimated": { "damping": 30, "stiffness": 273, "mass": 1 } },
     "control": { "response": 0.28, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 37, "stiffness": 503, "mass": 1 } },
-    "press": { "response": 0.18, "dampingFraction": 0.90, "blendDuration": 0.05, "reanimated": { "damping": 63, "stiffness": 1218, "mass": 1 } },
+    "press": { "response": 0.32, "dampingFraction": 0.88, "blendDuration": 0.12, "reanimated": { "damping": 46, "stiffness": 560, "mass": 1 } },
+    "press-release": {
+      "response": 0.44,
+      "dampingFraction": 0.66,
+      "blendDuration": 0.12,
+      "reanimated": { "damping": 17, "stiffness": 350, "mass": 1 },
+      "comment": "Scale release bounce · sm/md/lg/xl 共用（recipe press-scale-out）"
+    },
     "drag": { "response": 0.32, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 32, "stiffness": 385, "mass": 1 } },
     "bouncy": { "response": 0.42, "dampingFraction": 0.68, "blendDuration": 0.10, "reanimated": { "damping": 20, "stiffness": 224, "mass": 1 } },
     "gentle": { "response": 0.60, "dampingFraction": 0.92, "blendDuration": 0.20, "reanimated": { "damping": 19, "stiffness": 110, "mass": 1 } }

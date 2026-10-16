@@ -14,15 +14,15 @@ export const TAB_BAR_SHELL_PADDING_BOTTOM =
     : (mobileTheme.spacing['spacing-5'] as number);
 
 export const TAB_BAR_ITEM_PADDING_VERTICAL = mobileTheme.spacing['spacing-2'] as number;
-/** icon ↔ label（Figma pill track 62px 合计内无额外 gap）。 */
-export const TAB_BAR_ITEM_GAP = mobileTheme.spacing['spacing-0'] as number;
+/** icon ↔ label — `spacing-05`（2px）。 */
+export const TAB_BAR_ITEM_GAP = mobileTheme.spacing['spacing-05'] as number;
 export const TAB_BAR_ICON_SLOT = mobileTheme.spacing['symbol-lg'] as number;
 
 export const TAB_BAR_PILL_RADIUS = mobileTheme.spacing['radius-full'] as number;
 export const TAB_BAR_ICON_SIZE = 'lg' as const;
 
-/** Figma pill track 内容区高度（inner + item + symbol + label token 合计）。 */
-export const TAB_BAR_PILL_TRACK_HEIGHT = 62 as const;
+/** pill track 内容区高度（inner + item + symbol + gap + label token 合计）。 */
+export const TAB_BAR_PILL_TRACK_HEIGHT = 64 as const;
 
 /** Tab 轨道内容高度 — token 合计，对齐 `TAB_BAR_PILL_TRACK_HEIGHT`。 */
 export function tabBarTrackIntrinsicHeight(): number {

@@ -12,6 +12,7 @@ function NativeGlassControl({
   mode,
   variant,
   shape,
+  shellLayout = 'toolbar',
   disabled,
   onPress,
   onPressIn,
@@ -26,7 +27,11 @@ function NativeGlassControl({
   const GlassView = getNativeGlassView();
   if (!GlassView) return null;
 
-  const shellStyle = StyleSheet.flatten([resolveGlassControlShellStyle(shape), style]) as ViewStyle;
+  const shellStyle = StyleSheet.flatten(
+    shellLayout === 'component'
+      ? [style]
+      : [resolveGlassControlShellStyle(shape), style],
+  ) as ViewStyle;
   const glassEffectStyle = variant === 'clear' ? 'clear' : 'regular';
 
   return (
@@ -64,6 +69,7 @@ function FallbackGlassControl({
   mode,
   variant,
   shape,
+  shellLayout = 'toolbar',
   disabled,
   onPress,
   onPressIn,
@@ -76,6 +82,11 @@ function FallbackGlassControl({
   children,
 }: GlassControlShellProps) {
   const surfaceShape = shape === 'circle' ? 'circle' : 'capsule';
+  const surfaceStyle = StyleSheet.flatten(
+    shellLayout === 'component'
+      ? [style, contentStyle]
+      : [resolveGlassControlShellStyle(shape), contentStyle],
+  ) as ViewStyle;
 
   return (
     <GlassInteraction
@@ -87,14 +98,14 @@ function FallbackGlassControl({
       onPressOut={onPressOut}
       testID={testID}
       accessibilityLabel={accessibilityLabel}
-      style={style}
+      style={shellLayout === 'component' ? undefined : style}
     >
       <GlassSurface
         variant={variant}
         shape={surfaceShape}
         mode={mode}
         enhancedRefraction
-        style={StyleSheet.flatten([resolveGlassControlShellStyle(shape), contentStyle]) as ViewStyle}
+        style={surfaceStyle}
       >
         {children as ReactNode}
       </GlassSurface>
@@ -108,6 +119,7 @@ export function GlassControlShell(props: GlassControlShellProps) {
     mode = 'light',
     variant = 'regular',
     shape,
+    shellLayout = 'toolbar',
     haptic = true,
     ...rest
   } = props;
@@ -120,6 +132,7 @@ export function GlassControlShell(props: GlassControlShellProps) {
         mode={mode}
         variant={variant}
         shape={shape}
+        shellLayout={shellLayout}
         haptic={haptic}
         {...rest}
       />
@@ -131,6 +144,7 @@ export function GlassControlShell(props: GlassControlShellProps) {
       mode={mode}
       variant={variant}
       shape={shape}
+      shellLayout={shellLayout}
       haptic={haptic}
       {...rest}
     />
@@ -138,9 +152,11 @@ export function GlassControlShell(props: GlassControlShellProps) {
 }
 
 const styles = StyleSheet.create({
+  /** 胶囊 — 默认随内容；EgButtonGlass 双 icon 在 contentStyle 上 stretch + 固定高度。 */
   pillHit: {
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'stretch',
   },
   circleHit: {
     width: '100%',

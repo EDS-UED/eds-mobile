@@ -1,9 +1,6 @@
 import { Stack } from 'expo-router/stack';
 
-import {
-  showcaseHomeScreenOptions,
-  useShowcaseStackScreenOptions,
-} from '@/hooks/useShowcaseStackScreenOptions';
+import { useShowcaseStackScreenOptions } from '@/hooks/useShowcaseStackScreenOptions';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 
 export default function PatternsLayout() {
@@ -11,10 +8,7 @@ export default function PatternsLayout() {
 
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen
-        name="index"
-        options={{ ...showcaseHomeScreenOptions, title: showcaseTabHomeTitles.patterns }}
-      />
+      <Stack.Screen name="index" options={{ title: showcaseTabHomeTitles.patterns }} />
     </Stack>
   );
 }

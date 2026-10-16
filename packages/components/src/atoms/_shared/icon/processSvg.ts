@@ -1,6 +1,6 @@
 export type IconKind = 'stroke' | 'fill' | 'mixed';
 
-export type IconFillTone = 'primary' | 'brand';
+export type IconFillTone = 'primary' | 'brand' | 'decor';
 
 export type IconColorMode = 'token' | 'fixed';
 

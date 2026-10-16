@@ -11,7 +11,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EgGlass } from '../../../atoms/glass/EgGlass.js';
-import { EgButtonGlass } from '../../../molecules/button/button-glass/EgButtonGlass.js';
+import { EgButtonGlassRn } from '../../../molecules/button/button-glass/EgButtonGlassRn.js';
 import { presetBodyMediumStrong } from '../../../shared/typographyStyles.js';
 import { getThemeColors } from '../../../theme/index.js';
 import {
@@ -65,17 +65,15 @@ function EgNavBarSlot({ visible, minWidth, align, onContentWidth, children }: Sl
 function EgNavBarActionButton({
   action,
   mode,
-  forceRnImplementation,
   testID,
 }: {
   action: EgNavBarAction;
   mode: EgNavBarProps['mode'];
-  forceRnImplementation?: boolean;
   testID: string;
 }) {
   const kind = action.kind ?? 'icon';
   return (
-    <EgButtonGlass
+    <EgButtonGlassRn
       kind={kind}
       icon={action.icon}
       iconCount={action.iconCount}
@@ -86,7 +84,6 @@ function EgNavBarActionButton({
       onPress={action.onPress}
       accessibilityLabel={action.accessibilityLabel}
       mode={mode}
-      forceRnImplementation={forceRnImplementation}
       testID={testID}
     />
   );
@@ -108,7 +105,6 @@ export function EgNavBarRn(props: EgNavBarProps) {
     manageStatusBar = true,
     mode = 'light',
     testID,
-    forceRnImplementation,
     style,
   } = props;
 
@@ -163,7 +159,6 @@ export function EgNavBarRn(props: EgNavBarProps) {
           <EgNavBarActionButton
             action={left}
             mode={mode}
-            forceRnImplementation={forceRnImplementation}
             testID="nav-bar-left"
           />
         </EgNavBarSlot>
@@ -184,7 +179,6 @@ export function EgNavBarRn(props: EgNavBarProps) {
             <EgNavBarActionButton
               action={right}
               mode={mode}
-              forceRnImplementation={forceRnImplementation}
               testID="nav-bar-right"
             />
           ) : null}

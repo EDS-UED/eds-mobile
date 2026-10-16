@@ -1,4 +1,5 @@
-import { EgNavBar, shouldUseEgNavBarNativeStack } from '@eds/mobile-components';
+import { shouldUseEgNavBarNativeStack } from '@eds/mobile-components';
+import { EgNavBarRn } from '@eds/mobile-components/preview/rn';
 import type { EgNavBarAction, EgNavBarBackground, ThemeMode } from '@eds/mobile-components';
 import { catalogPreviewCanvasStyle } from '@eds/mobile-components/catalog';
 import { router } from 'expo-router';
@@ -18,7 +19,6 @@ type ShowcaseNavBarPreviewProps = Record<string, unknown> & {
   rightIconCount?: 1 | 2 | string;
   background?: EgNavBarBackground;
   statusBarZone?: boolean;
-  forceRnImplementation?: boolean;
 };
 
 /** 详情画布居中且 Inspect 包裹层按内容定宽 — 舞台按画布可用宽度显式给宽。 */
@@ -26,8 +26,8 @@ const STAGE_HORIZONTAL_CHROME =
   2 * (showcaseTheme.layout.cardPaddingHorizontal + catalogPreviewCanvasStyle.padding);
 
 /**
- * 组件详情 — 卡片内恒为 EgNavBar（RN）。
- * 不可嵌套 `ScreenStack`（会与 Expo Router Stack 冲突报错）；iOS 26+ 系统栏见「全屏演示」。
+ * 组件详情 — 卡片内为 Figma 对照（RN）；真实平台栈见「全屏演示」。
+ * 不可嵌套 `ScreenStack`（会与 Expo Router Stack 冲突报错）。
  */
 export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
   const {
@@ -39,7 +39,6 @@ export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
     rightIconCount = 1,
     background = 'auto',
     statusBarZone = true,
-    forceRnImplementation = false,
   } = props;
 
   const colors = useShowcaseColors();
@@ -48,7 +47,6 @@ export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
 
   const stageWidth = windowWidth - STAGE_HORIZONTAL_CHROME;
   const resolvedRightCount: 1 | 2 = Number(rightIconCount) === 2 ? 2 : 1;
-  const systemNavAvailable = shouldUseEgNavBarNativeStack();
   const right: EgNavBarAction = {
     kind: 'icon',
     icon: 'eds-list-lattice-mobile',
@@ -67,14 +65,13 @@ export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
         showRight: showRight ? '1' : '0',
         rightIconCount: String(resolvedRightCount),
         background,
-        forceRn: forceRnImplementation ? '1' : '0',
       },
     });
 
   return (
     <View style={styles.host}>
       <View style={[styles.stage, { width: stageWidth, backgroundColor: colors.page as string }]}>
-        <EgNavBar
+        <EgNavBarRn
           mode={mode}
           title={title}
           showLeft={showLeft}
@@ -84,20 +81,35 @@ export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
           background={background}
           topInset={statusBarZone ? insets.top : 0}
           manageStatusBar={false}
-          forceRnImplementation
           style={styles.inFlowBar}
         />
       </View>
       <ShowcaseCardRow
         title="全屏演示"
         hint={
-          systemNavAvailable && !forceRnImplementation
+          shouldUseEgNavBarNativeStack()
             ? '真实状态栏 · 系统导航栏（Liquid Glass）'
-            : systemNavAvailable
-              ? '系统导航栏（定制已强制 RN）'
-              : '真实状态栏 · EgNavBar（RN）'
+            : '真实状态栏 · EgNavBar（RN）'
         }
         onPress={openFullScreenDemo}
+      />
+      <ShowcaseCardRow
+        title="Cregis 主页场景"
+        hint="showTitle: false · 左文案 + 右双 icon · 上滑 scroll edge"
+        onPress={() =>
+          router.push({
+            pathname: '/(components)/nav-bar-demo',
+            params: {
+              scenario: 'cregis-home',
+              title: '主页',
+              showTitle: '0',
+              showLeft: '1',
+              showRight: '1',
+              rightIconCount: '2',
+              background: 'auto',
+            },
+          })
+        }
       />
     </View>
   );

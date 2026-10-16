@@ -38,6 +38,12 @@
       "types": "./dist/preview/AtomGallery.d.ts",
       "default": "./dist/preview/AtomGallery.js"
     },
+    "./preview/rn": {
+      "react-native": "./src/preview/rnImplementations.ts",
+      "import": "./dist/preview/rnImplementations.js",
+      "types": "./dist/preview/rnImplementations.d.ts",
+      "default": "./dist/preview/rnImplementations.js"
+    },
     "./preview/parity": {
       "react-native": "./src/preview/ParityHarness.tsx",
       "import": "./dist/preview/ParityHarness.js",
@@ -45,26 +51,35 @@
       "default": "./dist/preview/ParityHarness.js"
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "generate": "node scripts/generate-catalog.mjs && pnpm generate:assets",
     "generate:assets": "node --experimental-strip-types scripts/generate-atom-assets.mjs",
     "prebuild": "node scripts/generate-catalog.mjs && pnpm generate:assets",
-    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "generate:tab-icons": "node scripts/generate-native-tab-icons.mjs",
+    "build": "rm -rf dist && tsc -p tsconfig.json && node scripts/copy-static-assets.mjs",
+    "postbuild": "pnpm --filter @eds-evergreen/mobile build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "echo \"No linter configured yet\""
   },
   "peerDependencies": {
+    "expo-router": ">=6",
     "react": ">=18",
     "react-native": ">=0.74",
-    "react-native-svg": ">=15",
-    "react-native-reanimated": ">=3",
     "react-native-gesture-handler": ">=2",
+    "react-native-reanimated": ">=3",
     "react-native-safe-area-context": ">=4",
-    "expo-router": ">=6"
+    "react-native-screens": ">=4.20",
+    "react-native-svg": ">=15"
   },
   "peerDependenciesMeta": {
     "expo-router": {
+      "optional": true
+    },
+    "react-native-screens": {
       "optional": true
     }
   },
@@ -73,11 +88,12 @@
     "@eds/mobile-tokens": "workspace:*"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.0.8",
-    "typescript": "^5.7.3",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-reanimated": "~4.5.1",
     "react-native-safe-area-context": "5.7.0",
-    "react-native-worklets": "~0.10.1"
+    "react-native-worklets": "~0.10.1",
+    "typescript": "^5.7.3"
   }
 }

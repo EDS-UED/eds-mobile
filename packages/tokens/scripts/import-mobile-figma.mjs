@@ -62,8 +62,8 @@ const semanticTokens = [
   ['box-page', 'color(var(--eds-page) / 1)', 'color(var(--eds-page) / 1)'],
   ['box-flotation', 'color(var(--eds-flotation) / 1)', 'color(var(--eds-flotation) / 1)'],
   ['stroke-hide', 'color(var(--eds-base) / 0)', 'color(var(--eds-base) / 0)'],
-  ['stroke-divider-module', 'color(var(--eds-base) / 0.1)', 'color(var(--eds-base) / 0.1)'],
-  ['stroke-divider-page', 'color(var(--eds-base) / 0.08)', 'color(var(--eds-base) / 0.1)'],
+  ['stroke-divider-module', 'color(var(--eds-base) / 0.09)', 'color(var(--eds-base) / 0.1)'],
+  ['stroke-divider-page', 'color(var(--eds-base) / 0.09)', 'color(var(--eds-base) / 0.1)'],
   ['stroke-base-primary', 'color(var(--eds-base) / 1)', 'color(var(--eds-base) / 1)'],
   ['stroke-base-secondary', 'color(var(--eds-base) / 0.6)', 'color(var(--eds-base) / 0.6)'],
   ['stroke-base-tertiary', 'color(var(--eds-base) / 0.4)', 'color(var(--eds-base) / 0.4)'],
@@ -89,7 +89,7 @@ const semanticTokens = [
   ['material-base-tertiary', 'color(var(--eds-base) / 0.4)', 'color(var(--eds-base) / 0.4)'],
   ['material-base-quaternary', 'color(var(--eds-base) / 0.2)', 'color(var(--eds-base) / 0.2)'],
   ['material-card-shallow', 'color(var(--eds-base) / 0.03)', 'color(var(--eds-base) / 0.05)'],
-  ['material-card-moderate', 'color(var(--eds-base) / 0.05)', 'color(var(--eds-base) / 0.07)'],
+  ['material-card-moderate', 'color(var(--eds-base) / 0.05)', 'color(var(--eds-base) / 0.06)'],
   ['material-card-deep', 'color(var(--eds-base) / 0.07)', 'color(var(--eds-base) / 0.09)'],
   ['material-brand', 'color(var(--eds-brand) / 1)', 'color(var(--eds-brand) / 1)'],
   ['material-brand-weaken', 'color(var(--eds-brand) / 0.12)', 'color(var(--eds-brand) / 0.12)'],
@@ -124,16 +124,16 @@ const semanticTokens = [
   ['effect-prompt', 'color(var(--eds-base) / 0.8)', 'color(var(--eds-base) / 0.2)'],
   ['effect-box', 'color(var(--eds-flotation) / 0.6)', 'color(var(--eds-flotation) / 0.6)'],
   ['effect-overlay-subtle', 'color(var(--eds-overlay) / 0)', 'color(var(--eds-overlay) / 0)'],
-  ['effect-overlay-shallow', 'color(var(--eds-overlay) / 0.4)', 'color(var(--eds-overlay) / 0.2)'],
+  ['effect-overlay-shallow', 'color(var(--eds-overlay) / 0.2)', 'color(var(--eds-overlay) / 0.2)'],
   ['effect-overlay-deep', 'color(var(--eds-overlay) / 0.88)', 'color(var(--eds-overlay) / 0.88)'],
-  ['event-tap', 'color(var(--eds-base) / 0.1)', 'color(var(--eds-base) / 0.1)'],
+  ['event-tap', 'color(var(--eds-base) / 0.05)', 'color(var(--eds-base) / 0.06)'],
   ['event-tap-brand', 'color(var(--eds-brand) / 0.6)', 'color(var(--eds-brand) / 0.6)'],
   ['event-tap-decor', 'color(var(--eds-decor) / 0.6)', 'color(var(--eds-decor) / 0.6)'],
   ['event-tap-danger', 'color(var(--eds-danger) / 0.6)', 'color(var(--eds-danger) / 0.6)'],
   ['event-tap-base', 'color(var(--eds-base) / 0.6)', 'color(var(--eds-base) / 0.6)'],
   ['event-tap-face', 'color(var(--eds-face) / 0.6)', 'color(var(--eds-face) / 0.6)'],
   ['event-focus', 'color(var(--eds-base) / 0.05)', 'color(var(--eds-base) / 0.08)'],
-  ['event-focus-brand', 'color(var(--eds-brand) / 0.1)', 'color(var(--eds-brand) / 0.12)'],
+  ['event-focus-brand', 'color(var(--eds-brand) / 0.12)', 'color(var(--eds-brand) / 0.14)'],
 ].map(([name, light, dark]) => ({ name, light, dark }));
 
 const scaleBase = {
@@ -227,7 +227,7 @@ const scaleSemantic = {
     {
       comment: '模糊（Blur）',
       tokens: [
-        { name: 'blur-xs', value: 'var(--scale-0)', comment: '0px' },
+        { name: 'blur-xs', value: 'var(--scale-1)', comment: '4px' },
         { name: 'blur-sm', value: 'var(--scale-2)', comment: '8px' },
         { name: 'blur-md', value: 'var(--scale-4)', comment: '16px' },
         { name: 'blur-lg', value: 'var(--scale-20)', comment: '80px' },

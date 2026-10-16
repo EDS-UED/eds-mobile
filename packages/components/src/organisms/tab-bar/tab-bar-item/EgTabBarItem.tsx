@@ -9,6 +9,7 @@ import {
 import { EgSymbol } from '../../../atoms/_shared/symbol/EgSymbol.js';
 import { resolveColor } from '../../../shared/resolveColor.js';
 import { getThemeColors, mobileTheme } from '../../../theme/index.js';
+import { renderTabBarItemSymbol } from '../_shared/renderTabBarItemSymbol.js';
 import {
   TAB_BAR_ICON_SIZE,
   TAB_BAR_ICON_SLOT,
@@ -16,6 +17,7 @@ import {
   TAB_BAR_ITEM_PADDING_VERTICAL,
   TAB_BAR_PILL_RADIUS,
 } from '../_shared/tabBarMetrics.js';
+import { egTabBarSelectionLabelToken } from '../_shared/tabBarSelectionAccent.js';
 import { tabBarLabelTypography } from '../_shared/tabBarTypography.js';
 import type { EgTabBarItemProps } from './EgTabBarItem.types.js';
 
@@ -30,17 +32,20 @@ export function EgTabBarItem(
     disabled = false,
     embedded = false,
     icon,
+    symbolName,
+    symbolNameSelected,
     onPress,
     onLayout,
     style,
     accessibilityLabel,
+    selectionAccent = 'brand',
   } = props;
 
   const colors = getThemeColors(mode);
   const showItemSelectionBg = selected && !embedded;
   const labelColor = resolveColor(
     colors,
-    selected ? 'text-brand' : 'text-base-primary',
+    selected ? egTabBarSelectionLabelToken(selectionAccent) : 'text-base-primary',
   );
 
   const defaultIcon = (
@@ -52,9 +57,21 @@ export function EgTabBarItem(
     />
   );
 
+  const tabIcon =
+    icon ??
+    (symbolName
+      ? renderTabBarItemSymbol({
+          symbolName,
+          symbolNameSelected,
+          selected,
+          mode,
+          selectionAccent,
+        })
+      : defaultIcon);
+
   const content = (
     <>
-      <View style={styles.iconSlot}>{icon ?? defaultIcon}</View>
+      <View style={styles.iconSlot}>{tabIcon}</View>
       <Text
         style={[tabBarLabelTypography(selected), { color: labelColor }]}
         numberOfLines={1}

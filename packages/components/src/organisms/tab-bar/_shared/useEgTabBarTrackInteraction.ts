@@ -2,15 +2,18 @@ import { useCallback, useMemo, useState } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
-import { resolveMotionRecipe } from '@eds/mobile-animations';
 
 import { triggerGlassPressHaptic } from '../../../atoms/glass/glassPressHaptic.js';
+import {
+  glassPressScaleInSpringConfig,
+  navigationSpringConfig,
+  pressScaleOutSpringConfig,
+} from '../../../shared/pressScaleSpring.js';
 import { motionGlassPressScale } from '../../../shared/themeScalars.js';
 import { hitTestTabBarIndex, layoutForTabIndex, type TabBarItemLayout } from './tabBarHitTest.js';
 
-const glassPressMotion = resolveMotionRecipe('glass-press');
-const navigationMotion = resolveMotionRecipe('navigation');
-const pressScale = motionGlassPressScale();
+/** 整条 TabBar 按下 · md（无单 item scale）。 */
+const barPressScale = motionGlassPressScale('sm');
 
 type SharedNumber = ReturnType<typeof useSharedValue<number>>;
 
@@ -27,8 +30,8 @@ function snapTabBarIndicator(
     return;
   }
   if (animated) {
-    indicatorX.value = withSpring(layout.x, navigationMotion.springConfig);
-    indicatorWidth.value = withSpring(layout.width, navigationMotion.springConfig);
+    indicatorX.value = withSpring(layout.x, navigationSpringConfig);
+    indicatorWidth.value = withSpring(layout.width, navigationSpringConfig);
   } else {
     indicatorX.value = layout.x;
     indicatorWidth.value = layout.width;
@@ -89,7 +92,7 @@ export function useEgTabBarTrackInteraction({
       .minDistance(0)
       .onBegin((event) => {
         'worklet';
-        barScale.value = withSpring(pressScale, glassPressMotion.springConfig);
+        barScale.value = withSpring(barPressScale, glassPressScaleInSpringConfig);
         const index = hitTestTabBarIndex(event.x, layoutsShared.value);
         if (index < 0) {
           return;
@@ -112,7 +115,7 @@ export function useEgTabBarTrackInteraction({
       })
       .onFinalize(() => {
         'worklet';
-        barScale.value = withSpring(1, glassPressMotion.springConfig);
+        barScale.value = withSpring(1, pressScaleOutSpringConfig);
         const index = dragIndex.value;
         dragIndex.value = -1;
         if (index >= 0) {
@@ -137,4 +140,4 @@ export function useEgTabBarTrackInteraction({
     gesture,
     previewIndex,
   };
-}
+};

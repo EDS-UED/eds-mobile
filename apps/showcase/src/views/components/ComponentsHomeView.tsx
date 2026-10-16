@@ -30,6 +30,7 @@ export function ComponentsHomeView() {
               key={tier.tier}
               title={tier.label}
               hint={tierPageSubtitle(tier.tier)}
+              onPress={() => router.push(`/(components)/tier/${tier.tier}`)}
             />
           ))}
         </View>

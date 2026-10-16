@@ -23,8 +23,12 @@ export function getShowcaseComponentCatalog(): ShowcaseCatalogEntry[] {
   return [...figmaComponentCatalog, ...SHOWCASE_INFRA_CATALOG];
 }
 
-export function findShowcaseCatalogEntry(slug: string): ShowcaseCatalogEntry | undefined {
-  return getShowcaseComponentCatalog().find((entry) => entry.slug === slug);
+export function findShowcaseCatalogEntry(slugOrExport: string): ShowcaseCatalogEntry | undefined {
+  const catalog = getShowcaseComponentCatalog();
+  return (
+    catalog.find((entry) => entry.slug === slugOrExport) ??
+    catalog.find((entry) => entry.exportName === slugOrExport)
+  );
 }
 
 export function isShowcaseEntryImplemented(entry: Pick<ShowcaseCatalogEntry, 'slug'>): boolean {

@@ -10,13 +10,14 @@ import { useEgTabBarController } from '../_shared/useEgTabBarController.js';
 import { EgTabBarItem } from '../tab-bar-item/EgTabBarItem.js';
 import type { EgTabBarProps } from './EgTabBar.types.js';
 
-/** Android / iOS ≤25 — RN 栈，玻璃仅由 `EgGlass`（`glass-tabbar-box`）负责。 */
+/** Android / iOS ≤25（及文档卡片 `/mobile-components/preview/rn`）— RN + `EgGlass`（`glass-tabbar-box`）。 */
 export function EgTabBarRn(props: EgTabBarProps & Pick<ViewProps, 'style'>) {
   const {
     testID,
     edgeToEdge = false,
     style,
     previewBackdrop,
+    selectionAccent = 'brand',
   } = props;
 
   const {
@@ -86,11 +87,14 @@ export function EgTabBarRn(props: EgTabBarProps & Pick<ViewProps, 'style'>) {
                     mode={mode}
                     label={item.label}
                     icon={item.icon}
+                    symbolName={item.symbolName}
+                    symbolNameSelected={item.symbolNameSelected}
                     selected={index === visualSelectedIndex}
                     embedded
                     disabled={disabled}
                     accessibilityLabel={item.accessibilityLabel}
                     onLayout={onItemLayout(index)}
+                    selectionAccent={selectionAccent}
                     style={index < items.length - 1 ? egTabBarStyles.itemOverlap : undefined}
                   />
                 ))}

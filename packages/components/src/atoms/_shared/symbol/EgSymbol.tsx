@@ -20,6 +20,11 @@ export type EgSymbolProps = EgCommonProps & {
   /** Canonical SVG asset name, e.g. `eds-add` or `eds-btc-bitcoin`. */
   name: string;
   size?: EgSymbolSize;
+  /**
+   * RN — render SVG markup at this pixel size (`sizeIconMarkup` / `colorizeTokenIconMarkup`).
+   * Use spacing tokens such as `avatar-xl` instead of scaling the view.
+   */
+  displayPx?: number;
   /** Token icon coloring only; ignored for crypto assets. */
   fillTone?: IconFillTone;
   /** Semantic color token for stroke icons — default `text-base-primary`. */
@@ -36,6 +41,7 @@ const SYMBOL_PX: Record<EgSymbolSize, number> = {
 export function EgSymbol({
   name,
   size = 'md',
+  displayPx,
   fillTone,
   strokeColorToken = 'text-base-primary',
   mode = 'light',
@@ -43,7 +49,7 @@ export function EgSymbol({
   style,
   accessibilityLabel,
 }: EgSymbolProps & Pick<ViewProps, 'style'>) {
-  const px = SYMBOL_PX[size];
+  const px = displayPx ?? SYMBOL_PX[size];
   const [xml, setXml] = useState<string | null>(null);
 
   useEffect(() => {
@@ -61,7 +67,9 @@ export function EgSymbol({
         const fillColor =
           resolvedFillTone === 'brand'
             ? resolveColor(colors, 'material-brand')
-            : strokeColor;
+            : resolvedFillTone === 'decor'
+              ? resolveColor(colors, 'material-decor')
+              : strokeColor;
 
         const nextXml =
           iconAsset.colorMode === 'token'

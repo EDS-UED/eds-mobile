@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { ThemeMode } from '../../theme/index.js';
 import type { ViewStyle } from 'react-native';
+import type { MotionPressIntensity } from '../../shared/themeScalars.js';
 
 export type GlassVariant = 'regular' | 'prominent' | 'clear';
 
@@ -33,6 +34,8 @@ export type GlassViewProps = GlassSurfaceProps;
 
 export type GlassInteractionProps = {
   press?: boolean;
+  /** 点按放大 — `motion-glass-scale-press-*`；默认 `md`。 */
+  pressIntensity?: MotionPressIntensity;
   shimmer?: boolean;
   lightResponse?: boolean;
   deformation?: boolean;
@@ -56,8 +59,13 @@ export type GlassContainerProps = {
 
 export type GlassControlShape = 'capsule' | 'circle';
 
+/** `toolbar` — UIKit 工具栏默认几何（spacing-5 等）；`component` — Eg* 仅设外框，内边距由 iOS 26 系统玻璃承担（勿叠 RN padding）。 */
+export type GlassControlShellLayout = 'toolbar' | 'component';
+
 export type GlassControlShellProps = {
   shape: GlassControlShape;
+  /** @default 'toolbar' */
+  shellLayout?: GlassControlShellLayout;
   variant?: GlassVariant;
   mode?: ThemeMode;
   haptic?: boolean;
@@ -68,7 +76,7 @@ export type GlassControlShellProps = {
   testID?: string;
   accessibilityLabel?: string;
   style?: ViewStyle;
-  /** 内边距 / 最小尺寸 — iOS 原生路径落在 Pressable 上，使整颗胶囊都是热区。 */
+  /** Pressable 热区；`shellLayout="component"` 时不写 RN padding（避免与原生 inset 相加）。 */
   contentStyle?: ViewStyle;
   children: ReactNode;
 };

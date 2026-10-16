@@ -28,7 +28,7 @@ export function resolveMotionTiming(name: MotionTimingName) {
  *
  * @example
  * const press = resolveMotionRecipe('press');
- * scale.value = withSpring(0.96, press.springConfig);
+ * scale.value = withSpring(1.04, press.springConfig);
  */
 export function resolveMotionRecipe(id: MotionRecipeId) {
   const recipe = mobileMotionRecipes[id];

@@ -339,7 +339,7 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | 变量 | 值 | 角色 |
 |------|-----|------|
 | `--eds-motion-0` | `0ms` | instant |
-| `--eds-motion-1` | `100ms` | micro / tap |
+| `--eds-motion-1` | `85ms` | micro / tap |
 | `--eds-motion-2` | `180ms` | fast / fade |
 | `--eds-motion-3` | `280ms` | normal / enter |
 | `--eds-motion-4` | `400ms` | slow |
@@ -367,7 +367,10 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | 变量 | 值 |
 |------|-----|
 | `--motion-opacity-hidden/dim/subtle/visible/disabled` | `0 / 0.4 / 0.7 / 1 / 0.5` |
-| `--motion-scale-press/subtle/emphasis/present` | `0.96 / 0.98 / 1.04 / 0.96` |
+| `--motion-scale-press`（default md） | `1.2` |
+| `--motion-scale-press-xs/sm/md/lg` | `1.02 / 1.04 / 1.2 / 1.35` |
+| `--motion-glass-scale-press-xs/sm/md/lg` | `1.02 / 1.04 / 1.2 / 1.35` |
+| `--motion-scale-subtle/emphasis/present` | `0.98 / 1.04 / 0.96` |
 | `--motion-distance-xs/sm/md/lg/xl` | `4 / 8 / 16 / 24 / 40` px |
 | `--motion-offset-flotation-y` | `calc(-1 * var(--spacing-2-5))` ※ |
 | `--motion-offset-layout-deform-y` | `var(--spacing-2-5)` ※ |
@@ -458,7 +461,7 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 |------|-----|
 | `--stroke-hide` | `#02030400` |
 | `--stroke-divider-module` | light 10% base · dark 10% base |
-| `--stroke-divider-page` | light 8% base · dark 10% base |
+| `--stroke-divider-page` | light 9% base · dark 10% base |
 | `--stroke-base-primary` | `#020304` |
 | `--stroke-base-secondary` | `#02030499` |
 | `--stroke-base-tertiary` | `#02030466` |
@@ -556,7 +559,7 @@ Dark 与 Light **同名 token**，主色从 `#020304` 翻转为 `#ffffff` 系：
 | `--box-flotation` | `#ffffff` | `#1c1d1f` |
 | `--text-base-primary` | `#020304` | `#ffffff` |
 | `--material-card-moderate` | `#0203040d` | `#ffffff12` |
-| `--event-tap` | `#0203041a` | `#ffffff1a` |
+| `--event-tap` | light 5% base · dark 6% base |
 | `--status-danger` | `#d7462d` | `#fa6950` |
 | `--status-warning` | `#eb9114` | `#ffaa32` |
 
@@ -567,7 +570,7 @@ Dark 与 Light **同名 token**，主色从 `#020304` 翻转为 `#ffffff` 系：
     → var(--eds-brand) → #5f2243
 
 --event-tap-brand         → color-mix(brand 60%)
---event-focus-brand       → color-mix(brand 10% light / 12% dark)
+--event-focus-brand       → color-mix(brand 12% light / 14% dark)
 --material-brand-weaken   → color-mix(brand 12%)
 ```
 

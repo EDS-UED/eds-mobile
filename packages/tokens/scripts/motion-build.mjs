@@ -1,6 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+import { normalizeMotionTimings, resolveMotionTimingMs } from './motion-ladder.mjs';
+
 function readCssSpec(specDir, name) {
   return JSON.parse(readFileSync(join(specDir, 'motion', name), 'utf-8'));
 }
@@ -24,7 +26,13 @@ function buildResolutionChain(baseSpec, recipeSpec, semanticSpec) {
         hapticRef: recipe?.hapticRef ?? null,
         base: {
           spring: recipe?.springRef ? baseSpec.springs?.[recipe.springRef] ?? null : null,
-          timing: recipe?.timingRef ? baseSpec.timings?.[recipe.timingRef] ?? null : null,
+          timing: recipe?.timingRef
+            ? (() => {
+                const raw = baseSpec.timings?.[recipe.timingRef] ?? null;
+                if (!raw) return null;
+                return { ...raw, duration: resolveMotionTimingMs(baseSpec, raw) };
+              })()
+            : null,
           haptic: recipe?.hapticRef ? baseSpec.haptics?.[recipe.hapticRef] ?? null : null,
         },
       };
@@ -66,7 +74,7 @@ export function generateMobileMotionRuntime(specDir, animationsSrcDir) {
     }
   }
 
-  const timings = baseSpec.timings ?? {};
+  const timings = normalizeMotionTimings(baseSpec);
   const haptics = baseSpec.haptics ?? {};
   const interaction = baseSpec.interaction ?? {};
 

@@ -348,8 +348,9 @@
       "ios-spring-page-shot-close": "damping:37,stiffness:342,mass:1",
       "motion-haptic-selection": "\"selection\"",
       "motion-haptic-light": "\"light\"",
-      "ios-layout-deform-content-opacity": "duration:180,easing:cubic-bezier(0.42,0,0.58,1)",
-      "ios-layout-deform-content-transform": "duration:350,easing:cubic-bezier(0.22,1,0.36,1)",
+      "ios-layout-deform-content-opacity": "duration:85,easing:cubic-bezier(0.42,0,0.58,1)",
+      "ios-layout-deform-content-transform": "duration:180,easing:cubic-bezier(0.22,1,0.36,1)",
+      "ios-layout-deform-content-swap": "duration:85,easing:cubic-bezier(0.42,0,0.58,1)",
       "ios-sheets-dismiss": "duration:800,easing:cubic-bezier(0.32,0.72,0,1)",
       "motion-interaction-velocity-aware": "1",
       "motion-interaction-interruptible": "1",
@@ -364,7 +365,7 @@
       "motion-duration-sheets": "var(--motion-0)",
       "motion-duration-page": "var(--motion-0)",
       "motion-duration-page-shot": "var(--motion-0)",
-      "motion-delay-layout-deform-content-swap": "120ms",
+      "motion-delay-layout-deform-content-swap": "var(--motion-1)",
       "motion-easing-standard": "var(--motion-ease-1)",
       "motion-easing-product": "var(--motion-ease-4)",
       "motion-easing-float": "var(--motion-ease-7)",
@@ -2542,36 +2543,42 @@
         "file": "base.css",
         "startLine": 175,
         "endLine": 175,
-        "snippet": "  --ios-layout-deform-content-opacity: duration:180,easing:cubic-bezier(0.42,0,0.58,1);"
+        "snippet": "  --ios-layout-deform-content-opacity: duration:85,easing:cubic-bezier(0.42,0,0.58,1);"
       },
       "ios-layout-deform-content-transform": {
         "file": "base.css",
         "startLine": 176,
         "endLine": 176,
-        "snippet": "  --ios-layout-deform-content-transform: duration:350,easing:cubic-bezier(0.22,1,0.36,1);"
+        "snippet": "  --ios-layout-deform-content-transform: duration:180,easing:cubic-bezier(0.22,1,0.36,1);"
       },
-      "ios-sheets-dismiss": {
+      "ios-layout-deform-content-swap": {
         "file": "base.css",
         "startLine": 177,
         "endLine": 177,
+        "snippet": "  --ios-layout-deform-content-swap: duration:85,easing:cubic-bezier(0.42,0,0.58,1);"
+      },
+      "ios-sheets-dismiss": {
+        "file": "base.css",
+        "startLine": 178,
+        "endLine": 178,
         "snippet": "  --ios-sheets-dismiss: duration:800,easing:cubic-bezier(0.32,0.72,0,1);"
       },
       "motion-interaction-velocity-aware": {
         "file": "base.css",
-        "startLine": 180,
-        "endLine": 180,
+        "startLine": 181,
+        "endLine": 181,
         "snippet": "  --motion-interaction-velocity-aware: 1;"
       },
       "motion-interaction-interruptible": {
         "file": "base.css",
-        "startLine": 181,
-        "endLine": 181,
+        "startLine": 182,
+        "endLine": 182,
         "snippet": "  --motion-interaction-interruptible: 1;"
       },
       "motion-interaction-preserve-velocity": {
         "file": "base.css",
-        "startLine": 182,
-        "endLine": 182,
+        "startLine": 183,
+        "endLine": 183,
         "snippet": "  --motion-interaction-preserve-velocity: 1;"
       },
       "motion-duration-micro": {
@@ -2638,7 +2645,7 @@
         "file": "recipe.css",
         "startLine": 20,
         "endLine": 20,
-        "snippet": "  --motion-delay-layout-deform-content-swap: 120ms; /* 正文淡出中途换 Tab 数据 */"
+        "snippet": "  --motion-delay-layout-deform-content-swap: var(--motion-1); /* 正文淡出中途换 Tab 数据（阶梯 motion-1） */"
       },
       "motion-easing-standard": {
         "file": "recipe.css",

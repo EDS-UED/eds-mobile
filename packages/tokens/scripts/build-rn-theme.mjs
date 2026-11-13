@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 
 import { resolveSemanticColorToHex, resolveTagPaletteRef } from './color-reference.mjs';
 import { buildGlassBoxCompositions } from './resolve-effect-glass-box.mjs';
+import { resolveMotionTimingMs } from './motion-ladder.mjs';
 
 function loadJson(specDir, relativePath) {
   return JSON.parse(readFileSync(join(specDir, relativePath), 'utf-8'));
@@ -157,7 +158,7 @@ function parseBaseMotion(baseSpec, scalePool) {
   const timings = {};
   for (const [name, timing] of Object.entries(baseSpec.timings ?? {})) {
     timings[`ios-${name.replace(/([A-Z])/g, '-$1').toLowerCase()}`] = {
-      duration: timing.duration,
+      duration: resolveMotionTimingMs(baseSpec, timing),
       easing: `cubic-bezier(${timing.easing.join(',')})`,
     };
   }

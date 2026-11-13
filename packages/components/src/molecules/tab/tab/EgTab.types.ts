@@ -9,7 +9,10 @@ export type EgTabItem = {
   disabled?: boolean;
 };
 
-/** Figma: Tabs · 491:3819 · 切换时品牌下划线滑动。 */
+/**
+ * Figma: Tabs · 491:3819 · 切换时品牌下划线滑动。
+ * 胶囊分段（横滚 · 虚化 · 计数 · 正文 layout-content）→ **`EgTabBlock`**。
+ */
 export type EgTabProps = {
   items: EgTabItem[];
   selectedId?: string;

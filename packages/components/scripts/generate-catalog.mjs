@@ -311,6 +311,7 @@ function removeOrphanComponentDirs(entries) {
   );
   /** Showcase infra / 手维实现 — 不在 Figma 202 路径下，禁止当 orphan 删除。 */
   expected.add(join(srcDir, 'molecules', 'dropdown', 'menu'));
+  expected.add(join(srcDir, 'molecules', 'tab', 'tab-block'));
 
   for (const tier of ['atoms', 'molecules', 'organisms', 'templates']) {
     const tierPath = join(srcDir, tier);
@@ -566,6 +567,10 @@ export type {
 writeFileSync(
   join(srcDir, 'index.ts'),
   `${exports.join('\n')}
+export { EgTabBlock } from './molecules/tab/tab-block';
+export type { EgTabBlockItem, EgTabBlockProps } from './molecules/tab/tab-block';
+export { useEgHorizontalSegmentSwipe } from './molecules/tab/_shared/useEgHorizontalSegmentSwipe';
+export { EG_TAB_BLOCK_SCENE_CONTENT_INSET } from './molecules/tab/_shared/egTabBlockMetrics';
 export {
   EgMenu,
   EgMenuTrigger,

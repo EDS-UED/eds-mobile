@@ -304,6 +304,10 @@ export { EgIconZoomIn } from './atoms/icon/icon-zoom-in';
 export { EgIconZoomOut } from './atoms/icon/icon-zoom-out';
 export { EgIconIConDrawType6 } from './atoms/icon/icon-icon-draw-type6';
 export { EgIconOvalTickMini } from './atoms/icon/icon-oval-tick-mini';
+export { EgTabBlock } from './molecules/tab/tab-block';
+export type { EgTabBlockItem, EgTabBlockProps } from './molecules/tab/tab-block';
+export { useEgHorizontalSegmentSwipe } from './molecules/tab/_shared/useEgHorizontalSegmentSwipe';
+export { EG_TAB_BLOCK_SCENE_CONTENT_INSET } from './molecules/tab/_shared/egTabBlockMetrics';
 export {
   EgMenu,
   EgMenuTrigger,

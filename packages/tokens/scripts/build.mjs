@@ -9,6 +9,7 @@ import {
   writeMotionCatalogJson,
   generateMobileMotionRuntime,
 } from './motion-build.mjs';
+import { resolveMotionTimingMs } from './motion-ladder.mjs';
 import { buildGlassBoxCompositions, isAnnotatedBoxShadow } from './resolve-effect-glass-box.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -1375,7 +1376,8 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
     for (const [name, timing] of Object.entries(baseSpec.timings)) {
       const easing = timing.easing.join(',');
       const cssName = name.replace(/([A-Z])/g, '-$1').toLowerCase();
-      lines.push(`  --ios-${cssName}: duration:${timing.duration},easing:cubic-bezier(${easing});`);
+      const durationMs = resolveMotionTimingMs(baseSpec, timing);
+      lines.push(`  --ios-${cssName}: duration:${durationMs},easing:cubic-bezier(${easing});`);
     }
   }
 

@@ -16,7 +16,7 @@ export type EgEdsAnimaLayoutContentProps = Pick<ViewProps, 'style' | 'testID'> &
   children: ReactNode;
   /** 切换开始或 swap 时调用（如 ScrollView scrollTo(0)）。 */
   onSwitchStart?: () => void;
-  /** 覆盖 token swap 延迟（默认 120ms）。 */
+  /** 覆盖 token swap 延迟（默认 `motion-delay-layout-deform-content-swap`）。 */
   swapMs?: number;
   /** 系统减少动态效果 · 瞬时切换。 */
   reduceMotion?: boolean;
@@ -37,7 +37,7 @@ function reanimatedBezierFromCss(cubicBezier: string) {
 
 /**
  * Semantic `.motion-layout-content` · EdsSemanticAnima('layout-content')。
- * 同壳正文 crossfade + 10px 下移 nudge · 120ms mid-swap。
+ * 同壳正文 crossfade + 10px 下移 nudge · mid-swap token（motion-1）。
  */
 export function EgEdsAnimaLayoutContent({
   contentKey,

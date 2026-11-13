@@ -47,7 +47,18 @@ export type ColorTokenEntry = {
   cssReference?: string;
 };
 
-type ColorBaseEntry = { hex: string; displayP3: [number, number, number] };
+type ColorBaseEntry = { hex: string; displayP3?: [number, number, number] };
+
+function resolveBaseDisplayP3(entry: ColorBaseEntry): [number, number, number] {
+  if (entry.displayP3?.length === 3) {
+    return entry.displayP3;
+  }
+  const parsed = parseHexColor(entry.hex);
+  if (parsed) {
+    return [parsed.r / 255, parsed.g / 255, parsed.b / 255];
+  }
+  return [0, 0, 0];
+}
 
 export function resolveColorTheme(scheme: string | null | undefined): ColorTheme {
   return scheme === 'dark' ? 'dark' : 'light';
@@ -85,7 +96,7 @@ function buildBaseEntry(key: (typeof COLOR_BASE_KEYS)[number], theme: ColorTheme
     layer: 'base',
     cssVar: `eds-${key}`,
     value: String(colors[key]),
-    formats: buildBaseColorFormats(specEntry.displayP3, specEntry.hex),
+    formats: buildBaseColorFormats(resolveBaseDisplayP3(specEntry), specEntry.hex),
   };
 }
 
@@ -108,7 +119,7 @@ function buildSemanticEntry(name: string, theme: ColorTheme): ColorTokenEntry {
       cssVar: `--${name}`,
       value: resolved,
       cssReference,
-      formats: buildBaseColorFormats(fallbackBase.displayP3, fallbackHex),
+      formats: buildBaseColorFormats(resolveBaseDisplayP3(fallbackBase), fallbackHex),
     };
   }
 
@@ -136,7 +147,11 @@ function buildSemanticEntry(name: string, theme: ColorTheme): ColorTokenEntry {
     cssVar: `--${name}`,
     value: resolved,
     cssReference,
-    formats: buildSemanticColorFormats(baseEntry.displayP3, baseEntry.hex, reference.alpha),
+    formats: buildSemanticColorFormats(
+      resolveBaseDisplayP3(baseEntry),
+      baseEntry.hex,
+      reference.alpha,
+    ),
   };
 }
 

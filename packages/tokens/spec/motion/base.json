@@ -251,14 +251,19 @@
   },
   "timings": {
     "layout-deform-content-opacity": {
-      "duration": 180,
+      "durationRef": "motion-1",
       "easing": [0.42, 0, 0.58, 1],
-      "comment": "Layout Content crossfade · 对齐 CSS ease"
+      "comment": "Layout Content opacity · var(--motion-duration-layout-deform-content) → motion-1"
     },
     "layout-deform-content-transform": {
-      "duration": 350,
+      "durationRef": "motion-2",
       "easing": [0.22, 1, 0.36, 1],
-      "comment": "Layout Content translateY · motion-easing-float"
+      "comment": "Layout Content translateY · var(--motion-duration-layout-deform) → motion-2"
+    },
+    "layout-deform-content-swap": {
+      "durationRef": "motion-1",
+      "easing": [0.42, 0, 0.58, 1],
+      "comment": "正文 mid-swap · var(--motion-delay-layout-deform-content-swap) → motion-1"
     },
     "sheets-dismiss": {
       "duration": 800,

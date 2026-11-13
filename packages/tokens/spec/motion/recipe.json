@@ -131,13 +131,13 @@
         { "name": "motion-duration-fade", "value": "var(--motion-2)" },
         {
           "name": "motion-duration-layout-deform",
-          "value": "var(--motion-5)",
-          "comment": "350ms · Layout Deform shell / content transform"
+          "value": "var(--motion-2)",
+          "comment": "180ms · Layout Content translateY（阶梯 motion-2）"
         },
         {
           "name": "motion-duration-layout-deform-content",
-          "value": "var(--motion-2)",
-          "comment": "180ms · Layout Content opacity"
+          "value": "var(--motion-1)",
+          "comment": "85ms · Layout Content opacity（阶梯 motion-1）"
         },
         {
           "name": "motion-duration-menu",
@@ -161,8 +161,8 @@
         },
         {
           "name": "motion-delay-layout-deform-content-swap",
-          "value": "120ms",
-          "comment": "正文淡出中途换 Tab 数据"
+          "value": "var(--motion-1)",
+          "comment": "正文淡出中途换 Tab 数据（阶梯 motion-1）"
         }
       ]
     },

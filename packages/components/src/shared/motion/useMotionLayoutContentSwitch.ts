@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { MOTION_LAYOUT_CONTENT_SWAP_MS } from './layoutContentMotionTokens.js';
+import { resolveMotionLayoutContentSwapMs } from './layoutContentMotionTokens.js';
 
 export type MotionLayoutContentSwitch = {
   contentExiting: boolean;
@@ -13,7 +13,7 @@ export type MotionLayoutContentSwitch = {
 
 /** 同壳内容切换 · crossfade 状态机（对齐 Desktop `useMotionLayoutContentSwitch`）。 */
 export function useMotionLayoutContentSwitch(
-  swapMs: number = MOTION_LAYOUT_CONTENT_SWAP_MS,
+  swapMs: number = resolveMotionLayoutContentSwapMs(),
 ): MotionLayoutContentSwitch {
   const [contentExiting, setContentExiting] = useState(false);
   const [contentEntering, setContentEntering] = useState(false);

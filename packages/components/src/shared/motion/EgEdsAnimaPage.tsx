@@ -30,14 +30,19 @@ type EdsPageCardInterpolationProps = {
  * 由上层页 `beforeRemove` / `gestureStart` 置位、`transitionEnd` 复位 — 两时刻下层页或被盖住、或已归位，切换不可见。
  */
 const coverLeavingByRoute = new Map<string, Animated.Value>();
+/**
+ * 各路由「侧滑后落位中」开关（1 = 手势开始 → 本次转场结束）：上层页位移夹取在 [原位, 离场位]。
+ * 侧滑未达阈值松手时 open spring 继承手势速度，不夹取则越过原位（页面右缘左移露底）再弹回。
+ */
+const gestureSettleByRoute = new Map<string, Animated.Value>();
 const pageInterpolatorByRoute = new Map<string, unknown>();
-const leaveWiredNavigations = new WeakSet<object>();
+const wiredNavigations = new WeakSet<object>();
 
-function coverLeavingOf(routeKey: string) {
-  let value = coverLeavingByRoute.get(routeKey);
+function routeValueOf(map: Map<string, Animated.Value>, routeKey: string) {
+  let value = map.get(routeKey);
   if (!value) {
     value = new Animated.Value(0);
-    coverLeavingByRoute.set(routeKey, value);
+    map.set(routeKey, value);
   }
   return value;
 }
@@ -50,27 +55,35 @@ type PageNavigationEvents = {
   getState: () => { routes: { key: string }[] };
 };
 
-function wirePageLeave(navigation: PageNavigationEvents, routeKey: string) {
-  if (leaveWiredNavigations.has(navigation)) return;
-  leaveWiredNavigations.add(navigation);
+function wirePageEvents(navigation: PageNavigationEvents, routeKey: string, coverUnder: boolean) {
+  if (wiredNavigations.has(navigation)) return;
+  wiredNavigations.add(navigation);
   const under = () => {
     const routes = navigation.getState().routes;
     const index = routes.findIndex((item) => item.key === routeKey);
-    return index > 0 ? coverLeavingOf(routes[index - 1]!.key) : null;
+    return index > 0 ? routeValueOf(coverLeavingByRoute, routes[index - 1]!.key) : null;
   };
   let leavingUnder: Animated.Value | null = null;
   const markLeaving = () => {
+    if (!coverUnder) return;
     leavingUnder = under() ?? leavingUnder;
     leavingUnder?.setValue(1);
   };
   navigation.addListener('beforeRemove', markLeaving);
-  navigation.addListener('gestureStart', markLeaving);
+  navigation.addListener('gestureStart', () => {
+    markLeaving();
+    routeValueOf(gestureSettleByRoute, routeKey).setValue(1);
+  });
   navigation.addListener('transitionEnd', (event) => {
     (leavingUnder ?? under())?.setValue(0);
     leavingUnder = null;
+    gestureSettleByRoute.get(routeKey)?.setValue(0);
     if (event.data?.closing) {
       coverLeavingByRoute.delete(routeKey);
-      pageInterpolatorByRoute.delete(routeKey);
+      gestureSettleByRoute.delete(routeKey);
+      for (const key of pageInterpolatorByRoute.keys()) {
+        if (key.startsWith(`${routeKey}:`)) pageInterpolatorByRoute.delete(key);
+      }
     }
   });
 }
@@ -89,20 +102,33 @@ function springSpec(config: Record<string, number>) {
   };
 }
 
+/** 上层页位移（两段 translate 相加）：平时随 spring 过冲回弹；侧滑落位中（`gestureSettle` 1）夹取，不越过原位。 */
+function focusedTranslates(
+  current: EdsPageCardInterpolationProps['current'],
+  from: number,
+  gestureSettle: Animated.Value,
+) {
+  const range = { inputRange: [0, 1], outputRange: [from, 0] };
+  return [
+    Animated.multiply(
+      current.progress.interpolate({ ...range, extrapolate: 'extend' }),
+      gestureSettle.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
+    ),
+    Animated.multiply(current.progress.interpolate({ ...range, extrapolate: 'clamp' }), gestureSettle),
+  ] as const;
+}
+
 /**
  * motion-page · 页面左右切换：新页自右（`sign` 1）/ 自左（`sign` -1）推入，下层页反向视差 × `ratio-page-parallax` 并压暗 `opacity-page-dim`；
- * 返回时下层页整屏同速推回（`coverLeaving`）。进度不夹取，spring 过冲即轻回弹。
+ * 返回时下层页整屏同速推回（`coverLeaving`）。推入 / 返回 spring 过冲即轻回弹；侧滑未达阈值弹回原位时上层页不越位。
  */
 function pageHorizontalInterpolator(
   { current, next, layouts: { screen } }: EdsPageCardInterpolationProps,
   sign: 1 | -1,
   coverLeaving: Animated.Value,
+  gestureSettle: Animated.Value,
 ) {
-  const translateFocused = current.progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [sign * screen.width, 0],
-    extrapolate: 'extend',
-  });
+  const [translateFree, translateSettle] = focusedTranslates(current, sign * screen.width, gestureSettle);
   const translateUnfocused = next
     ? Animated.multiply(
         next.progress.interpolate({
@@ -115,39 +141,47 @@ function pageHorizontalInterpolator(
     : (0 as const);
   return {
     cardStyle: {
-      transform: [{ translateX: translateFocused }, { translateX: translateUnfocused }],
+      transform: [
+        { translateX: translateFree },
+        { translateX: translateSettle },
+        { translateX: translateUnfocused },
+      ],
     },
     overlayStyle: { opacity: pageOverlayOpacity(current) },
   };
 }
 
-function pageHorizontalInterpolatorOf(routeKey: string, sign: 1 | -1) {
-  const cacheKey = `${routeKey}:${sign}`;
-  let interpolator = pageInterpolatorByRoute.get(cacheKey) as
-    | ((props: EdsPageCardInterpolationProps) => ReturnType<typeof pageHorizontalInterpolator>)
-    | undefined;
+/** motion-page · 上下方向：新页自底推入，下层页原位压暗；同一 spring 与回弹（下拉未达阈值弹回时不越位）。 */
+function pageVerticalInterpolator(
+  { current, layouts: { screen } }: EdsPageCardInterpolationProps,
+  gestureSettle: Animated.Value,
+) {
+  const [translateFree, translateSettle] = focusedTranslates(current, screen.height, gestureSettle);
+  return {
+    cardStyle: { transform: [{ translateY: translateFree }, { translateY: translateSettle }] },
+    overlayStyle: { opacity: pageOverlayOpacity(current) },
+  };
+}
+
+type PageInterpolator = (
+  props: EdsPageCardInterpolationProps,
+) => ReturnType<typeof pageHorizontalInterpolator> | ReturnType<typeof pageVerticalInterpolator>;
+
+function pageInterpolatorOf(routeKey: string, axis: 'horizontal' | 'horizontal-reverse' | 'vertical') {
+  const cacheKey = `${routeKey}:${axis}`;
+  let interpolator = pageInterpolatorByRoute.get(cacheKey) as PageInterpolator | undefined;
   if (!interpolator) {
-    const coverLeaving = coverLeavingOf(routeKey);
-    interpolator = (props) => pageHorizontalInterpolator(props, sign, coverLeaving);
+    const gestureSettle = routeValueOf(gestureSettleByRoute, routeKey);
+    if (axis === 'vertical') {
+      interpolator = (props) => pageVerticalInterpolator(props, gestureSettle);
+    } else {
+      const coverLeaving = routeValueOf(coverLeavingByRoute, routeKey);
+      const sign = axis === 'horizontal-reverse' ? -1 : 1;
+      interpolator = (props) => pageHorizontalInterpolator(props, sign, coverLeaving, gestureSettle);
+    }
     pageInterpolatorByRoute.set(cacheKey, interpolator);
   }
   return interpolator;
-}
-
-/** motion-page · 上下方向：新页自底推入，下层页原位压暗；同一 spring 与回弹。 */
-function pageVerticalInterpolator({
-  current,
-  layouts: { screen },
-}: EdsPageCardInterpolationProps) {
-  const translateFocused = current.progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [screen.height, 0],
-    extrapolate: 'extend',
-  });
-  return {
-    cardStyle: { transform: [{ translateY: translateFocused }] },
-    overlayStyle: { opacity: pageOverlayOpacity(current) },
-  };
 }
 
 function pageOverlayOpacity(current: EdsPageCardInterpolationProps['current']) {
@@ -157,9 +191,6 @@ function pageOverlayOpacity(current: EdsPageCardInterpolationProps['current']) {
     extrapolate: 'clamp',
   });
 }
-
-/** 按住页面任意位置即可拖拽返回（非仅屏幕边缘）。 */
-const FULL_PAGE_GESTURE_DISTANCE = 10000;
 
 const pageTransitionSpec = {
   open: springSpec(pagePushSpringConfig),
@@ -172,7 +203,8 @@ export type EgEdsAnimaPageOptions = {
   /** 左右（自右推入）/ 右左（自左推入）/ 上下（自底推入）。默认 `horizontal`。 */
   direction?: EgEdsAnimaPageDirection;
   /**
-   * 按住页面任意位置拖拽关闭（左右 = 右滑 · 右左 = 左滑 · 上下 = 下拉）。默认 true。
+   * 自屏幕边缘拖拽关闭（左右 = 左缘右滑 · 右左 = 右缘左滑 · 上下 = 下拉）。默认 true。
+   * 不做整页任意位置拖拽：页内横向手势（如 `EgTabBlock` 正文左右滑切）须独占页面中部。
    * Android 恒关闭：整页 Pan 与原生 ScrollView 争抢触摸，拇指弧线滚动时卡片被横向拖动（页面晃动）；返回交给系统返回手势 / 返回键。
    */
   dragDismiss?: boolean;
@@ -208,7 +240,7 @@ export function createEgEdsAnimaPageNavigator<ParamList extends ParamListBase>()
 
 /**
  * motion-page · `createEgEdsAnimaPageNavigator` 的 `screenOptions`：
- * - iOS 26+：系统 `UINavigationBar`（`egNavBarNativeStackScreenOptions`）+ 系统 push / pop、整页拖拽返回。
+ * - iOS 26+：系统 `UINavigationBar`（`egNavBarNativeStackScreenOptions`）+ 系统 push / pop、左缘侧滑返回。
  * - Android · iOS ≤25：推入 `EdsSemanticAnima('page')`（下层页视差）· 返回 / 拖拽关闭 `EdsRecipeAnima('page-back')`（下层页整屏同速推回）；顶栏 `EgNavBar` 随页推入。
  * 压暗层为纯黑 × `opacity-page-dim` × 0.5；导航主题 `colors.background` 宜设页面底色，过冲时边缘不露异色。
  * 页面底色走 `options.contentStyle`（原生栈）/ `cardStyle`（RN 栈），滚动区须为页面首个视图（见 `useEgNavBarScroll`）。
@@ -228,22 +260,19 @@ export function EgEdsAnimaPage({
         ...egNavBarNativeStackScreenOptions({ onBack: () => navigation.goBack(), mode, scrollEdgeEffect }),
         animation: vertical ? 'slide_from_bottom' : reverse ? 'slide_from_left' : 'default',
         gestureEnabled: dragDismiss,
-        fullScreenGestureEnabled: dragDismiss,
+        fullScreenGestureEnabled: false,
         gestureDirection: vertical ? 'vertical' : 'horizontal',
       } as NativeStackNavigationOptions;
     };
   }
   return ({ navigation, route }: { navigation: PageNavigation; route: { key: string } }) => {
-    if (!vertical) wirePageLeave(navigation as unknown as PageNavigationEvents, route.key);
+    wirePageEvents(navigation as unknown as PageNavigationEvents, route.key, !vertical);
     return {
       gestureEnabled: dragDismiss && Platform.OS !== 'android',
       gestureDirection: vertical ? 'vertical' : reverse ? 'horizontal-inverted' : 'horizontal',
-      gestureResponseDistance: FULL_PAGE_GESTURE_DISTANCE,
       cardOverlayEnabled: true,
       transitionSpec: pageTransitionSpec,
-      cardStyleInterpolator: vertical
-        ? pageVerticalInterpolator
-        : pageHorizontalInterpolatorOf(route.key, reverse ? -1 : 1),
+      cardStyleInterpolator: pageInterpolatorOf(route.key, direction),
       headerMode: 'screen',
       header: ({ options, back, navigation }: RnStackHeaderProps) => (
         <EgNavBar

@@ -81,7 +81,7 @@
             }
           ],
           "notes": [
-            "EdsSemanticAnima('layout-content') · mid-swap 120ms",
+            "EdsSemanticAnima('layout-content') · mid-swap var(--motion-delay-layout-deform-content-swap)",
             "RN · EgEdsAnimaLayoutContent + useMotionLayoutContentSwitch"
           ]
         }
@@ -197,7 +197,7 @@
           "notes": [
             "Semantic → Recipe(page) → Base(spring.page-push · ratio-page-parallax · opacity-page-dim)",
             "返回 → Recipe(page-back) · spring.page-pop；新页 / 返回页与下层页共用同一进度（0 = 下层页在位，1 = 新页在位）",
-            "入场离场均轻过冲回弹：spring 过冲时页面左右各外扩背景（bleed），不露底",
+            "入场离场均轻过冲回弹：spring 过冲时页面左右各外扩背景（bleed），不露底；侧滑返回未达阈值松手弹回原位时，上层页不越过原位（不回弹）",
             "页面内可嵌套 motion-page-shot（弹层页面 / 卡片），嵌套不改变任一方动效",
             "业务默认：createEgEdsAnimaPageNavigator() + screenOptions = EgEdsAnimaPage({ direction, dragDismiss })（@eds/mobile-components）；iOS 26+ 系统 native-stack（系统 NavBar · 转场），Android · iOS ≤25 本 spring",
             "RN · 左缘侧滑返回跟手，松手按速度投影决定返回 / 复位并继承速度 · pageMotion.pageTransitionFrame"

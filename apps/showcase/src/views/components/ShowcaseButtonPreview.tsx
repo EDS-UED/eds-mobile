@@ -22,6 +22,8 @@ type ShowcaseButtonPreviewProps = Record<string, unknown> & {
   label?: string;
   disabled?: boolean;
   loading?: boolean;
+  active?: boolean;
+  labelStyle?: 'standard' | 'brand' | 'decor' | 'danger';
 };
 
 export function ShowcaseButtonPreview(props: ShowcaseButtonPreviewProps) {
@@ -35,9 +37,14 @@ export function ShowcaseButtonPreview(props: ShowcaseButtonPreviewProps) {
     label = 'Button',
     disabled = false,
     loading = false,
+    active = false,
+    labelStyle = 'standard',
   } = props;
 
-  const figmaType = buttonShowcaseVariantToFigmaType(String(variant));
+  const isBorderTone = tone === 'option';
+  const figmaType = isBorderTone
+    ? 'primary'
+    : buttonShowcaseVariantToFigmaType(String(variant));
   const widthStyle = buttonShowcaseWidthStyle(String(width));
   const common = {
     mode,
@@ -47,6 +54,8 @@ export function ShowcaseButtonPreview(props: ShowcaseButtonPreviewProps) {
     label,
     disabled,
     loading,
+    active,
+    labelStyle: isBorderTone ? labelStyle : undefined,
     style: widthStyle,
   };
 

@@ -1,7 +1,14 @@
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import { EgSpinner } from '../../../shared/EgSpinner.js';
 import { EgEdsAnimaPress } from '../../../shared/motion/EgEdsAnimaPress.js';
-import type { ButtonFigmaType, ButtonTone, ControlSize, EgCommonProps, EgLabelProps } from '../../../shared/types.js';
+import type {
+  ButtonFigmaType,
+  ButtonTone,
+  ControlSize,
+  EgCommonProps,
+  EgLabelProps,
+  OptionLabelStyle,
+} from '../../../shared/types.js';
 import type { ThemeMode } from '../../../theme/index.js';
 import { createButtonStyles, spinnerColor } from './buttonStyles.js';
 
@@ -13,6 +20,7 @@ export type EgButtonBaseProps = EgCommonProps &
     disabled?: boolean;
     loading?: boolean;
     active?: boolean;
+    labelStyle?: OptionLabelStyle;
     icon?: React.ReactNode;
     iconPosition?: 'leading' | 'trailing';
     onPress?: () => void;
@@ -26,6 +34,7 @@ export function EgButtonBase({
   disabled = false,
   loading = false,
   active = false,
+  labelStyle = 'standard',
   label,
   children,
   icon,
@@ -59,6 +68,7 @@ export function EgButtonBase({
           loading,
           pressed,
           active,
+          labelStyle,
         });
 
         if (loading) {

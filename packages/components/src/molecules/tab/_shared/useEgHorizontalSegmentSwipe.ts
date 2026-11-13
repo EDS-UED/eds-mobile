@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
-import { useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 const SWIPE_COMMIT_DISTANCE = 48;
 const SWIPE_ACTIVE_OFFSET_X = 20;
-const SWIPE_FAIL_OFFSET_Y = 28;
+/** 纵向先于横向阈值判失败 — 外层 ScrollView 才能接管上下滚动。 */
+const SWIPE_FAIL_OFFSET_Y = 12;
 
 /** 正文区域左右滑切分段 · 与 `EgTabBlock` / `EgTab` 配合（不跟手拖指示器）。 */
 export function useEgHorizontalSegmentSwipe<T extends string>(
@@ -14,8 +14,6 @@ export function useEgHorizontalSegmentSwipe<T extends string>(
   onSelect: (id: T) => void,
 ) {
   const selectedIndex = segments.indexOf(selectedId);
-  const touchOriginX = useSharedValue(0);
-  const touchOriginY = useSharedValue(0);
 
   const commitSwipe = useCallback(
     (translationX: number) => {
@@ -36,36 +34,13 @@ export function useEgHorizontalSegmentSwipe<T extends string>(
   return useMemo(
     () =>
       Gesture.Pan()
-        .manualActivation(true)
+        .activeOffsetX([-SWIPE_ACTIVE_OFFSET_X, SWIPE_ACTIVE_OFFSET_X])
+        .failOffsetY([-SWIPE_FAIL_OFFSET_Y, SWIPE_FAIL_OFFSET_Y])
         .cancelsTouchesInView(false)
-        .onTouchesDown((event) => {
-          'worklet';
-          const touch = event.allTouches[0];
-          if (touch != null) {
-            touchOriginX.value = touch.x;
-            touchOriginY.value = touch.y;
-          }
-        })
-        .onTouchesMove((event, state) => {
-          'worklet';
-          const touch = event.allTouches[0];
-          if (touch == null) {
-            return;
-          }
-          const dx = touch.x - touchOriginX.value;
-          const dy = touch.y - touchOriginY.value;
-          if (Math.abs(dy) > SWIPE_FAIL_OFFSET_Y) {
-            state.fail();
-            return;
-          }
-          if (Math.abs(dx) > SWIPE_ACTIVE_OFFSET_X) {
-            state.activate();
-          }
-        })
         .onEnd((event) => {
           'worklet';
           scheduleOnRN(commitSwipe, event.translationX);
         }),
-    [commitSwipe, touchOriginX, touchOriginY],
+    [commitSwipe],
   );
 }

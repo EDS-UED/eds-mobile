@@ -12,6 +12,9 @@ export type ButtonVariant = 'solid' | 'outline' | 'text';
 
 export type ButtonTone = 'brand' | 'danger' | 'decor' | 'subtle' | 'sameWhite';
 
+/** EgOptionButton 边框态文案色（subtle solid · 仅改字色）。 */
+export type OptionLabelStyle = 'standard' | 'brand' | 'decor' | 'danger';
+
 export type FieldEvent = 'default' | 'tap' | 'entering' | 'done' | 'echo' | 'disable';
 
 export type ColorTagType =

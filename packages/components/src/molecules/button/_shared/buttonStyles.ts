@@ -3,7 +3,12 @@ import { getThemeColors, mobileTheme, type ThemeMode } from '../../../theme/inde
 import { buttonPaddingHorizontal, buttonPaddingVertical } from '../../../shared/controlMetrics.js';
 import { resolveColor } from '../../../shared/resolveColor.js';
 import { buttonTypography } from '../../../shared/typographyStyles.js';
-import type { ButtonFigmaType, ButtonTone, ControlSize } from '../../../shared/types.js';
+import type {
+  ButtonFigmaType,
+  ButtonTone,
+  ControlSize,
+  OptionLabelStyle,
+} from '../../../shared/types.js';
 
 export type ButtonVisualState = {
   tone: ButtonTone;
@@ -14,7 +19,34 @@ export type ButtonVisualState = {
   loading?: boolean;
   pressed?: boolean;
   active?: boolean;
+  labelStyle?: OptionLabelStyle;
 };
+
+function resolveOptionLabelColor(
+  colors: Record<string, string>,
+  labelStyle?: OptionLabelStyle,
+): string {
+  if (labelStyle === 'brand') {
+    return resolveColor(colors, 'text-brand');
+  }
+  if (labelStyle === 'decor') {
+    return resolveColor(colors, 'text-decor');
+  }
+  if (labelStyle === 'danger') {
+    return resolveColor(colors, 'status-danger');
+  }
+  return resolveColor(colors, 'text-base-primary');
+}
+
+function resolveOptionBorderPressedLabelColor(
+  colors: Record<string, string>,
+  labelStyle?: OptionLabelStyle,
+): string {
+  if (labelStyle === 'standard') {
+    return resolveColor(colors, 'text-base-secondary');
+  }
+  return resolveOptionLabelColor(colors, labelStyle);
+}
 
 function mapFigmaTypeToVariant(figmaType: ButtonFigmaType): 'solid' | 'soft' | 'text' {
   if (figmaType === 'primary') return 'solid';
@@ -163,18 +195,18 @@ function applyToneColors(
       if (state.active) {
         container.backgroundColor = resolveColor(colors, 'material-brand-weaken');
         container.borderColor = resolveColor(colors, 'stroke-hide');
-        label.color = resolveColor(colors, 'text-base-primary');
+        label.color = resolveOptionLabelColor(colors, state.labelStyle);
         return;
       }
       if (pressed) {
         container.backgroundColor = resolveColor(colors, 'event-tap');
         container.borderColor = resolveColor(colors, 'stroke-hide');
-        label.color = resolveColor(colors, 'text-base-secondary');
+        label.color = resolveOptionBorderPressedLabelColor(colors, state.labelStyle);
         return;
       }
       container.backgroundColor = resolveColor(colors, 'material-hide');
       container.borderColor = strokeDivider;
-      label.color = resolveColor(colors, 'text-base-primary');
+      label.color = resolveOptionLabelColor(colors, state.labelStyle);
       return;
     }
     if (variant === 'soft') {

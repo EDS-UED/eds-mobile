@@ -21,6 +21,8 @@ export type EgEdsAnimaPressProps = {
   pressScaleDirection?: MotionPressScaleDirection;
   /** `glass` — `motion-glass-scale-press-*` + `glass-press`；与 `EgButtonGlass` RN 栈一致。 */
   pressRecipe?: MotionPressRecipe;
+  /** 关闭 scale，仅保留 `pressed` 态（链接等文案反馈）。 @default true */
+  enablePressScale?: boolean;
 };
 
 function resolveStaticStyle(
@@ -44,9 +46,15 @@ export function EgEdsAnimaPress({
   pressIntensity = 'sm',
   pressScaleDirection = 'up',
   pressRecipe = 'tap',
+  enablePressScale = true,
 }: EgEdsAnimaPressProps) {
   const { animatedStyle, onPressIn: scalePressIn, onPressOut: scalePressOut, pressing } =
-    useMotionPressScale({ pressRecipe, pressIntensity, pressScaleDirection });
+    useMotionPressScale({
+      pressRecipe,
+      pressIntensity,
+      pressScaleDirection,
+      enabled: enablePressScale,
+    });
 
   const handlePressIn = () => {
     scalePressIn();

@@ -21,11 +21,14 @@ export type UseMotionPressScaleOptions = {
   pressIntensity?: MotionPressIntensity;
   /** @default 'up' */
   pressScaleDirection?: MotionPressScaleDirection;
+  /** @default true — `false` 时仅跟踪 `pressing`，不做 scale（如 EgLinkButton 下划线反馈）。 */
+  enabled?: boolean;
 };
 
 /** Reanimated scale 点按 — `EgEdsAnimaPress` / 业务自定义布局（如主页快捷入口圆 tile）共用。 */
 export function useMotionPressScale(options: UseMotionPressScaleOptions = {}) {
-  const { pressRecipe = 'tap', pressIntensity = 'sm', pressScaleDirection = 'up' } = options;
+  const { pressRecipe = 'tap', pressIntensity = 'sm', pressScaleDirection = 'up', enabled = true } =
+    options;
   const [pressing, setPressing] = useState(false);
   const scale = useSharedValue(1);
 
@@ -36,22 +39,28 @@ export function useMotionPressScale(options: UseMotionPressScaleOptions = {}) {
   const pressInSpring =
     pressRecipe === 'glass' ? glassPressScaleInSpringConfig : tapPressScaleInSpringConfig;
 
-  const animatedStyle = useAnimatedStyle(
-    () => ({
+  const animatedStyle = useAnimatedStyle(() => {
+    if (!enabled) {
+      return {};
+    }
+    return {
       transform: [{ scale: scale.value }],
-    }),
-    [scale],
-  );
+    };
+  }, [enabled, scale]);
 
   const onPressIn = useCallback(() => {
     setPressing(true);
-    scale.value = withSpring(activeScale, pressInSpring);
-  }, [activeScale, pressInSpring, scale]);
+    if (enabled) {
+      scale.value = withSpring(activeScale, pressInSpring);
+    }
+  }, [activeScale, enabled, pressInSpring, scale]);
 
   const onPressOut = useCallback(() => {
     setPressing(false);
-    scale.value = withSpring(1, pressScaleOutSpringConfig);
-  }, [scale]);
+    if (enabled) {
+      scale.value = withSpring(1, pressScaleOutSpringConfig);
+    }
+  }, [enabled, scale]);
 
   return { animatedStyle, onPressIn, onPressOut, pressing, activeScale };
 }

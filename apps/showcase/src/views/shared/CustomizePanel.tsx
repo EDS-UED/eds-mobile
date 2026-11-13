@@ -139,11 +139,12 @@ export function CustomizePanel({ controls, state, onChange }: CustomizePanelProp
         }
 
         if (control.kind === 'select') {
+          const selectOptions = control.resolveOptions?.(state) ?? control.options;
           return (
             <View key={control.key} style={styles.field}>
               <Text style={styles.label}>{control.label}</Text>
               <View style={styles.chips}>
-                {control.options.map((option) => {
+                {selectOptions.map((option) => {
                   const active = state[control.key] === option.value;
                   return (
                     <Pressable

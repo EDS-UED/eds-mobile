@@ -2,18 +2,47 @@ export type ButtonShowcaseTone = 'brand' | 'decor' | 'danger' | 'option';
 export type ButtonShowcaseFigmaType = 'primary' | 'secondary' | 'tertiary';
 export type ButtonShowcaseVariant = 'solid' | 'outline' | 'text';
 export type ButtonShowcaseWidth = 'hug' | 'fill';
+export type ButtonOptionLabelStyle = 'standard' | 'brand' | 'decor' | 'danger';
 
 export const BUTTON_SHOWCASE_TONES = [
   { value: 'brand', label: '品牌' },
   { value: 'decor', label: '装饰' },
   { value: 'danger', label: '危险' },
-  { value: 'option', label: '选项' },
+  { value: 'option', label: '边框' },
+] as const;
+
+/** EgLinkButton Customize — option 展示为「标准」。 */
+export const LINK_BUTTON_SHOWCASE_TONES = [
+  { value: 'brand', label: '品牌' },
+  { value: 'decor', label: '装饰' },
+  { value: 'danger', label: '危险' },
+  { value: 'option', label: '标准' },
 ] as const;
 
 export const BUTTON_SHOWCASE_VARIANTS = [
   { value: 'solid', label: '实心' },
   { value: 'outline', label: '描边' },
   { value: 'text', label: '文字' },
+] as const;
+
+const SCENE_OUTLINE_TONES = new Set(['brand', 'decor', 'danger']);
+
+/** 风格选项文案随色调变化（品牌/装饰/危险 · outline→浅）。 */
+export function resolveButtonShowcaseVariantOptions(tone: string) {
+  const showShallowOutline = SCENE_OUTLINE_TONES.has(tone);
+  return [
+    { value: 'solid', label: '实心' },
+    { value: 'outline', label: showShallowOutline ? '浅' : '描边' },
+    { value: 'text', label: '文字' },
+  ] as const;
+}
+
+/** EgOptionButton 边框态 · 仅文案色。 */
+export const BUTTON_OPTION_LABEL_STYLES = [
+  { value: 'standard', label: '标准' },
+  { value: 'brand', label: '品牌' },
+  { value: 'decor', label: '装饰' },
+  { value: 'danger', label: '危险' },
 ] as const;
 
 export const BUTTON_SHOWCASE_WIDTHS = [
@@ -36,6 +65,8 @@ export const buttonShowcaseDefaults = {
   label: '按钮',
   disabled: false,
   loading: false,
+  active: false,
+  labelStyle: 'standard' as ButtonOptionLabelStyle,
 };
 
 const EXPORT_BY_TONE: Record<ButtonShowcaseTone, string> = {

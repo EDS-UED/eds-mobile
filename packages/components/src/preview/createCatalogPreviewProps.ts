@@ -29,7 +29,7 @@ export function createCatalogPreviewProps(
     case 'button-danger':
       return { ...base, label: 'Button', figmaType: 'primary', size: 'lg' };
     case 'button-link':
-      return { ...base, label: 'Link', size: 'md' };
+      return { ...base, label: 'Link', size: 'md', tone: 'brand' };
     case 'button-option':
       return { ...base, label: 'Option', figmaType: 'primary', size: 'lg' };
     case 'button-combo-action':

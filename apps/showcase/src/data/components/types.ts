@@ -10,6 +10,8 @@ export type DocCustomizeSelectControl = {
   key: string;
   label: string;
   options: { value: string; label: string }[];
+  /** 按当前 Customize 态动态生成选项（如按钮风格随色调变文案）。 */
+  resolveOptions?: (state: Record<string, unknown>) => { value: string; label: string }[];
   /** Sequential layout: fields with the same row render on one horizontal line. */
   row?: number;
   visibleWhen?: (state: Record<string, unknown>) => boolean;

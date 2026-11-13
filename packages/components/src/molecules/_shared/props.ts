@@ -4,6 +4,7 @@ import type {
   EgCommonProps,
   EgLabelProps,
   FieldEvent,
+  OptionLabelStyle,
 } from '../../shared/types.js';
 import type { ViewStyle } from 'react-native';
 
@@ -14,6 +15,7 @@ export type EgSceneButtonProps = EgCommonProps &
     disabled?: boolean;
     loading?: boolean;
     active?: boolean;
+    labelStyle?: OptionLabelStyle;
     onPress?: () => void;
     style?: ViewStyle;
   };

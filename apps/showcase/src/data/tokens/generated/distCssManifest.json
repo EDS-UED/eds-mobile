@@ -118,7 +118,8 @@
       "radio-lg": "var(--scale-6)",
       "switch-sm": "var(--scale-4)",
       "switch-md": "var(--scale-5)",
-      "switch-lg": "var(--scale-6)"
+      "switch-lg": "var(--scale-6)",
+      "reddot": "var(--scale-3)"
     },
     "typography": {
       "size-display": "34px",
@@ -1092,6 +1093,12 @@
         "startLine": 114,
         "endLine": 114,
         "snippet": "  --switch-lg: var(--scale-6);    /* 24px */"
+      },
+      "reddot": {
+        "file": "semantic.css",
+        "startLine": 115,
+        "endLine": 115,
+        "snippet": "  --reddot: var(--scale-3);       /* 12px */"
       }
     },
     "typography": {

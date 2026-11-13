@@ -29,6 +29,7 @@ import {
   tabSlideCustomizeDefaults,
 } from './tabCustomizeModel.js';
 import {
+  BUTTON_OPTION_LABEL_STYLES,
   BUTTON_SHOWCASE_SIZES,
   BUTTON_SHOWCASE_TONES,
   BUTTON_SHOWCASE_VARIANTS,
@@ -36,6 +37,8 @@ import {
   buttonShowcaseDefaults,
   buttonShowcaseExportForTone,
   buttonShowcaseVariantToFigmaType,
+  resolveButtonShowcaseVariantOptions,
+  LINK_BUTTON_SHOWCASE_TONES,
   type ButtonShowcaseTone,
 } from './buttonShowcaseModel.js';
 
@@ -270,9 +273,18 @@ const buttonCustomizeControls: DocCustomizeControl[] = [
   },
   {
     kind: 'select',
+    key: 'labelStyle',
+    label: '风格',
+    options: [...BUTTON_OPTION_LABEL_STYLES],
+    visibleWhen: (state) => state.tone === 'option',
+  },
+  {
+    kind: 'select',
     key: 'variant',
     label: '风格',
     options: [...BUTTON_SHOWCASE_VARIANTS],
+    resolveOptions: (state) => [...resolveButtonShowcaseVariantOptions(String(state.tone ?? 'brand'))],
+    visibleWhen: (state) => state.tone !== 'option',
   },
   {
     kind: 'select',
@@ -289,6 +301,12 @@ const buttonCustomizeControls: DocCustomizeControl[] = [
   { kind: 'text', key: 'label', label: '文案' },
   { kind: 'boolean', key: 'disabled', label: '禁用' },
   { kind: 'boolean', key: 'loading', label: '加载中' },
+  {
+    kind: 'boolean',
+    key: 'active',
+    label: '选中',
+    visibleWhen: (state) => state.tone === 'option',
+  },
 ];
 
 const TAG_SIZES = [
@@ -905,7 +923,7 @@ function buttonDoc(
         name: 'tone',
         type: "'brand' | 'decor' | 'danger' | 'option'",
         defaultValue: `'${defaultTone}'`,
-        description: '色调（Mobile 对应 EgBrand / Decor / Danger / Option）',
+        description: '色调（EgBrand / Decor / Danger / EgOptionButton 边框）',
       },
       {
         name: 'variant',
@@ -919,13 +937,35 @@ function buttonDoc(
       { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
       { name: 'loading', type: 'boolean', defaultValue: 'false', description: '加载态' },
       {
+        name: 'active',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: '选中（EgOptionButton / subtle solid）',
+      },
+      {
+        name: 'labelStyle',
+        type: "'standard' | 'brand' | 'decor' | 'danger'",
+        defaultValue: "'standard'",
+        description: '边框按钮文案色 · 不改描边与交互 · brand→text-brand · decor→text-decor · danger→status-danger',
+      },
+      {
         name: 'figmaType',
         type: "'primary' | 'secondary' | 'tertiary'",
         defaultValue: "'primary'",
         description: '由 variant 推导 · solid→primary · outline→secondary · text→tertiary',
       },
     ],
-    propQueryKeys: ['tone', 'variant', 'size', 'width', 'label', 'disabled', 'loading'],
+    propQueryKeys: [
+      'tone',
+      'variant',
+      'size',
+      'width',
+      'label',
+      'disabled',
+      'loading',
+      'active',
+      'labelStyle',
+    ],
     buildUsageSnippet: (state) => {
       const tone = String(state.tone ?? defaultTone);
       const tag = buttonShowcaseExportForTone(tone);
@@ -937,6 +977,14 @@ function buttonDoc(
         disabled: state.disabled,
         loading: state.loading,
       };
+      if (state.active) {
+        snippetProps.active = true;
+      }
+      if (tone === 'option') {
+        snippetProps.labelStyle = state.labelStyle ?? 'standard';
+      } else if (state.labelStyle && state.labelStyle !== 'standard') {
+        snippetProps.labelStyle = state.labelStyle;
+      }
       if (state.width === 'fill') {
         snippetProps.style = { alignSelf: 'stretch', width: '100%' };
       }
@@ -1111,17 +1159,37 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
     componentTag: 'EgLinkButton',
     previewSlug: 'button-link',
     importCode: `import { EgLinkButton } from '@eds/mobile-components';`,
-    customizeDefaults: { size: 'md', label: 'Link' },
+    customizeDefaults: { tone: 'brand', size: 'md', label: 'Link' },
     customizeControls: [
+      {
+        kind: 'select',
+        key: 'tone',
+        label: '色调',
+        options: [...LINK_BUTTON_SHOWCASE_TONES],
+      },
       { kind: 'select', key: 'size', label: '尺寸', options: [{ value: 'lg', label: 'LG' }, { value: 'md', label: 'MD' }, { value: 'sm', label: 'SM' }] },
       { kind: 'text', key: 'label', label: '文案' },
     ],
     propRows: [
+      {
+        name: 'tone',
+        type: "'brand' | 'decor' | 'danger' | 'option' | 'subtle' | 'sameWhite'",
+        defaultValue: "'brand'",
+        description: '色调 · Showcase「标准」对应 subtle / option',
+      },
       { name: 'size', type: "'lg' | 'md' | 'sm'", defaultValue: "'md'", description: '尺寸' },
       { name: 'label', type: 'string', defaultValue: 'undefined', description: '链接文案' },
     ],
-    propQueryKeys: ['size', 'label'],
-    buildUsageSnippet: (state) => buildRnSelfClosingSnippet('EgLinkButton', state, { defaults: { size: 'md', label: 'Link' } }),
+    propQueryKeys: ['tone', 'size', 'label'],
+    buildUsageSnippet: (state) => {
+      const tone = String(state.tone ?? 'brand');
+      const snippetTone = tone === 'option' ? 'subtle' : tone;
+      return buildRnSelfClosingSnippet(
+        'EgLinkButton',
+        { ...state, tone: snippetTone },
+        { defaults: { tone: 'brand', size: 'md', label: 'Link' } },
+      );
+    },
   },
   'tag-body': colorTagDoc('EgColorTag', 'tag-color'),
   'tag-color': colorTagDoc('EgColorTag', 'tag-color'),

@@ -12,6 +12,6 @@ export function EgCregisTabBar(props: EgCregisTabBarProps & Pick<ViewProps, 'sty
   const { items = CREGIS_TAB_BAR_ITEMS, testID = 'tab-bar-cregis', ...rest } = props;
 
   return (
-    <EgTabBar {...rest} testID={testID} items={items} selectionAccent="decor" />
+    <EgTabBar {...rest} testID={testID} items={items} selectionAccent="brand" />
   );
 }

@@ -11,8 +11,8 @@
       "displayP3": [0, 0.2275, 0.4275]
     },
     "eds-decor": {
-      "hex": "#022d0d",
-      "displayP3": [0.0078, 0.1765, 0.051]
+      "hex": "#044020",
+      "comment": "原来的色 #022D0D 可能会改回去"
     },
     "eds-success": {
       "hex": "#1fc35a",
@@ -27,16 +27,16 @@
       "displayP3": [0.9216, 0.5686, 0.0784]
     },
     "eds-base": {
-      "hex": "#020304",
-      "displayP3": [0.0078, 0.0118, 0.0157]
+      "hex": "#000000",
+      "displayP3": [0, 0, 0]
     },
     "eds-face": {
       "hex": "#ffffff",
       "displayP3": [1, 1, 1]
     },
     "eds-same-black": {
-      "hex": "#020304",
-      "displayP3": [0.0078, 0.0118, 0.0157]
+      "hex": "#000000",
+      "displayP3": [0, 0, 0]
     },
     "eds-same-white": {
       "hex": "#ffffff",
@@ -45,6 +45,10 @@
     "eds-page": {
       "hex": "#ffffff",
       "displayP3": [1, 1, 1]
+    },
+    "eds-page-card": {
+      "hex": "#f7f7f7",
+      "displayP3": [0.9686, 0.9686, 0.9686]
     },
     "eds-flotation": {
       "hex": "#ffffff",
@@ -85,20 +89,24 @@
       "displayP3": [1, 1, 1]
     },
     "eds-face": {
-      "hex": "#020304",
-      "displayP3": [0.0078, 0.0118, 0.0157]
+      "hex": "#000000",
+      "displayP3": [0, 0, 0]
     },
     "eds-same-black": {
-      "hex": "#020304",
-      "displayP3": [0.0078, 0.0118, 0.0157]
+      "hex": "#000000",
+      "displayP3": [0, 0, 0]
     },
     "eds-same-white": {
       "hex": "#ffffff",
       "displayP3": [1, 1, 1]
     },
     "eds-page": {
-      "hex": "#020304",
-      "displayP3": [0.0078, 0.0118, 0.0157]
+      "hex": "#000000",
+      "displayP3": [0, 0, 0]
+    },
+    "eds-page-card": {
+      "hex": "#000000",
+      "displayP3": [0, 0, 0]
     },
     "eds-flotation": {
       "hex": "#1c1d1f",

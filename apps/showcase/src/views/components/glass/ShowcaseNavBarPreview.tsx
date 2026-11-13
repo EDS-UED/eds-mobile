@@ -18,6 +18,8 @@ type ShowcaseNavBarPreviewProps = Record<string, unknown> & {
   showRight?: boolean;
   rightIconCount?: 1 | 2 | string;
   background?: EgNavBarBackground;
+  /** iOS 26+ scroll edge；`follow` = 按 background 映射。 */
+  scrollEdgeEffect?: string;
   statusBarZone?: boolean;
 };
 
@@ -38,6 +40,7 @@ export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
     showRight = true,
     rightIconCount = 1,
     background = 'auto',
+    scrollEdgeEffect = 'follow',
     statusBarZone = true,
   } = props;
 
@@ -65,6 +68,7 @@ export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
         showRight: showRight ? '1' : '0',
         rightIconCount: String(resolvedRightCount),
         background,
+        scrollEdgeEffect,
       },
     });
 

@@ -1,6 +1,14 @@
 import { Platform } from 'react-native';
 
 import type { TokenEntry } from '@/data/tokens/tokenCatalogTypes';
+import {
+  formatEdsRecipeAnimaCall,
+  formatEdsSemanticAnimaCall,
+  motionBaseDisplayName,
+  motionRecipeIdForTokenEntry,
+  motionSemanticHasRecipe,
+  motionSemanticScenarioIdForTokenEntry,
+} from '@/data/tokens/motionNativeDisplay';
 
 type TokenListLabelEntry = Pick<TokenEntry, 'name' | 'cssVar'> & { layer?: TokenEntry['layer'] };
 
@@ -38,11 +46,23 @@ function resolveNativeTokenPrimaryLabel(categoryId: string, entry: TokenListLabe
         return entry.name;
       }
       return entry.name;
-    case 'motion':
-      if (entry.name.startsWith('motion-')) {
-        return `resolveMotionRecipe(${quote(entry.name.replace(/^motion-/, ''))})`;
+    case 'motion': {
+      if (entry.layer === 'base') {
+        return motionBaseDisplayName(entry.name);
+      }
+      if (entry.layer === 'recipe') {
+        const recipeId = motionRecipeIdForTokenEntry(entry);
+        return recipeId ? formatEdsRecipeAnimaCall(recipeId) : entry.name;
+      }
+      if (entry.layer === 'semantic') {
+        const scenario = motionSemanticScenarioIdForTokenEntry(entry);
+        if (scenario && motionSemanticHasRecipe(entry.name)) {
+          return formatEdsSemanticAnimaCall(scenario);
+        }
+        return entry.name;
       }
       return entry.name;
+    }
     case 'typography':
       if (entry.name.startsWith('typography-')) {
         return `edsTypographyRole(${quote(entry.name.replace(/^typography-/, ''))})`;

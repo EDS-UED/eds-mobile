@@ -8,7 +8,7 @@ export type EgDividerOrientation = 'horizontal' | 'vertical';
 
 /** Figma: Divider 分割线✅ */
 export type EgDividerProps = EgCommonProps & {
-  /** Module / Page 线宽均为 `stroke-xs`；色 `stroke-divider-module` / `stroke-divider-page`。默认 `page`。 */
+  /** Module / Page 场景名；线宽均为 `stroke-xs`；色 `stroke-divider-deep`（`--stroke-divider-deep`）。默认 `page`。 */
   variant?: EgDividerVariant;
   /** 水平或垂直。默认 `horizontal`。 */
   orientation?: EgDividerOrientation;

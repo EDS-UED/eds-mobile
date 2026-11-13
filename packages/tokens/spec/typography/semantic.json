@@ -38,8 +38,16 @@
       "comment": "Body Large Strong",
       "tokens": [
         { "name": "eds-body-large-strong-size", "value": "var(--size-body-large)" },
-        { "name": "eds-body-large-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-large-strong-weight", "value": "var(--weight-medium)" },
         { "name": "eds-body-large-strong-line-height", "value": "var(--line-height-body-large)" }
+      ]
+    },
+    {
+      "comment": "Body Large Heavy",
+      "tokens": [
+        { "name": "eds-body-large-heavy-size", "value": "var(--size-body-large)" },
+        { "name": "eds-body-large-heavy-weight", "value": "var(--weight-bold)" },
+        { "name": "eds-body-large-heavy-line-height", "value": "var(--line-height-body-large)" }
       ]
     },
     {
@@ -54,8 +62,16 @@
       "comment": "Body Medium Strong",
       "tokens": [
         { "name": "eds-body-medium-strong-size", "value": "var(--size-body-medium)" },
-        { "name": "eds-body-medium-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-medium-strong-weight", "value": "var(--weight-medium)" },
         { "name": "eds-body-medium-strong-line-height", "value": "var(--line-height-body-medium)" }
+      ]
+    },
+    {
+      "comment": "Body Medium Heavy",
+      "tokens": [
+        { "name": "eds-body-medium-heavy-size", "value": "var(--size-body-medium)" },
+        { "name": "eds-body-medium-heavy-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-medium-heavy-line-height", "value": "var(--line-height-body-medium)" }
       ]
     },
     {
@@ -70,8 +86,16 @@
       "comment": "Body Small Strong",
       "tokens": [
         { "name": "eds-body-small-strong-size", "value": "var(--size-body-small)" },
-        { "name": "eds-body-small-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-small-strong-weight", "value": "var(--weight-medium)" },
         { "name": "eds-body-small-strong-line-height", "value": "var(--line-height-body-small)" }
+      ]
+    },
+    {
+      "comment": "Body Small Heavy",
+      "tokens": [
+        { "name": "eds-body-small-heavy-size", "value": "var(--size-body-small)" },
+        { "name": "eds-body-small-heavy-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-body-small-heavy-line-height", "value": "var(--line-height-body-small)" }
       ]
     },
     {
@@ -86,7 +110,7 @@
       "comment": "Detail Strong",
       "tokens": [
         { "name": "eds-detail-strong-size", "value": "var(--size-detail)" },
-        { "name": "eds-detail-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-detail-strong-weight", "value": "var(--weight-medium)" },
         { "name": "eds-detail-strong-line-height", "value": "var(--line-height-detail)" }
       ]
     },
@@ -102,7 +126,7 @@
       "comment": "Footnote Strong",
       "tokens": [
         { "name": "eds-footnote-strong-size", "value": "var(--size-footnote)" },
-        { "name": "eds-footnote-strong-weight", "value": "var(--weight-semibold)" },
+        { "name": "eds-footnote-strong-weight", "value": "var(--weight-medium)" },
         { "name": "eds-footnote-strong-line-height", "value": "var(--line-height-footnote)" }
       ]
     },

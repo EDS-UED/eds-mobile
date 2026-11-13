@@ -6,6 +6,7 @@ import { getThemeColors, mobileTheme } from '../../../theme/index.js';
 import {
   colorizeTokenIconMarkup,
   resolveIconFillTone,
+  type IconStrokeScaleToken,
 } from '../icon/colorizeIconMarkup.js';
 import { loadIconAsset } from '../icon/iconAssetLoader.js';
 import type { IconFillTone } from '../icon/processSvg.js';
@@ -29,6 +30,8 @@ export type EgSymbolProps = EgCommonProps & {
   fillTone?: IconFillTone;
   /** Semantic color token for stroke icons — default `text-base-primary`. */
   strokeColorToken?: string;
+  /** 描边粗细 token · 默认 `stroke-xl`（其余场景不变）。 */
+  strokeScaleToken?: IconStrokeScaleToken;
 };
 
 const SYMBOL_PX: Record<EgSymbolSize, number> = {
@@ -44,6 +47,7 @@ export function EgSymbol({
   displayPx,
   fillTone,
   strokeColorToken = 'text-base-primary',
+  strokeScaleToken,
   mode = 'light',
   testID,
   style,
@@ -73,7 +77,12 @@ export function EgSymbol({
 
         const nextXml =
           iconAsset.colorMode === 'token'
-            ? colorizeTokenIconMarkup(iconAsset, { strokeColor, fillColor, displayPx: px })
+            ? colorizeTokenIconMarkup(iconAsset, {
+                strokeColor,
+                fillColor,
+                displayPx: px,
+                strokeScaleToken,
+              })
             : sizeIconMarkup(iconAsset.markup, px);
 
         setXml(nextXml);
@@ -94,7 +103,7 @@ export function EgSymbol({
     return () => {
       cancelled = true;
     };
-  }, [name, px, fillTone, strokeColorToken, mode]);
+  }, [name, px, fillTone, strokeColorToken, strokeScaleToken, mode]);
 
   return (
     <View

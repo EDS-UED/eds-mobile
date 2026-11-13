@@ -2,6 +2,7 @@ export { EgNavBar, shouldUseEgNavBarNativeStack } from './EgNavBar.js';
 export {
   egNavBarNativeStackOptions,
   egNavBarNativeStackScreenOptions,
+  egNavBarNativeStackHeaderGlassItem,
   resolveEgNavBarNativeStackTitle,
 } from './egNavBarNativeStackOptions.js';
 export { useEgNavBarScroll } from './useEgNavBarScroll.js';
@@ -16,7 +17,10 @@ export type {
   EgNavBarProps,
   EgNavBarAction,
   EgNavBarBackground,
+  EgNavBarScrollEdgeEffect,
   EgNavBarScrollOffset,
+  EgNavBarTitleAlign,
+  EgNavBarChromeContext,
 } from './EgNavBar.types.js';
 export type {
   EgNavBarNativeStackOptions,

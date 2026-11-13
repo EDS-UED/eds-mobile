@@ -20,7 +20,7 @@ export function DocSection({ title, children }: DocSectionProps) {
           paddingHorizontal: theme.layout.pageInset,
           paddingVertical: 12,
           borderTopWidth: StyleSheet.hairlineWidth,
-          borderTopColor: colors['stroke-divider-page'] as string,
+          borderTopColor: colors['stroke-divider-shallow'] as string,
         },
         title: {
           fontSize: 13,

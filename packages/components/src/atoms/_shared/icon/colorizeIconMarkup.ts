@@ -18,15 +18,20 @@ function injectPaint(attrs: string, paint: Record<string, string>): string {
 }
 
 /** Token icons — inline stroke/fill (RN has no Icon.module.css). */
+export type IconStrokeScaleToken = 'stroke-xs' | 'stroke-sm' | 'stroke-md' | 'stroke-lg' | 'stroke-xl';
+
 export function colorizeTokenIconMarkup(
   asset: ProcessedIcon,
   options: {
     strokeColor: string;
     fillColor: string;
     displayPx: number;
+    /** 屏上描边 px token · 默认 `stroke-xl`（2px）。 */
+    strokeScaleToken?: IconStrokeScaleToken;
   },
 ): string {
-  const strokeWidth = (mobileTheme.spacing['stroke-lg'] as number) * (ICON_VIEWBOX_SIZE / options.displayPx);
+  const scale = (mobileTheme.spacing[options.strokeScaleToken ?? 'stroke-xl'] as number) ?? 2;
+  const strokeWidth = scale * (ICON_VIEWBOX_SIZE / options.displayPx);
   const shapeRe = new RegExp(`<${SHAPE_TAG}\\b([^>]*?)(\\/?)>`, 'gi');
 
   const svg = asset.markup.replace(shapeRe, (match, tag: string, attrs: string, selfClose: string) => {

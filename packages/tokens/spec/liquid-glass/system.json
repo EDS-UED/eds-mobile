@@ -1,49 +1,37 @@
 {
-  "$description": "Liquid Glass — EDS Mobile 玻璃材质栈（effect · RN · 平台增强）。",
-  "architectureSummary": "玻璃材质 = effect token（Glass Box）+ RN 默认（blur + overlay 叠层）+ 平台增强 → packages/components Glass 栈，业务只认 Eg* / GlassSurface",
+  "$description": "Liquid Glass — EDS Mobile 玻璃效果说明（showcase 架构页文案真源，面向非开发读者）。",
+  "architectureSummary": "业务只用 Eg* 组件；外观来自设计 Token；iOS 26 及以上用系统液态玻璃，其他系统用毛玻璃。",
   "conceptTitle": "Liquid Glass",
   "trunk": [
     {
       "id": "api",
-      "label": "公共 API",
-      "primary": "EgGlass",
-      "secondary": "样式即 Effect Glass Box（glass-*-box）· resolveGlassBoxComposition · expo-blur + token overlay；系统 Liquid Glass 见 GlassSurface / GlassControlShell"
+      "label": "业务怎么用",
+      "primary": "直接用 Eg* 组件",
+      "secondary": "按钮、底部标签栏、导航栏、菜单等组件自带玻璃效果。业务不需要、也不允许自己拼模糊和叠色。"
     }
   ],
   "stacks": [
     {
       "id": "token",
-      "label": "Token 真源",
-      "primary": "resolveGlassBoxComposition · resolveGlassVariant",
-      "secondary": "packages/tokens/spec/effect/semantic.json → packages/tokens/dist/css/effect/semantic.css · packages/tokens/spec/liquid-glass/surface.json → @eds/mobile-tokens/theme · packages/components/src/atoms/glass/resolveGlassBox.ts · resolveGlassSurfacePresets.ts"
-    },
-    {
-      "id": "rn-default",
-      "label": "RN 默认实现",
-      "primary": "GlassBoxEffectLayers · getNativeBlurView · GlassBoxInsetInnerLightLayer",
-      "secondary": "packages/components/src/atoms/glass/GlassBoxEffectLayers.tsx · nativeBlur.ts · GlassBoxInsetInnerLightLayer.tsx · packages/tokens/dist/css/effect/semantic.css（.glass-*-box class）"
+      "label": "外观从哪来",
+      "primary": "设计 Token",
+      "secondary": "颜色、透明度、圆角、描边、阴影都来自 Figma 同步的 Effect 样式。改设计稿后重新同步，所有玻璃一起更新。"
     }
   ],
   "platformSplit": {
-    "label": "平台增强",
+    "label": "不同系统的呈现",
     "branches": [
       {
         "id": "ios",
-        "label": "iOS 增强",
-        "primary": "expo-glass-effect · GlassView · GlassBoxPlatformBackdrop",
-        "secondary": "packages/components/src/atoms/glass/nativeLiquidGlass.tsx · GlassBoxPlatformBackdrop.tsx"
+        "label": "iOS 26 及以上",
+        "primary": "系统液态玻璃",
+        "secondary": "材质、按压反馈和动画全部交给系统，和原生 App 一致。"
       },
       {
-        "id": "android",
-        "label": "Android 增强",
-        "primary": "react-native-android-liquid-glass · LiquidGlassAndroidView",
-        "secondary": "packages/components/src/atoms/glass/nativeAndroidLiquidGlass.tsx · GlassBoxPlatformBackdrop.tsx"
-      },
-      {
-        "id": "web",
-        "label": "Web 增强",
-        "primary": "attachLiquidGlass · detachLiquidGlass",
-        "secondary": "packages/tokens/src/liquid-glass.js → @eds/mobile-tokens/liquid-glass · packages/tokens/dist/css/liquid-glass/index.css"
+        "id": "fallback",
+        "label": "其他系统",
+        "primary": "毛玻璃",
+        "secondary": "Android 与 iOS 25 及以下：背景模糊 + Token 叠色。系统玻璃不可用时也会回到这里，不会空白。"
       }
     ]
   },

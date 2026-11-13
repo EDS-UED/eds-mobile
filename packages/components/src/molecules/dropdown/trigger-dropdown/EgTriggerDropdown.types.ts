@@ -1,2 +1,5 @@
-import type { EgFieldProps } from '../../_shared/props.js';
-export type EgTriggerDropdownProps = EgFieldProps;
+/** Figma: Trigger · Drop-Down 下拉✅ */
+export type EgTriggerDropdownProps = {
+  /** Figma component set — variants synced from EDS Mobile */
+  testID?: string;
+};

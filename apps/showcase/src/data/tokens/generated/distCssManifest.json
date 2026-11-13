@@ -54,16 +54,18 @@
       "spacing-18": "var(--scale-18)",
       "spacing-20": "var(--scale-20)",
       "radius-0": "var(--scale-0)",
-      "radius-xs": "var(--scale-2)",
-      "radius-sm": "var(--scale-3)",
-      "radius-md": "var(--scale-4)",
+      "radius-xs": "var(--scale-3)",
+      "radius-sm": "var(--scale-4)",
+      "radius-md": "var(--scale-5)",
       "radius-lg": "var(--scale-6)",
       "radius-xl": "var(--scale-8)",
+      "radius-2xl": "var(--scale-9)",
       "radius-full": "var(--scale-full)",
       "stroke-xs": "0.2px",
-      "stroke-sm": "var(--scale-025)",
-      "stroke-md": "var(--scale-0375)",
-      "stroke-lg": "var(--scale-05)",
+      "stroke-sm": "var(--scale-0125)",
+      "stroke-md": "var(--scale-025)",
+      "stroke-lg": "var(--scale-0375)",
+      "stroke-xl": "var(--scale-05)",
       "blur-xs": "var(--scale-0)",
       "blur-sm": "var(--scale-2)",
       "blur-md": "var(--scale-4)",
@@ -86,6 +88,10 @@
       "avatar-md": "var(--scale-8)",
       "avatar-lg": "var(--scale-9)",
       "avatar-xl": "var(--scale-10)",
+      "avatar-2xl": "var(--scale-11)",
+      "avatar-3xl": "var(--scale-12)",
+      "avatar-4xl": "var(--scale-13)",
+      "avatar-5xl": "var(--scale-14)",
       "button-xs": "var(--scale-8)",
       "button-sm": "var(--scale-10)",
       "button-md": "var(--scale-12)",
@@ -154,31 +160,40 @@
       "eds-body-large-weight": "var(--weight-regular)",
       "eds-body-large-line-height": "var(--line-height-body-large)",
       "eds-body-large-strong-size": "var(--size-body-large)",
-      "eds-body-large-strong-weight": "var(--weight-semibold)",
+      "eds-body-large-strong-weight": "var(--weight-medium)",
       "eds-body-large-strong-line-height": "var(--line-height-body-large)",
+      "eds-body-large-heavy-size": "var(--size-body-large)",
+      "eds-body-large-heavy-weight": "var(--weight-bold)",
+      "eds-body-large-heavy-line-height": "var(--line-height-body-large)",
       "eds-body-medium-size": "var(--size-body-medium)",
       "eds-body-medium-weight": "var(--weight-regular)",
       "eds-body-medium-line-height": "var(--line-height-body-medium)",
       "eds-body-medium-strong-size": "var(--size-body-medium)",
-      "eds-body-medium-strong-weight": "var(--weight-semibold)",
+      "eds-body-medium-strong-weight": "var(--weight-medium)",
       "eds-body-medium-strong-line-height": "var(--line-height-body-medium)",
+      "eds-body-medium-heavy-size": "var(--size-body-medium)",
+      "eds-body-medium-heavy-weight": "var(--weight-semibold)",
+      "eds-body-medium-heavy-line-height": "var(--line-height-body-medium)",
       "eds-body-small-size": "var(--size-body-small)",
       "eds-body-small-weight": "var(--weight-regular)",
       "eds-body-small-line-height": "var(--line-height-body-small)",
       "eds-body-small-strong-size": "var(--size-body-small)",
-      "eds-body-small-strong-weight": "var(--weight-semibold)",
+      "eds-body-small-strong-weight": "var(--weight-medium)",
       "eds-body-small-strong-line-height": "var(--line-height-body-small)",
+      "eds-body-small-heavy-size": "var(--size-body-small)",
+      "eds-body-small-heavy-weight": "var(--weight-semibold)",
+      "eds-body-small-heavy-line-height": "var(--line-height-body-small)",
       "eds-detail-size": "var(--size-detail)",
       "eds-detail-weight": "var(--weight-regular)",
       "eds-detail-line-height": "var(--line-height-detail)",
       "eds-detail-strong-size": "var(--size-detail)",
-      "eds-detail-strong-weight": "var(--weight-semibold)",
+      "eds-detail-strong-weight": "var(--weight-medium)",
       "eds-detail-strong-line-height": "var(--line-height-detail)",
       "eds-footnote-size": "var(--size-footnote)",
       "eds-footnote-weight": "var(--weight-regular)",
       "eds-footnote-line-height": "var(--line-height-footnote)",
       "eds-footnote-strong-size": "var(--size-footnote)",
-      "eds-footnote-strong-weight": "var(--weight-semibold)",
+      "eds-footnote-strong-weight": "var(--weight-medium)",
       "eds-footnote-strong-line-height": "var(--line-height-footnote)",
       "eds-bar-size": "var(--size-bar)",
       "eds-bar-weight": "var(--weight-medium)",
@@ -197,165 +212,174 @@
       "motion-0": "0ms",
       "motion-1": "85ms",
       "motion-2": "180ms",
-      "motion-3": "280ms",
-      "motion-4": "400ms",
-      "motion-5": "500ms",
-      "motion-6": "250ms",
-      "motion-7": "350ms",
+      "motion-3": "250ms",
+      "motion-4": "280ms",
+      "motion-5": "350ms",
+      "motion-6": "400ms",
+      "motion-7": "500ms",
       "motion-8": "800ms",
       "motion-9": "2000ms",
+      "motion-10": "3000ms",
       "motion-ease-1": "cubic-bezier(0.42, 0, 0.58, 1)",
       "motion-ease-2": "cubic-bezier(0.2, 0, 0, 1)",
       "motion-ease-3": "cubic-bezier(0.4, 0, 1, 1)",
       "motion-ease-4": "cubic-bezier(0.4, 0, 0.2, 1)",
       "motion-ease-5": "linear",
-      "motion-ease-6": "cubic-bezier(0.34, 1.4, 0.64, 1)",
-      "motion-ease-7": "cubic-bezier(0.34, 1.45, 0.64, 1)",
-      "motion-ease-8": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "motion-ease-6": "cubic-bezier(0.34, 1.2, 0.64, 1)",
+      "motion-ease-7": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "motion-ease-8": "cubic-bezier(0, 0, 0.2, 1)",
       "motion-ease-9": "cubic-bezier(0.32, 0.72, 0, 1)",
-      "motion-opacity-hidden": "0",
-      "motion-opacity-dim": "0.4",
-      "motion-opacity-subtle": "0.7",
-      "motion-opacity-visible": "1",
-      "motion-opacity-disabled": "0.5",
+      "motion-ease-10": "cubic-bezier(0.42, 0, 0.58, 1)",
       "motion-scale-press": "1.2",
       "motion-scale-press-xs": "1.02",
       "motion-scale-press-sm": "1.04",
       "motion-scale-press-md": "1.2",
       "motion-scale-press-lg": "1.35",
-      "motion-scale-subtle": "0.98",
-      "motion-scale-emphasis": "1.04",
-      "motion-scale-present": "0.96",
-      "motion-glass-scale-press": "1.2",
-      "motion-glass-scale-press-xs": "1.02",
-      "motion-glass-scale-press-sm": "1.04",
-      "motion-glass-scale-press-md": "1.2",
-      "motion-glass-scale-press-lg": "1.35",
-      "motion-glass-opacity-shimmer": "0.10",
-      "motion-distance-xs": "4px",
-      "motion-distance-sm": "8px",
-      "motion-distance-md": "16px",
-      "motion-distance-lg": "24px",
-      "motion-distance-xl": "40px",
-      "motion-offset-small": "var(--motion-distance-sm)",
-      "motion-offset-flotation-y": "calc(-1 * var(--spacing-2-5))",
-      "motion-offset-page-push": "30%",
+      "motion-scale-press-down-xs": "0.98",
+      "motion-scale-press-down-sm": "0.96",
+      "motion-scale-press-down-md": "0.94",
+      "motion-scale-press-down-lg": "0.92",
+      "motion-opacity-visible": "1",
+      "motion-opacity-hidden": "0",
+      "motion-scale-menu-origin": "0.2",
+      "motion-scale-menu-trigger-lift": "1.15",
       "motion-offset-layout-deform-y": "var(--spacing-2-5)",
-      "motion-base-spring-default-response": "0.55",
-      "motion-base-spring-default-damping-fraction": "0.82",
-      "motion-base-spring-default-blend-duration": "0.15s",
-      "ios-spring-default": "damping:19,stiffness:130,mass:1",
-      "motion-base-spring-interactive-response": "0.15",
-      "motion-base-spring-interactive-damping-fraction": "0.86",
-      "motion-base-spring-interactive-blend-duration": "0.25s",
-      "ios-spring-interactive": "damping:72,stiffness:1755,mass:1",
-      "motion-base-spring-navigation-response": "0.38",
-      "motion-base-spring-navigation-damping-fraction": "0.88",
-      "motion-base-spring-navigation-blend-duration": "0.2s",
-      "ios-spring-navigation": "damping:29,stiffness:273,mass:1",
-      "motion-base-spring-sheet-response": "0.48",
-      "motion-base-spring-sheet-damping-fraction": "0.86",
-      "motion-base-spring-sheet-blend-duration": "0.2s",
-      "ios-spring-sheet": "damping:23,stiffness:171,mass:1",
-      "motion-base-spring-modal-response": "0.38",
-      "motion-base-spring-modal-damping-fraction": "0.9",
-      "motion-base-spring-modal-blend-duration": "0.15s",
-      "ios-spring-modal": "damping:30,stiffness:273,mass:1",
-      "motion-base-spring-control-response": "0.28",
-      "motion-base-spring-control-damping-fraction": "0.82",
-      "motion-base-spring-control-blend-duration": "0.1s",
-      "ios-spring-control": "damping:37,stiffness:503,mass:1",
-      "motion-base-spring-press-response": "0.32",
-      "motion-base-spring-press-damping-fraction": "0.88",
-      "motion-base-spring-press-blend-duration": "0.12s",
+      "motion-offset-sheets-inset": "var(--spacing-2)",
+      "motion-offset-sheets-top": "var(--spacing-0)",
+      "motion-radius-sheets-floating": "var(--radius-2xl)",
+      "motion-radius-sheets-attached": "var(--radius-2xl)",
+      "motion-opacity-sheets-dim-floating": "0.4",
+      "motion-ratio-page-parallax": "0.3",
+      "motion-opacity-page-dim": "0.2",
+      "motion-ratio-page-shot-close-launch": "12",
+      "motion-opacity-page-shot-dim": "0.8",
+      "motion-scale-page-shot-dismiss": "0.82",
+      "motion-radius-page-shot": "var(--radius-2xl)",
+      "motion-spring-press-response": "0.32",
+      "motion-spring-press-damping-fraction": "0.88",
+      "motion-spring-press-blend-duration": "0.12s",
+      "motion-spring-press-damping": "46",
+      "motion-spring-press-stiffness": "560",
+      "motion-spring-press-mass": "1",
       "ios-spring-press": "damping:46,stiffness:560,mass:1",
-      "motion-base-spring-press-release-response": "0.44",
-      "motion-base-spring-press-release-damping-fraction": "0.66",
-      "motion-base-spring-press-release-blend-duration": "0.12s",
+      "motion-spring-press-release-response": "0.44",
+      "motion-spring-press-release-damping-fraction": "0.66",
+      "motion-spring-press-release-blend-duration": "0.12s",
+      "motion-spring-press-release-damping": "17",
+      "motion-spring-press-release-stiffness": "350",
+      "motion-spring-press-release-mass": "1",
       "ios-spring-press-release": "damping:17,stiffness:350,mass:1",
-      "motion-base-spring-drag-response": "0.32",
-      "motion-base-spring-drag-damping-fraction": "0.82",
-      "motion-base-spring-drag-blend-duration": "0.1s",
+      "motion-spring-control-response": "0.28",
+      "motion-spring-control-damping-fraction": "0.82",
+      "motion-spring-control-blend-duration": "0.1s",
+      "motion-spring-control-damping": "37",
+      "motion-spring-control-stiffness": "503",
+      "motion-spring-control-mass": "1",
+      "ios-spring-control": "damping:37,stiffness:503,mass:1",
+      "motion-spring-slide-commit-response": "0.3",
+      "motion-spring-slide-commit-damping-fraction": "0.81",
+      "motion-spring-slide-commit-blend-duration": "0.1s",
+      "motion-spring-slide-commit-damping": "34",
+      "motion-spring-slide-commit-stiffness": "440",
+      "motion-spring-slide-commit-mass": "1",
+      "ios-spring-slide-commit": "damping:34,stiffness:440,mass:1",
+      "motion-spring-drag-response": "0.32",
+      "motion-spring-drag-damping-fraction": "0.82",
+      "motion-spring-drag-blend-duration": "0.1s",
+      "motion-spring-drag-damping": "32",
+      "motion-spring-drag-stiffness": "385",
+      "motion-spring-drag-mass": "1",
       "ios-spring-drag": "damping:32,stiffness:385,mass:1",
-      "motion-base-spring-bouncy-response": "0.42",
-      "motion-base-spring-bouncy-damping-fraction": "0.68",
-      "motion-base-spring-bouncy-blend-duration": "0.1s",
-      "ios-spring-bouncy": "damping:20,stiffness:224,mass:1",
-      "motion-base-spring-gentle-response": "0.6",
-      "motion-base-spring-gentle-damping-fraction": "0.92",
-      "motion-base-spring-gentle-blend-duration": "0.2s",
-      "ios-spring-gentle": "damping:19,stiffness:110,mass:1",
-      "motion-base-haptic-selection": "\"selection\"",
-      "motion-base-haptic-light": "\"light\"",
-      "motion-base-haptic-medium": "\"medium\"",
-      "motion-base-haptic-heavy": "\"heavy\"",
-      "motion-base-haptic-success": "\"success\"",
-      "motion-base-haptic-warning": "\"warning\"",
-      "motion-base-haptic-error": "\"error\"",
-      "ios-navigation-push": "duration:350,easing:cubic-bezier(0.32,0.72,0,1)",
-      "ios-ease-in-out": "duration:350,easing:cubic-bezier(0.42,0,0.58,1)",
-      "ios-ease-out": "duration:300,easing:cubic-bezier(0,0,0.58,1)",
-      "ios-ease-in": "duration:250,easing:cubic-bezier(0.42,0,1,1)",
-      "motion-base-interaction-velocity-aware": "1",
-      "motion-base-interaction-interruptible": "1",
-      "motion-base-interaction-preserve-velocity": "1",
-      "motion-duration-instant": "var(--motion-0)",
+      "motion-spring-menu-in-response": "0.36",
+      "motion-spring-menu-in-damping-fraction": "0.74",
+      "motion-spring-menu-in-blend-duration": "0.12s",
+      "motion-spring-menu-in-damping": "26",
+      "motion-spring-menu-in-stiffness": "305",
+      "motion-spring-menu-in-mass": "1",
+      "ios-spring-menu-in": "damping:26,stiffness:305,mass:1",
+      "motion-spring-menu-out-response": "0.31",
+      "motion-spring-menu-out-damping-fraction": "0.8",
+      "motion-spring-menu-out-blend-duration": "0.1s",
+      "motion-spring-menu-out-damping": "33",
+      "motion-spring-menu-out-stiffness": "420",
+      "motion-spring-menu-out-mass": "1",
+      "ios-spring-menu-out": "damping:33,stiffness:420,mass:1",
+      "motion-spring-sheets-present-response": "0.42",
+      "motion-spring-sheets-present-damping-fraction": "0.82",
+      "motion-spring-sheets-present-blend-duration": "0.12s",
+      "motion-spring-sheets-present-damping": "25",
+      "motion-spring-sheets-present-stiffness": "224",
+      "motion-spring-sheets-present-mass": "1",
+      "ios-spring-sheets-present": "damping:25,stiffness:224,mass:1",
+      "motion-spring-sheets-detent-response": "0.36",
+      "motion-spring-sheets-detent-damping-fraction": "0.72",
+      "motion-spring-sheets-detent-blend-duration": "0.1s",
+      "motion-spring-sheets-detent-damping": "25",
+      "motion-spring-sheets-detent-stiffness": "305",
+      "motion-spring-sheets-detent-mass": "1",
+      "ios-spring-sheets-detent": "damping:25,stiffness:305,mass:1",
+      "motion-spring-page-push-response": "0.4",
+      "motion-spring-page-push-damping-fraction": "0.8",
+      "motion-spring-page-push-blend-duration": "0.12s",
+      "motion-spring-page-push-damping": "25",
+      "motion-spring-page-push-stiffness": "246",
+      "motion-spring-page-push-mass": "1",
+      "ios-spring-page-push": "damping:25,stiffness:246,mass:1",
+      "motion-spring-page-pop-response": "0.38",
+      "motion-spring-page-pop-damping-fraction": "0.76",
+      "motion-spring-page-pop-blend-duration": "0.1s",
+      "motion-spring-page-pop-damping": "25",
+      "motion-spring-page-pop-stiffness": "273",
+      "motion-spring-page-pop-mass": "1",
+      "ios-spring-page-pop": "damping:25,stiffness:273,mass:1",
+      "motion-spring-page-shot-open-response": "0.44",
+      "motion-spring-page-shot-open-damping-fraction": "0.78",
+      "motion-spring-page-shot-open-blend-duration": "0.12s",
+      "motion-spring-page-shot-open-damping": "22",
+      "motion-spring-page-shot-open-stiffness": "204",
+      "motion-spring-page-shot-open-mass": "1",
+      "ios-spring-page-shot-open": "damping:22,stiffness:204,mass:1",
+      "motion-spring-page-shot-close-response": "0.34",
+      "motion-spring-page-shot-close-damping-fraction": "1",
+      "motion-spring-page-shot-close-blend-duration": "0.1s",
+      "motion-spring-page-shot-close-damping": "37",
+      "motion-spring-page-shot-close-stiffness": "342",
+      "motion-spring-page-shot-close-mass": "1",
+      "ios-spring-page-shot-close": "damping:37,stiffness:342,mass:1",
+      "motion-haptic-selection": "\"selection\"",
+      "motion-haptic-light": "\"light\"",
+      "ios-layout-deform-content-opacity": "duration:180,easing:cubic-bezier(0.42,0,0.58,1)",
+      "ios-layout-deform-content-transform": "duration:350,easing:cubic-bezier(0.22,1,0.36,1)",
+      "ios-sheets-dismiss": "duration:800,easing:cubic-bezier(0.32,0.72,0,1)",
+      "motion-interaction-velocity-aware": "1",
+      "motion-interaction-interruptible": "1",
+      "motion-interaction-preserve-velocity": "1",
       "motion-duration-micro": "var(--motion-0)",
-      "motion-duration-fast": "var(--motion-0)",
-      "motion-duration-normal": "var(--motion-0)",
-      "motion-duration-slow": "var(--motion-0)",
-      "motion-duration-emphasis": "var(--motion-0)",
+      "motion-duration-press": "var(--motion-0)",
       "motion-duration-control": "var(--motion-0)",
-      "motion-duration-navigation": "var(--motion-0)",
-      "motion-duration-spin": "var(--motion-0)",
-      "motion-duration-spin-slow": "var(--motion-0)",
       "motion-duration-fade": "var(--motion-0)",
-      "motion-duration-enter": "var(--motion-0)",
-      "motion-duration-exit": "var(--motion-0)",
-      "motion-duration-tap": "var(--motion-0)",
-      "motion-duration-shift": "var(--motion-0)",
-      "motion-duration-scroll-fade": "var(--motion-0)",
       "motion-duration-layout-deform": "var(--motion-0)",
       "motion-duration-layout-deform-content": "var(--motion-0)",
-      "motion-delay-layout-deform-content-swap": "var(--motion-0)",
-      "motion-delay-feedback-tick": "var(--motion-0)",
-      "motion-glass-duration-press": "150ms",
-      "motion-glass-duration-release": "220ms",
-      "motion-glass-duration-shimmer": "var(--motion-3)",
-      "motion-glass-duration-morph": "420ms",
+      "motion-duration-menu": "var(--motion-0)",
+      "motion-duration-sheets": "var(--motion-0)",
+      "motion-duration-page": "var(--motion-0)",
+      "motion-duration-page-shot": "var(--motion-0)",
+      "motion-delay-layout-deform-content-swap": "120ms",
       "motion-easing-standard": "var(--motion-ease-1)",
-      "motion-easing-enter": "var(--motion-ease-2)",
-      "motion-easing-exit": "var(--motion-ease-3)",
       "motion-easing-product": "var(--motion-ease-4)",
-      "motion-easing-linear": "var(--motion-ease-5)",
-      "motion-easing-spring": "var(--motion-ease-6)",
-      "motion-easing-spring-emphasis": "var(--motion-ease-7)",
+      "motion-easing-float": "var(--motion-ease-7)",
+      "motion-easing-menu": "var(--motion-ease-9)",
       "motion-easing-decelerate": "var(--motion-ease-8)",
-      "motion-easing-navigation": "var(--motion-ease-9)",
-      "motion-property-paint": "background-color, color, border-color, box-shadow, opacity, outline-color, fill",
-      "motion-property-geometry": "flex, max-width, width, min-width, max-height, transform, left, padding",
-      "motion-property-fade": "opacity",
+      "motion-easing-sheets": "var(--motion-ease-9)",
+      "motion-easing-page": "var(--motion-ease-6)",
       "motion-property-transform": "transform, opacity",
-      "motion-recipe-fade": "opacity var(--motion-duration-fade) var(--motion-easing-standard)",
-      "motion-recipe-enter": "opacity var(--motion-duration-enter) var(--motion-easing-enter), transform var(--motion-duration-enter) var(--motion-easing-enter)",
-      "motion-recipe-exit": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-exit) var(--motion-easing-exit)",
-      "motion-recipe-tap": "background-color var(--motion-duration-tap) var(--motion-easing-standard), color var(--motion-duration-tap) var(--motion-easing-standard), border-color var(--motion-duration-tap) var(--motion-easing-standard), opacity var(--motion-duration-tap) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-tap) var(--motion-easing-standard)",
-      "motion-recipe-flotation-enter": "opacity var(--motion-duration-enter) var(--motion-easing-standard), transform var(--motion-duration-emphasis) var(--motion-easing-spring-emphasis)",
-      "motion-recipe-flotation-exit": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-fast) var(--motion-easing-decelerate)",
+      "motion-recipe-press": "background-color var(--motion-duration-press) var(--motion-easing-standard), color var(--motion-duration-press) var(--motion-easing-standard), border-color var(--motion-duration-press) var(--motion-easing-standard), opacity var(--motion-duration-press) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-press) var(--motion-easing-standard)",
       "motion-recipe-control": "transform var(--motion-duration-control) var(--motion-easing-product), width var(--motion-duration-control) var(--motion-easing-product)",
-      "motion-recipe-shift": "flex var(--motion-duration-shift) var(--motion-easing-standard), max-width var(--motion-duration-shift) var(--motion-easing-standard), width var(--motion-duration-shift) var(--motion-easing-standard), min-width var(--motion-duration-shift) var(--motion-easing-standard), max-height var(--motion-duration-shift) var(--motion-easing-standard), transform var(--motion-duration-shift) var(--motion-easing-standard), left var(--motion-duration-shift) var(--motion-easing-standard), padding var(--motion-duration-shift) var(--motion-easing-standard)",
-      "motion-recipe-scroll-fade": "opacity var(--motion-duration-scroll-fade) var(--motion-easing-decelerate)",
-      "motion-recipe-scroll-fade-background": "background var(--motion-duration-scroll-fade) var(--motion-easing-decelerate)",
-      "motion-recipe-page-push": "opacity var(--motion-duration-navigation) var(--motion-easing-navigation), transform var(--motion-duration-navigation) var(--motion-easing-navigation)",
-      "motion-recipe-layout-deform-shell": "height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), width var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-width var(--motion-duration-layout-deform) var(--motion-easing-decelerate)",
-      "motion-recipe-layout-deform-content": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-decelerate)",
-      "motion-recipe-glass-press": "transform var(--motion-glass-duration-press) var(--motion-easing-standard)",
-      "motion-recipe-glass-shimmer": "opacity var(--motion-glass-duration-shimmer) var(--motion-easing-standard)",
-      "motion-recipe-glass-morph": "var(--motion-recipe-layout-deform-shell)",
-      "motion-displace-from-bottom": "translateY(var(--motion-distance-sm))",
-      "motion-displace-from-top": "translateY(calc(-1 * var(--motion-distance-sm)))",
-      "motion-displace-from-left": "translateX(calc(-1 * var(--motion-distance-sm)))",
-      "motion-displace-from-right": "translateX(var(--motion-distance-sm))"
+      "motion-recipe-layout-deform-content": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-float)",
+      "motion-recipe-sheets": "transform var(--motion-duration-sheets) var(--motion-easing-sheets), height var(--motion-duration-sheets) var(--motion-easing-sheets), left var(--motion-duration-sheets) var(--motion-easing-sheets), right var(--motion-duration-sheets) var(--motion-easing-sheets), bottom var(--motion-duration-sheets) var(--motion-easing-sheets), border-radius var(--motion-duration-sheets) var(--motion-easing-sheets)",
+      "motion-recipe-menu": "transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate)",
+      "motion-recipe-page": "transform var(--motion-duration-page) var(--motion-easing-page), filter var(--motion-duration-page) var(--motion-easing-standard)",
+      "motion-recipe-page-shot": "transform var(--motion-duration-page-shot) var(--motion-easing-page), top var(--motion-duration-page-shot) var(--motion-easing-page), left var(--motion-duration-page-shot) var(--motion-easing-page), width var(--motion-duration-page-shot) var(--motion-easing-page), height var(--motion-duration-page-shot) var(--motion-easing-page), border-radius var(--motion-duration-page-shot) var(--motion-easing-page)"
     }
   },
   "sourceRefs": {
@@ -682,19 +706,19 @@
         "file": "semantic.css",
         "startLine": 32,
         "endLine": 32,
-        "snippet": "  --radius-xs: var(--scale-2);    /* 8px */"
+        "snippet": "  --radius-xs: var(--scale-3);    /* 12px */"
       },
       "radius-sm": {
         "file": "semantic.css",
         "startLine": 33,
         "endLine": 33,
-        "snippet": "  --radius-sm: var(--scale-3);    /* 12px */"
+        "snippet": "  --radius-sm: var(--scale-4);    /* 16px */"
       },
       "radius-md": {
         "file": "semantic.css",
         "startLine": 34,
         "endLine": 34,
-        "snippet": "  --radius-md: var(--scale-4);    /* 16px */"
+        "snippet": "  --radius-md: var(--scale-5);    /* 20px */"
       },
       "radius-lg": {
         "file": "semantic.css",
@@ -708,328 +732,364 @@
         "endLine": 36,
         "snippet": "  --radius-xl: var(--scale-8);    /* 32px */"
       },
-      "radius-full": {
+      "radius-2xl": {
         "file": "semantic.css",
         "startLine": 37,
         "endLine": 37,
+        "snippet": "  --radius-2xl: var(--scale-9);   /* 36px */"
+      },
+      "radius-full": {
+        "file": "semantic.css",
+        "startLine": 38,
+        "endLine": 38,
         "snippet": "  --radius-full: var(--scale-full); /* 888px */"
       },
       "stroke-xs": {
         "file": "semantic.css",
-        "startLine": 40,
-        "endLine": 40,
+        "startLine": 41,
+        "endLine": 41,
         "snippet": "  --stroke-xs: 0.2px;             /* 0.2px */"
       },
       "stroke-sm": {
         "file": "semantic.css",
-        "startLine": 41,
-        "endLine": 41,
-        "snippet": "  --stroke-sm: var(--scale-025);  /* 1px */"
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --stroke-sm: var(--scale-0125); /* 0.5px */"
       },
       "stroke-md": {
         "file": "semantic.css",
-        "startLine": 42,
-        "endLine": 42,
-        "snippet": "  --stroke-md: var(--scale-0375); /* 1.5px */"
+        "startLine": 43,
+        "endLine": 43,
+        "snippet": "  --stroke-md: var(--scale-025);  /* 1px */"
       },
       "stroke-lg": {
         "file": "semantic.css",
-        "startLine": 43,
-        "endLine": 43,
-        "snippet": "  --stroke-lg: var(--scale-05);   /* 2px */"
+        "startLine": 44,
+        "endLine": 44,
+        "snippet": "  --stroke-lg: var(--scale-0375); /* 1.5px */"
+      },
+      "stroke-xl": {
+        "file": "semantic.css",
+        "startLine": 45,
+        "endLine": 45,
+        "snippet": "  --stroke-xl: var(--scale-05);   /* 2px */"
       },
       "blur-xs": {
         "file": "semantic.css",
-        "startLine": 46,
-        "endLine": 46,
+        "startLine": 48,
+        "endLine": 48,
         "snippet": "  --blur-xs: var(--scale-0);      /* 0px */"
       },
       "blur-sm": {
         "file": "semantic.css",
-        "startLine": 47,
-        "endLine": 47,
+        "startLine": 49,
+        "endLine": 49,
         "snippet": "  --blur-sm: var(--scale-2);      /* 8px */"
       },
       "blur-md": {
         "file": "semantic.css",
-        "startLine": 48,
-        "endLine": 48,
+        "startLine": 50,
+        "endLine": 50,
         "snippet": "  --blur-md: var(--scale-4);      /* 16px */"
       },
       "blur-lg": {
         "file": "semantic.css",
-        "startLine": 49,
-        "endLine": 49,
+        "startLine": 51,
+        "endLine": 51,
         "snippet": "  --blur-lg: var(--scale-20);     /* 80px */"
       },
       "depth-xs": {
         "file": "semantic.css",
-        "startLine": 52,
-        "endLine": 52,
+        "startLine": 54,
+        "endLine": 54,
         "snippet": "  --depth-xs: var(--scale-0125);  /* 0.5px */"
       },
       "depth-sm": {
         "file": "semantic.css",
-        "startLine": 53,
-        "endLine": 53,
+        "startLine": 55,
+        "endLine": 55,
         "snippet": "  --depth-sm: var(--scale-05);    /* 2px */"
       },
       "depth-md": {
         "file": "semantic.css",
-        "startLine": 54,
-        "endLine": 54,
+        "startLine": 56,
+        "endLine": 56,
         "snippet": "  --depth-md: var(--scale-1);     /* 4px */"
       },
       "depth-lg": {
         "file": "semantic.css",
-        "startLine": 55,
-        "endLine": 55,
+        "startLine": 57,
+        "endLine": 57,
         "snippet": "  --depth-lg: var(--scale-4);     /* 16px */"
       },
       "capsule-xs": {
         "file": "semantic.css",
-        "startLine": 58,
-        "endLine": 58,
+        "startLine": 60,
+        "endLine": 60,
         "snippet": "  --capsule-xs: var(--scale-9);   /* 36px */"
       },
       "capsule-sm": {
         "file": "semantic.css",
-        "startLine": 59,
-        "endLine": 59,
+        "startLine": 61,
+        "endLine": 61,
         "snippet": "  --capsule-sm: var(--scale-10);  /* 40px */"
       },
       "capsule-md": {
         "file": "semantic.css",
-        "startLine": 60,
-        "endLine": 60,
+        "startLine": 62,
+        "endLine": 62,
         "snippet": "  --capsule-md: var(--scale-12);  /* 48px */"
       },
       "capsule-lg": {
         "file": "semantic.css",
-        "startLine": 61,
-        "endLine": 61,
+        "startLine": 63,
+        "endLine": 63,
         "snippet": "  --capsule-lg: var(--scale-13);  /* 52px */"
       },
       "capsule-xl": {
         "file": "semantic.css",
-        "startLine": 62,
-        "endLine": 62,
+        "startLine": 64,
+        "endLine": 64,
         "snippet": "  --capsule-xl: var(--scale-14);  /* 56px */"
       },
       "symbol-xs": {
         "file": "semantic.css",
-        "startLine": 65,
-        "endLine": 65,
+        "startLine": 67,
+        "endLine": 67,
         "snippet": "  --symbol-xs: var(--scale-4);    /* 16px */"
       },
       "symbol-sm": {
         "file": "semantic.css",
-        "startLine": 66,
-        "endLine": 66,
+        "startLine": 68,
+        "endLine": 68,
         "snippet": "  --symbol-sm: var(--scale-5);    /* 20px */"
       },
       "symbol-md": {
         "file": "semantic.css",
-        "startLine": 67,
-        "endLine": 67,
+        "startLine": 69,
+        "endLine": 69,
         "snippet": "  --symbol-md: var(--scale-5-5);  /* 22px */"
       },
       "symbol-lg": {
         "file": "semantic.css",
-        "startLine": 68,
-        "endLine": 68,
+        "startLine": 70,
+        "endLine": 70,
         "snippet": "  --symbol-lg: var(--scale-6);    /* 24px */"
       },
       "avatar-xs": {
         "file": "semantic.css",
-        "startLine": 71,
-        "endLine": 71,
+        "startLine": 73,
+        "endLine": 73,
         "snippet": "  --avatar-xs: var(--scale-4);    /* 16px */"
       },
       "avatar-sm": {
         "file": "semantic.css",
-        "startLine": 72,
-        "endLine": 72,
+        "startLine": 74,
+        "endLine": 74,
         "snippet": "  --avatar-sm: var(--scale-6);    /* 24px */"
       },
       "avatar-md": {
         "file": "semantic.css",
-        "startLine": 73,
-        "endLine": 73,
+        "startLine": 75,
+        "endLine": 75,
         "snippet": "  --avatar-md: var(--scale-8);    /* 32px */"
       },
       "avatar-lg": {
         "file": "semantic.css",
-        "startLine": 74,
-        "endLine": 74,
+        "startLine": 76,
+        "endLine": 76,
         "snippet": "  --avatar-lg: var(--scale-9);    /* 36px */"
       },
       "avatar-xl": {
         "file": "semantic.css",
-        "startLine": 75,
-        "endLine": 75,
+        "startLine": 77,
+        "endLine": 77,
         "snippet": "  --avatar-xl: var(--scale-10);   /* 40px */"
       },
-      "button-xs": {
+      "avatar-2xl": {
         "file": "semantic.css",
         "startLine": 78,
         "endLine": 78,
+        "snippet": "  --avatar-2xl: var(--scale-11);  /* 44px */"
+      },
+      "avatar-3xl": {
+        "file": "semantic.css",
+        "startLine": 79,
+        "endLine": 79,
+        "snippet": "  --avatar-3xl: var(--scale-12);  /* 48px */"
+      },
+      "avatar-4xl": {
+        "file": "semantic.css",
+        "startLine": 80,
+        "endLine": 80,
+        "snippet": "  --avatar-4xl: var(--scale-13);  /* 52px */"
+      },
+      "avatar-5xl": {
+        "file": "semantic.css",
+        "startLine": 81,
+        "endLine": 81,
+        "snippet": "  --avatar-5xl: var(--scale-14);  /* 56px */"
+      },
+      "button-xs": {
+        "file": "semantic.css",
+        "startLine": 84,
+        "endLine": 84,
         "snippet": "  --button-xs: var(--scale-8);    /* 32px */"
       },
       "button-sm": {
         "file": "semantic.css",
-        "startLine": 79,
-        "endLine": 79,
+        "startLine": 85,
+        "endLine": 85,
         "snippet": "  --button-sm: var(--scale-10);   /* 40px */"
       },
       "button-md": {
         "file": "semantic.css",
-        "startLine": 80,
-        "endLine": 80,
+        "startLine": 86,
+        "endLine": 86,
         "snippet": "  --button-md: var(--scale-12);   /* 48px */"
       },
       "button-lg": {
         "file": "semantic.css",
-        "startLine": 81,
-        "endLine": 81,
+        "startLine": 87,
+        "endLine": 87,
         "snippet": "  --button-lg: var(--scale-14);   /* 56px */"
       },
       "button-xl": {
         "file": "semantic.css",
-        "startLine": 82,
-        "endLine": 82,
+        "startLine": 88,
+        "endLine": 88,
         "snippet": "  --button-xl: var(--scale-15);   /* 60px */"
       },
       "input-xs": {
         "file": "semantic.css",
-        "startLine": 85,
-        "endLine": 85,
+        "startLine": 91,
+        "endLine": 91,
         "snippet": "  --input-xs: var(--scale-8);     /* 32px */"
       },
       "input-sm": {
         "file": "semantic.css",
-        "startLine": 86,
-        "endLine": 86,
+        "startLine": 92,
+        "endLine": 92,
         "snippet": "  --input-sm: var(--scale-10);    /* 40px */"
       },
       "input-md": {
         "file": "semantic.css",
-        "startLine": 87,
-        "endLine": 87,
+        "startLine": 93,
+        "endLine": 93,
         "snippet": "  --input-md: var(--scale-12);    /* 48px */"
       },
       "input-lg": {
         "file": "semantic.css",
-        "startLine": 88,
-        "endLine": 88,
+        "startLine": 94,
+        "endLine": 94,
         "snippet": "  --input-lg: var(--scale-13);    /* 52px */"
       },
       "input-xl": {
         "file": "semantic.css",
-        "startLine": 89,
-        "endLine": 89,
+        "startLine": 95,
+        "endLine": 95,
         "snippet": "  --input-xl: var(--scale-14);    /* 56px */"
       },
       "dropdown-xs": {
         "file": "semantic.css",
-        "startLine": 90,
-        "endLine": 90,
+        "startLine": 96,
+        "endLine": 96,
         "snippet": "  --dropdown-xs: var(--scale-8);  /* 32px */"
       },
       "dropdown-sm": {
         "file": "semantic.css",
-        "startLine": 91,
-        "endLine": 91,
+        "startLine": 97,
+        "endLine": 97,
         "snippet": "  --dropdown-sm: var(--scale-10); /* 40px */"
       },
       "dropdown-md": {
         "file": "semantic.css",
-        "startLine": 92,
-        "endLine": 92,
+        "startLine": 98,
+        "endLine": 98,
         "snippet": "  --dropdown-md: var(--scale-12); /* 48px */"
       },
       "dropdown-lg": {
         "file": "semantic.css",
-        "startLine": 93,
-        "endLine": 93,
+        "startLine": 99,
+        "endLine": 99,
         "snippet": "  --dropdown-lg: var(--scale-13); /* 52px */"
       },
       "dropdown-xl": {
         "file": "semantic.css",
-        "startLine": 94,
-        "endLine": 94,
+        "startLine": 100,
+        "endLine": 100,
         "snippet": "  --dropdown-xl: var(--scale-14); /* 56px */"
       },
       "tag-sm": {
         "file": "semantic.css",
-        "startLine": 97,
-        "endLine": 97,
+        "startLine": 103,
+        "endLine": 103,
         "snippet": "  --tag-sm: var(--scale-4);       /* 16px */"
       },
       "tag-md": {
         "file": "semantic.css",
-        "startLine": 98,
-        "endLine": 98,
+        "startLine": 104,
+        "endLine": 104,
         "snippet": "  --tag-md: var(--scale-5);       /* 20px */"
       },
       "tag-lg": {
         "file": "semantic.css",
-        "startLine": 99,
-        "endLine": 99,
+        "startLine": 105,
+        "endLine": 105,
         "snippet": "  --tag-lg: var(--scale-6);       /* 24px */"
       },
       "checkbox-sm": {
         "file": "semantic.css",
-        "startLine": 100,
-        "endLine": 100,
+        "startLine": 106,
+        "endLine": 106,
         "snippet": "  --checkbox-sm: var(--scale-4);  /* 16px */"
       },
       "checkbox-md": {
         "file": "semantic.css",
-        "startLine": 101,
-        "endLine": 101,
+        "startLine": 107,
+        "endLine": 107,
         "snippet": "  --checkbox-md: var(--scale-5);  /* 20px */"
       },
       "checkbox-lg": {
         "file": "semantic.css",
-        "startLine": 102,
-        "endLine": 102,
+        "startLine": 108,
+        "endLine": 108,
         "snippet": "  --checkbox-lg: var(--scale-6);  /* 24px */"
       },
       "radio-sm": {
         "file": "semantic.css",
-        "startLine": 103,
-        "endLine": 103,
+        "startLine": 109,
+        "endLine": 109,
         "snippet": "  --radio-sm: var(--scale-4);     /* 16px */"
       },
       "radio-md": {
         "file": "semantic.css",
-        "startLine": 104,
-        "endLine": 104,
+        "startLine": 110,
+        "endLine": 110,
         "snippet": "  --radio-md: var(--scale-5);     /* 20px */"
       },
       "radio-lg": {
         "file": "semantic.css",
-        "startLine": 105,
-        "endLine": 105,
+        "startLine": 111,
+        "endLine": 111,
         "snippet": "  --radio-lg: var(--scale-6);     /* 24px */"
       },
       "switch-sm": {
         "file": "semantic.css",
-        "startLine": 106,
-        "endLine": 106,
+        "startLine": 112,
+        "endLine": 112,
         "snippet": "  --switch-sm: var(--scale-4);    /* 16px */"
       },
       "switch-md": {
         "file": "semantic.css",
-        "startLine": 107,
-        "endLine": 107,
+        "startLine": 113,
+        "endLine": 113,
         "snippet": "  --switch-md: var(--scale-5);    /* 20px */"
       },
       "switch-lg": {
         "file": "semantic.css",
-        "startLine": 108,
-        "endLine": 108,
+        "startLine": 114,
+        "endLine": 114,
         "snippet": "  --switch-lg: var(--scale-6);    /* 24px */"
       }
     },
@@ -1272,7 +1332,7 @@
         "file": "semantic.css",
         "startLine": 31,
         "endLine": 31,
-        "snippet": "  --eds-body-large-strong-weight: var(--weight-semibold); /* 600 */"
+        "snippet": "  --eds-body-large-strong-weight: var(--weight-medium); /* 500 */"
       },
       "eds-body-large-strong-line-height": {
         "file": "semantic.css",
@@ -1280,268 +1340,340 @@
         "endLine": 32,
         "snippet": "  --eds-body-large-strong-line-height: var(--line-height-body-large); /* 26px */"
       },
-      "eds-body-medium-size": {
+      "eds-body-large-heavy-size": {
         "file": "semantic.css",
         "startLine": 35,
         "endLine": 35,
+        "snippet": "  --eds-body-large-heavy-size: var(--size-body-large); /* 19px */"
+      },
+      "eds-body-large-heavy-weight": {
+        "file": "semantic.css",
+        "startLine": 36,
+        "endLine": 36,
+        "snippet": "  --eds-body-large-heavy-weight: var(--weight-bold); /* 700 */"
+      },
+      "eds-body-large-heavy-line-height": {
+        "file": "semantic.css",
+        "startLine": 37,
+        "endLine": 37,
+        "snippet": "  --eds-body-large-heavy-line-height: var(--line-height-body-large); /* 26px */"
+      },
+      "eds-body-medium-size": {
+        "file": "semantic.css",
+        "startLine": 40,
+        "endLine": 40,
         "snippet": "  --eds-body-medium-size: var(--size-body-medium); /* 17px */"
       },
       "eds-body-medium-weight": {
         "file": "semantic.css",
-        "startLine": 36,
-        "endLine": 36,
+        "startLine": 41,
+        "endLine": 41,
         "snippet": "  --eds-body-medium-weight: var(--weight-regular); /* 400 */"
       },
       "eds-body-medium-line-height": {
         "file": "semantic.css",
-        "startLine": 37,
-        "endLine": 37,
+        "startLine": 42,
+        "endLine": 42,
         "snippet": "  --eds-body-medium-line-height: var(--line-height-body-medium); /* 24px */"
       },
       "eds-body-medium-strong-size": {
         "file": "semantic.css",
-        "startLine": 40,
-        "endLine": 40,
+        "startLine": 45,
+        "endLine": 45,
         "snippet": "  --eds-body-medium-strong-size: var(--size-body-medium); /* 17px */"
       },
       "eds-body-medium-strong-weight": {
         "file": "semantic.css",
-        "startLine": 41,
-        "endLine": 41,
-        "snippet": "  --eds-body-medium-strong-weight: var(--weight-semibold); /* 600 */"
+        "startLine": 46,
+        "endLine": 46,
+        "snippet": "  --eds-body-medium-strong-weight: var(--weight-medium); /* 500 */"
       },
       "eds-body-medium-strong-line-height": {
         "file": "semantic.css",
-        "startLine": 42,
-        "endLine": 42,
+        "startLine": 47,
+        "endLine": 47,
         "snippet": "  --eds-body-medium-strong-line-height: var(--line-height-body-medium); /* 24px */"
+      },
+      "eds-body-medium-heavy-size": {
+        "file": "semantic.css",
+        "startLine": 50,
+        "endLine": 50,
+        "snippet": "  --eds-body-medium-heavy-size: var(--size-body-medium); /* 17px */"
+      },
+      "eds-body-medium-heavy-weight": {
+        "file": "semantic.css",
+        "startLine": 51,
+        "endLine": 51,
+        "snippet": "  --eds-body-medium-heavy-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-body-medium-heavy-line-height": {
+        "file": "semantic.css",
+        "startLine": 52,
+        "endLine": 52,
+        "snippet": "  --eds-body-medium-heavy-line-height: var(--line-height-body-medium); /* 24px */"
       },
       "eds-body-small-size": {
         "file": "semantic.css",
-        "startLine": 45,
-        "endLine": 45,
+        "startLine": 55,
+        "endLine": 55,
         "snippet": "  --eds-body-small-size: var(--size-body-small); /* 15px */"
       },
       "eds-body-small-weight": {
         "file": "semantic.css",
-        "startLine": 46,
-        "endLine": 46,
+        "startLine": 56,
+        "endLine": 56,
         "snippet": "  --eds-body-small-weight: var(--weight-regular); /* 400 */"
       },
       "eds-body-small-line-height": {
         "file": "semantic.css",
-        "startLine": 47,
-        "endLine": 47,
+        "startLine": 57,
+        "endLine": 57,
         "snippet": "  --eds-body-small-line-height: var(--line-height-body-small); /* 20px */"
       },
       "eds-body-small-strong-size": {
         "file": "semantic.css",
-        "startLine": 50,
-        "endLine": 50,
+        "startLine": 60,
+        "endLine": 60,
         "snippet": "  --eds-body-small-strong-size: var(--size-body-small); /* 15px */"
       },
       "eds-body-small-strong-weight": {
         "file": "semantic.css",
-        "startLine": 51,
-        "endLine": 51,
-        "snippet": "  --eds-body-small-strong-weight: var(--weight-semibold); /* 600 */"
+        "startLine": 61,
+        "endLine": 61,
+        "snippet": "  --eds-body-small-strong-weight: var(--weight-medium); /* 500 */"
       },
       "eds-body-small-strong-line-height": {
         "file": "semantic.css",
-        "startLine": 52,
-        "endLine": 52,
+        "startLine": 62,
+        "endLine": 62,
         "snippet": "  --eds-body-small-strong-line-height: var(--line-height-body-small); /* 20px */"
+      },
+      "eds-body-small-heavy-size": {
+        "file": "semantic.css",
+        "startLine": 65,
+        "endLine": 65,
+        "snippet": "  --eds-body-small-heavy-size: var(--size-body-small); /* 15px */"
+      },
+      "eds-body-small-heavy-weight": {
+        "file": "semantic.css",
+        "startLine": 66,
+        "endLine": 66,
+        "snippet": "  --eds-body-small-heavy-weight: var(--weight-semibold); /* 600 */"
+      },
+      "eds-body-small-heavy-line-height": {
+        "file": "semantic.css",
+        "startLine": 67,
+        "endLine": 67,
+        "snippet": "  --eds-body-small-heavy-line-height: var(--line-height-body-small); /* 20px */"
       },
       "eds-detail-size": {
         "file": "semantic.css",
-        "startLine": 55,
-        "endLine": 55,
+        "startLine": 70,
+        "endLine": 70,
         "snippet": "  --eds-detail-size: var(--size-detail); /* 14px */"
       },
       "eds-detail-weight": {
         "file": "semantic.css",
-        "startLine": 56,
-        "endLine": 56,
+        "startLine": 71,
+        "endLine": 71,
         "snippet": "  --eds-detail-weight: var(--weight-regular); /* 400 */"
       },
       "eds-detail-line-height": {
         "file": "semantic.css",
-        "startLine": 57,
-        "endLine": 57,
+        "startLine": 72,
+        "endLine": 72,
         "snippet": "  --eds-detail-line-height: var(--line-height-detail); /* 18px */"
       },
       "eds-detail-strong-size": {
         "file": "semantic.css",
-        "startLine": 60,
-        "endLine": 60,
+        "startLine": 75,
+        "endLine": 75,
         "snippet": "  --eds-detail-strong-size: var(--size-detail); /* 14px */"
       },
       "eds-detail-strong-weight": {
         "file": "semantic.css",
-        "startLine": 61,
-        "endLine": 61,
-        "snippet": "  --eds-detail-strong-weight: var(--weight-semibold); /* 600 */"
+        "startLine": 76,
+        "endLine": 76,
+        "snippet": "  --eds-detail-strong-weight: var(--weight-medium); /* 500 */"
       },
       "eds-detail-strong-line-height": {
         "file": "semantic.css",
-        "startLine": 62,
-        "endLine": 62,
+        "startLine": 77,
+        "endLine": 77,
         "snippet": "  --eds-detail-strong-line-height: var(--line-height-detail); /* 18px */"
       },
       "eds-footnote-size": {
         "file": "semantic.css",
-        "startLine": 65,
-        "endLine": 65,
+        "startLine": 80,
+        "endLine": 80,
         "snippet": "  --eds-footnote-size: var(--size-footnote); /* 13px */"
       },
       "eds-footnote-weight": {
         "file": "semantic.css",
-        "startLine": 66,
-        "endLine": 66,
+        "startLine": 81,
+        "endLine": 81,
         "snippet": "  --eds-footnote-weight: var(--weight-regular); /* 400 */"
       },
       "eds-footnote-line-height": {
         "file": "semantic.css",
-        "startLine": 67,
-        "endLine": 67,
+        "startLine": 82,
+        "endLine": 82,
         "snippet": "  --eds-footnote-line-height: var(--line-height-footnote); /* 16px */"
       },
       "eds-footnote-strong-size": {
         "file": "semantic.css",
-        "startLine": 70,
-        "endLine": 70,
+        "startLine": 85,
+        "endLine": 85,
         "snippet": "  --eds-footnote-strong-size: var(--size-footnote); /* 13px */"
       },
       "eds-footnote-strong-weight": {
         "file": "semantic.css",
-        "startLine": 71,
-        "endLine": 71,
-        "snippet": "  --eds-footnote-strong-weight: var(--weight-semibold); /* 600 */"
+        "startLine": 86,
+        "endLine": 86,
+        "snippet": "  --eds-footnote-strong-weight: var(--weight-medium); /* 500 */"
       },
       "eds-footnote-strong-line-height": {
         "file": "semantic.css",
-        "startLine": 72,
-        "endLine": 72,
+        "startLine": 87,
+        "endLine": 87,
         "snippet": "  --eds-footnote-strong-line-height: var(--line-height-footnote); /* 16px */"
       },
       "eds-bar-size": {
         "file": "semantic.css",
-        "startLine": 75,
-        "endLine": 75,
+        "startLine": 90,
+        "endLine": 90,
         "snippet": "  --eds-bar-size: var(--size-bar); /* 10px */"
       },
       "eds-bar-weight": {
         "file": "semantic.css",
-        "startLine": 76,
-        "endLine": 76,
+        "startLine": 91,
+        "endLine": 91,
         "snippet": "  --eds-bar-weight: var(--weight-medium); /* 500 */"
       },
       "eds-bar-line-height": {
         "file": "semantic.css",
-        "startLine": 77,
-        "endLine": 77,
+        "startLine": 92,
+        "endLine": 92,
         "snippet": "  --eds-bar-line-height: var(--line-height-bar); /* 14px */"
       },
       "eds-bar-strong-size": {
         "file": "semantic.css",
-        "startLine": 80,
-        "endLine": 80,
+        "startLine": 95,
+        "endLine": 95,
         "snippet": "  --eds-bar-strong-size: var(--size-bar); /* 10px */"
       },
       "eds-bar-strong-weight": {
         "file": "semantic.css",
-        "startLine": 81,
-        "endLine": 81,
+        "startLine": 96,
+        "endLine": 96,
         "snippet": "  --eds-bar-strong-weight: var(--weight-semibold); /* 600 */"
       },
       "eds-bar-strong-line-height": {
         "file": "semantic.css",
-        "startLine": 82,
-        "endLine": 82,
+        "startLine": 97,
+        "endLine": 97,
         "snippet": "  --eds-bar-strong-line-height: var(--line-height-bar); /* 14px */"
       },
       "typography-display": {
         "file": "semantic.css",
-        "startLine": 87,
-        "endLine": 91,
+        "startLine": 102,
+        "endLine": 106,
         "snippet": ".typography-display\nfont-size: var(--eds-display-size); /* 34px */\nfont-weight: var(--eds-display-weight); /* 700 */\nline-height: var(--eds-display-line-height); /* 44px */"
       },
       "typography-headline": {
         "file": "semantic.css",
-        "startLine": 93,
-        "endLine": 97,
+        "startLine": 108,
+        "endLine": 112,
         "snippet": ".typography-headline\nfont-size: var(--eds-headline-size); /* 26px */\nfont-weight: var(--eds-headline-weight); /* 700 */\nline-height: var(--eds-headline-line-height); /* 32px */"
       },
       "typography-title": {
         "file": "semantic.css",
-        "startLine": 99,
-        "endLine": 103,
+        "startLine": 114,
+        "endLine": 118,
         "snippet": ".typography-title\nfont-size: var(--eds-title-size); /* 21px */\nfont-weight: var(--eds-title-weight); /* 700 */\nline-height: var(--eds-title-line-height); /* 28px */"
       },
       "typography-body-large": {
         "file": "semantic.css",
-        "startLine": 105,
-        "endLine": 109,
+        "startLine": 120,
+        "endLine": 124,
         "snippet": ".typography-body-large\nfont-size: var(--eds-body-large-size); /* 19px */\nfont-weight: var(--eds-body-large-weight); /* 400 */\nline-height: var(--eds-body-large-line-height); /* 26px */"
       },
       "typography-body-large-strong": {
         "file": "semantic.css",
-        "startLine": 111,
-        "endLine": 115,
-        "snippet": ".typography-body-large-strong\nfont-size: var(--eds-body-large-strong-size); /* 19px */\nfont-weight: var(--eds-body-large-strong-weight); /* 600 */\nline-height: var(--eds-body-large-strong-line-height); /* 26px */"
+        "startLine": 126,
+        "endLine": 130,
+        "snippet": ".typography-body-large-strong\nfont-size: var(--eds-body-large-strong-size); /* 19px */\nfont-weight: var(--eds-body-large-strong-weight); /* 500 */\nline-height: var(--eds-body-large-strong-line-height); /* 26px */"
+      },
+      "typography-body-large-heavy": {
+        "file": "semantic.css",
+        "startLine": 132,
+        "endLine": 136,
+        "snippet": ".typography-body-large-heavy\nfont-size: var(--eds-body-large-heavy-size); /* 19px */\nfont-weight: var(--eds-body-large-heavy-weight); /* 700 */\nline-height: var(--eds-body-large-heavy-line-height); /* 26px */"
       },
       "typography-body-medium": {
         "file": "semantic.css",
-        "startLine": 117,
-        "endLine": 121,
+        "startLine": 138,
+        "endLine": 142,
         "snippet": ".typography-body-medium\nfont-size: var(--eds-body-medium-size); /* 17px */\nfont-weight: var(--eds-body-medium-weight); /* 400 */\nline-height: var(--eds-body-medium-line-height); /* 24px */"
       },
       "typography-body-medium-strong": {
         "file": "semantic.css",
-        "startLine": 123,
-        "endLine": 127,
-        "snippet": ".typography-body-medium-strong\nfont-size: var(--eds-body-medium-strong-size); /* 17px */\nfont-weight: var(--eds-body-medium-strong-weight); /* 600 */\nline-height: var(--eds-body-medium-strong-line-height); /* 24px */"
+        "startLine": 144,
+        "endLine": 148,
+        "snippet": ".typography-body-medium-strong\nfont-size: var(--eds-body-medium-strong-size); /* 17px */\nfont-weight: var(--eds-body-medium-strong-weight); /* 500 */\nline-height: var(--eds-body-medium-strong-line-height); /* 24px */"
+      },
+      "typography-body-medium-heavy": {
+        "file": "semantic.css",
+        "startLine": 150,
+        "endLine": 154,
+        "snippet": ".typography-body-medium-heavy\nfont-size: var(--eds-body-medium-heavy-size); /* 17px */\nfont-weight: var(--eds-body-medium-heavy-weight); /* 600 */\nline-height: var(--eds-body-medium-heavy-line-height); /* 24px */"
       },
       "typography-body-small": {
         "file": "semantic.css",
-        "startLine": 129,
-        "endLine": 133,
+        "startLine": 156,
+        "endLine": 160,
         "snippet": ".typography-body-small\nfont-size: var(--eds-body-small-size); /* 15px */\nfont-weight: var(--eds-body-small-weight); /* 400 */\nline-height: var(--eds-body-small-line-height); /* 20px */"
       },
       "typography-body-small-strong": {
         "file": "semantic.css",
-        "startLine": 135,
-        "endLine": 139,
-        "snippet": ".typography-body-small-strong\nfont-size: var(--eds-body-small-strong-size); /* 15px */\nfont-weight: var(--eds-body-small-strong-weight); /* 600 */\nline-height: var(--eds-body-small-strong-line-height); /* 20px */"
+        "startLine": 162,
+        "endLine": 166,
+        "snippet": ".typography-body-small-strong\nfont-size: var(--eds-body-small-strong-size); /* 15px */\nfont-weight: var(--eds-body-small-strong-weight); /* 500 */\nline-height: var(--eds-body-small-strong-line-height); /* 20px */"
+      },
+      "typography-body-small-heavy": {
+        "file": "semantic.css",
+        "startLine": 168,
+        "endLine": 172,
+        "snippet": ".typography-body-small-heavy\nfont-size: var(--eds-body-small-heavy-size); /* 15px */\nfont-weight: var(--eds-body-small-heavy-weight); /* 600 */\nline-height: var(--eds-body-small-heavy-line-height); /* 20px */"
       },
       "typography-detail": {
         "file": "semantic.css",
-        "startLine": 141,
-        "endLine": 145,
+        "startLine": 174,
+        "endLine": 178,
         "snippet": ".typography-detail\nfont-size: var(--eds-detail-size); /* 14px */\nfont-weight: var(--eds-detail-weight); /* 400 */\nline-height: var(--eds-detail-line-height); /* 18px */"
       },
       "typography-detail-strong": {
         "file": "semantic.css",
-        "startLine": 147,
-        "endLine": 151,
-        "snippet": ".typography-detail-strong\nfont-size: var(--eds-detail-strong-size); /* 14px */\nfont-weight: var(--eds-detail-strong-weight); /* 600 */\nline-height: var(--eds-detail-strong-line-height); /* 18px */"
+        "startLine": 180,
+        "endLine": 184,
+        "snippet": ".typography-detail-strong\nfont-size: var(--eds-detail-strong-size); /* 14px */\nfont-weight: var(--eds-detail-strong-weight); /* 500 */\nline-height: var(--eds-detail-strong-line-height); /* 18px */"
       },
       "typography-footnote": {
         "file": "semantic.css",
-        "startLine": 153,
-        "endLine": 157,
+        "startLine": 186,
+        "endLine": 190,
         "snippet": ".typography-footnote\nfont-size: var(--eds-footnote-size); /* 13px */\nfont-weight: var(--eds-footnote-weight); /* 400 */\nline-height: var(--eds-footnote-line-height); /* 16px */"
       },
       "typography-footnote-strong": {
         "file": "semantic.css",
-        "startLine": 159,
-        "endLine": 163,
-        "snippet": ".typography-footnote-strong\nfont-size: var(--eds-footnote-strong-size); /* 13px */\nfont-weight: var(--eds-footnote-strong-weight); /* 600 */\nline-height: var(--eds-footnote-strong-line-height); /* 16px */"
+        "startLine": 192,
+        "endLine": 196,
+        "snippet": ".typography-footnote-strong\nfont-size: var(--eds-footnote-strong-size); /* 13px */\nfont-weight: var(--eds-footnote-strong-weight); /* 500 */\nline-height: var(--eds-footnote-strong-line-height); /* 16px */"
       },
       "typography-bar": {
         "file": "semantic.css",
-        "startLine": 165,
-        "endLine": 177,
+        "startLine": 198,
+        "endLine": 210,
         "snippet": ".typography-bar\ndisplay: inline-block;\nbox-sizing: border-box;\nfont-family: var(--eds-family-sans); /* \"EDS Text\", \"PingFang SC\", SourceHanSansSC, \"Apple Color Emoji\", \"Segoe UI Emoji\" */\nfont-size: calc(var(--eds-bar-size) * 2);\nfont-weight: var(--eds-bar-weight); /* 500 */\nline-height: calc(var(--eds-bar-line-height) * 2);\ntransform: scale(0.5);\ntransform-origin: top center;\nmargin-bottom: calc(var(--eds-bar-line-height) * -1);\n-webkit-font-smoothing: antialiased;\n-moz-osx-font-smoothing: grayscale;"
       }
     },
@@ -1594,31 +1726,31 @@
         "file": "base.css",
         "startLine": 13,
         "endLine": 13,
-        "snippet": "  --motion-3: 280ms;"
+        "snippet": "  --motion-3: 250ms;"
       },
       "motion-4": {
         "file": "base.css",
         "startLine": 14,
         "endLine": 14,
-        "snippet": "  --motion-4: 400ms;"
+        "snippet": "  --motion-4: 280ms;"
       },
       "motion-5": {
         "file": "base.css",
         "startLine": 15,
         "endLine": 15,
-        "snippet": "  --motion-5: 500ms;"
+        "snippet": "  --motion-5: 350ms;"
       },
       "motion-6": {
         "file": "base.css",
         "startLine": 16,
         "endLine": 16,
-        "snippet": "  --motion-6: 250ms;"
+        "snippet": "  --motion-6: 400ms;"
       },
       "motion-7": {
         "file": "base.css",
         "startLine": 17,
         "endLine": 17,
-        "snippet": "  --motion-7: 350ms;"
+        "snippet": "  --motion-7: 500ms;"
       },
       "motion-8": {
         "file": "base.css",
@@ -1632,437 +1764,425 @@
         "endLine": 19,
         "snippet": "  --motion-9: 2000ms;"
       },
+      "motion-10": {
+        "file": "base.css",
+        "startLine": 20,
+        "endLine": 20,
+        "snippet": "  --motion-10: 3000ms;"
+      },
       "motion-ease-1": {
         "file": "base.css",
-        "startLine": 26,
-        "endLine": 26,
+        "startLine": 24,
+        "endLine": 24,
         "snippet": "  --motion-ease-1: cubic-bezier(0.42, 0, 0.58, 1);"
       },
       "motion-ease-2": {
         "file": "base.css",
-        "startLine": 27,
-        "endLine": 27,
+        "startLine": 25,
+        "endLine": 25,
         "snippet": "  --motion-ease-2: cubic-bezier(0.2, 0, 0, 1);"
       },
       "motion-ease-3": {
         "file": "base.css",
-        "startLine": 28,
-        "endLine": 28,
+        "startLine": 26,
+        "endLine": 26,
         "snippet": "  --motion-ease-3: cubic-bezier(0.4, 0, 1, 1);"
       },
       "motion-ease-4": {
         "file": "base.css",
-        "startLine": 29,
-        "endLine": 29,
+        "startLine": 27,
+        "endLine": 27,
         "snippet": "  --motion-ease-4: cubic-bezier(0.4, 0, 0.2, 1);"
       },
       "motion-ease-5": {
         "file": "base.css",
-        "startLine": 30,
-        "endLine": 30,
+        "startLine": 28,
+        "endLine": 28,
         "snippet": "  --motion-ease-5: linear;"
       },
       "motion-ease-6": {
         "file": "base.css",
-        "startLine": 31,
-        "endLine": 31,
-        "snippet": "  --motion-ease-6: cubic-bezier(0.34, 1.4, 0.64, 1);"
+        "startLine": 29,
+        "endLine": 29,
+        "snippet": "  --motion-ease-6: cubic-bezier(0.34, 1.2, 0.64, 1);"
       },
       "motion-ease-7": {
         "file": "base.css",
-        "startLine": 32,
-        "endLine": 32,
-        "snippet": "  --motion-ease-7: cubic-bezier(0.34, 1.45, 0.64, 1);"
+        "startLine": 30,
+        "endLine": 30,
+        "snippet": "  --motion-ease-7: cubic-bezier(0.22, 1, 0.36, 1);"
       },
       "motion-ease-8": {
         "file": "base.css",
-        "startLine": 33,
-        "endLine": 33,
-        "snippet": "  --motion-ease-8: cubic-bezier(0.22, 1, 0.36, 1);"
+        "startLine": 31,
+        "endLine": 31,
+        "snippet": "  --motion-ease-8: cubic-bezier(0, 0, 0.2, 1);"
       },
       "motion-ease-9": {
         "file": "base.css",
-        "startLine": 34,
-        "endLine": 34,
+        "startLine": 32,
+        "endLine": 32,
         "snippet": "  --motion-ease-9: cubic-bezier(0.32, 0.72, 0, 1);"
       },
-      "motion-opacity-hidden": {
+      "motion-ease-10": {
         "file": "base.css",
-        "startLine": 41,
-        "endLine": 41,
-        "snippet": "  --motion-opacity-hidden: 0;"
-      },
-      "motion-opacity-dim": {
-        "file": "base.css",
-        "startLine": 42,
-        "endLine": 42,
-        "snippet": "  --motion-opacity-dim: 0.4;"
-      },
-      "motion-opacity-subtle": {
-        "file": "base.css",
-        "startLine": 43,
-        "endLine": 43,
-        "snippet": "  --motion-opacity-subtle: 0.7;"
-      },
-      "motion-opacity-visible": {
-        "file": "base.css",
-        "startLine": 44,
-        "endLine": 44,
-        "snippet": "  --motion-opacity-visible: 1;"
-      },
-      "motion-opacity-disabled": {
-        "file": "base.css",
-        "startLine": 45,
-        "endLine": 45,
-        "snippet": "  --motion-opacity-disabled: 0.5;"
+        "startLine": 33,
+        "endLine": 33,
+        "snippet": "  --motion-ease-10: cubic-bezier(0.42, 0, 0.58, 1);"
       },
       "motion-scale-press": {
         "file": "base.css",
-        "startLine": 48,
-        "endLine": 48,
+        "startLine": 37,
+        "endLine": 37,
         "snippet": "  --motion-scale-press: 1.2;      /* Tap press scale · default md */"
       },
       "motion-scale-press-xs": {
         "file": "base.css",
-        "startLine": 49,
-        "endLine": 49,
+        "startLine": 38,
+        "endLine": 38,
         "snippet": "  --motion-scale-press-xs: 1.02;  /* Tap press · xs */"
       },
       "motion-scale-press-sm": {
         "file": "base.css",
-        "startLine": 50,
-        "endLine": 50,
+        "startLine": 39,
+        "endLine": 39,
         "snippet": "  --motion-scale-press-sm: 1.04;  /* Tap press · sm */"
       },
       "motion-scale-press-md": {
         "file": "base.css",
-        "startLine": 51,
-        "endLine": 51,
+        "startLine": 40,
+        "endLine": 40,
         "snippet": "  --motion-scale-press-md: 1.2;   /* Tap press · md */"
       },
       "motion-scale-press-lg": {
         "file": "base.css",
-        "startLine": 52,
-        "endLine": 52,
+        "startLine": 41,
+        "endLine": 41,
         "snippet": "  --motion-scale-press-lg: 1.35;  /* Tap press · lg */"
       },
-      "motion-scale-subtle": {
+      "motion-scale-press-down-xs": {
+        "file": "base.css",
+        "startLine": 42,
+        "endLine": 42,
+        "snippet": "  --motion-scale-press-down-xs: 0.98; /* Tap press · shrink · xs */"
+      },
+      "motion-scale-press-down-sm": {
+        "file": "base.css",
+        "startLine": 43,
+        "endLine": 43,
+        "snippet": "  --motion-scale-press-down-sm: 0.96; /* Tap press · shrink · sm */"
+      },
+      "motion-scale-press-down-md": {
+        "file": "base.css",
+        "startLine": 44,
+        "endLine": 44,
+        "snippet": "  --motion-scale-press-down-md: 0.94; /* Tap press · shrink · md */"
+      },
+      "motion-scale-press-down-lg": {
+        "file": "base.css",
+        "startLine": 45,
+        "endLine": 45,
+        "snippet": "  --motion-scale-press-down-lg: 0.92; /* Tap press · shrink · lg */"
+      },
+      "motion-opacity-visible": {
+        "file": "base.css",
+        "startLine": 48,
+        "endLine": 48,
+        "snippet": "  --motion-opacity-visible: 1;"
+      },
+      "motion-opacity-hidden": {
+        "file": "base.css",
+        "startLine": 49,
+        "endLine": 49,
+        "snippet": "  --motion-opacity-hidden: 0;"
+      },
+      "motion-scale-menu-origin": {
+        "file": "base.css",
+        "startLine": 52,
+        "endLine": 52,
+        "snippet": "  --motion-scale-menu-origin: 0.2; /* 浮层容器起始缩放（≈ 触发器尺寸）· transform-origin 指向触发器 */"
+      },
+      "motion-scale-menu-trigger-lift": {
         "file": "base.css",
         "startLine": 53,
         "endLine": 53,
-        "snippet": "  --motion-scale-subtle: 0.98;"
-      },
-      "motion-scale-emphasis": {
-        "file": "base.css",
-        "startLine": 54,
-        "endLine": 54,
-        "snippet": "  --motion-scale-emphasis: 1.04;"
-      },
-      "motion-scale-present": {
-        "file": "base.css",
-        "startLine": 55,
-        "endLine": 55,
-        "snippet": "  --motion-scale-present: 0.96;   /* Sheet / Modal / Popover 入场 */"
-      },
-      "motion-glass-scale-press": {
-        "file": "base.css",
-        "startLine": 58,
-        "endLine": 58,
-        "snippet": "  --motion-glass-scale-press: 1.2; /* Glass press scale · default md */"
-      },
-      "motion-glass-scale-press-xs": {
-        "file": "base.css",
-        "startLine": 59,
-        "endLine": 59,
-        "snippet": "  --motion-glass-scale-press-xs: 1.02; /* Glass press · xs */"
-      },
-      "motion-glass-scale-press-sm": {
-        "file": "base.css",
-        "startLine": 60,
-        "endLine": 60,
-        "snippet": "  --motion-glass-scale-press-sm: 1.04; /* Glass press · sm */"
-      },
-      "motion-glass-scale-press-md": {
-        "file": "base.css",
-        "startLine": 61,
-        "endLine": 61,
-        "snippet": "  --motion-glass-scale-press-md: 1.2; /* Glass press · md */"
-      },
-      "motion-glass-scale-press-lg": {
-        "file": "base.css",
-        "startLine": 62,
-        "endLine": 62,
-        "snippet": "  --motion-glass-scale-press-lg: 1.35; /* Glass press · lg · EgButtonGlass RN */"
-      },
-      "motion-glass-opacity-shimmer": {
-        "file": "base.css",
-        "startLine": 63,
-        "endLine": 63,
-        "snippet": "  --motion-glass-opacity-shimmer: 0.10; /* Glass Shimmer 最大透明度 */"
-      },
-      "motion-distance-xs": {
-        "file": "base.css",
-        "startLine": 66,
-        "endLine": 66,
-        "snippet": "  --motion-distance-xs: 4px;"
-      },
-      "motion-distance-sm": {
-        "file": "base.css",
-        "startLine": 67,
-        "endLine": 67,
-        "snippet": "  --motion-distance-sm: 8px;"
-      },
-      "motion-distance-md": {
-        "file": "base.css",
-        "startLine": 68,
-        "endLine": 68,
-        "snippet": "  --motion-distance-md: 16px;"
-      },
-      "motion-distance-lg": {
-        "file": "base.css",
-        "startLine": 69,
-        "endLine": 69,
-        "snippet": "  --motion-distance-lg: 24px;"
-      },
-      "motion-distance-xl": {
-        "file": "base.css",
-        "startLine": 70,
-        "endLine": 70,
-        "snippet": "  --motion-distance-xl: 40px;"
-      },
-      "motion-offset-small": {
-        "file": "base.css",
-        "startLine": 71,
-        "endLine": 71,
-        "snippet": "  --motion-offset-small: var(--motion-distance-sm);"
-      },
-      "motion-offset-flotation-y": {
-        "file": "base.css",
-        "startLine": 72,
-        "endLine": 72,
-        "snippet": "  --motion-offset-flotation-y: calc(-1 * var(--spacing-2-5));"
-      },
-      "motion-offset-page-push": {
-        "file": "base.css",
-        "startLine": 73,
-        "endLine": 73,
-        "snippet": "  --motion-offset-page-push: 30%;"
+        "snippet": "  --motion-scale-menu-trigger-lift: 1.15; /* 触发器交接峰值缩放：展开时鼓起后化为水滴，收回时并入后鼓起回弹 */"
       },
       "motion-offset-layout-deform-y": {
         "file": "base.css",
+        "startLine": 56,
+        "endLine": 56,
+        "snippet": "  --motion-offset-layout-deform-y: var(--spacing-2-5); /* 10px · 内容 crossfade 向下 nudge */"
+      },
+      "motion-offset-sheets-inset": {
+        "file": "base.css",
+        "startLine": 57,
+        "endLine": 57,
+        "snippet": "  --motion-offset-sheets-inset: var(--spacing-2); /* 8px · Sheets 悬浮档 Sheet 与屏幕左右 / 底边间隙；升至全高档时收为 0 */"
+      },
+      "motion-offset-sheets-top": {
+        "file": "base.css",
+        "startLine": 58,
+        "endLine": 58,
+        "snippet": "  --motion-offset-sheets-top: var(--spacing-0); /* Sheets 大尺寸（large）档顶边与设备系统条（状态栏 / 刘海 · safe area top）间距 · spacing-0（紧贴系统条底） */"
+      },
+      "motion-radius-sheets-floating": {
+        "file": "base.css",
+        "startLine": 61,
+        "endLine": 61,
+        "snippet": "  --motion-radius-sheets-floating: var(--radius-2xl); /* 悬浮档四角圆角 */"
+      },
+      "motion-radius-sheets-attached": {
+        "file": "base.css",
+        "startLine": 62,
+        "endLine": 62,
+        "snippet": "  --motion-radius-sheets-attached: var(--radius-2xl); /* 全高贴边档顶角圆角（底角 0） */"
+      },
+      "motion-opacity-sheets-dim-floating": {
+        "file": "base.css",
+        "startLine": 65,
+        "endLine": 65,
+        "snippet": "  --motion-opacity-sheets-dim-floating: 0.4; /* 悬浮档遮罩强度（× material-same-black）；全高档为 1 */"
+      },
+      "motion-ratio-page-parallax": {
+        "file": "base.css",
+        "startLine": 68,
+        "endLine": 68,
+        "snippet": "  --motion-ratio-page-parallax: 0.3; /* 推入时下层页视差位移 = 容器宽 × 0.3（向左）；返回时下层页整屏同速推回 */"
+      },
+      "motion-opacity-page-dim": {
+        "file": "base.css",
+        "startLine": 69,
+        "endLine": 69,
+        "snippet": "  --motion-opacity-page-dim: 0.2; /* 被覆盖页压暗强度（× material-same-black ≈ 10% 黑） */"
+      },
+      "motion-ratio-page-shot-close-launch": {
+        "file": "base.css",
+        "startLine": 72,
+        "endLine": 72,
+        "snippet": "  --motion-ratio-page-shot-close-launch: 12; /* 收回起步速度（progress / s · 1 = 整页→触发元素全程）— 离场先快后慢：起步即峰值、临界阻尼平稳减速落位；跟手松手更快时取跟手速度 */"
+      },
+      "motion-opacity-page-shot-dim": {
+        "file": "base.css",
+        "startLine": 73,
+        "endLine": 73,
+        "snippet": "  --motion-opacity-page-shot-dim: 0.8; /* 弹层整页展开后背后页面压暗强度（× material-same-black ≈ 40% 黑 · App Store 实测） */"
+      },
+      "motion-scale-page-shot-dismiss": {
+        "file": "base.css",
         "startLine": 74,
         "endLine": 74,
-        "snippet": "  --motion-offset-layout-deform-y: var(--spacing-2-5);"
+        "snippet": "  --motion-scale-page-shot-dismiss: 0.82; /* 下拉 / 根页侧滑收起跟手最小缩放（拖满阈值时） */"
       },
-      "motion-base-spring-default-response": {
+      "motion-radius-page-shot": {
         "file": "base.css",
-        "startLine": 77,
-        "endLine": 77,
-        "snippet": "  --motion-base-spring-default-response: 0.55;"
+        "startLine": 75,
+        "endLine": 75,
+        "snippet": "  --motion-radius-page-shot: var(--radius-2xl); /* 跟手时整页圆角（静止整页为 0；收起终点用触发元素圆角） */"
       },
-      "motion-base-spring-default-damping-fraction": {
+      "motion-spring-press-response": {
         "file": "base.css",
         "startLine": 78,
         "endLine": 78,
-        "snippet": "  --motion-base-spring-default-damping-fraction: 0.82;"
+        "snippet": "  --motion-spring-press-response: 0.32;"
       },
-      "motion-base-spring-default-blend-duration": {
+      "motion-spring-press-damping-fraction": {
         "file": "base.css",
         "startLine": 79,
         "endLine": 79,
-        "snippet": "  --motion-base-spring-default-blend-duration: 0.15s;"
+        "snippet": "  --motion-spring-press-damping-fraction: 0.88;"
       },
-      "ios-spring-default": {
+      "motion-spring-press-blend-duration": {
         "file": "base.css",
         "startLine": 80,
         "endLine": 80,
-        "snippet": "  --ios-spring-default: damping:19,stiffness:130,mass:1;"
+        "snippet": "  --motion-spring-press-blend-duration: 0.12s;"
       },
-      "motion-base-spring-interactive-response": {
+      "motion-spring-press-damping": {
         "file": "base.css",
         "startLine": 81,
         "endLine": 81,
-        "snippet": "  --motion-base-spring-interactive-response: 0.15;"
+        "snippet": "  --motion-spring-press-damping: 46;"
       },
-      "motion-base-spring-interactive-damping-fraction": {
+      "motion-spring-press-stiffness": {
         "file": "base.css",
         "startLine": 82,
         "endLine": 82,
-        "snippet": "  --motion-base-spring-interactive-damping-fraction: 0.86;"
+        "snippet": "  --motion-spring-press-stiffness: 560;"
       },
-      "motion-base-spring-interactive-blend-duration": {
+      "motion-spring-press-mass": {
         "file": "base.css",
         "startLine": 83,
         "endLine": 83,
-        "snippet": "  --motion-base-spring-interactive-blend-duration: 0.25s;"
-      },
-      "ios-spring-interactive": {
-        "file": "base.css",
-        "startLine": 84,
-        "endLine": 84,
-        "snippet": "  --ios-spring-interactive: damping:72,stiffness:1755,mass:1;"
-      },
-      "motion-base-spring-navigation-response": {
-        "file": "base.css",
-        "startLine": 85,
-        "endLine": 85,
-        "snippet": "  --motion-base-spring-navigation-response: 0.38;"
-      },
-      "motion-base-spring-navigation-damping-fraction": {
-        "file": "base.css",
-        "startLine": 86,
-        "endLine": 86,
-        "snippet": "  --motion-base-spring-navigation-damping-fraction: 0.88;"
-      },
-      "motion-base-spring-navigation-blend-duration": {
-        "file": "base.css",
-        "startLine": 87,
-        "endLine": 87,
-        "snippet": "  --motion-base-spring-navigation-blend-duration: 0.2s;"
-      },
-      "ios-spring-navigation": {
-        "file": "base.css",
-        "startLine": 88,
-        "endLine": 88,
-        "snippet": "  --ios-spring-navigation: damping:29,stiffness:273,mass:1;"
-      },
-      "motion-base-spring-sheet-response": {
-        "file": "base.css",
-        "startLine": 89,
-        "endLine": 89,
-        "snippet": "  --motion-base-spring-sheet-response: 0.48;"
-      },
-      "motion-base-spring-sheet-damping-fraction": {
-        "file": "base.css",
-        "startLine": 90,
-        "endLine": 90,
-        "snippet": "  --motion-base-spring-sheet-damping-fraction: 0.86;"
-      },
-      "motion-base-spring-sheet-blend-duration": {
-        "file": "base.css",
-        "startLine": 91,
-        "endLine": 91,
-        "snippet": "  --motion-base-spring-sheet-blend-duration: 0.2s;"
-      },
-      "ios-spring-sheet": {
-        "file": "base.css",
-        "startLine": 92,
-        "endLine": 92,
-        "snippet": "  --ios-spring-sheet: damping:23,stiffness:171,mass:1;"
-      },
-      "motion-base-spring-modal-response": {
-        "file": "base.css",
-        "startLine": 93,
-        "endLine": 93,
-        "snippet": "  --motion-base-spring-modal-response: 0.38;"
-      },
-      "motion-base-spring-modal-damping-fraction": {
-        "file": "base.css",
-        "startLine": 94,
-        "endLine": 94,
-        "snippet": "  --motion-base-spring-modal-damping-fraction: 0.9;"
-      },
-      "motion-base-spring-modal-blend-duration": {
-        "file": "base.css",
-        "startLine": 95,
-        "endLine": 95,
-        "snippet": "  --motion-base-spring-modal-blend-duration: 0.15s;"
-      },
-      "ios-spring-modal": {
-        "file": "base.css",
-        "startLine": 96,
-        "endLine": 96,
-        "snippet": "  --ios-spring-modal: damping:30,stiffness:273,mass:1;"
-      },
-      "motion-base-spring-control-response": {
-        "file": "base.css",
-        "startLine": 97,
-        "endLine": 97,
-        "snippet": "  --motion-base-spring-control-response: 0.28;"
-      },
-      "motion-base-spring-control-damping-fraction": {
-        "file": "base.css",
-        "startLine": 98,
-        "endLine": 98,
-        "snippet": "  --motion-base-spring-control-damping-fraction: 0.82;"
-      },
-      "motion-base-spring-control-blend-duration": {
-        "file": "base.css",
-        "startLine": 99,
-        "endLine": 99,
-        "snippet": "  --motion-base-spring-control-blend-duration: 0.1s;"
-      },
-      "ios-spring-control": {
-        "file": "base.css",
-        "startLine": 100,
-        "endLine": 100,
-        "snippet": "  --ios-spring-control: damping:37,stiffness:503,mass:1;"
-      },
-      "motion-base-spring-press-response": {
-        "file": "base.css",
-        "startLine": 101,
-        "endLine": 101,
-        "snippet": "  --motion-base-spring-press-response: 0.32;"
-      },
-      "motion-base-spring-press-damping-fraction": {
-        "file": "base.css",
-        "startLine": 102,
-        "endLine": 102,
-        "snippet": "  --motion-base-spring-press-damping-fraction: 0.88;"
-      },
-      "motion-base-spring-press-blend-duration": {
-        "file": "base.css",
-        "startLine": 103,
-        "endLine": 103,
-        "snippet": "  --motion-base-spring-press-blend-duration: 0.12s;"
+        "snippet": "  --motion-spring-press-mass: 1;"
       },
       "ios-spring-press": {
         "file": "base.css",
-        "startLine": 104,
-        "endLine": 104,
+        "startLine": 84,
+        "endLine": 84,
         "snippet": "  --ios-spring-press: damping:46,stiffness:560,mass:1;"
       },
-      "motion-base-spring-press-release-response": {
+      "motion-spring-press-release-response": {
         "file": "base.css",
-        "startLine": 105,
-        "endLine": 105,
-        "snippet": "  --motion-base-spring-press-release-response: 0.44;"
+        "startLine": 85,
+        "endLine": 85,
+        "snippet": "  --motion-spring-press-release-response: 0.44;"
       },
-      "motion-base-spring-press-release-damping-fraction": {
+      "motion-spring-press-release-damping-fraction": {
         "file": "base.css",
-        "startLine": 106,
-        "endLine": 106,
-        "snippet": "  --motion-base-spring-press-release-damping-fraction: 0.66;"
+        "startLine": 86,
+        "endLine": 86,
+        "snippet": "  --motion-spring-press-release-damping-fraction: 0.66;"
       },
-      "motion-base-spring-press-release-blend-duration": {
+      "motion-spring-press-release-blend-duration": {
         "file": "base.css",
-        "startLine": 107,
-        "endLine": 107,
-        "snippet": "  --motion-base-spring-press-release-blend-duration: 0.12s;"
+        "startLine": 87,
+        "endLine": 87,
+        "snippet": "  --motion-spring-press-release-blend-duration: 0.12s;"
+      },
+      "motion-spring-press-release-damping": {
+        "file": "base.css",
+        "startLine": 88,
+        "endLine": 88,
+        "snippet": "  --motion-spring-press-release-damping: 17;"
+      },
+      "motion-spring-press-release-stiffness": {
+        "file": "base.css",
+        "startLine": 89,
+        "endLine": 89,
+        "snippet": "  --motion-spring-press-release-stiffness: 350;"
+      },
+      "motion-spring-press-release-mass": {
+        "file": "base.css",
+        "startLine": 90,
+        "endLine": 90,
+        "snippet": "  --motion-spring-press-release-mass: 1;"
       },
       "ios-spring-press-release": {
         "file": "base.css",
-        "startLine": 108,
-        "endLine": 108,
+        "startLine": 91,
+        "endLine": 91,
         "snippet": "  --ios-spring-press-release: damping:17,stiffness:350,mass:1;"
       },
-      "motion-base-spring-drag-response": {
+      "motion-spring-control-response": {
+        "file": "base.css",
+        "startLine": 92,
+        "endLine": 92,
+        "snippet": "  --motion-spring-control-response: 0.28;"
+      },
+      "motion-spring-control-damping-fraction": {
+        "file": "base.css",
+        "startLine": 93,
+        "endLine": 93,
+        "snippet": "  --motion-spring-control-damping-fraction: 0.82;"
+      },
+      "motion-spring-control-blend-duration": {
+        "file": "base.css",
+        "startLine": 94,
+        "endLine": 94,
+        "snippet": "  --motion-spring-control-blend-duration: 0.1s;"
+      },
+      "motion-spring-control-damping": {
+        "file": "base.css",
+        "startLine": 95,
+        "endLine": 95,
+        "snippet": "  --motion-spring-control-damping: 37;"
+      },
+      "motion-spring-control-stiffness": {
+        "file": "base.css",
+        "startLine": 96,
+        "endLine": 96,
+        "snippet": "  --motion-spring-control-stiffness: 503;"
+      },
+      "motion-spring-control-mass": {
+        "file": "base.css",
+        "startLine": 97,
+        "endLine": 97,
+        "snippet": "  --motion-spring-control-mass: 1;"
+      },
+      "ios-spring-control": {
+        "file": "base.css",
+        "startLine": 98,
+        "endLine": 98,
+        "snippet": "  --ios-spring-control: damping:37,stiffness:503,mass:1;"
+      },
+      "motion-spring-slide-commit-response": {
+        "file": "base.css",
+        "startLine": 99,
+        "endLine": 99,
+        "snippet": "  --motion-spring-slide-commit-response: 0.3;"
+      },
+      "motion-spring-slide-commit-damping-fraction": {
+        "file": "base.css",
+        "startLine": 100,
+        "endLine": 100,
+        "snippet": "  --motion-spring-slide-commit-damping-fraction: 0.81;"
+      },
+      "motion-spring-slide-commit-blend-duration": {
+        "file": "base.css",
+        "startLine": 101,
+        "endLine": 101,
+        "snippet": "  --motion-spring-slide-commit-blend-duration: 0.1s;"
+      },
+      "motion-spring-slide-commit-damping": {
+        "file": "base.css",
+        "startLine": 102,
+        "endLine": 102,
+        "snippet": "  --motion-spring-slide-commit-damping: 34;"
+      },
+      "motion-spring-slide-commit-stiffness": {
+        "file": "base.css",
+        "startLine": 103,
+        "endLine": 103,
+        "snippet": "  --motion-spring-slide-commit-stiffness: 440;"
+      },
+      "motion-spring-slide-commit-mass": {
+        "file": "base.css",
+        "startLine": 104,
+        "endLine": 104,
+        "snippet": "  --motion-spring-slide-commit-mass: 1;"
+      },
+      "ios-spring-slide-commit": {
+        "file": "base.css",
+        "startLine": 105,
+        "endLine": 105,
+        "snippet": "  --ios-spring-slide-commit: damping:34,stiffness:440,mass:1;"
+      },
+      "motion-spring-drag-response": {
+        "file": "base.css",
+        "startLine": 106,
+        "endLine": 106,
+        "snippet": "  --motion-spring-drag-response: 0.32;"
+      },
+      "motion-spring-drag-damping-fraction": {
+        "file": "base.css",
+        "startLine": 107,
+        "endLine": 107,
+        "snippet": "  --motion-spring-drag-damping-fraction: 0.82;"
+      },
+      "motion-spring-drag-blend-duration": {
+        "file": "base.css",
+        "startLine": 108,
+        "endLine": 108,
+        "snippet": "  --motion-spring-drag-blend-duration: 0.1s;"
+      },
+      "motion-spring-drag-damping": {
         "file": "base.css",
         "startLine": 109,
         "endLine": 109,
-        "snippet": "  --motion-base-spring-drag-response: 0.32;"
+        "snippet": "  --motion-spring-drag-damping: 32;"
       },
-      "motion-base-spring-drag-damping-fraction": {
+      "motion-spring-drag-stiffness": {
         "file": "base.css",
         "startLine": 110,
         "endLine": 110,
-        "snippet": "  --motion-base-spring-drag-damping-fraction: 0.82;"
+        "snippet": "  --motion-spring-drag-stiffness: 385;"
       },
-      "motion-base-spring-drag-blend-duration": {
+      "motion-spring-drag-mass": {
         "file": "base.css",
         "startLine": 111,
         "endLine": 111,
-        "snippet": "  --motion-base-spring-drag-blend-duration: 0.1s;"
+        "snippet": "  --motion-spring-drag-mass: 1;"
       },
       "ios-spring-drag": {
         "file": "base.css",
@@ -2070,545 +2190,587 @@
         "endLine": 112,
         "snippet": "  --ios-spring-drag: damping:32,stiffness:385,mass:1;"
       },
-      "motion-base-spring-bouncy-response": {
+      "motion-spring-menu-in-response": {
         "file": "base.css",
         "startLine": 113,
         "endLine": 113,
-        "snippet": "  --motion-base-spring-bouncy-response: 0.42;"
+        "snippet": "  --motion-spring-menu-in-response: 0.36;"
       },
-      "motion-base-spring-bouncy-damping-fraction": {
+      "motion-spring-menu-in-damping-fraction": {
         "file": "base.css",
         "startLine": 114,
         "endLine": 114,
-        "snippet": "  --motion-base-spring-bouncy-damping-fraction: 0.68;"
+        "snippet": "  --motion-spring-menu-in-damping-fraction: 0.74;"
       },
-      "motion-base-spring-bouncy-blend-duration": {
+      "motion-spring-menu-in-blend-duration": {
         "file": "base.css",
         "startLine": 115,
         "endLine": 115,
-        "snippet": "  --motion-base-spring-bouncy-blend-duration: 0.1s;"
+        "snippet": "  --motion-spring-menu-in-blend-duration: 0.12s;"
       },
-      "ios-spring-bouncy": {
+      "motion-spring-menu-in-damping": {
         "file": "base.css",
         "startLine": 116,
         "endLine": 116,
-        "snippet": "  --ios-spring-bouncy: damping:20,stiffness:224,mass:1;"
+        "snippet": "  --motion-spring-menu-in-damping: 26;"
       },
-      "motion-base-spring-gentle-response": {
+      "motion-spring-menu-in-stiffness": {
         "file": "base.css",
         "startLine": 117,
         "endLine": 117,
-        "snippet": "  --motion-base-spring-gentle-response: 0.6;"
+        "snippet": "  --motion-spring-menu-in-stiffness: 305;"
       },
-      "motion-base-spring-gentle-damping-fraction": {
+      "motion-spring-menu-in-mass": {
         "file": "base.css",
         "startLine": 118,
         "endLine": 118,
-        "snippet": "  --motion-base-spring-gentle-damping-fraction: 0.92;"
+        "snippet": "  --motion-spring-menu-in-mass: 1;"
       },
-      "motion-base-spring-gentle-blend-duration": {
+      "ios-spring-menu-in": {
         "file": "base.css",
         "startLine": 119,
         "endLine": 119,
-        "snippet": "  --motion-base-spring-gentle-blend-duration: 0.2s;"
+        "snippet": "  --ios-spring-menu-in: damping:26,stiffness:305,mass:1;"
       },
-      "ios-spring-gentle": {
+      "motion-spring-menu-out-response": {
         "file": "base.css",
         "startLine": 120,
         "endLine": 120,
-        "snippet": "  --ios-spring-gentle: damping:19,stiffness:110,mass:1;"
+        "snippet": "  --motion-spring-menu-out-response: 0.31;"
       },
-      "motion-base-haptic-selection": {
+      "motion-spring-menu-out-damping-fraction": {
+        "file": "base.css",
+        "startLine": 121,
+        "endLine": 121,
+        "snippet": "  --motion-spring-menu-out-damping-fraction: 0.8;"
+      },
+      "motion-spring-menu-out-blend-duration": {
+        "file": "base.css",
+        "startLine": 122,
+        "endLine": 122,
+        "snippet": "  --motion-spring-menu-out-blend-duration: 0.1s;"
+      },
+      "motion-spring-menu-out-damping": {
         "file": "base.css",
         "startLine": 123,
         "endLine": 123,
-        "snippet": "  --motion-base-haptic-selection: \"selection\";"
+        "snippet": "  --motion-spring-menu-out-damping: 33;"
       },
-      "motion-base-haptic-light": {
+      "motion-spring-menu-out-stiffness": {
         "file": "base.css",
         "startLine": 124,
         "endLine": 124,
-        "snippet": "  --motion-base-haptic-light: \"light\";"
+        "snippet": "  --motion-spring-menu-out-stiffness: 420;"
       },
-      "motion-base-haptic-medium": {
+      "motion-spring-menu-out-mass": {
         "file": "base.css",
         "startLine": 125,
         "endLine": 125,
-        "snippet": "  --motion-base-haptic-medium: \"medium\";"
+        "snippet": "  --motion-spring-menu-out-mass: 1;"
       },
-      "motion-base-haptic-heavy": {
+      "ios-spring-menu-out": {
         "file": "base.css",
         "startLine": 126,
         "endLine": 126,
-        "snippet": "  --motion-base-haptic-heavy: \"heavy\";"
+        "snippet": "  --ios-spring-menu-out: damping:33,stiffness:420,mass:1;"
       },
-      "motion-base-haptic-success": {
+      "motion-spring-sheets-present-response": {
         "file": "base.css",
         "startLine": 127,
         "endLine": 127,
-        "snippet": "  --motion-base-haptic-success: \"success\";"
+        "snippet": "  --motion-spring-sheets-present-response: 0.42;"
       },
-      "motion-base-haptic-warning": {
+      "motion-spring-sheets-present-damping-fraction": {
         "file": "base.css",
         "startLine": 128,
         "endLine": 128,
-        "snippet": "  --motion-base-haptic-warning: \"warning\";"
+        "snippet": "  --motion-spring-sheets-present-damping-fraction: 0.82;"
       },
-      "motion-base-haptic-error": {
+      "motion-spring-sheets-present-blend-duration": {
         "file": "base.css",
         "startLine": 129,
         "endLine": 129,
-        "snippet": "  --motion-base-haptic-error: \"error\";"
+        "snippet": "  --motion-spring-sheets-present-blend-duration: 0.12s;"
       },
-      "ios-navigation-push": {
+      "motion-spring-sheets-present-damping": {
+        "file": "base.css",
+        "startLine": 130,
+        "endLine": 130,
+        "snippet": "  --motion-spring-sheets-present-damping: 25;"
+      },
+      "motion-spring-sheets-present-stiffness": {
+        "file": "base.css",
+        "startLine": 131,
+        "endLine": 131,
+        "snippet": "  --motion-spring-sheets-present-stiffness: 224;"
+      },
+      "motion-spring-sheets-present-mass": {
         "file": "base.css",
         "startLine": 132,
         "endLine": 132,
-        "snippet": "  --ios-navigation-push: duration:350,easing:cubic-bezier(0.32,0.72,0,1);"
+        "snippet": "  --motion-spring-sheets-present-mass: 1;"
       },
-      "ios-ease-in-out": {
+      "ios-spring-sheets-present": {
         "file": "base.css",
         "startLine": 133,
         "endLine": 133,
-        "snippet": "  --ios-ease-in-out: duration:350,easing:cubic-bezier(0.42,0,0.58,1);"
+        "snippet": "  --ios-spring-sheets-present: damping:25,stiffness:224,mass:1;"
       },
-      "ios-ease-out": {
+      "motion-spring-sheets-detent-response": {
         "file": "base.css",
         "startLine": 134,
         "endLine": 134,
-        "snippet": "  --ios-ease-out: duration:300,easing:cubic-bezier(0,0,0.58,1);"
+        "snippet": "  --motion-spring-sheets-detent-response: 0.36;"
       },
-      "ios-ease-in": {
+      "motion-spring-sheets-detent-damping-fraction": {
         "file": "base.css",
         "startLine": 135,
         "endLine": 135,
-        "snippet": "  --ios-ease-in: duration:250,easing:cubic-bezier(0.42,0,1,1);"
+        "snippet": "  --motion-spring-sheets-detent-damping-fraction: 0.72;"
       },
-      "motion-base-interaction-velocity-aware": {
+      "motion-spring-sheets-detent-blend-duration": {
+        "file": "base.css",
+        "startLine": 136,
+        "endLine": 136,
+        "snippet": "  --motion-spring-sheets-detent-blend-duration: 0.1s;"
+      },
+      "motion-spring-sheets-detent-damping": {
+        "file": "base.css",
+        "startLine": 137,
+        "endLine": 137,
+        "snippet": "  --motion-spring-sheets-detent-damping: 25;"
+      },
+      "motion-spring-sheets-detent-stiffness": {
         "file": "base.css",
         "startLine": 138,
         "endLine": 138,
-        "snippet": "  --motion-base-interaction-velocity-aware: 1;"
+        "snippet": "  --motion-spring-sheets-detent-stiffness: 305;"
       },
-      "motion-base-interaction-interruptible": {
+      "motion-spring-sheets-detent-mass": {
         "file": "base.css",
         "startLine": 139,
         "endLine": 139,
-        "snippet": "  --motion-base-interaction-interruptible: 1;"
+        "snippet": "  --motion-spring-sheets-detent-mass: 1;"
       },
-      "motion-base-interaction-preserve-velocity": {
+      "ios-spring-sheets-detent": {
         "file": "base.css",
         "startLine": 140,
         "endLine": 140,
-        "snippet": "  --motion-base-interaction-preserve-velocity: 1;"
+        "snippet": "  --ios-spring-sheets-detent: damping:25,stiffness:305,mass:1;"
       },
-      "motion-duration-instant": {
-        "file": "recipe.css",
-        "startLine": 10,
-        "endLine": 10,
-        "snippet": "  --motion-duration-instant: var(--motion-0);"
+      "motion-spring-page-push-response": {
+        "file": "base.css",
+        "startLine": 141,
+        "endLine": 141,
+        "snippet": "  --motion-spring-page-push-response: 0.4;"
+      },
+      "motion-spring-page-push-damping-fraction": {
+        "file": "base.css",
+        "startLine": 142,
+        "endLine": 142,
+        "snippet": "  --motion-spring-page-push-damping-fraction: 0.8;"
+      },
+      "motion-spring-page-push-blend-duration": {
+        "file": "base.css",
+        "startLine": 143,
+        "endLine": 143,
+        "snippet": "  --motion-spring-page-push-blend-duration: 0.12s;"
+      },
+      "motion-spring-page-push-damping": {
+        "file": "base.css",
+        "startLine": 144,
+        "endLine": 144,
+        "snippet": "  --motion-spring-page-push-damping: 25;"
+      },
+      "motion-spring-page-push-stiffness": {
+        "file": "base.css",
+        "startLine": 145,
+        "endLine": 145,
+        "snippet": "  --motion-spring-page-push-stiffness: 246;"
+      },
+      "motion-spring-page-push-mass": {
+        "file": "base.css",
+        "startLine": 146,
+        "endLine": 146,
+        "snippet": "  --motion-spring-page-push-mass: 1;"
+      },
+      "ios-spring-page-push": {
+        "file": "base.css",
+        "startLine": 147,
+        "endLine": 147,
+        "snippet": "  --ios-spring-page-push: damping:25,stiffness:246,mass:1;"
+      },
+      "motion-spring-page-pop-response": {
+        "file": "base.css",
+        "startLine": 148,
+        "endLine": 148,
+        "snippet": "  --motion-spring-page-pop-response: 0.38;"
+      },
+      "motion-spring-page-pop-damping-fraction": {
+        "file": "base.css",
+        "startLine": 149,
+        "endLine": 149,
+        "snippet": "  --motion-spring-page-pop-damping-fraction: 0.76;"
+      },
+      "motion-spring-page-pop-blend-duration": {
+        "file": "base.css",
+        "startLine": 150,
+        "endLine": 150,
+        "snippet": "  --motion-spring-page-pop-blend-duration: 0.1s;"
+      },
+      "motion-spring-page-pop-damping": {
+        "file": "base.css",
+        "startLine": 151,
+        "endLine": 151,
+        "snippet": "  --motion-spring-page-pop-damping: 25;"
+      },
+      "motion-spring-page-pop-stiffness": {
+        "file": "base.css",
+        "startLine": 152,
+        "endLine": 152,
+        "snippet": "  --motion-spring-page-pop-stiffness: 273;"
+      },
+      "motion-spring-page-pop-mass": {
+        "file": "base.css",
+        "startLine": 153,
+        "endLine": 153,
+        "snippet": "  --motion-spring-page-pop-mass: 1;"
+      },
+      "ios-spring-page-pop": {
+        "file": "base.css",
+        "startLine": 154,
+        "endLine": 154,
+        "snippet": "  --ios-spring-page-pop: damping:25,stiffness:273,mass:1;"
+      },
+      "motion-spring-page-shot-open-response": {
+        "file": "base.css",
+        "startLine": 155,
+        "endLine": 155,
+        "snippet": "  --motion-spring-page-shot-open-response: 0.44;"
+      },
+      "motion-spring-page-shot-open-damping-fraction": {
+        "file": "base.css",
+        "startLine": 156,
+        "endLine": 156,
+        "snippet": "  --motion-spring-page-shot-open-damping-fraction: 0.78;"
+      },
+      "motion-spring-page-shot-open-blend-duration": {
+        "file": "base.css",
+        "startLine": 157,
+        "endLine": 157,
+        "snippet": "  --motion-spring-page-shot-open-blend-duration: 0.12s;"
+      },
+      "motion-spring-page-shot-open-damping": {
+        "file": "base.css",
+        "startLine": 158,
+        "endLine": 158,
+        "snippet": "  --motion-spring-page-shot-open-damping: 22;"
+      },
+      "motion-spring-page-shot-open-stiffness": {
+        "file": "base.css",
+        "startLine": 159,
+        "endLine": 159,
+        "snippet": "  --motion-spring-page-shot-open-stiffness: 204;"
+      },
+      "motion-spring-page-shot-open-mass": {
+        "file": "base.css",
+        "startLine": 160,
+        "endLine": 160,
+        "snippet": "  --motion-spring-page-shot-open-mass: 1;"
+      },
+      "ios-spring-page-shot-open": {
+        "file": "base.css",
+        "startLine": 161,
+        "endLine": 161,
+        "snippet": "  --ios-spring-page-shot-open: damping:22,stiffness:204,mass:1;"
+      },
+      "motion-spring-page-shot-close-response": {
+        "file": "base.css",
+        "startLine": 162,
+        "endLine": 162,
+        "snippet": "  --motion-spring-page-shot-close-response: 0.34;"
+      },
+      "motion-spring-page-shot-close-damping-fraction": {
+        "file": "base.css",
+        "startLine": 163,
+        "endLine": 163,
+        "snippet": "  --motion-spring-page-shot-close-damping-fraction: 1;"
+      },
+      "motion-spring-page-shot-close-blend-duration": {
+        "file": "base.css",
+        "startLine": 164,
+        "endLine": 164,
+        "snippet": "  --motion-spring-page-shot-close-blend-duration: 0.1s;"
+      },
+      "motion-spring-page-shot-close-damping": {
+        "file": "base.css",
+        "startLine": 165,
+        "endLine": 165,
+        "snippet": "  --motion-spring-page-shot-close-damping: 37;"
+      },
+      "motion-spring-page-shot-close-stiffness": {
+        "file": "base.css",
+        "startLine": 166,
+        "endLine": 166,
+        "snippet": "  --motion-spring-page-shot-close-stiffness: 342;"
+      },
+      "motion-spring-page-shot-close-mass": {
+        "file": "base.css",
+        "startLine": 167,
+        "endLine": 167,
+        "snippet": "  --motion-spring-page-shot-close-mass: 1;"
+      },
+      "ios-spring-page-shot-close": {
+        "file": "base.css",
+        "startLine": 168,
+        "endLine": 168,
+        "snippet": "  --ios-spring-page-shot-close: damping:37,stiffness:342,mass:1;"
+      },
+      "motion-haptic-selection": {
+        "file": "base.css",
+        "startLine": 171,
+        "endLine": 171,
+        "snippet": "  --motion-haptic-selection: \"selection\";"
+      },
+      "motion-haptic-light": {
+        "file": "base.css",
+        "startLine": 172,
+        "endLine": 172,
+        "snippet": "  --motion-haptic-light: \"light\";"
+      },
+      "ios-layout-deform-content-opacity": {
+        "file": "base.css",
+        "startLine": 175,
+        "endLine": 175,
+        "snippet": "  --ios-layout-deform-content-opacity: duration:180,easing:cubic-bezier(0.42,0,0.58,1);"
+      },
+      "ios-layout-deform-content-transform": {
+        "file": "base.css",
+        "startLine": 176,
+        "endLine": 176,
+        "snippet": "  --ios-layout-deform-content-transform: duration:350,easing:cubic-bezier(0.22,1,0.36,1);"
+      },
+      "ios-sheets-dismiss": {
+        "file": "base.css",
+        "startLine": 177,
+        "endLine": 177,
+        "snippet": "  --ios-sheets-dismiss: duration:800,easing:cubic-bezier(0.32,0.72,0,1);"
+      },
+      "motion-interaction-velocity-aware": {
+        "file": "base.css",
+        "startLine": 180,
+        "endLine": 180,
+        "snippet": "  --motion-interaction-velocity-aware: 1;"
+      },
+      "motion-interaction-interruptible": {
+        "file": "base.css",
+        "startLine": 181,
+        "endLine": 181,
+        "snippet": "  --motion-interaction-interruptible: 1;"
+      },
+      "motion-interaction-preserve-velocity": {
+        "file": "base.css",
+        "startLine": 182,
+        "endLine": 182,
+        "snippet": "  --motion-interaction-preserve-velocity: 1;"
       },
       "motion-duration-micro": {
         "file": "recipe.css",
-        "startLine": 79,
-        "endLine": 79,
+        "startLine": 46,
+        "endLine": 46,
         "snippet": "    --motion-duration-micro: var(--motion-0);"
       },
-      "motion-duration-fast": {
+      "motion-duration-press": {
         "file": "recipe.css",
-        "startLine": 80,
-        "endLine": 80,
-        "snippet": "    --motion-duration-fast: var(--motion-0);"
-      },
-      "motion-duration-normal": {
-        "file": "recipe.css",
-        "startLine": 81,
-        "endLine": 81,
-        "snippet": "    --motion-duration-normal: var(--motion-0);"
-      },
-      "motion-duration-slow": {
-        "file": "recipe.css",
-        "startLine": 82,
-        "endLine": 82,
-        "snippet": "    --motion-duration-slow: var(--motion-0);"
-      },
-      "motion-duration-emphasis": {
-        "file": "recipe.css",
-        "startLine": 83,
-        "endLine": 83,
-        "snippet": "    --motion-duration-emphasis: var(--motion-0);"
+        "startLine": 47,
+        "endLine": 47,
+        "snippet": "    --motion-duration-press: var(--motion-0);"
       },
       "motion-duration-control": {
         "file": "recipe.css",
-        "startLine": 84,
-        "endLine": 84,
+        "startLine": 48,
+        "endLine": 48,
         "snippet": "    --motion-duration-control: var(--motion-0);"
-      },
-      "motion-duration-navigation": {
-        "file": "recipe.css",
-        "startLine": 85,
-        "endLine": 85,
-        "snippet": "    --motion-duration-navigation: var(--motion-0);"
-      },
-      "motion-duration-spin": {
-        "file": "recipe.css",
-        "startLine": 92,
-        "endLine": 92,
-        "snippet": "    --motion-duration-spin: var(--motion-0);"
-      },
-      "motion-duration-spin-slow": {
-        "file": "recipe.css",
-        "startLine": 93,
-        "endLine": 93,
-        "snippet": "    --motion-duration-spin-slow: var(--motion-0);"
       },
       "motion-duration-fade": {
         "file": "recipe.css",
-        "startLine": 86,
-        "endLine": 86,
+        "startLine": 49,
+        "endLine": 49,
         "snippet": "    --motion-duration-fade: var(--motion-0);"
-      },
-      "motion-duration-enter": {
-        "file": "recipe.css",
-        "startLine": 87,
-        "endLine": 87,
-        "snippet": "    --motion-duration-enter: var(--motion-0);"
-      },
-      "motion-duration-exit": {
-        "file": "recipe.css",
-        "startLine": 88,
-        "endLine": 88,
-        "snippet": "    --motion-duration-exit: var(--motion-0);"
-      },
-      "motion-duration-tap": {
-        "file": "recipe.css",
-        "startLine": 89,
-        "endLine": 89,
-        "snippet": "    --motion-duration-tap: var(--motion-0);"
-      },
-      "motion-duration-shift": {
-        "file": "recipe.css",
-        "startLine": 90,
-        "endLine": 90,
-        "snippet": "    --motion-duration-shift: var(--motion-0);"
-      },
-      "motion-duration-scroll-fade": {
-        "file": "recipe.css",
-        "startLine": 91,
-        "endLine": 91,
-        "snippet": "    --motion-duration-scroll-fade: var(--motion-0);"
       },
       "motion-duration-layout-deform": {
         "file": "recipe.css",
-        "startLine": 94,
-        "endLine": 94,
+        "startLine": 50,
+        "endLine": 50,
         "snippet": "    --motion-duration-layout-deform: var(--motion-0);"
       },
       "motion-duration-layout-deform-content": {
         "file": "recipe.css",
-        "startLine": 95,
-        "endLine": 95,
+        "startLine": 51,
+        "endLine": 51,
         "snippet": "    --motion-duration-layout-deform-content: var(--motion-0);"
       },
-      "motion-delay-layout-deform-content-swap": {
+      "motion-duration-menu": {
         "file": "recipe.css",
-        "startLine": 96,
-        "endLine": 96,
-        "snippet": "    --motion-delay-layout-deform-content-swap: var(--motion-0);"
+        "startLine": 52,
+        "endLine": 52,
+        "snippet": "    --motion-duration-menu: var(--motion-0);"
       },
-      "motion-delay-feedback-tick": {
-        "file": "recipe.css",
-        "startLine": 97,
-        "endLine": 97,
-        "snippet": "    --motion-delay-feedback-tick: var(--motion-0);"
-      },
-      "motion-glass-duration-press": {
-        "file": "recipe.css",
-        "startLine": 30,
-        "endLine": 30,
-        "snippet": "  --motion-glass-duration-press: 150ms;"
-      },
-      "motion-glass-duration-release": {
-        "file": "recipe.css",
-        "startLine": 31,
-        "endLine": 31,
-        "snippet": "  --motion-glass-duration-release: 220ms;"
-      },
-      "motion-glass-duration-shimmer": {
-        "file": "recipe.css",
-        "startLine": 32,
-        "endLine": 32,
-        "snippet": "  --motion-glass-duration-shimmer: var(--motion-3);"
-      },
-      "motion-glass-duration-morph": {
-        "file": "recipe.css",
-        "startLine": 33,
-        "endLine": 33,
-        "snippet": "  --motion-glass-duration-morph: 420ms;"
-      },
-      "motion-easing-standard": {
-        "file": "recipe.css",
-        "startLine": 36,
-        "endLine": 36,
-        "snippet": "  --motion-easing-standard: var(--motion-ease-1);"
-      },
-      "motion-easing-enter": {
-        "file": "recipe.css",
-        "startLine": 37,
-        "endLine": 37,
-        "snippet": "  --motion-easing-enter: var(--motion-ease-2);"
-      },
-      "motion-easing-exit": {
-        "file": "recipe.css",
-        "startLine": 38,
-        "endLine": 38,
-        "snippet": "  --motion-easing-exit: var(--motion-ease-3);"
-      },
-      "motion-easing-product": {
-        "file": "recipe.css",
-        "startLine": 39,
-        "endLine": 39,
-        "snippet": "  --motion-easing-product: var(--motion-ease-4);"
-      },
-      "motion-easing-linear": {
-        "file": "recipe.css",
-        "startLine": 40,
-        "endLine": 40,
-        "snippet": "  --motion-easing-linear: var(--motion-ease-5);"
-      },
-      "motion-easing-spring": {
-        "file": "recipe.css",
-        "startLine": 41,
-        "endLine": 41,
-        "snippet": "  --motion-easing-spring: var(--motion-ease-6);"
-      },
-      "motion-easing-spring-emphasis": {
-        "file": "recipe.css",
-        "startLine": 42,
-        "endLine": 42,
-        "snippet": "  --motion-easing-spring-emphasis: var(--motion-ease-7);"
-      },
-      "motion-easing-decelerate": {
-        "file": "recipe.css",
-        "startLine": 43,
-        "endLine": 43,
-        "snippet": "  --motion-easing-decelerate: var(--motion-ease-8);"
-      },
-      "motion-easing-navigation": {
-        "file": "recipe.css",
-        "startLine": 44,
-        "endLine": 44,
-        "snippet": "  --motion-easing-navigation: var(--motion-ease-9);"
-      },
-      "motion-property-paint": {
-        "file": "recipe.css",
-        "startLine": 47,
-        "endLine": 47,
-        "snippet": "  --motion-property-paint: background-color, color, border-color, box-shadow, opacity, outline-color, fill;"
-      },
-      "motion-property-geometry": {
-        "file": "recipe.css",
-        "startLine": 48,
-        "endLine": 48,
-        "snippet": "  --motion-property-geometry: flex, max-width, width, min-width, max-height, transform, left, padding;"
-      },
-      "motion-property-fade": {
-        "file": "recipe.css",
-        "startLine": 49,
-        "endLine": 49,
-        "snippet": "  --motion-property-fade: opacity;"
-      },
-      "motion-property-transform": {
-        "file": "recipe.css",
-        "startLine": 50,
-        "endLine": 50,
-        "snippet": "  --motion-property-transform: transform, opacity;"
-      },
-      "motion-recipe-fade": {
+      "motion-duration-sheets": {
         "file": "recipe.css",
         "startLine": 53,
         "endLine": 53,
-        "snippet": "  --motion-recipe-fade: opacity var(--motion-duration-fade) var(--motion-easing-standard);"
+        "snippet": "    --motion-duration-sheets: var(--motion-0);"
       },
-      "motion-recipe-enter": {
+      "motion-duration-page": {
         "file": "recipe.css",
         "startLine": 54,
         "endLine": 54,
-        "snippet": "  --motion-recipe-enter: opacity var(--motion-duration-enter) var(--motion-easing-enter), transform var(--motion-duration-enter) var(--motion-easing-enter);"
+        "snippet": "    --motion-duration-page: var(--motion-0);"
       },
-      "motion-recipe-exit": {
+      "motion-duration-page-shot": {
         "file": "recipe.css",
         "startLine": 55,
         "endLine": 55,
-        "snippet": "  --motion-recipe-exit: opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-exit) var(--motion-easing-exit);"
+        "snippet": "    --motion-duration-page-shot: var(--motion-0);"
       },
-      "motion-recipe-tap": {
+      "motion-delay-layout-deform-content-swap": {
         "file": "recipe.css",
-        "startLine": 56,
-        "endLine": 56,
-        "snippet": "  --motion-recipe-tap: background-color var(--motion-duration-tap) var(--motion-easing-standard), color var(--motion-duration-tap) var(--motion-easing-standard), border-color var(--motion-duration-tap) var(--motion-easing-standard), opacity var(--motion-duration-tap) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-tap) var(--motion-easing-standard);"
+        "startLine": 20,
+        "endLine": 20,
+        "snippet": "  --motion-delay-layout-deform-content-swap: 120ms; /* 正文淡出中途换 Tab 数据 */"
       },
-      "motion-recipe-flotation-enter": {
+      "motion-easing-standard": {
         "file": "recipe.css",
-        "startLine": 57,
-        "endLine": 57,
-        "snippet": "  --motion-recipe-flotation-enter: opacity var(--motion-duration-enter) var(--motion-easing-standard), transform var(--motion-duration-emphasis) var(--motion-easing-spring-emphasis);"
+        "startLine": 23,
+        "endLine": 23,
+        "snippet": "  --motion-easing-standard: var(--motion-ease-1);"
       },
-      "motion-recipe-flotation-exit": {
+      "motion-easing-product": {
         "file": "recipe.css",
-        "startLine": 58,
-        "endLine": 58,
-        "snippet": "  --motion-recipe-flotation-exit: opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-fast) var(--motion-easing-decelerate);"
+        "startLine": 24,
+        "endLine": 24,
+        "snippet": "  --motion-easing-product: var(--motion-ease-4);"
+      },
+      "motion-easing-float": {
+        "file": "recipe.css",
+        "startLine": 25,
+        "endLine": 25,
+        "snippet": "  --motion-easing-float: var(--motion-ease-7); /* Layout Content translateY */"
+      },
+      "motion-easing-menu": {
+        "file": "recipe.css",
+        "startLine": 26,
+        "endLine": 26,
+        "snippet": "  --motion-easing-menu: var(--motion-ease-9); /* Menu 表面展开 · iOS sheet 曲线 */"
+      },
+      "motion-easing-decelerate": {
+        "file": "recipe.css",
+        "startLine": 27,
+        "endLine": 27,
+        "snippet": "  --motion-easing-decelerate: var(--motion-ease-8); /* Menu 容器出现 */"
+      },
+      "motion-easing-sheets": {
+        "file": "recipe.css",
+        "startLine": 28,
+        "endLine": 28,
+        "snippet": "  --motion-easing-sheets: var(--motion-ease-9); /* Sheets Sheet · iOS sheet 曲线 */"
+      },
+      "motion-easing-page": {
+        "file": "recipe.css",
+        "startLine": 29,
+        "endLine": 29,
+        "snippet": "  --motion-easing-page: var(--motion-ease-6); /* Page / Page Shot · 轻过冲回弹（CSS 近似 spring） */"
+      },
+      "motion-property-transform": {
+        "file": "recipe.css",
+        "startLine": 32,
+        "endLine": 32,
+        "snippet": "  --motion-property-transform: transform, opacity;"
+      },
+      "motion-recipe-press": {
+        "file": "recipe.css",
+        "startLine": 35,
+        "endLine": 35,
+        "snippet": "  --motion-recipe-press: background-color var(--motion-duration-press) var(--motion-easing-standard), color var(--motion-duration-press) var(--motion-easing-standard), border-color var(--motion-duration-press) var(--motion-easing-standard), opacity var(--motion-duration-press) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-press) var(--motion-easing-standard);"
       },
       "motion-recipe-control": {
         "file": "recipe.css",
-        "startLine": 59,
-        "endLine": 59,
+        "startLine": 36,
+        "endLine": 36,
         "snippet": "  --motion-recipe-control: transform var(--motion-duration-control) var(--motion-easing-product), width var(--motion-duration-control) var(--motion-easing-product);"
-      },
-      "motion-recipe-shift": {
-        "file": "recipe.css",
-        "startLine": 60,
-        "endLine": 60,
-        "snippet": "  --motion-recipe-shift: flex var(--motion-duration-shift) var(--motion-easing-standard), max-width var(--motion-duration-shift) var(--motion-easing-standard), width var(--motion-duration-shift) var(--motion-easing-standard), min-width var(--motion-duration-shift) var(--motion-easing-standard), max-height var(--motion-duration-shift) var(--motion-easing-standard), transform var(--motion-duration-shift) var(--motion-easing-standard), left var(--motion-duration-shift) var(--motion-easing-standard), padding var(--motion-duration-shift) var(--motion-easing-standard);"
-      },
-      "motion-recipe-scroll-fade": {
-        "file": "recipe.css",
-        "startLine": 61,
-        "endLine": 61,
-        "snippet": "  --motion-recipe-scroll-fade: opacity var(--motion-duration-scroll-fade) var(--motion-easing-decelerate);"
-      },
-      "motion-recipe-scroll-fade-background": {
-        "file": "recipe.css",
-        "startLine": 62,
-        "endLine": 62,
-        "snippet": "  --motion-recipe-scroll-fade-background: background var(--motion-duration-scroll-fade) var(--motion-easing-decelerate);"
-      },
-      "motion-recipe-page-push": {
-        "file": "recipe.css",
-        "startLine": 63,
-        "endLine": 63,
-        "snippet": "  --motion-recipe-page-push: opacity var(--motion-duration-navigation) var(--motion-easing-navigation), transform var(--motion-duration-navigation) var(--motion-easing-navigation);"
-      },
-      "motion-recipe-layout-deform-shell": {
-        "file": "recipe.css",
-        "startLine": 64,
-        "endLine": 64,
-        "snippet": "  --motion-recipe-layout-deform-shell: height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), width var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-width var(--motion-duration-layout-deform) var(--motion-easing-decelerate);"
       },
       "motion-recipe-layout-deform-content": {
         "file": "recipe.css",
-        "startLine": 65,
-        "endLine": 65,
-        "snippet": "  --motion-recipe-layout-deform-content: opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-decelerate);"
+        "startLine": 37,
+        "endLine": 37,
+        "snippet": "  --motion-recipe-layout-deform-content: opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-float);"
       },
-      "motion-recipe-glass-press": {
+      "motion-recipe-sheets": {
         "file": "recipe.css",
-        "startLine": 66,
-        "endLine": 66,
-        "snippet": "  --motion-recipe-glass-press: transform var(--motion-glass-duration-press) var(--motion-easing-standard);"
+        "startLine": 38,
+        "endLine": 38,
+        "snippet": "  --motion-recipe-sheets: transform var(--motion-duration-sheets) var(--motion-easing-sheets), height var(--motion-duration-sheets) var(--motion-easing-sheets), left var(--motion-duration-sheets) var(--motion-easing-sheets), right var(--motion-duration-sheets) var(--motion-easing-sheets), bottom var(--motion-duration-sheets) var(--motion-easing-sheets), border-radius var(--motion-duration-sheets) var(--motion-easing-sheets);"
       },
-      "motion-recipe-glass-shimmer": {
+      "motion-recipe-menu": {
         "file": "recipe.css",
-        "startLine": 67,
-        "endLine": 67,
-        "snippet": "  --motion-recipe-glass-shimmer: opacity var(--motion-glass-duration-shimmer) var(--motion-easing-standard);"
+        "startLine": 39,
+        "endLine": 39,
+        "snippet": "  --motion-recipe-menu: transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate);"
       },
-      "motion-recipe-glass-morph": {
+      "motion-recipe-page": {
         "file": "recipe.css",
-        "startLine": 68,
-        "endLine": 68,
-        "snippet": "  --motion-recipe-glass-morph: var(--motion-recipe-layout-deform-shell);"
+        "startLine": 40,
+        "endLine": 40,
+        "snippet": "  --motion-recipe-page: transform var(--motion-duration-page) var(--motion-easing-page), filter var(--motion-duration-page) var(--motion-easing-standard);"
       },
-      "motion-displace-from-bottom": {
+      "motion-recipe-page-shot": {
         "file": "recipe.css",
-        "startLine": 71,
-        "endLine": 71,
-        "snippet": "  --motion-displace-from-bottom: translateY(var(--motion-distance-sm));"
+        "startLine": 41,
+        "endLine": 41,
+        "snippet": "  --motion-recipe-page-shot: transform var(--motion-duration-page-shot) var(--motion-easing-page), top var(--motion-duration-page-shot) var(--motion-easing-page), left var(--motion-duration-page-shot) var(--motion-easing-page), width var(--motion-duration-page-shot) var(--motion-easing-page), height var(--motion-duration-page-shot) var(--motion-easing-page), border-radius var(--motion-duration-page-shot) var(--motion-easing-page);"
       },
-      "motion-displace-from-top": {
-        "file": "recipe.css",
-        "startLine": 72,
-        "endLine": 72,
-        "snippet": "  --motion-displace-from-top: translateY(calc(-1 * var(--motion-distance-sm)));"
-      },
-      "motion-displace-from-left": {
-        "file": "recipe.css",
-        "startLine": 73,
-        "endLine": 73,
-        "snippet": "  --motion-displace-from-left: translateX(calc(-1 * var(--motion-distance-sm)));"
-      },
-      "motion-displace-from-right": {
-        "file": "recipe.css",
-        "startLine": 74,
-        "endLine": 74,
-        "snippet": "  --motion-displace-from-right: translateX(var(--motion-distance-sm));"
-      },
-      "motion-tap": {
+      "motion-press": {
         "file": "semantic.css",
         "startLine": 16,
         "endLine": 18,
-        "snippet": ".motion-tap\ntransition: var(--motion-recipe-tap);"
+        "snippet": ".motion-press\ntransition: var(--motion-recipe-press);"
       },
-      "motion-focus": {
+      "motion-slide": {
         "file": "semantic.css",
-        "startLine": 31,
-        "endLine": 33,
-        "snippet": ".motion-focus\ntransition: var(--motion-recipe-enter);"
+        "startLine": 33,
+        "endLine": 35,
+        "snippet": ".motion-slide\ntransition: var(--motion-recipe-control);"
       },
-      "motion-layout": {
+      "motion-layout-content": {
         "file": "semantic.css",
-        "startLine": 40,
-        "endLine": 44,
-        "snippet": ".motion-layout\ntransition: var(--motion-recipe-enter);\nopacity: var(--motion-opacity-hidden);\ntransform: translateY(var(--motion-distance-sm));"
+        "startLine": 44,
+        "endLine": 48,
+        "snippet": ".motion-layout-content\ntransition: var(--motion-recipe-layout-deform-content);\nopacity: var(--motion-opacity-visible);\ntransform: translateY(0);"
       },
-      "motion-flotation": {
+      "motion-menu": {
         "file": "semantic.css",
-        "startLine": 57,
-        "endLine": 61,
-        "snippet": ".motion-flotation\ntransition: var(--motion-recipe-flotation-enter);\nopacity: var(--motion-opacity-hidden);\ntransform: translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-present));"
-      },
-      "motion-deform": {
-        "file": "semantic.css",
-        "startLine": 75,
+        "startLine": 73,
         "endLine": 77,
-        "snippet": ".motion-deform\ntransition: var(--motion-recipe-control);"
+        "snippet": ".motion-menu\ntransition: var(--motion-recipe-menu);\ntransform: scale(1);\nopacity: var(--motion-opacity-visible);"
+      },
+      "motion-sheets": {
+        "file": "semantic.css",
+        "startLine": 95,
+        "endLine": 102,
+        "snippet": ".motion-sheets\ntransition: var(--motion-recipe-sheets);\ntransform: translateY(0);\nleft: var(--motion-offset-sheets-inset);\nright: var(--motion-offset-sheets-inset);\nbottom: var(--motion-offset-sheets-inset);\nborder-radius: var(--motion-radius-sheets-floating);"
       },
       "motion-page": {
         "file": "semantic.css",
-        "startLine": 85,
-        "endLine": 87,
-        "snippet": ".motion-page\ntransition: var(--motion-recipe-page-push);"
-      },
-      "motion-layout-deform": {
-        "file": "semantic.css",
-        "startLine": 94,
-        "endLine": 97,
-        "snippet": ".motion-layout-deform\noverflow: hidden;\ntransition: var(--motion-recipe-layout-deform-shell);"
-      },
-      "motion-glass-interactive": {
-        "file": "semantic.css",
-        "startLine": 106,
-        "endLine": 108,
-        "snippet": ".motion-glass-interactive\ntransition: var(--motion-recipe-glass-press);"
-      },
-      "motion-glass-shimmer": {
-        "file": "semantic.css",
-        "startLine": 116,
-        "endLine": 118,
-        "snippet": ".motion-glass-shimmer\ntransition: var(--motion-recipe-glass-shimmer);"
-      },
-      "motion-glass-morph": {
-        "file": "semantic.css",
-        "startLine": 121,
-        "endLine": 124,
-        "snippet": ".motion-glass-morph\noverflow: hidden;\ntransition: var(--motion-recipe-glass-morph);"
-      },
-      "motion-glass-none": {
-        "file": "semantic.css",
         "startLine": 128,
         "endLine": 131,
-        "snippet": ".motion-glass-none\ntransition: none;\nanimation: none;"
+        "snippet": ".motion-page\ntransition: var(--motion-recipe-page);\ntransform: translateX(0);"
+      },
+      "motion-page-shot": {
+        "file": "semantic.css",
+        "startLine": 155,
+        "endLine": 159,
+        "snippet": ".motion-page-shot\ntransition: var(--motion-recipe-page-shot);\ntransform: none;\nborder-radius: 0;"
       },
       "motion-none": {
         "file": "utilities.css",
@@ -2676,6 +2838,16 @@
           ]
         }
       ],
+      "typography-body-large-heavy": [
+        {
+          "selector": ".typography-body-large-heavy",
+          "lines": [
+            "font-size: var(--eds-body-large-heavy-size);",
+            "font-weight: var(--eds-body-large-heavy-weight);",
+            "line-height: var(--eds-body-large-heavy-line-height);"
+          ]
+        }
+      ],
       "typography-body-medium": [
         {
           "selector": ".typography-body-medium",
@@ -2696,6 +2868,16 @@
           ]
         }
       ],
+      "typography-body-medium-heavy": [
+        {
+          "selector": ".typography-body-medium-heavy",
+          "lines": [
+            "font-size: var(--eds-body-medium-heavy-size);",
+            "font-weight: var(--eds-body-medium-heavy-weight);",
+            "line-height: var(--eds-body-medium-heavy-line-height);"
+          ]
+        }
+      ],
       "typography-body-small": [
         {
           "selector": ".typography-body-small",
@@ -2713,6 +2895,16 @@
             "font-size: var(--eds-body-small-strong-size);",
             "font-weight: var(--eds-body-small-strong-weight);",
             "line-height: var(--eds-body-small-strong-line-height);"
+          ]
+        }
+      ],
+      "typography-body-small-heavy": [
+        {
+          "selector": ".typography-body-small-heavy",
+          "lines": [
+            "font-size: var(--eds-body-small-heavy-size);",
+            "font-weight: var(--eds-body-small-heavy-weight);",
+            "line-height: var(--eds-body-small-heavy-line-height);"
           ]
         }
       ],
@@ -2781,11 +2973,20 @@
           "selector": "[data-theme=\"light\"] .glass-button-box",
           "lines": [
             "border-radius: var(--radius-xl);",
-            "border: var(--stroke-xs) solid var(--stroke-base-quaternary);",
-            "background: linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box);",
-            "box-shadow: var(--eds-shadow-box-subtle);",
-            "backdrop-filter: var(--eds-blur-glass);",
-            "-webkit-backdrop-filter: var(--eds-blur-glass);"
+            "border: var(--stroke-xs) solid var(--stroke-base-tertiary);",
+            "background: var(--material-face-quaternary);",
+            "box-shadow: var(--eds-shadow-box-subtle);"
+          ]
+        }
+      ],
+      "glass-sheets-box": [
+        {
+          "selector": "[data-theme=\"light\"] .glass-sheets-box",
+          "lines": [
+            "border-radius: var(--radius-2xl);",
+            "border: var(--stroke-xs) solid var(--material-base-secondary);",
+            "background: var(--box-flotation);",
+            "box-shadow: var(--eds-shadow-box-shallow);"
           ]
         }
       ],
@@ -2835,67 +3036,95 @@
       ]
     },
     "motion": {
-      "motion-tap": [
+      "motion-press": [
         {
-          "selector": ".motion-tap",
+          "selector": ".motion-press",
           "lines": [
-            "transition: var(--motion-recipe-tap);"
+            "transition: var(--motion-recipe-press);"
           ]
         },
         {
-          "selector": ".motion-tap.is-active",
+          "selector": ".motion-press.is-active",
           "lines": [
             "transform: scale(var(--motion-scale-press));"
           ]
         }
       ],
-      "motion-focus": [
+      "motion-slide": [
         {
-          "selector": ".motion-focus",
+          "selector": ".motion-slide",
           "lines": [
-            "transition: var(--motion-recipe-enter);"
+            "transition: var(--motion-recipe-control);"
           ]
         }
       ],
-      "motion-layout": [
+      "motion-layout-content": [
         {
-          "selector": ".motion-layout",
+          "selector": ".motion-layout-content",
           "lines": [
-            "transition: var(--motion-recipe-enter);",
-            "opacity: var(--motion-opacity-hidden);",
-            "transform: translateY(var(--motion-distance-sm));"
-          ]
-        },
-        {
-          "selector": ".motion-layout.is-active, .is-active .motion-layout",
-          "lines": [
+            "transition: var(--motion-recipe-layout-deform-content);",
             "opacity: var(--motion-opacity-visible);",
             "transform: translateY(0);"
           ]
-        }
-      ],
-      "motion-flotation": [
+        },
         {
-          "selector": ".motion-flotation",
+          "selector": ".motion-layout-content.is-exiting",
           "lines": [
-            "transition: var(--motion-recipe-flotation-enter);",
             "opacity: var(--motion-opacity-hidden);",
-            "transform: translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-present));"
+            "transform: translateY(var(--motion-offset-layout-deform-y));"
           ]
         },
         {
-          "selector": ".motion-flotation.is-active, .is-active .motion-flotation",
+          "selector": ".motion-layout-content.is-entering",
           "lines": [
-            "opacity: var(--motion-opacity-visible);",
-            "transform: translateY(0) scale(1);"
+            "transition: none;",
+            "opacity: var(--motion-opacity-hidden);",
+            "transform: translateY(var(--motion-offset-layout-deform-y));"
           ]
         }
       ],
-      "motion-deform": [
+      "motion-menu": [
         {
-          "selector": ".motion-deform",
+          "selector": ".motion-menu",
           "lines": [
-            "transition: var(--motion-recipe-control);"
+            "transition: var(--motion-recipe-menu);",
+            "transform: scale(1);",
+            "opacity: var(--motion-opacity-visible);"
+          ]
+        },
+        {
+          "selector": ".motion-menu.is-collapsed",
+          "lines": [
+            "transform: scale(var(--motion-scale-menu-origin));",
+            "opacity: var(--motion-opacity-hidden);"
+          ]
+        }
+      ],
+      "motion-sheets": [
+        {
+          "selector": ".motion-sheets",
+          "lines": [
+            "transition: var(--motion-recipe-sheets);",
+            "transform: translateY(0);",
+            "left: var(--motion-offset-sheets-inset);",
+            "right: var(--motion-offset-sheets-inset);",
+            "bottom: var(--motion-offset-sheets-inset);",
+            "border-radius: var(--motion-radius-sheets-floating);"
+          ]
+        },
+        {
+          "selector": ".motion-sheets.is-attached",
+          "lines": [
+            "left: 0;",
+            "right: 0;",
+            "bottom: 0;",
+            "border-radius: var(--motion-radius-sheets-attached) var(--motion-radius-sheets-attached) 0 0;"
+          ]
+        },
+        {
+          "selector": ".motion-sheets.is-dismissed",
+          "lines": [
+            "transform: translateY(100%);"
           ]
         }
       ],
@@ -2903,56 +3132,44 @@
         {
           "selector": ".motion-page",
           "lines": [
-            "transition: var(--motion-recipe-page-push);"
-          ]
-        }
-      ],
-      "motion-layout-deform": [
-        {
-          "selector": ".motion-layout-deform",
-          "lines": [
-            "overflow: hidden;",
-            "transition: var(--motion-recipe-layout-deform-shell);"
-          ]
-        }
-      ],
-      "motion-glass-interactive": [
-        {
-          "selector": ".motion-glass-interactive",
-          "lines": [
-            "transition: var(--motion-recipe-glass-press);"
+            "transition: var(--motion-recipe-page);",
+            "transform: translateX(0);"
           ]
         },
         {
-          "selector": ".motion-glass-interactive.is-active",
+          "selector": ".motion-page.is-entering",
           "lines": [
-            "transform: scale(var(--motion-glass-scale-press));"
+            "transform: translateX(100%);"
+          ]
+        },
+        {
+          "selector": ".motion-page.is-covered",
+          "lines": [
+            "transform: translateX(calc(var(--motion-ratio-page-parallax) * -100%));",
+            "filter: brightness(calc(1 - var(--motion-opacity-page-dim)));"
           ]
         }
       ],
-      "motion-glass-shimmer": [
+      "motion-page-shot": [
         {
-          "selector": ".motion-glass-shimmer",
+          "selector": ".motion-page-shot",
           "lines": [
-            "transition: var(--motion-recipe-glass-shimmer);"
+            "transition: var(--motion-recipe-page-shot);",
+            "transform: none;",
+            "border-radius: 0;"
           ]
-        }
-      ],
-      "motion-glass-morph": [
+        },
         {
-          "selector": ".motion-glass-morph",
+          "selector": ".motion-page-shot.is-collapsed",
           "lines": [
-            "overflow: hidden;",
-            "transition: var(--motion-recipe-glass-morph);"
+            "border-radius: var(--motion-radius-page-shot);"
           ]
-        }
-      ],
-      "motion-glass-none": [
+        },
         {
-          "selector": ".motion-glass-none",
+          "selector": ".motion-page-shot.is-dragging",
           "lines": [
-            "transition: none;",
-            "animation: none;"
+            "transform: scale(var(--motion-scale-page-shot-dismiss));",
+            "border-radius: var(--motion-radius-page-shot);"
           ]
         }
       ],

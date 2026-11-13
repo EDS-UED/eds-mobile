@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -6,6 +6,61 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '../../..');
 const tokensDist = join(repoRoot, 'packages/tokens/dist/css');
 const outputPath = join(__dirname, '../src/data/tokens/generated/distCssManifest.json');
+const effectSemanticCatalogPath = join(__dirname, '../src/data/tokens/generated/effectSemanticCatalog.json');
+const effectSemanticSpecPath = join(repoRoot, 'packages/tokens/spec/effect/semantic.json');
+
+const MANIFEST_CSS_INPUTS = [
+  'scale/base.css',
+  'scale/semantic.css',
+  'typography/base.css',
+  'typography/semantic.css',
+  'text/styles.css',
+  'effect/themes/light/base.css',
+  'effect/themes/light/semantic.css',
+  'motion/base.css',
+  'motion/recipe.css',
+  'motion/semantic.css',
+  'motion/utilities.css',
+];
+
+function newestCssInputMtime() {
+  let newest = 0;
+  for (const relative of MANIFEST_CSS_INPUTS) {
+    const abs = join(tokensDist, relative);
+    if (!existsSync(abs)) continue;
+    newest = Math.max(newest, statSync(abs).mtimeMs);
+  }
+  return newest;
+}
+
+function newestCatalogInputMtime() {
+  let newest = newestCssInputMtime();
+  if (existsSync(effectSemanticSpecPath)) {
+    newest = Math.max(newest, statSync(effectSemanticSpecPath).mtimeMs);
+  }
+  return newest;
+}
+
+function isManifestOutputFresh() {
+  if (!existsSync(outputPath) || !existsSync(effectSemanticCatalogPath)) return false;
+  const inputMtime = newestCatalogInputMtime();
+  const outMtime = Math.min(statSync(outputPath).mtimeMs, statSync(effectSemanticCatalogPath).mtimeMs);
+  return inputMtime > 0 && outMtime >= inputMtime;
+}
+
+function writeEffectSemanticCatalog() {
+  const spec = JSON.parse(readFileSync(effectSemanticSpecPath, 'utf8'));
+  const payload = {
+    groups: (spec.groups ?? []).map((group) => ({
+      comment: group.comment ?? '',
+      tokens: (group.styles ?? []).map((style) => ({
+        name: style.className,
+        title: style.title ?? style.className,
+      })),
+    })),
+  };
+  writeFileSync(effectSemanticCatalogPath, `${JSON.stringify(payload, null, 2)}\n`);
+}
 
 function cssValueLine(value) {
   const trimmed = value.trim();
@@ -31,17 +86,50 @@ function parseCssVars(css, options = {}) {
   return vars;
 }
 
+function parseRuleBodyLines(body) {
+  const withoutComments = body.replace(/\/\*[\s\S]*?\*\//g, '');
+  const rawLines = withoutComments
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const lines = [];
+  let index = 0;
+
+  while (index < rawLines.length) {
+    const line = rawLines[index];
+    const colonIndex = line.indexOf(':');
+    if (colonIndex === -1) {
+      index += 1;
+      continue;
+    }
+
+    const property = line.slice(0, colonIndex).trim();
+    let value = line.slice(colonIndex + 1).trim();
+
+    while (!value.includes(';') && index + 1 < rawLines.length) {
+      index += 1;
+      value += ` ${rawLines[index].trim()}`;
+    }
+
+    value = value.replace(/;\s*$/, '').trim();
+    if (property && value) {
+      lines.push(cssValueLine(`${property}: ${value}`));
+    }
+
+    index += 1;
+  }
+
+  return lines;
+}
+
 function parseCssRules(css) {
   const rules = [];
   const cleaned = css.replace(/\/\*[\s\S]*?\*\//g, '');
 
   for (const match of cleaned.matchAll(/([^{]+)\{([^}]*)\}/g)) {
     const selector = match[1].trim().replace(/\s+/g, ' ');
-    const lines = match[2]
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .map((line) => cssValueLine(line));
+    const lines = parseRuleBodyLines(match[2]);
 
     if (lines.length === 0) {
       continue;
@@ -227,8 +315,16 @@ export function buildDistCssManifest() {
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const force = process.argv.includes('--force');
+  if (!force && isManifestOutputFresh()) {
+    console.log(`✓ dist CSS manifest up to date → ${outputPath}`);
+    process.exit(0);
+  }
+
   const manifest = buildDistCssManifest();
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  writeEffectSemanticCatalog();
   console.log(`✓ dist CSS manifest → ${outputPath}`);
+  console.log(`✓ effect semantic catalog → ${effectSemanticCatalogPath}`);
 }

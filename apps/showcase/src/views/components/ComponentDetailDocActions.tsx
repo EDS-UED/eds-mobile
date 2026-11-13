@@ -27,7 +27,7 @@ function createDocActionStyles(colors: ShowcaseColorMap) {
       ...showcaseShallowBlockSurface(colors['material-card-shallow'] as string),
       ...theme.blockRadius,
       borderWidth: StyleSheet.hairlineWidth,
-      borderColor: colors['stroke-divider-page'] as string,
+      borderColor: colors['stroke-divider-shallow'] as string,
     },
     label: {
       ...theme.font.sectionLabel,

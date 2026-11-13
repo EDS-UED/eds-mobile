@@ -69,6 +69,8 @@ export type GlassControlShellProps = {
   variant?: GlassVariant;
   mode?: ThemeMode;
   haptic?: boolean;
+  /** RN fallback — 与 `EgButtonGlass` 同档 `motion-glass-scale-press-*`。 */
+  pressIntensity?: MotionPressIntensity;
   disabled?: boolean;
   onPress?: () => void;
   onPressIn?: () => void;

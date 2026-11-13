@@ -4,7 +4,7 @@ import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 export const TIER_INTRO_COPY: Record<FigmaComponentEntry['tier'], string> = {
   atoms: '最小 UI 单元与基础设施：文字、图标、Glass 玻璃栈等，分子/有机体从这里组合。',
   molecules: '常用交互控件：按钮、输入、标签、切换等，由原子拼装而成。',
-  organisms: '页面级组合件：底栏、浮层、下拉菜单等更完整的界面结构。',
+  organisms: '页面级组合件：底栏、浮层、Menu 等更完整的界面结构。',
   templates: '页面骨架与布局模板，用来承载完整业务场景。',
 };
 

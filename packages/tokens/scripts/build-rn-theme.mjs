@@ -1,11 +1,36 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import { resolveSemanticColorToHex } from './color-reference.mjs';
+import { resolveSemanticColorToHex, resolveTagPaletteRef } from './color-reference.mjs';
 import { buildGlassBoxCompositions } from './resolve-effect-glass-box.mjs';
 
 function loadJson(specDir, relativePath) {
   return JSON.parse(readFileSync(join(specDir, relativePath), 'utf-8'));
+}
+
+function hexToDisplayP3Components(hex) {
+  const normalized = String(hex).replace('#', '').slice(0, 6);
+  return [
+    Number.parseInt(normalized.slice(0, 2), 16) / 255,
+    Number.parseInt(normalized.slice(2, 4), 16) / 255,
+    Number.parseInt(normalized.slice(4, 6), 16) / 255,
+  ];
+}
+
+function resolveBaseDisplayP3(entry) {
+  if (entry == null) {
+    return null;
+  }
+  if (typeof entry === 'string') {
+    return hexToDisplayP3Components(entry);
+  }
+  if (Array.isArray(entry.displayP3) && entry.displayP3.length === 3) {
+    return entry.displayP3;
+  }
+  if (entry.hex) {
+    return hexToDisplayP3Components(entry.hex);
+  }
+  return null;
 }
 
 function buildScaleResolvedPool(baseSpec) {
@@ -120,11 +145,13 @@ function flattenTypographySemantic(semanticSpec) {
   return out;
 }
 
-function parseBaseMotion(baseSpec) {
+function parseBaseMotion(baseSpec, scalePool) {
   const springs = {};
+  const springByName = {};
   for (const [name, spring] of Object.entries(baseSpec.springs ?? {})) {
     if (spring.reanimated) {
       springs[`ios-spring-${name}`] = spring.reanimated;
+      springByName[name] = spring.reanimated;
     }
   }
   const timings = {};
@@ -136,18 +163,48 @@ function parseBaseMotion(baseSpec) {
   }
   const scale = {};
   const opacity = {};
+  const offset = {};
+  const radius = {};
+  const ratio = {};
   for (const group of baseSpec.groups ?? []) {
     for (const token of group.tokenList ?? []) {
       const key = token.name.replace(/^motion-/, '');
+      if (token.name.startsWith('motion-offset-')) {
+        const resolved = resolveScaleSemanticValue(token.value, scalePool);
+        if (typeof resolved === 'number') {
+          offset[key] = resolved;
+        }
+        continue;
+      }
+      if (token.name.startsWith('motion-radius-')) {
+        const resolved = resolveScaleSemanticValue(token.value, scalePool);
+        if (typeof resolved === 'number') {
+          radius[key] = resolved;
+        }
+        continue;
+      }
       const numeric = Number.parseFloat(String(token.value));
-      if (token.name.includes('opacity')) {
+      if (token.name.startsWith('motion-ratio-')) {
+        ratio[key] = numeric;
+      } else if (token.name.includes('opacity')) {
         opacity[key] = numeric;
       } else if (token.name.includes('scale')) {
         scale[key] = numeric;
       }
     }
   }
-  return { springs, timings, scale, opacity };
+  return {
+    springs,
+    springByName,
+    timings,
+    scale,
+    opacity,
+    offset,
+    radius,
+    ratio,
+    haptic: baseSpec.haptics ?? {},
+    interaction: baseSpec.interaction ?? {},
+  };
 }
 
 function parseNumericTokenValue(value) {
@@ -202,14 +259,23 @@ function buildGlassSurfaceRn(surfaceSpec) {
   };
 }
 
-function buildTagPaletteRn(tagPalette) {
+function resolveTagPaletteSide(side, themeName, colorBase) {
+  const out = {};
+  for (const [role, raw] of Object.entries(side ?? {})) {
+    const resolved = resolveTagPaletteRef(raw, themeName, colorBase);
+    out[role] = resolved.kind === 'css' ? resolved.hex : resolved.value;
+  }
+  return out;
+}
+
+function buildTagPaletteRn(tagPalette, colorBase) {
   const tags = {};
   for (const groupKey of ['mobileColor', 'mobileStatus', 'status', 'colorful', 'custom']) {
     tags[groupKey] = {};
     for (const [key, themeValues] of Object.entries(tagPalette[groupKey] ?? {})) {
       tags[groupKey][key] = {
-        light: { ...themeValues.light },
-        dark: { ...themeValues.dark },
+        light: resolveTagPaletteSide(themeValues.light, 'light', colorBase),
+        dark: resolveTagPaletteSide(themeValues.dark, 'dark', colorBase),
       };
     }
   }
@@ -274,25 +340,34 @@ export function buildRnTheme({ specDir, distDir }) {
   const fontsSpec = loadJson(specDir, 'typography/fonts.json');
 
   const colors = { light: {}, dark: {} };
+  const colorBaseP3 = { light: {}, dark: {} };
   for (const theme of ['light', 'dark']) {
     for (const [name, entry] of Object.entries(colorBase[theme])) {
-      colors[theme][name.replace(/^eds-/, '')] = entry.hex;
+      const key = name.replace(/^eds-/, '');
+      colors[theme][key] = entry.hex;
+      const p3 = resolveBaseDisplayP3(entry);
+      if (p3) {
+        colorBaseP3[theme][key] = p3;
+      }
     }
     for (const token of colorSemantic.tokens) {
       colors[theme][token.name] = resolveSemanticColorToHex(token[theme], theme, colorBase);
     }
   }
 
+  const spacing = flattenScaleSemantic(scaleSemantic, scaleBase);
+
   const theme = {
     colors,
-    spacing: flattenScaleSemantic(scaleSemantic, scaleBase),
+    colorBaseP3,
+    spacing,
     scale: flattenScaleBase(scaleBase),
     typography: {
       base: flattenTypographyBase(typographyBase),
       semantic: flattenTypographySemantic(typographySemantic),
     },
     fonts: buildFonts(fontsSpec),
-    motion: parseBaseMotion(motionBase),
+    motion: parseBaseMotion(motionBase, spacing),
     glass: {
       effect: flattenEffectGlassTokens(effectBase),
       surface: buildGlassSurfaceRn(glassSurfaceSpec),
@@ -305,7 +380,7 @@ export function buildRnTheme({ specDir, distDir }) {
         colorSemanticSpec: colorSemantic,
       }),
     },
-    tags: buildTagPaletteRn(tagPalette),
+    tags: buildTagPaletteRn(tagPalette, colorBase),
   };
 
   const jsDir = join(distDir, 'js');
@@ -314,7 +389,7 @@ export function buildRnTheme({ specDir, distDir }) {
   const jsBody = `/** Auto-generated — do not edit. Source: packages/tokens/spec */\nexport const mobileTheme = ${JSON.stringify(theme, null, 2)};\nexport default mobileTheme;\n`;
   writeFileSync(join(jsDir, 'theme.js'), jsBody);
 
-  const dts = `/** Auto-generated — do not edit. */\nexport type MobileThemeColors = Record<string, string>;\nexport type MobileFontRole = { stackName: string; weights: Record<string, string> };\nexport type MobileFontFace = { family: string; file: string; weight: number };\nexport type MobileTagPaletteEntry = { light: Record<string, string>; dark: Record<string, string> };\nexport type MobileTheme = {\n  colors: { light: MobileThemeColors; dark: MobileThemeColors };\n  spacing: Record<string, number | string>;\n  scale: Record<string, number | string>;\n  typography: { base: Record<string, number | string>; semantic: Record<string, string> };\n  fonts: { sans: MobileFontRole; mono: MobileFontRole; faces: MobileFontFace[] };\n  motion: {\n    springs: Record<string, Record<string, number>>;\n    timings: Record<string, { duration?: number; easing?: string }>;\n    scale: Record<string, number>;\n    opacity: Record<string, number>;\n  };\n  tags: Record<string, Record<string, MobileTagPaletteEntry>>;\n  glass: {\n    effect: Record<string, number | string>;\n    surface: {\n      variants: Record<string, Record<string, unknown>>;\n      shapes: Record<string, string>;\n      container: Record<string, string>;\n    };\n    boxes: Record<string, { title?: string; className: string; light: Record<string, unknown>; dark: Record<string, unknown> }>;\n  };\n};\nexport declare const mobileTheme: MobileTheme;\nexport default mobileTheme;\n`;
+  const dts = `/** Auto-generated — do not edit. */\nexport type MobileThemeColors = Record<string, string>;\nexport type MobileThemeColorBaseP3 = Record<string, [number, number, number]>;\nexport type MobileFontRole = { stackName: string; weights: Record<string, string> };\nexport type MobileFontFace = { family: string; file: string; weight: number };\nexport type MobileTagPaletteEntry = { light: Record<string, string>; dark: Record<string, string> };\nexport type MobileTheme = {\n  colors: { light: MobileThemeColors; dark: MobileThemeColors };\n  colorBaseP3: { light: MobileThemeColorBaseP3; dark: MobileThemeColorBaseP3 };\n  spacing: Record<string, number | string>;\n  scale: Record<string, number | string>;\n  typography: { base: Record<string, number | string>; semantic: Record<string, string> };\n  fonts: { sans: MobileFontRole; mono: MobileFontRole; faces: MobileFontFace[] };\n  motion: {\n    springs: Record<string, Record<string, number>>;\n    springByName: Record<string, Record<string, number>>;\n    timings: Record<string, { duration?: number; easing?: string }>;\n    scale: Record<string, number>;\n    opacity: Record<string, number>;\n    offset: Record<string, number>;\n    radius: Record<string, number>;\n    ratio: Record<string, number>;\n    haptic: Record<string, string>;\n    interaction: Record<string, boolean>;\n  };\n  tags: Record<string, Record<string, MobileTagPaletteEntry>>;\n  glass: {\n    effect: Record<string, number | string>;\n    surface: {\n      variants: Record<string, Record<string, unknown>>;\n      shapes: Record<string, string>;\n      container: Record<string, string>;\n    };\n    boxes: Record<string, { title?: string; className: string; light: Record<string, unknown>; dark: Record<string, unknown> }>;\n  };\n};\nexport declare const mobileTheme: MobileTheme;\nexport default mobileTheme;\n`;
   writeFileSync(join(jsDir, 'theme.d.ts'), dts);
 
   writeRnFontAssets(jsDir, theme.fonts.faces);

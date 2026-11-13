@@ -1,6 +1,6 @@
 import { Text, type ViewStyle } from 'react-native';
 import type { ControlSize, EgCommonProps, EgLabelProps } from '../../../shared/types.js';
-import { MotionPressable } from '../../../shared/MotionPressable.js';
+import { EgEdsAnimaPress } from '../../../shared/motion/EgEdsAnimaPress.js';
 import { createLinkButtonStyles } from '../_shared/linkButtonStyles.js';
 
 export type EgLinkButtonProps = EgCommonProps &
@@ -25,7 +25,7 @@ export function EgLinkButton({
   const content = children ?? label ?? 'Link';
 
   return (
-    <MotionPressable
+    <EgEdsAnimaPress
       testID={testID ?? 'button-link'}
       accessibilityLabel={accessibilityLabel ?? (typeof content === 'string' ? content : 'Link')}
       accessibilityRole="link"
@@ -40,6 +40,6 @@ export function EgLinkButton({
         const visual = createLinkButtonStyles(mode, size, disabled, pressed);
         return <Text style={visual.label}>{content}</Text>;
       }}
-    </MotionPressable>
+    </EgEdsAnimaPress>
   );
 }

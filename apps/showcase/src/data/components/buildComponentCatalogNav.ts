@@ -6,7 +6,7 @@ import {
   type ShowcaseCatalogEntry,
 } from './showcaseCatalog.js';
 import { SHOWCASE_GLASS_EG_SLUG } from './showcaseInfraCatalog.js';
-import { familyBodyPreviewSlug } from './rnDocRegistry';
+import { familyBodyPreviewSlug } from './familyBodyPreviewSlug.js';
 
 export type AtomGalleryFamily = 'icon' | 'crypto' | 'avatar';
 
@@ -42,11 +42,14 @@ export const FAMILY_LABELS: Record<string, string> = {
   tag: 'Tag 标签',
   toggle: 'Toggle 切换',
   tab: 'Tab 标签页',
-  dropdown: 'Dropdown 下拉',
+  'segmented-control': 'Segmented Control 分段',
+  dropdown: 'Menu 菜单',
   feedback: 'Feedback 反馈',
   'tab-bar': 'TabBar 底栏',
   'nav-bar': 'NavBar 导航栏',
   popovers: 'Popovers 浮层',
+  menu: 'Menu 菜单',
+  sheets: 'Sheets 底部浮层',
   index: 'Index 索引',
   symbol: 'Symbol 图标',
 };
@@ -79,8 +82,11 @@ export type ComponentTierNav = {
   implementedCount: number;
 };
 
-/** Tier 页单独成行的条目（源码仍在 catalog family 目录下）。 */
-const SHOWCASE_NAV_FAMILY_BY_SLUG: Record<string, { family: string; directory: string }> = {
+/** Tier 页单独成行的条目（源码路径 / 族 / Tier 可与 Figma catalog 不同）。 */
+const SHOWCASE_NAV_PROMOTE_BY_SLUG: Record<
+  string,
+  { family: string; tier?: CatalogTier; directory: string }
+> = {
   'tab-bar-nav-bar': {
     family: 'nav-bar',
     directory: 'packages/components/src/organisms/tab-bar/nav-bar',
@@ -89,15 +95,41 @@ const SHOWCASE_NAV_FAMILY_BY_SLUG: Record<string, { family: string; directory: s
     family: 'symbol',
     directory: 'packages/components/src/atoms/_shared/symbol',
   },
+  'menu-body': {
+    family: 'menu',
+    tier: 'organisms',
+    directory: 'packages/components/src/molecules/dropdown/menu',
+  },
+  'dropdown-trigger': {
+    family: 'menu',
+    tier: 'organisms',
+    directory: 'packages/components/src/molecules/dropdown/menu',
+  },
+  'tab-segmented-control': {
+    family: 'segmented-control',
+    directory: 'packages/components/src/molecules/tab/segmented-control',
+  },
+  'tab-base-segmented-control': {
+    family: 'segmented-control',
+    directory: 'packages/components/src/molecules/tab/segmented-control-base',
+  },
 };
 
-function showcaseNavFamily(entry: ShowcaseCatalogEntry): string {
-  return SHOWCASE_NAV_FAMILY_BY_SLUG[entry.slug]?.family ?? entry.family;
+function showcaseNavTier(entry: ShowcaseCatalogEntry): CatalogTier {
+  return SHOWCASE_NAV_PROMOTE_BY_SLUG[entry.slug]?.tier ?? entry.tier;
 }
 
-function familyDirectory(tier: CatalogTier, family: string) {
-  const promoted = Object.values(SHOWCASE_NAV_FAMILY_BY_SLUG).find((item) => item.family === family);
-  return promoted?.directory ?? `packages/components/src/${tier}/${family}`;
+function showcaseNavFamily(entry: ShowcaseCatalogEntry): string {
+  return SHOWCASE_NAV_PROMOTE_BY_SLUG[entry.slug]?.family ?? entry.family;
+}
+
+function familyDirectory(tier: CatalogTier, family: string, slug?: string) {
+  const promoted = slug ? SHOWCASE_NAV_PROMOTE_BY_SLUG[slug] : undefined;
+  if (promoted?.directory) {
+    return promoted.directory;
+  }
+  const byFamily = Object.values(SHOWCASE_NAV_PROMOTE_BY_SLUG).find((item) => item.family === family);
+  return byFamily?.directory ?? `packages/components/src/${tier}/${family}`;
 }
 
 function resolveBodySlug(family: string): string | undefined {
@@ -115,12 +147,13 @@ export function buildComponentCatalogNav(): ComponentTierNav[] {
   const byTier = new Map<CatalogTier, Map<string, FigmaComponentEntry[]>>();
 
   for (const entry of getShowcaseComponentCatalog()) {
-    const families = byTier.get(entry.tier) ?? new Map<string, FigmaComponentEntry[]>();
+    const tier = showcaseNavTier(entry);
+    const families = byTier.get(tier) ?? new Map<string, FigmaComponentEntry[]>();
     const family = showcaseNavFamily(entry);
     const list = families.get(family) ?? [];
     list.push(entry);
     families.set(family, list);
-    byTier.set(entry.tier, families);
+    byTier.set(tier, families);
   }
 
   return TIER_ORDER.filter((tier) => byTier.has(tier)).map((tier) => {
@@ -128,11 +161,12 @@ export function buildComponentCatalogNav(): ComponentTierNav[] {
     const familyNavs = [...families.entries()]
       .map(([family, entries]) => {
         const sorted = entries.slice().sort((a, b) => a.exportName.localeCompare(b.exportName));
+        const directorySlug = sorted.find((entry) => SHOWCASE_NAV_PROMOTE_BY_SLUG[entry.slug])?.slug;
         return {
           tier,
           family,
           label: FAMILY_LABELS[family] ?? family,
-          directory: familyDirectory(tier, family),
+          directory: familyDirectory(tier, family, directorySlug),
           entries: sorted,
           implementedCount: sorted.filter(isShowcaseEntryImplemented).length,
           bodySlug: resolveBodySlug(family),
@@ -162,8 +196,17 @@ export function findFamilyNav(tier: CatalogTier, family: string): ComponentFamil
   return componentCatalogNav.find((item) => item.tier === tier)?.families.find((item) => item.family === family);
 }
 
+const FAMILY_EG_EXPORT_OVERRIDES: Record<string, string> = {
+  menu: 'EgMenu',
+  tab: 'EgTab',
+  'segmented-control': 'EgSegmentedControl',
+};
+
 /** 族级组件名 — `Eg` + PascalCase(family)，Tier / 族页标题与列表统一。 */
 export function familyEgComponentName(family: string): string {
+  if (FAMILY_EG_EXPORT_OVERRIDES[family]) {
+    return FAMILY_EG_EXPORT_OVERRIDES[family];
+  }
   const pascal = family
     .split('-')
     .filter(Boolean)
@@ -182,6 +225,12 @@ export function familyTierRowHint(nav: ComponentFamilyNav): string {
   }
   if (nav.family === 'symbol') {
     return 'Icon/Crypto 运行时 API · EgIcon* / EgCrypto* 均委托于此';
+  }
+  if (nav.family === 'menu') {
+    return '页面级 Menu · 触发器插槽 + 分组菜单';
+  }
+  if (nav.family === 'sheets') {
+    return '底部浮层 · 悬浮档 ↔ 大尺寸贴边 · 顶部 EgNavBar';
   }
   return `${nav.directory} · 已实现 ${nav.implementedCount}/${nav.entries.length}`;
 }

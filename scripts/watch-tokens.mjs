@@ -8,6 +8,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { triggerMetroReload } from './trigger-metro-reload.mjs';
+import { isTokensDistFresh } from './lib/tokens-artifact-fresh.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const specDir = join(repoRoot, 'packages/tokens/spec');
@@ -74,4 +75,12 @@ function watchPath(label, dir) {
 watchPath('spec', specDir);
 watchPath('scripts', buildScriptsDir);
 
-buildTokens('startup');
+if (process.env.EDS_TOKEN_WATCH_STARTUP_REBUILD === '1') {
+  buildTokens('startup');
+} else if (isTokensDistFresh()) {
+  console.log(
+    '[watch-tokens] skip startup rebuild (tokens dist fresh · EDS_TOKEN_WATCH_STARTUP_REBUILD=1 to force)',
+  );
+} else {
+  buildTokens('startup');
+}

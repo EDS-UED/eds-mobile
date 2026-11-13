@@ -13,7 +13,7 @@ import { GlassBoxInsetHighlightOverlay } from './GlassBoxInsetHighlightOverlay.j
 import { rnGlassBoxOuterShadowHostStyle } from './glassBoxRnStyle.js';
 import {
   capGlassBoxBorderRadius,
-  glassBoxDefaultBorderWidth,
+  glassBoxCornerStyle,
   glassBoxRadiusStyle,
 } from './resolveGlassBoxGeometry.js';
 import {
@@ -21,7 +21,15 @@ import {
   type GlassBoxClassName,
 } from './resolveGlassBox.js';
 import { getThemeColors, type ThemeMode } from '../../theme/index.js';
+import {
+  isAndroidSmoothCornerAvailable,
+  SmoothCornerView,
+} from '../../shared/smoothCorner/SmoothCornerView.js';
 import { rnColorFromHex } from './glassBoxRnStyle.js';
+import { useGlassMaskNativeEdge } from './GlassMaskScrollEdge.js';
+
+/** Sheets 卡片 · Effect `glass-sheets-box`（`radius-2xl` · `box-flotation` · shallow 阴影）。 */
+export const EG_GLASS_SHEETS_BOX = 'glass-sheets-box' as const satisfies GlassBoxClassName;
 
 export type EgGlassProps = {
   /** Effect 场景 class — 与 Figma Glass Box / `resolveGlassBoxComposition` 一致。 */
@@ -38,8 +46,9 @@ export type EgGlassProps = {
 };
 
 /**
- * Effect Glass Box — expo-blur + token 填色 / overlay + `boxShadow`（与 dist/css/effect 同栈，双端一致）。
- * 系统 Liquid Glass（expo-glass-effect）走 GlassSurface / GlassControlShell，不与本组件叠两层材质。
+ * Effect Glass Box 毛玻璃兜底 — expo-blur + token 填色 / overlay + `boxShadow`（与 dist/css/effect 同栈，双端一致）。
+ * 仅供 Android · iOS ≤25 的 RN 实现；iOS 26+ 由各 Eg* 整体切系统原生，不经本组件。
+ * `glass-mask-box` 在 iOS 26+ `GlassMaskScrollEdgeScope` 内不绘 RN 层 — 背景为系统 scroll edge effect。
  */
 export function EgGlass({
   box,
@@ -54,13 +63,13 @@ export function EgGlass({
   const [layout, setLayout] = useState({ width: 0, height: 0 });
 
   const maskBox = box === 'glass-mask-box';
+  const nativeMaskEdge = useGlassMaskNativeEdge();
   const radiusStyle = glassBoxRadiusStyle(box, composition.borderRadius);
-  const borderWidth = maskBox
-    ? 0
-    : (composition.border?.width ?? glassBoxDefaultBorderWidth());
+  const borderWidth = maskBox ? 0 : (composition.border?.width ?? 0);
   const baseRadius =
     typeof radiusStyle.borderRadius === 'number' ? radiusStyle.borderRadius : 0;
   const borderRadius = capGlassBoxBorderRadius(baseRadius, layout.width, layout.height);
+  const cornerStyle = glassBoxCornerStyle(borderRadius, layout.width, layout.height);
 
   const borderColor = rnColorFromHex(
     composition.border?.color ?? (colors['stroke-base-quaternary'] as string),
@@ -76,21 +85,29 @@ export function EgGlass({
   const outerShadows = maskBox ? [] : composition.shadows;
 
   const shadowHostStyle: ViewStyle = {
-    ...radiusStyle,
-    borderRadius,
+    ...cornerStyle,
     backgroundColor: 'transparent',
     overflow: 'visible',
     ...rnGlassBoxOuterShadowHostStyle(outerShadows),
   };
 
+  if (maskBox && nativeMaskEdge) {
+    return (
+      <View style={StyleSheet.flatten([styles.shadowHost, style])} testID={testID}>
+        {children}
+      </View>
+    );
+  }
+
+  const nativeSmoothCorner = isAndroidSmoothCornerAvailable();
+  const rnBorder = borderWidth > 0 && !nativeSmoothCorner;
   const clipStyle: ViewStyle = {
     ...StyleSheet.absoluteFill,
-    ...radiusStyle,
-    borderRadius,
+    ...cornerStyle,
     backgroundColor: 'transparent',
     borderStyle: 'solid',
-    borderWidth: borderWidth > 0 ? borderWidth : undefined,
-    borderColor: borderWidth > 0 ? borderColor : undefined,
+    borderWidth: rnBorder ? borderWidth : undefined,
+    borderColor: rnBorder ? borderColor : undefined,
     overflow: 'hidden',
   };
 
@@ -100,18 +117,21 @@ export function EgGlass({
       onLayout={onLayout}
       testID={testID}
     >
-      <View style={clipStyle} pointerEvents="none">
+      <SmoothCornerView
+        style={clipStyle}
+        pointerEvents="none"
+        radius={borderRadius}
+        strokeWidth={nativeSmoothCorner ? borderWidth : undefined}
+        strokeColor={nativeSmoothCorner && borderWidth > 0 ? borderColor : undefined}
+      >
         {previewBackdrop ? (
           <View pointerEvents="none" style={styles.previewBackdrop}>
             {previewBackdrop}
           </View>
         ) : null}
         <GlassBoxEffectLayers mode={mode} composition={composition} />
-        <GlassBoxInsetHighlightOverlay
-          shadows={outerShadows}
-          borderRadius={borderRadius}
-        />
-      </View>
+        <GlassBoxInsetHighlightOverlay shadows={outerShadows} cornerStyle={cornerStyle} />
+      </SmoothCornerView>
       {maskBox ? (
         <View style={styles.maskModuleDivider} pointerEvents="none">
           <EgDivider variant="module" mode={mode} orientation="horizontal" />

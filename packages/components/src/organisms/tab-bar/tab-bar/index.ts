@@ -18,6 +18,7 @@ export {
 } from '../_shared/useEgTabBarShellLayout.js';
 export {
   createEgTabBarBottomTabsBinding,
+  createEgTabBarExpoBottomTabsBinding,
   egTabBarRouteNameForIndex,
   egTabBarSelectedIndexForActiveRoute,
 } from '../_shared/egTabBarBottomTabsBinding.js';
@@ -25,6 +26,7 @@ export type {
   EgTabBarBottomTabNavigation,
   EgTabBarBottomTabNavigationState,
   EgTabBarBottomTabRoute,
+  EgTabBarExpoBottomTabsEmitter,
   EgTabBarNavBindItem,
 } from '../_shared/egTabBarBottomTabsBinding.js';
 export type { EgTabBarProps, EgTabBarItemData } from './EgTabBar.types.js';

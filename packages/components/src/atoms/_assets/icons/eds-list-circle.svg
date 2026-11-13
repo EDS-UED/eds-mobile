@@ -1,8 +1,8 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_2267_10805)">
-<circle cx="7.5" cy="9" r="5" fill="#020304" stroke="#020304" style="fill:#020304;fill:color(display-p3 0.0078 0.0118 0.0157);fill-opacity:1;stroke:#020304;stroke:color(display-p3 0.0078 0.0118 0.0157);stroke-opacity:1;" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="7.5" cy="9" r="5" fill="#000000" stroke="#000000" style="fill:#000000;fill:color(display-p3 0 0 0);fill-opacity:1;stroke:#000000;stroke:color(display-p3 0 0 0);stroke-opacity:1;" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M6 9H9" stroke="white" style="stroke:white;stroke-opacity:1;" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M17.5 9H29M17.5 23H29M12.5 23C12.5 25.7614 10.2614 28 7.5 28C4.73858 28 2.5 25.7614 2.5 23C2.5 20.2386 4.73858 18 7.5 18C10.2614 18 12.5 20.2386 12.5 23Z" stroke="#020304" style="stroke:#020304;stroke:color(display-p3 0.0078 0.0118 0.0157);stroke-opacity:1;" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17.5 9H29M17.5 23H29M12.5 23C12.5 25.7614 10.2614 28 7.5 28C4.73858 28 2.5 25.7614 2.5 23C2.5 20.2386 4.73858 18 7.5 18C10.2614 18 12.5 20.2386 12.5 23Z" stroke="#000000" style="stroke:#000000;stroke:color(display-p3 0 0 0);stroke-opacity:1;" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 <defs>
 <clipPath id="clip0_2267_10805">

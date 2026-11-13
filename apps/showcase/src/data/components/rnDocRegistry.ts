@@ -1,10 +1,33 @@
 import {
   AVATAR_NATIVE_PALETTE_SIZE,
   formatAvatarPaletteName,
-} from '@eds/mobile-components';
+} from '@eds/mobile-components/catalog';
 
 import type { DocCustomizeControl, DocPropRow } from './types.js';
 import { buildRnSelfClosingSnippet } from './buildRnUsageSnippet.js';
+import {
+  buildMenuSectionsFromCustomize,
+  menuCustomizeControls,
+  menuCustomizeDefaults,
+  resolveMenuDefaultSelectedId,
+  stripMenuCustomizeMeta,
+} from './menuCustomizeModel.js';
+import {
+  buildSheetsUsageSnippet,
+  SCROLL_EDGE_EFFECT_OPTIONS,
+  sheetsCustomizeControls,
+  sheetsCustomizeDefaults,
+} from './sheetsCustomizeModel.js';
+import {
+  buildEgSegmentedControlPreviewSegments,
+  buildEgTabPreviewItems,
+  readTabSegmentCount,
+  segmentedControlCustomizeControls,
+  segmentedControlCustomizeDefaults,
+  stripTabSlideCustomizeMeta,
+  tabSlideCustomizeControls,
+  tabSlideCustomizeDefaults,
+} from './tabCustomizeModel.js';
 import {
   BUTTON_SHOWCASE_SIZES,
   BUTTON_SHOWCASE_TONES,
@@ -25,6 +48,8 @@ export type RnDocConfig = {
   importCode: string;
   customizeDefaults: Record<string, unknown>;
   customizeControls: DocCustomizeControl[];
+  /** Menu — 分组切换 + 添加分组，而非一次展示全部组。 */
+  customizeLayout?: 'menu-sections';
   propRows: DocPropRow[];
   buildUsageSnippet?: (state: Record<string, unknown>) => string;
   propQueryKeys?: string[];
@@ -79,6 +104,142 @@ const fieldPropRows: DocPropRow[] = [
   { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
   { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
 ];
+
+const menuCustomizeDefaultsSnapshot = { ...menuCustomizeDefaults };
+
+function menuBodyDoc(): RnDocConfig {
+  const defaults = { ...menuCustomizeDefaultsSnapshot };
+  return {
+    componentTag: 'EgMenu',
+    previewSlug: 'menu-body',
+    importCode: `// 触发器：默认 EgButtonGlass 胶囊，或 trigger 插槽
+import { EgMenu } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: menuCustomizeControls,
+    customizeLayout: 'menu-sections',
+    propRows: [
+      { name: 'sections', type: 'EgMenuSection[]', defaultValue: '—', description: '分组 · title? + items' },
+      { name: 'items', type: 'EgMenuItem[]', defaultValue: '—', description: '单段菜单（兼容）' },
+      { name: 'trigger', type: 'ReactNode | (ctx) => ReactNode', defaultValue: 'EgButtonGlass 胶囊', description: '触发器插槽' },
+      { name: 'triggerIcon', type: 'string', defaultValue: "'eds-more-ios'", description: '默认玻璃胶囊 symbol' },
+      { name: 'selectedId', type: 'string', defaultValue: 'undefined', description: '受控选中 id' },
+      { name: 'size', type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '默认玻璃触发器尺寸' },
+      { name: 'forceRnImplementation', type: 'boolean', defaultValue: 'false', description: '强制 RN 浮层（跳过 iOS 系统 Menu）' },
+      { name: 'placement', type: "'top' | 'bottom'", defaultValue: "'bottom'", description: '出现方向 · 盖住触发器' },
+      { name: 'align', type: "'start' | 'center' | 'end'", defaultValue: "'start'", description: '水平对齐' },
+      { name: 'menuWidth', type: 'number', defaultValue: '268', description: '浮层宽度 (px)' },
+      { name: 'menuMaxHeight', type: 'number', defaultValue: '580', description: '浮层最大高度 (px)' },
+    ],
+    propQueryKeys: [
+      'triggerVariant',
+      'triggerSlotLabel',
+      'size',
+      'triggerIcon',
+      'disabled',
+      'placement',
+      'align',
+      'forceRnImplementation',
+      'menuWidth',
+      'menuMaxHeight',
+      'sectionCount',
+      'showItemIcon',
+    ],
+    buildUsageSnippet: (state) => {
+      const merged = { ...defaults, ...state };
+      const sections = buildMenuSectionsFromCustomize(merged);
+      const preview = stripMenuCustomizeMeta({
+        ...merged,
+        sections,
+        defaultSelectedId: resolveMenuDefaultSelectedId(merged, sections),
+      });
+      return buildRnSelfClosingSnippet('EgMenu', preview, {
+        defaults: stripMenuCustomizeMeta(defaults),
+      });
+    },
+  };
+}
+
+function sheetsBodyDoc(): RnDocConfig {
+  return {
+    componentTag: 'EgSheets',
+    previewSlug: 'sheets-body',
+    importCode: `// 卡片 EgGlass glass-sheets-box · 遮罩 effect-sheets-background / material-base-tertiary · EgNavBar · EdsSemanticAnima('sheets')
+import { EgSheets } from '@eds/mobile-components';`,
+    customizeDefaults: { ...sheetsCustomizeDefaults },
+    customizeControls: sheetsCustomizeControls,
+    propRows: [
+      { name: 'visible', type: 'boolean', defaultValue: '—', description: '是否呈现' },
+      { name: 'onDismiss', type: '() => void', defaultValue: '—', description: '收起动画结束后回调' },
+      { name: 'detents', type: "('small' | 'medium' | 'adaptive' | 'large')[]", defaultValue: "['medium', 'large']", description: '档位 · 小 28% / 中 50% · 自适应 = 顶栏 + 内容（上限同 large）· 大 = 顶边贴系统条（safe area top）spacing-0' },
+      { name: 'initialDetent', type: "'small' | 'medium' | 'adaptive' | 'large'", defaultValue: "'medium'", description: '打开时档位' },
+      { name: 'detent', type: "'small' | 'medium' | 'adaptive' | 'large'", defaultValue: 'undefined', description: '受控档位 · 变化即弹簧吸附' },
+      { name: 'onDetentChange', type: '(detent) => void', defaultValue: 'undefined', description: '拖拽吸附到新档位' },
+      { name: 'title', type: 'string', defaultValue: 'undefined', description: '顶部 EgNavBar 标题 · 顶栏悬浮于内容上，背景 auto（滚动时显现）' },
+      { name: 'showTitle', type: 'boolean', defaultValue: 'true', description: '显示标题' },
+      { name: 'showLeft', type: 'boolean', defaultValue: 'false', description: '显示左侧返回 · 按钮由 EDS 锁定（eds-arrow-left-ios），业务侧禁止修改 / 替换' },
+      { name: 'onBack', type: '() => void', defaultValue: 'undefined', description: '左侧返回点击回调' },
+      { name: 'showRight', type: 'boolean', defaultValue: 'true', description: '显示右侧关闭 · 按钮由 EDS 锁定（eds-close，点击收起），业务侧禁止修改 / 替换' },
+      { name: 'dismissible', type: 'boolean', defaultValue: 'true', description: '遮罩点击 / 下拉 / 系统返回可收起' },
+      { name: 'scrollEdgeEffect', type: "'automatic' | 'hard' | 'soft' | 'hidden'", defaultValue: "'soft'", description: 'iOS 26+ 顶栏背景（glass-mask-box 原生 scroll edge）· 静止恒 hidden，内容滚入栏下后用此样式 · hard 半不透明 + 底线 · soft 透明渐变模糊 · hidden 无 · automatic 系统决定（Sheets 内为 hard）；Android / iOS ≤25 不生效' },
+      { name: 'children', type: 'ReactNode', defaultValue: 'undefined', description: '内容插槽 · 顶栏下方滚动区；最高档可滚动，自适应档按其高度定档' },
+      { name: 'actions', type: 'ReactNode', defaultValue: 'undefined', description: '底部 action 插槽 · 始终贴当前档位底边；缺省一个 EgBrandButton「确认」（点击收起），传入即替换，按钮数量 / 样式 / 组合由业务自定义' },
+      { name: 'showActions', type: 'boolean', defaultValue: 'true', description: '显示底部 action 插槽' },
+      { name: 'contentStyle', type: 'StyleProp<ViewStyle>', defaultValue: 'undefined', description: '内容插槽容器样式（默认左右 / 底部 spacing-5）' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: Object.keys(sheetsCustomizeDefaults),
+    buildUsageSnippet: buildSheetsUsageSnippet,
+  };
+}
+
+function menuTriggerSceneDoc(): RnDocConfig {
+  const defaults = { ...menuCustomizeDefaultsSnapshot };
+  return {
+    componentTag: 'EgMenuTrigger',
+    previewSlug: 'dropdown-trigger',
+    importCode: `// 场景化 — Menu 触发器（胶囊 / 插槽）
+import { EgMenuTrigger } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: menuCustomizeControls,
+    customizeLayout: 'menu-sections',
+    propRows: [
+      { name: 'trigger', type: 'ReactNode | (ctx) => ReactNode', defaultValue: 'EgButtonGlass 胶囊', description: '触发器插槽' },
+      { name: 'triggerIcon', type: 'string', defaultValue: "'eds-more-ios'", description: '默认玻璃胶囊 symbol' },
+      { name: 'size', type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '胶囊尺寸' },
+      { name: 'sections', type: 'EgMenuSection[]', defaultValue: '演示分组', description: '菜单分组' },
+      { name: 'placement', type: "'top' | 'bottom'", defaultValue: "'bottom'", description: '出现方向' },
+      { name: 'align', type: "'start' | 'center' | 'end'", defaultValue: "'start'", description: '水平对齐' },
+      { name: 'menuWidth', type: 'number', defaultValue: '268', description: '浮层宽度 (px)' },
+      { name: 'menuMaxHeight', type: 'number', defaultValue: '580', description: '浮层最大高度 (px)' },
+    ],
+    propQueryKeys: [
+      'triggerVariant',
+      'triggerSlotLabel',
+      'size',
+      'triggerIcon',
+      'disabled',
+      'placement',
+      'align',
+      'forceRnImplementation',
+      'menuWidth',
+      'menuMaxHeight',
+      'sectionCount',
+      'showItemIcon',
+    ],
+    buildUsageSnippet: (state) => {
+      const merged = { ...defaults, ...state };
+      const sections = buildMenuSectionsFromCustomize(merged);
+      const preview = stripMenuCustomizeMeta({
+        ...merged,
+        sections,
+        defaultSelectedId: resolveMenuDefaultSelectedId(merged, sections),
+      });
+      return buildRnSelfClosingSnippet('EgMenuTrigger', preview, {
+        defaults: stripMenuCustomizeMeta(defaults),
+      });
+    },
+  };
+}
 
 function fieldDoc(
   componentTag: string,
@@ -265,7 +426,7 @@ function dividerDoc(): RnDocConfig {
         name: 'variant',
         type: "'module' | 'page'",
         defaultValue: "'page'",
-        description: 'Module / Page 线宽 stroke-xs；色 stroke-divider-module / stroke-divider-page',
+        description: 'Module / Page 场景；线宽 stroke-xs；色 stroke-divider-deep',
       },
       {
         name: 'orientation',
@@ -388,7 +549,10 @@ function avatarBodyDoc(): RnDocConfig {
     { value: 'md', label: 'md · 32px' },
     { value: 'lg', label: 'lg · 36px' },
     { value: 'xl', label: 'xl · 40px' },
-    { value: '2xl', label: '2xl · 40px' },
+    { value: '2xl', label: '2xl · 44px' },
+    { value: '3xl', label: '3xl · 48px' },
+    { value: '4xl', label: '4xl · 52px' },
+    { value: '5xl', label: '5xl · 56px' },
   ] as const;
   const colorIndexOptions = [
     { value: 'auto', label: '自动（按 name）' },
@@ -617,6 +781,84 @@ import { EgTabBar } from '@eds/mobile-components';`,
   };
 }
 
+function egTabDoc(): RnDocConfig {
+  const defaults = { ...tabSlideCustomizeDefaults };
+  const previewItems = buildEgTabPreviewItems(readTabSegmentCount(defaults));
+  return {
+    componentTag: 'EgTab',
+    previewSlug: 'tab-tabs',
+    importCode: `import { EgTab } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: tabSlideCustomizeControls,
+    propRows: [
+      { name: 'items', type: 'EgTabItem[]', defaultValue: '3 × Label', description: 'Tab 项（id · label）' },
+      { name: 'selectedId', type: 'string', defaultValue: 'undefined', description: '受控选中 id' },
+      { name: 'defaultSelectedId', type: 'string', defaultValue: "'1'", description: '非受控默认选中' },
+      { name: 'onSelect', type: '(id: string, index: number) => void', defaultValue: 'undefined', description: '选中变化' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['segmentCount'],
+    buildUsageSnippet: (state) => {
+      const count = readTabSegmentCount(state);
+      const items = buildEgTabPreviewItems(count);
+      return buildRnSelfClosingSnippet(
+        'EgTab',
+        {
+          ...stripTabSlideCustomizeMeta(state),
+          defaultSelectedId: '1',
+          items,
+        },
+        {
+          defaults: { defaultSelectedId: '1', items: previewItems },
+          omitKeys: ['segmentCount'],
+        },
+      );
+    },
+  };
+}
+
+function egSegmentedControlDoc(): RnDocConfig {
+  const defaults = { ...segmentedControlCustomizeDefaults };
+  const previewSegments = buildEgSegmentedControlPreviewSegments(readTabSegmentCount(defaults));
+  return {
+    componentTag: 'EgSegmentedControl',
+    previewSlug: 'tab-segmented-control',
+    importCode: `import { EgSegmentedControl } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: segmentedControlCustomizeControls,
+    propRows: [
+      { name: 'segments', type: '(string | EgSegmentedControlSegment)[]', defaultValue: '3 × Label', description: '分段文案' },
+      {
+        name: 'size',
+        type: "'lg' | 'md' | 'sm'",
+        defaultValue: "'md'",
+        description: 'Figma 493:4341 · 轨道 36 / 28 / 24px · 段 padding Lg 20×8 Md 16×4 Sm 12×2',
+      },
+      { name: 'selectedIndex', type: 'number', defaultValue: 'undefined', description: '受控选中索引' },
+      { name: 'defaultSelectedIndex', type: 'number', defaultValue: '0', description: '非受控默认选中' },
+      { name: 'onSelect', type: '(index: number, segment: EgSegmentedControlSegment) => void', defaultValue: 'undefined', description: '选中变化' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['segmentCount', 'size'],
+    buildUsageSnippet: (state) => {
+      const count = readTabSegmentCount(state);
+      const segments = buildEgSegmentedControlPreviewSegments(count);
+      return buildRnSelfClosingSnippet(
+        'EgSegmentedControl',
+        {
+          ...stripTabSlideCustomizeMeta(state),
+          defaultSelectedIndex: 0,
+          segments,
+        },
+        {
+          defaults: { size: 'md', defaultSelectedIndex: 0, segments: previewSegments },
+          omitKeys: ['segmentCount'],
+        },
+      );
+    },
+  };
+}
+
 function tabBarItemDoc(): RnDocConfig {
   const defaults = { label: 'Label', selected: true };
   return {
@@ -648,7 +890,7 @@ function buttonDoc(
   previewSlug: string,
   options?: { label?: string; defaultTone?: ButtonShowcaseTone },
 ): RnDocConfig {
-  const label = options?.label ?? 'Button';
+  const label = options?.label ?? '按钮';
   const defaultTone = options?.defaultTone ?? 'brand';
   const customizeDefaults = { ...buttonShowcaseDefaults, tone: defaultTone, label };
 
@@ -711,18 +953,9 @@ function buttonDoc(
   };
 }
 
-/** `{family}-body` → 族基准场景 slug（对齐 Desktop「本体」文档页）。 */
-export const familyBodyPreviewSlug: Record<string, string> = {
-  'input-body': 'input-input',
-  'button-body': 'button-brand',
-  'tag-body': 'tag-color',
-  'toggle-body': 'toggle-switch',
-  'dropdown-body': 'dropdown-trigger',
-  'tab-bar-body': 'tab-bar-base',
-  'tab-body': 'tab-base-tab',
-  'avatar-body': 'avatar-body',
-  'symbol-body': 'symbol-body',
-};
+import { familyBodyPreviewSlug } from './familyBodyPreviewSlug.js';
+
+export { familyBodyPreviewSlug } from './familyBodyPreviewSlug.js';
 
 const inputCustomizeControls: DocCustomizeControl[] = [
   ...fieldCustomizeControls,
@@ -796,6 +1029,7 @@ function inputDoc(componentTag: string, previewSlug: string): RnDocConfig {
 const GLASS_BOX_TYPE_OPTIONS = [
   { value: 'glass-button-box', label: 'Button' },
   { value: 'glass-flotation-box', label: 'Flotation' },
+  { value: 'glass-sheets-box', label: 'Sheets' },
   { value: 'glass-tabbar-box', label: 'TabBar' },
   { value: 'glass-mask-box', label: 'Mask' },
 ] as const;
@@ -894,12 +1128,16 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   'tag-color-alt': colorTagDoc('EgColorTagAlt', 'tag-color-alt'),
   'tag-system': systemTagDoc('EgSystemTag', 'tag-system'),
   'tag-system-alt': systemTagDoc('EgSystemTagAlt', 'tag-system-alt'),
-  'dropdown-body': fieldDoc('EgTriggerDropdown', 'dropdown-trigger', 'Trigger'),
-  'dropdown-trigger': fieldDoc('EgTriggerDropdown', 'dropdown-trigger', 'Trigger'),
+  'menu-body': menuBodyDoc(),
+  'dropdown-body': menuBodyDoc(),
+  'dropdown-trigger': menuTriggerSceneDoc(),
+  'sheets-body': sheetsBodyDoc(),
   'tab-bar-body': tabBarBaseDoc(),
   'tab-bar-base': tabBarBaseDoc(),
   'tab-bar-cregis': cregisTabBarDoc(),
   'tab-bar-item': tabBarItemDoc(),
+  'tab-tabs': egTabDoc(),
+  'tab-segmented-control': egSegmentedControlDoc(),
   'toggle-body': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
   'toggle-switch': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
   'toggle-checkbox': toggleDoc('EgCheckbox', 'toggle-checkbox', 'defaultChecked', '默认选中'),
@@ -911,17 +1149,18 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   'button-glass': {
     componentTag: 'EgButtonGlass',
     previewSlug: 'button-glass',
-    importCode: `import { EgButtonGlass } from '@eds/mobile-components';`,
+    importCode: `// iOS 26+：原生 Liquid Glass（GlassView）；Android / iOS ≤25：RN glass-button-box
+import { EgButtonGlass } from '@eds/mobile-components';`,
     customizeDefaults: {
       kind: 'text',
       size: 'md',
       label: '编辑',
       icon: 'eds-list-lattice-mobile',
-      iconCount: 1,
+      iconCount: '1',
       iconAlt: 'eds-add',
+      iconThird: 'eds-more-ios',
       disabled: false,
       showAvatarSlot: false,
-      forceRnImplementation: false,
     },
     customizeControls: [
       {
@@ -958,6 +1197,7 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         options: [
           { value: '1', label: '1' },
           { value: '2', label: '2' },
+          { value: '3', label: '3' },
         ],
         visibleWhen: (state) => state.kind === 'icon',
       },
@@ -971,29 +1211,35 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         kind: 'text',
         key: 'iconAlt',
         label: 'Symbol 2',
-        visibleWhen: (state) => state.kind === 'icon' && String(state.iconCount ?? '1') === '2',
+        visibleWhen: (state) => {
+          const count = String(state.iconCount ?? '1');
+          return state.kind === 'icon' && (count === '2' || count === '3');
+        },
+      },
+      {
+        kind: 'text',
+        key: 'iconThird',
+        label: 'Symbol 3',
+        visibleWhen: (state) => state.kind === 'icon' && String(state.iconCount ?? '1') === '3',
       },
       {
         kind: 'boolean',
         key: 'showAvatarSlot',
         label: '头像槽（EgAvatar lg）',
-        visibleWhen: (state) =>
-          state.kind === 'text' ||
-          (state.kind === 'icon' && String(state.iconCount ?? '1') !== '2'),
+        visibleWhen: (state) => {
+          if (state.kind === 'text' || state.kind === undefined) return true;
+          if (state.kind !== 'icon') return false;
+          return String(state.iconCount ?? '1') === '1';
+        },
       },
       { kind: 'boolean', key: 'disabled', label: '禁用' },
-      {
-        kind: 'boolean',
-        key: 'forceRnImplementation',
-        label: '文档对照：RN 实现（业务侧 iOS 26+ 强制系统 Liquid Glass）',
-      },
     ],
     propRows: [
       {
         name: 'kind',
         type: "'text' | 'icon'",
         defaultValue: "'text'",
-        description: '文本胶囊 / 圆形图标',
+        description: '文本胶囊 / 圆形图标（业务只引 EgButtonGlass；平台分流见 import 注释）',
       },
       { name: 'label', type: 'string', defaultValue: 'undefined', description: '文本按钮文案' },
       {
@@ -1017,7 +1263,7 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         description: 'Icon 数量（最大 2）',
       },
       { name: 'iconAlt', type: 'string', defaultValue: 'undefined', description: '第二个 symbol（iconCount=2）' },
-      { name: 'variant', type: "'regular' | 'prominent' | 'clear'", defaultValue: "'clear'", description: 'iOS 液态玻璃档位' },
+      { name: 'variant', type: "'regular' | 'prominent' | 'clear'", defaultValue: "'regular'", description: 'iOS GlassView 档位 · 默认 regular（对齐系统控件）；clear 偏亮/发白' },
       { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
@@ -1025,8 +1271,25 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
     buildUsageSnippet: (state) => {
       const kind = String(state.kind ?? 'text');
       if (kind === 'icon') {
+        const count = String(state.iconCount ?? '1');
+        if (count === '2' || count === '3' || count === '2-split') {
+          const icons = [
+            state.icon ?? 'eds-list-lattice-mobile',
+            state.iconAlt ?? 'eds-add',
+            count === '3' ? state.iconThird ?? 'eds-more-ios' : undefined,
+          ].filter((name) => String(name).trim() !== '');
+          const rows = icons.map((name) =>
+            buildRnSelfClosingSnippet(
+              'EgButtonGlass',
+              { kind: 'icon', icon: name, iconCount: 1, disabled: state.disabled },
+              { defaults: { kind: 'icon', icon: 'eds-list-lattice-mobile', iconCount: 1 } },
+            ),
+          );
+          return `// ${count} 颗独立玻璃圆钮（split）\n${rows.join('\n')}`;
+        }
         return buildRnSelfClosingSnippet('EgButtonGlass', state, {
           defaults: { kind: 'icon', icon: 'eds-list-lattice-mobile', iconCount: 1 },
+          omitKeys: ['iconCount', 'iconAlt', 'iconThird', 'showAvatarSlot'],
         });
       }
       return buildRnSelfClosingSnippet('EgButtonGlass', state, {
@@ -1048,6 +1311,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
       showRight: true,
       rightIconCount: 1,
       background: 'auto',
+      scrollEdgeEffect: 'follow',
       statusBarZone: true,
     },
     customizeControls: [
@@ -1065,7 +1329,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
         label: '右侧数量',
         options: [
           { value: '1', label: '1' },
-          { value: '2', label: '2' },
+          { value: '2', label: '2 拆分' },
         ],
         visibleWhen: (state) => state.showRight !== false,
       },
@@ -1078,6 +1342,12 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
           { value: 'visible', label: '显示' },
           { value: 'hidden', label: '隐藏' },
         ],
+      },
+      {
+        kind: 'select',
+        key: 'scrollEdgeEffect',
+        label: 'iOS 26+ scroll edge（全屏演示生效）',
+        options: [{ value: 'follow', label: '跟随背景' }, ...SCROLL_EDGE_EFFECT_OPTIONS],
       },
       { kind: 'boolean', key: 'statusBarZone', label: '状态栏区（safeArea.top）' },
     ],
@@ -1095,7 +1365,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
         defaultValue: "{ icon: 'eds-arrow-left-ios' }",
         description: '左侧 icon 胶囊（EgButtonGlass）',
       },
-      { name: 'right', type: 'EgNavBarAction', defaultValue: 'undefined', description: '右侧 icon 胶囊，iconCount 1 / 2' },
+      { name: 'right', type: 'EgNavBarAction', defaultValue: 'undefined', description: '右侧；iconCount=2 默认两颗独立玻璃钮（split），combined 为单胶囊' },
       { name: 'showLeft', type: 'boolean', defaultValue: 'true', description: '显示左侧' },
       {
         name: 'showTitle',
@@ -1109,6 +1379,12 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
         type: "'auto' | 'visible' | 'hidden'",
         defaultValue: "'auto'",
         description: 'glass-mask-box 背景，贯穿状态栏；auto = 内容滚入栏下才显现',
+      },
+      {
+        name: 'scrollEdgeEffect',
+        type: "'automatic' | 'hard' | 'soft' | 'hidden'",
+        defaultValue: 'undefined',
+        description: 'iOS 26+ 系统栏 scroll edge · hard 半不透明 + 底线 · soft 透明渐变模糊 · hidden 无 · automatic 系统决定；缺省按 background 映射（auto→静止 hidden · 滚入栏下 soft（useEgNavBarScroll 驱动）；传 automatic 交系统决定· visible→hard · hidden→hidden）。egNavBarNativeStackOptions 同名入参；expo-router 页另传 scrollEdgeActive',
       },
       {
         name: 'scrollOffset',
@@ -1133,6 +1409,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
       'showRight',
       'rightIconCount',
       'background',
+      'scrollEdgeEffect',
       'statusBarZone',
     ],
     buildUsageSnippet: (state) =>
@@ -1144,6 +1421,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
           showTitle: state.showTitle,
           showRight: state.showRight,
           background: state.background,
+          scrollEdgeEffect: state.scrollEdgeEffect === 'follow' ? undefined : state.scrollEdgeEffect,
         },
         { defaults: { title: '标题', showLeft: true, showTitle: true, showRight: true, background: 'auto' } },
       ),

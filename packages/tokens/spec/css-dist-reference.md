@@ -223,13 +223,13 @@ effect/themes/{theme}/base.css      --eds-shadow-* / --eds-glass-*（引用 --ed
 | 变量 | 值 |
 |------|-----|
 | `--radius-0` | `0px` |
-| `--radius-xs` | `4px` |
-| `--radius-sm` | `8px` |
-| `--radius-md` | `12px` |
+| `--radius-xs` | `12px` |
+| `--radius-sm` | `16px` |
+| `--radius-md` | `20px` |
 | `--radius-lg` | `16px` |
 | `--radius-xl` | `20px` |
 | `--radius-full` | `888px` |
-| `--stroke-xs` / `--stroke-sm` / `--stroke-md` / `--stroke-lg` | `0.2px` / `var(--scale-025)` (1px) / `var(--scale-0375)` (1.5px) / `var(--scale-05)` (2px) |
+| `--stroke-xs` … `--stroke-xl` | `0.2px` / `scale-0125` (0.5px) / `scale-025` (1px) / `scale-0375` (1.5px) / `scale-05` (2px) |
 | `--blur-deep` / `--blur-moderate` / `--blur-shallow` | `40px` / `80px` / `200px` |
 | `--depth-deep` / `--depth-moderate` / `--depth-shallow` | `8px` / `16px` / `32px` |
 
@@ -295,11 +295,14 @@ effect/themes/{theme}/base.css      --eds-shadow-* / --eds-glass-*（引用 --ed
 | headline | 26 | bold | 32 |
 | title | 21 | bold | 28 |
 | body-large | 19 | regular | 26 |
-| body-large-strong | 19 | semibold | 26 |
+| body-large-strong | 19 | medium(500) | 26 |
+| body-large-heavy | 19 | bold(700) | 26 |
 | body-medium | 17 | regular | 24 |
-| body-medium-strong | 17 | semibold | 24 |
+| body-medium-strong | 17 | medium(500) | 24 |
+| body-medium-heavy | 17 | semibold(600) | 24 |
 | body-small | 15 | regular | 20 |
-| body-small-strong | 15 | semibold | 20 |
+| body-small-strong | 15 | medium(500) | 20 |
+| body-small-heavy | 15 | semibold(600) | 20 |
 | detail / detail-strong | 14 | regular/semibold | 18 |
 | footnote / footnote-strong | 13 | regular/semibold | 16 |
 | bar / bar-strong | 10 | medium/semibold | 14 |
@@ -360,17 +363,17 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | `--motion-glass-scale-press-xs/sm/md/lg` | `1.02 / 1.04 / 1.2 / 1.35` |
 | `--motion-scale-subtle/emphasis/present` | `0.98 / 1.04 / 0.96` |
 | `--motion-distance-xs/sm/md/lg/xl` | `4 / 8 / 16 / 24 / 40` px |
-| `--motion-offset-flotation-y` | `calc(-1 * var(--spacing-2-5))` |
+| `--motion-offset-sheets-inset` / `--motion-offset-sheets-top` | `var(--spacing-2)` / `var(--spacing-0)`（距系统条 safe area top） |
 | `--motion-offset-layout-deform-y` | `var(--spacing-2-5)` |
 
 ### 7.2 Recipe — `motion/recipe.css`
 
 ```
---eds-motion-1  →  --motion-duration-tap
+--eds-motion-1  →  --motion-duration-press
 --eds-motion-ease-1  →  --motion-easing-standard
         ↓
---motion-recipe-tap: background-color var(--motion-duration-tap) var(--motion-easing-standard), transform …
---motion-recipe-enter / exit / shift / page-push / layout-deform-* / flotation-* / scroll-fade …
+--motion-recipe-press: background-color var(--motion-duration-press) var(--motion-easing-standard), transform …
+--motion-recipe-enter / exit / shift / page-push / layout-deform-* / sheets / scroll-fade …
 ```
 
 `@media (prefers-reduced-motion: reduce)` 将 duration 全部降为 `--eds-motion-0`。
@@ -379,10 +382,10 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 
 | Class | transition 引用 | 说明 |
 |-------|-----------------|------|
-| `.motion-tap` | `--motion-recipe-tap` | 点按；`.is-active` → `scale(var(--motion-scale-press))` |
+| `.motion-press` | `--motion-recipe-press` | 点按；`.is-active` → `scale(var(--motion-scale-press))` |
 | `.motion-focus` | `--motion-recipe-enter` | Input/Search 聚焦 |
 | `.motion-layout` | `--motion-recipe-enter` | 大位移进出场 |
-| `.motion-flotation` | `--motion-recipe-flotation-enter` | Sheet/Modal/Popover |
+| `.motion-sheets` | `--motion-recipe-sheets` | EgSheets（`.is-attached` / `.is-dismissed`） |
 | `.motion-deform` | `--motion-recipe-control` | Tab 指示器 / Toggle |
 | `.motion-page` | `--motion-recipe-page-push` | 页面 Push/Pop |
 | `.motion-layout-deform` | `--motion-recipe-layout-deform-shell` | 容器 morph |
@@ -402,15 +405,16 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 
 | 变量 | Hex（回退） | display-p3 |
 |------|-------------|------------|
-| `--eds-base` | `#020304` | `0.0078 0.0118 0.0157` |
+| `--eds-base` | `#000000` | `0 0 0` |
 | `--eds-brand` | `#5f2243` | `0.3725 0.1333 0.2627` |
 | `--eds-danger` | `#d7462d` | `0.8431 0.2745 0.1765` |
-| `--eds-decor` | `#022d0d` | `0.0078 0.1765 0.051` |
+| `--eds-decor` | `#044020` | display-p3 由 build 生成 |
 | `--eds-face` | `#ffffff` | `1 1 1` |
 | `--eds-flotation` | `#ffffff` | `1 1 1` |
 | `--eds-match` | `#003a6d` | `0 0.2275 0.4275` |
 | `--eds-page` | `#ffffff` | `1 1 1` |
-| `--eds-same-black` | `#020304` | 同 base |
+| `--eds-page-card` | `#f7f7f7` | `0.9686 0.9686 0.9686` |
+| `--eds-same-black` | `#000000` | 同 base |
 | `--eds-same-white` | `#ffffff` | `1 1 1` |
 | `--eds-success` | `#1fc35a` | `0.1216 0.7647 0.3529` |
 | `--eds-warning` | `#eb9114` | `0.9216 0.5686 0.0784` |
@@ -423,10 +427,11 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | `--eds-brand` | `#5f2243` | **与 Light 相同** |
 | `--eds-danger` | `#fa6950` | |
 | `--eds-decor` | `#ffffff` | |
-| `--eds-face` | `#020304` | |
+| `--eds-face` | `#000000` | |
 | `--eds-flotation` | `#1c1d1f` | |
 | `--eds-match` | `#004178` | |
-| `--eds-page` | `#020304` | |
+| `--eds-page` | `#000000` | |
+| `--eds-page-card` | `#000000` | |
 | `--eds-success` | `#1fc35a` | 同 Light |
 | `--eds-warning` | `#ffaa32` | |
 
@@ -438,36 +443,38 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 |------|-----|
 | `--box-page` | `#ffffff` |
 | `--box-flotation` | `#ffffff` |
+| `--box-page-card` | `#f7f7f7` |
 
 #### Stroke
 
 | 变量 | 值 |
 |------|-----|
-| `--stroke-hide` | `#02030400` |
-| `--stroke-divider-module` | Divider Module |
-| `--stroke-divider-page` | Divider Page |
-| `--stroke-base-primary` | `#020304` |
-| `--stroke-base-secondary` | `#02030499` |
-| `--stroke-base-tertiary` | `#02030466` |
-| `--stroke-base-quaternary` | `#02030433` |
+| `--stroke-hide` | `#00000000` |
+| `--stroke-divider-deep` | light 10% · dark 10% base |
+| `--stroke-divider-shallow` | light 8% · dark 10% base |
+| `--stroke-base-primary` | `#000000` |
+| `--stroke-base-secondary` | `#00000099` |
+| `--stroke-base-tertiary` | `#00000066` |
+| `--stroke-base-quaternary` | `#00000033` |
 | `--stroke-color-brand` | `var(--eds-brand)` → `#5f2243` |
 | `--stroke-color-danger` | `#d7462d` |
+| `--stroke-decor` | `var(--eds-decor)` |
 | `--stroke-same-white` | `#ffffff` |
 
 #### Text
 
 | 变量 | 值 | 组件用途 |
 |------|-----|----------|
-| `--text-base-primary` | `#020304` | 正文 |
-| `--text-base-secondary` | `#02030499` | |
-| `--text-base-tertiary` | `#02030466` | 占位符 |
-| `--text-base-quaternary` | `#02030433` | Tap 占位 |
+| `--text-base-primary` | `#000000` | 正文 |
+| `--text-base-secondary` | `#00000099` | |
+| `--text-base-tertiary` | `#00000066` | 占位符 |
+| `--text-base-quaternary` | `#00000033` | Tap 占位 |
 | `--text-brand` | `var(--eds-brand)` | Paste / Max |
 | `--text-face-primary` | `#ffffff` | 深底文字 |
 | `--text-face-secondary` | `#ffffff99` | |
 | `--text-face-tertiary` | `#ffffff66` | |
 | `--text-face-quaternary` | `#ffffff33` | |
-| `--text-same-black` | `#020304` | |
+| `--text-same-black` | `#000000` | |
 | `--text-same-white` | `#ffffff` | |
 | `--text-same-white-weaken` | `#ffffff66` | |
 
@@ -475,14 +482,15 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 
 | 变量 | 值 |
 |------|-----|
-| `--material-hide` | `#02030400` |
-| `--material-base-primary` | `#020304` |
-| `--material-base-secondary` | `#02030499` |
-| `--material-base-tertiary` | `#02030466` |
-| `--material-base-quaternary` | `#02030433` |
-| `--material-card-shallow` | `#02030408` |
-| `--material-card-moderate` | `#0203040a` |
-| `--material-card-deep` | `#02030412` |
+| `--material-hide` | `#00000000` |
+| `--material-base-primary` | `#000000` |
+| `--material-base-secondary` | `#00000099` |
+| `--material-base-tertiary` | `#00000066` |
+| `--material-base-quaternary` | `#00000033` |
+| `--material-card-shallow` | `#00000008` |
+| `--material-card-moderate` | `#0000000a` |
+| `--material-card-deep` | `#0000000d` |
+| `--material-card-same-white` | `var(--eds-same-white)` |
 | `--material-brand` | `var(--eds-brand)` |
 | `--material-brand-weaken` | `color-mix(in display-p3, var(--eds-brand) 12%, transparent)` |
 | `--material-match` | `#003a6d` |
@@ -493,8 +501,8 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 | `--material-face-secondary` | `#ffffff99` |
 | `--material-face-tertiary` | `#ffffff66` |
 | `--material-face-quaternary` | `#ffffff33` |
-| `--material-same-black` | `#02030480` |
-| `--material-same-black-weaken` | `#02030433` |
+| `--material-same-black` | `#00000080` |
+| `--material-same-black-weaken` | `#00000033` |
 | `--material-same-white` | `#ffffff` |
 | `--material-same-white-weaken` | `#ffffff` |
 
@@ -502,8 +510,8 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 
 | 变量 | 值 |
 |------|-----|
-| `--status-disable-base` | `#02030433` |
-| `--status-disable-base-weaken` | `#0203040d` |
+| `--status-disable-base` | `#00000033` |
+| `--status-disable-base-weaken` | `#0000000d` |
 | `--status-disable-brand` | `color-mix(…, brand 40%, transparent)` |
 | `--status-disable-brand-weaken` | `color-mix(…, brand 20%, transparent)` |
 | `--status-disable-same-white` | `#ffffff` |
@@ -518,31 +526,32 @@ RN：`@eds/mobile-tokens/fonts-native` + `expo-font`；Web：`@eds/mobile-tokens
 
 | 变量 | 值 |
 |------|-----|
-| `--effect-shallow` | `#0203041a` |
-| `--effect-moderate` | `#0203041f` |
-| `--effect-deep` | `#02030433` |
-| `--effect-prompt` | `#020304cc` |
-| `--event-tap` | `#0203041a` |
+| `--effect-shallow` | `#0000001a` |
+| `--effect-moderate` | `#0000001f` |
+| `--effect-deep` | `#00000033` |
+| `--effect-prompt` | `#000000cc` |
+| `--event-tap` | `#0000001a` |
 | `--event-tap-brand` | `color-mix(…, brand 60%, transparent)` |
 | `--event-tap-decor` | `#022d0d99` |
 | `--event-tap-danger` | `#d7462d99` |
-| `--event-tap-base` | `#02030499` |
+| `--event-tap-base` | `#00000099` |
 | `--event-tap-face` | `#ffffff99` |
-| `--event-focus` | `#0203040d` |
+| `--event-focus` | `#0000000d` |
 | `--event-focus-brand` | `color-mix(…, brand 10%, transparent)` |
 
 Showcase 文档专用色见 `apps/showcase/src/theme/showcaseDocColors.ts`。
 
 ### 8.3 Semantic — Dark 要点
 
-Dark 与 Light **同名 token**，主色从 `#020304` 翻转为 `#ffffff` 系：
+Dark 与 Light **同名 token**，主色从 `#000000` 翻转为 `#ffffff` 系：
 
 | Token | Light | Dark |
 |-------|-------|------|
-| `--box-page` | `#ffffff` | `#020304` |
+| `--box-page` | `#ffffff` | `#000000` |
 | `--box-flotation` | `#ffffff` | `#1c1d1f` |
-| `--text-base-primary` | `#020304` | `#ffffff` |
-| `--material-card-moderate` | `#0203040a` | `#ffffff0f` |
+| `--box-page-card` | `#f7f7f7` | `#000000` |
+| `--text-base-primary` | `#000000` | `#ffffff` |
+| `--material-card-moderate` | `#0000000a` | `#ffffff0f` |
 | `--event-tap` | light 5% base · dark 6% base |
 | `--status-danger` | `#d7462d` | `#fa6950` |
 | `--status-warning` | `#eb9114` | `#ffaa32` |
@@ -594,10 +603,10 @@ Dark 与 Light **同名 token**，主色从 `#020304` 翻转为 `#ffffff` 系：
 | moss | `#afd1be` / `#086c22` | `#3e5143` / `#7ec591` |
 | steel | `#98c6d4` / `#09607b` | `#3e565e` / `#82b7c7` |
 | grape | `#cea5d4` / `#770d87` | `#624966` / `#c586ce` |
-| samewhite | `#ffffff` / `#020304` | 同 |
+| samewhite | `#ffffff` / `#000000` | 同 |
 | lime | `#a8f858` / `#284908` | 同 |
 
-### 9.3 Tag Custom（bar + 统一 bg/text `#020304`）
+### 9.3 Tag Custom（bar + 统一 bg/text `#000000`）
 
 | 名称 | bar |
 |------|-----|
@@ -618,14 +627,14 @@ Dark 与 Light **同名 token**，主色从 `#020304` 翻转为 `#ffffff` 系：
 
 | 色名 | Light bg / text / altBg | Dark bg / text / altBg |
 |------|-------------------------|-------------------------|
-| green | `#bff5dc` / `#0a5537` / `#fff` | `#08462d` / `#00d888` / `#020304` |
-| yellow | `#fff0be` / `#78370f` / `#fff` | `#55412d` / `#ffc373` / `#020304` |
-| red | `#ffd2d2` / `#6e2319` / `#fff` | `#50302a` / `#ff6262` / `#020304` |
-| blue | `#c8d7fa` / `#0f3269` / `#fff` | `#263b5b` / `#297eff` / `#020304` |
-| purple | `#e5d7fa` / `#690f69` / `#fff` | `#3a3a6f` / `#9b87ff` / `#020304` |
-| blueGrey | `#d7d9db` / `#56585a` / `#fff` | `#3e454a` / `#7f8993` / `#020304` |
-| emeraldGreen | `#a8f858` / `#284908` / `#fff` | `#2b4a22` / `#7fff5d` / `#020304` |
-| gray | `#fff` / `#020304` / `#0203040d` | `#ffffff12` / `#fff` / `#ffffff12` |
+| green | `#bff5dc` / `#0a5537` / `#fff` | `#08462d` / `#00d888` / `#000000` |
+| yellow | `#fff0be` / `#78370f` / `#fff` | `#55412d` / `#ffc373` / `#000000` |
+| red | `#ffd2d2` / `#6e2319` / `#fff` | `#50302a` / `#ff6262` / `#000000` |
+| blue | `#c8d7fa` / `#0f3269` / `#fff` | `#263b5b` / `#297eff` / `#000000` |
+| purple | `#e5d7fa` / `#690f69` / `#fff` | `#3a3a6f` / `#9b87ff` / `#000000` |
+| blueGrey | `#d7d9db` / `#56585a` / `#fff` | `#3e454a` / `#7f8993` / `#000000` |
+| emeraldGreen | `#a8f858` / `#284908` / `#fff` | `#2b4a22` / `#7fff5d` / `#000000` |
+| gray | `#fff` / `#000000` / `#0000000d` | `#ffffff12` / `#fff` / `#ffffff12` |
 
 Mobile Status 与 Mobile Color 同值（danger / warning / success / ready / invalid）。
 
@@ -692,7 +701,7 @@ RN：`mobileTheme.glass.boxes` · `resolveGlassBoxComposition`。
 | `motion/semantic` | `--motion-recipe-*`, `--motion-scale-press`, `--motion-distance-sm` |
 | `color/semantic` | `--eds-brand` 等 ← color/base |
 | `color/tag/semantic` | `--eds-tag-*` ← color/tag/base |
-| `effect/base` | `--eds-face`, `--blur-*`, `--depth-*`, `--stroke-outline-*` |
+| `effect/base` | `--eds-face`, `--blur-*`, `--depth-*` |
 | `effect/semantic` | `--radius-*`, `--stroke-*`, `--effect-*`, `--eds-shadow-box-*` → `glass.boxes` |
 | `@eds/mobile-components` | `mobileTheme` ← 上述全部 spec |
 
@@ -700,12 +709,12 @@ RN：`mobileTheme.glass.boxes` · `resolveGlassBoxComposition`。
 
 | 场景 | CSS token | 值 |
 |------|-----------|-----|
-| Input/Search 背景 | `--material-card-moderate` | `#0203040a` |
-| 占位符 | `--text-base-tertiary` | `#02030466` |
-| 正文 | `--text-base-primary` | `#020304` |
+| Input/Search 背景 | `--material-card-moderate` | `#0000000a` |
+| 占位符 | `--text-base-tertiary` | `#00000066` |
+| 正文 | `--text-base-primary` | `#000000` |
 | Brand 文案 | `--text-brand` | `#5f2243` |
 | 光标 | `--material-brand` | `#5f2243` |
-| Tap 反馈 | `--event-tap` | `#0203041a` |
+| Tap 反馈 | `--event-tap` | `#0000001a` |
 | Input 高 xl | `--input-xl` | `56px` |
 | Input 间距 | `--spacing-3` | `12px` |
 | Body Medium | `--eds-body-medium-size` | `17px` |
@@ -717,7 +726,7 @@ RN：`mobileTheme.glass.boxes` · `resolveGlassBoxComposition`。
 ```javascript
 import mobileTheme from '@eds/mobile-tokens/theme';
 
-mobileTheme.colors.light['material-card-moderate']  // "#0203040a"
+mobileTheme.colors.light['material-card-moderate']  // "#0000000a"
 mobileTheme.colors.light.brand                        // "#1fc35a"
 mobileTheme.spacing['input-xl']                      // 56
 mobileTheme.glass.boxes['glass-tabbar-box'].light.backdropBlur.nativeIntensity  // expo-blur

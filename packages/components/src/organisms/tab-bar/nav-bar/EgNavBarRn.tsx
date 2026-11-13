@@ -11,9 +11,9 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EgGlass } from '../../../atoms/glass/EgGlass.js';
-import { EgButtonGlassRn } from '../../../molecules/button/button-glass/EgButtonGlassRn.js';
-import { presetBodyMediumStrong } from '../../../shared/typographyStyles.js';
-import { getThemeColors } from '../../../theme/index.js';
+import { EgNavBarActionView } from './EgNavBarActionView.js';
+import { presetBodyMediumStrong, presetTitle } from '../../../shared/typographyStyles.js';
+import { getThemeColors, mobileTheme } from '../../../theme/index.js';
 import {
   EG_NAV_BAR_FADE_DURATION,
   EG_NAV_BAR_PADDING_BOTTOM,
@@ -43,14 +43,15 @@ type SlotProps = {
   minWidth: number;
   align: 'flex-start' | 'flex-end';
   onContentWidth: (width: number) => void;
+  shiftStyle?: ReturnType<typeof useAnimatedStyle>;
   children: ReactNode;
 };
 
-function EgNavBarSlot({ visible, minWidth, align, onContentWidth, children }: SlotProps) {
+function EgNavBarSlot({ visible, minWidth, align, onContentWidth, shiftStyle, children }: SlotProps) {
   const fadeStyle = useFade(visible);
   return (
     <Animated.View
-      style={[styles.slot, { minWidth, alignItems: align }, fadeStyle]}
+      style={[styles.slot, { minWidth, alignItems: align }, fadeStyle, shiftStyle]}
       pointerEvents={visible ? 'box-none' : 'none'}
       accessibilityElementsHidden={!visible}
       importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'}
@@ -62,34 +63,7 @@ function EgNavBarSlot({ visible, minWidth, align, onContentWidth, children }: Sl
   );
 }
 
-function EgNavBarActionButton({
-  action,
-  mode,
-  testID,
-}: {
-  action: EgNavBarAction;
-  mode: EgNavBarProps['mode'];
-  testID: string;
-}) {
-  const kind = action.kind ?? 'icon';
-  return (
-    <EgButtonGlassRn
-      kind={kind}
-      icon={action.icon}
-      iconCount={action.iconCount}
-      iconAlt={action.iconAlt}
-      label={action.label}
-      size={action.size ?? 'md'}
-      disabled={action.disabled}
-      onPress={action.onPress}
-      accessibilityLabel={action.accessibilityLabel}
-      mode={mode}
-      testID={testID}
-    />
-  );
-}
-
-/** Android / iOS ≤25 — RN 栈：`glass-mask-box` 背景贯穿状态栏 + 左右 icon 胶囊 + 居中标题。 */
+/** RN 顶栏 · 背景 `glass-mask-box`（Android / iOS ≤25 · 以及 iOS 26+ overlay 如 EgSheets）。 */
 export function EgNavBarRn(props: EgNavBarProps) {
   const {
     title,
@@ -97,9 +71,16 @@ export function EgNavBarRn(props: EgNavBarProps) {
     right,
     showLeft = true,
     showTitle = true,
+    titleAlign = 'center',
+    leadingTitleInset,
+    leadingTitleGap,
+    contentPaddingHorizontal,
+    contentPaddingTop,
+    contentPaddingBottom,
     showRight = true,
     background = 'auto',
     scrollOffset,
+    edgeShift,
     contentUnder = false,
     topInset,
     manageStatusBar = true,
@@ -116,7 +97,13 @@ export function EgNavBarRn(props: EgNavBarProps) {
   const [rightWidth, setRightWidth] = useState(0);
   const leftVisible = showLeft;
   const rightVisible = showRight && right != null;
-  const sideWidth = Math.max(leftVisible ? leftWidth : 0, rightVisible ? rightWidth : 0);
+  const leading = titleAlign === 'leading';
+  const rowPaddingHorizontal = contentPaddingHorizontal ?? EG_NAV_BAR_PADDING_HORIZONTAL;
+  const rowPaddingTop = contentPaddingTop ?? EG_NAV_BAR_PADDING_TOP;
+  const rowPaddingBottom = contentPaddingBottom ?? EG_NAV_BAR_PADDING_BOTTOM;
+  const titleLeadingInset = leadingTitleInset ?? (mobileTheme.spacing['spacing-2'] as number);
+  const titleLeadingGap = leadingTitleGap ?? (mobileTheme.spacing['spacing-1'] as number);
+  const sideWidth = leading ? 0 : Math.max(leftVisible ? leftWidth : 0, rightVisible ? rightWidth : 0);
 
   const scrollDriven = background === 'auto' && scrollOffset != null;
   const manualTarget = background === 'visible' ? 1 : background === 'hidden' ? 0 : contentUnder ? 1 : 0;
@@ -134,6 +121,14 @@ export function EgNavBarRn(props: EgNavBarProps) {
   }, [scrollDriven, scrollOffset]);
 
   const titleFadeStyle = useFade(showTitle && Boolean(title));
+  const leadingShiftStyle = useAnimatedStyle(
+    () => ({ transform: [{ translateX: edgeShift ? -edgeShift.value : 0 }] }),
+    [edgeShift],
+  );
+  const trailingShiftStyle = useAnimatedStyle(
+    () => ({ transform: [{ translateX: edgeShift ? edgeShift.value : 0 }] }),
+    [edgeShift],
+  );
 
   return (
     <View
@@ -154,33 +149,65 @@ export function EgNavBarRn(props: EgNavBarProps) {
         <EgGlass box="glass-mask-box" mode={mode} style={styles.backgroundFill} />
       </Animated.View>
 
-      <View style={styles.row} pointerEvents="box-none">
-        <EgNavBarSlot visible={leftVisible} minWidth={sideWidth} align="flex-start" onContentWidth={setLeftWidth}>
-          <EgNavBarActionButton
-            action={left}
-            mode={mode}
-            testID="nav-bar-left"
-          />
-        </EgNavBarSlot>
+      <View
+        style={[
+          styles.row,
+          {
+            paddingHorizontal: rowPaddingHorizontal,
+            paddingTop: rowPaddingTop,
+            paddingBottom: rowPaddingBottom,
+          },
+        ]}
+        pointerEvents="box-none"
+      >
+        {leading && !leftVisible ? null : (
+          <EgNavBarSlot
+            visible={leftVisible}
+            minWidth={sideWidth}
+            align="flex-start"
+            onContentWidth={setLeftWidth}
+            shiftStyle={leadingShiftStyle}
+          >
+            <EgNavBarActionView action={left} mode={mode} testID="nav-bar-left" />
+          </EgNavBarSlot>
+        )}
 
-        <Animated.View style={[styles.titleWrap, titleFadeStyle]} pointerEvents="none">
+        <Animated.View
+          style={[
+            styles.titleWrap,
+            leading
+              ? [
+                  styles.titleWrapLeading,
+                  { marginLeft: leftVisible ? titleLeadingGap : titleLeadingInset },
+                ]
+              : null,
+            titleFadeStyle,
+            leading ? leadingShiftStyle : null,
+          ]}
+          pointerEvents="none"
+        >
           <Text
             accessibilityRole="header"
             numberOfLines={1}
             ellipsizeMode="tail"
-            style={[styles.title, { color: colors['text-base-primary'] as string }]}
+            style={[
+              leading ? styles.titleLeading : styles.title,
+              { color: colors['text-base-primary'] as string },
+            ]}
           >
             {title ?? ''}
           </Text>
         </Animated.View>
 
-        <EgNavBarSlot visible={rightVisible} minWidth={sideWidth} align="flex-end" onContentWidth={setRightWidth}>
+        <EgNavBarSlot
+          visible={rightVisible}
+          minWidth={sideWidth}
+          align="flex-end"
+          onContentWidth={setRightWidth}
+          shiftStyle={trailingShiftStyle}
+        >
           {right ? (
-            <EgNavBarActionButton
-              action={right}
-              mode={mode}
-              testID="nav-bar-right"
-            />
+            <EgNavBarActionView action={right} mode={mode} testID="nav-bar-right" />
           ) : null}
         </EgNavBarSlot>
       </View>
@@ -202,9 +229,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: EG_NAV_BAR_PADDING_HORIZONTAL,
-    paddingTop: EG_NAV_BAR_PADDING_TOP,
-    paddingBottom: EG_NAV_BAR_PADDING_BOTTOM,
   },
   slot: {
     flexDirection: 'row',
@@ -214,8 +238,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: EG_NAV_BAR_TITLE_GAP,
   },
+  titleWrapLeading: {
+    alignItems: 'flex-start',
+    paddingLeft: 0,
+  },
   title: {
     ...presetBodyMediumStrong(),
     textAlign: 'center',
+  },
+  titleLeading: {
+    ...presetTitle(),
+    textAlign: 'left',
   },
 });

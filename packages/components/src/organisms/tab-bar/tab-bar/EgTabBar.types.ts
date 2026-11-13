@@ -33,4 +33,8 @@ export type EgTabBarProps = {
   previewBackdrop?: ReactNode;
   /** 选中 label / icon 强调色 — Cregis 为 `decor`。默认 `brand`。 */
   selectionAccent?: EgTabBarSelectionAccent;
+  /** 按下整条缩放（glass press · sm）。默认 `true`。 */
+  pressScale?: boolean;
+  /** 拖动时胶囊跟手；关闭后只在松手位置弹簧滑入。默认 `true`。 */
+  followDrag?: boolean;
 };

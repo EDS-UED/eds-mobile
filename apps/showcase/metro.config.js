@@ -6,6 +6,7 @@ const { resolve: resolveRequest } = require('metro-resolver');
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, '../..');
 const componentsSrcEntry = path.resolve(workspaceRoot, 'packages/components/src/index.ts');
+const componentsGlassEntry = path.resolve(workspaceRoot, 'packages/components/src/atoms/glass/index.ts');
 const animationsSrcEntry = path.resolve(workspaceRoot, 'packages/animations/src/index.ts');
 const tokensThemeEntry = path.resolve(workspaceRoot, 'packages/tokens/dist/js/theme.js');
 const tokensFontsEntry = path.resolve(workspaceRoot, 'packages/tokens/dist/js/fonts-native.js');
@@ -21,14 +22,23 @@ const previewModuleMap = {
   parity: path.resolve(workspaceRoot, 'packages/components/src/preview/ParityHarness.tsx'),
 };
 
-/** Monorepo: watch package sources only (skip .agents / docs — fewer Metro crawls on reload). */
+/** Monorepo: watch RN 源码 + tokens 运行时产物，不监听整包 dist/css（减少 crawl / 重启）。 */
 const config = getDefaultConfig(projectRoot);
 
 config.watchFolders = [
   projectRoot,
-  path.resolve(workspaceRoot, 'packages/components'),
-  path.resolve(workspaceRoot, 'packages/animations'),
-  path.resolve(workspaceRoot, 'packages/tokens'),
+  path.resolve(workspaceRoot, 'packages/components/src'),
+  path.resolve(workspaceRoot, 'packages/animations/src'),
+  path.resolve(workspaceRoot, 'packages/tokens/dist/js'),
+  path.resolve(workspaceRoot, 'packages/tokens/dist/json'),
+  path.resolve(workspaceRoot, 'packages/tokens/spec'),
+  path.resolve(workspaceRoot, 'apps/showcase/src/data/tokens/generated'),
+];
+config.resolver.blockList = [
+  /packages\/tokens\/dist\/css\/.*/,
+  /packages\/components\/dist\/.*/,
+  /packages\/animations\/dist\/.*/,
+  /\/\.agents\/.*/,
 ];
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, 'node_modules'),
@@ -78,6 +88,9 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
     }
   }
 
+  if (moduleName === '@eds/mobile-components/glass') {
+    return { type: 'sourceFile', filePath: componentsGlassEntry };
+  }
   if (moduleName === '@eds/mobile-components') {
     return { type: 'sourceFile', filePath: componentsSrcEntry };
   }

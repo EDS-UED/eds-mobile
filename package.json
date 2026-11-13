@@ -8,6 +8,7 @@
     "dev:showcase": "node scripts/dev-showcase.mjs",
     "dev:showcase:expo-only": "pnpm --filter @eds/mobile-showcase dev",
     "watch:tokens": "node scripts/watch-tokens.mjs",
+    "watch:linked-consumers": "node scripts/watch-linked-consumers.mjs",
     "build": "pnpm build:mobile",
     "build:tokens": "pnpm --filter @eds/mobile-tokens build",
     "build:animations": "pnpm --filter @eds/mobile-animations build",

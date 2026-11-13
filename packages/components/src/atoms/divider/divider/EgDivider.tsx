@@ -5,11 +5,7 @@ import {
   EG_DIVIDER_DEFAULT_VERTICAL_LENGTH_PX,
   EG_DIVIDER_STROKE_THICKNESS_PX,
 } from './egDividerMetrics.js';
-import type { EgDividerProps, EgDividerVariant } from './EgDivider.types.js';
-
-function dividerColorToken(variant: EgDividerVariant): 'stroke-divider-module' | 'stroke-divider-page' {
-  return variant === 'module' ? 'stroke-divider-module' : 'stroke-divider-page';
-}
+import type { EgDividerProps } from './EgDivider.types.js';
 
 /** Token `stroke-xs` 可能低于 RN 物理最小线宽，layout 用 hairline 保底。 */
 function strokeXsLayoutThickness(): number {
@@ -33,7 +29,7 @@ export function EgDivider({
   }
 
   const thickness = strokeXsLayoutThickness();
-  const lineColor = getThemeColors(mode)[dividerColorToken(variant)] as string;
+  const lineColor = getThemeColors(mode)['stroke-divider-deep'] as string;
 
   const lineStyle: ViewStyle =
     orientation === 'horizontal'

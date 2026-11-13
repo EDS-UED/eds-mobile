@@ -1,12 +1,18 @@
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
 import type { RnDocConfig } from './rnDocRegistry.js';
+import {
+  buildMenuSectionsFromCustomize,
+  resolveMenuDefaultSelectedId,
+  stripMenuCustomizeMeta,
+} from './menuCustomizeModel.js';
+import { resolveTabSlideAiCustomizeState } from './tabCustomizeModel.js';
 
 const EDS_MOBILE_AI_RULES = [
   'Stack: React Native · Expo；样式用 StyleSheet + mobileTheme（@eds/mobile-tokens/theme），禁止 NativeWind/Tamagui。',
   '只使用 @eds/mobile-components（或 @eds-evergreen/mobile）的 Eg* 场景 export；禁止 @eds/desktop-* 与手拼 primitives 替代场景组件。',
   '非胶囊圆角用 theme.smoothRadius / edsSmoothRadius（borderCurve: continuous）；品牌与语义色走 token，禁止硬编码品牌 hex。',
-  '动效用 @eds/mobile-animations（resolveMotionRecipe）；无明确声明时不默认 Platform 双实现或 Skia 替 token 语义。',
+  '动效用 @eds/mobile-animations：Base → mobileTheme.motion · base-*；Recipe EdsRecipeAnima(\'press\')；Semantic EdsSemanticAnima(\'press\' | \'slide\' …)。USAGE 写 consumer 组件（EgEdsAnimaPress · EgMenu 等）。',
 ].join('\n');
 
 export type BuildRnAiPromptInput = {
@@ -19,6 +25,28 @@ export type BuildRnAiPromptInput = {
   customizeState: Record<string, unknown>;
   usageSnippet: string;
 };
+
+export function resolveRnAiCustomizeState(
+  doc: RnDocConfig | undefined,
+  customizeState: Record<string, unknown>,
+): Record<string, unknown> {
+  if (doc?.customizeLayout === 'menu-sections') {
+    const merged = { ...(doc.customizeDefaults ?? {}), ...customizeState };
+    const sections = buildMenuSectionsFromCustomize(merged);
+    return {
+      ...stripMenuCustomizeMeta(merged),
+      sections,
+      defaultSelectedId: resolveMenuDefaultSelectedId(merged, sections),
+    };
+  }
+  if (
+    doc &&
+    (doc.componentTag === 'EgTab' || doc.componentTag === 'EgSegmentedControl')
+  ) {
+    return resolveTabSlideAiCustomizeState(doc, customizeState);
+  }
+  return customizeState;
+}
 
 export function buildRnAiPrompt(input: BuildRnAiPromptInput): string {
   const {
@@ -42,9 +70,19 @@ export function buildRnAiPrompt(input: BuildRnAiPromptInput): string {
     `Showcase slug: ${slug}`,
   ].filter(Boolean);
 
-  const customizeLines = Object.entries(customizeState)
+  const customizeForPrompt = resolveRnAiCustomizeState(doc, customizeState);
+
+  const customizeLines = Object.entries(customizeForPrompt)
     .filter(([, value]) => value !== undefined && value !== '')
-    .map(([key, value]) => `- ${key}: ${JSON.stringify(value)}`);
+    .map(([key, value]) => {
+      let serialized: string;
+      try {
+        serialized = typeof value === 'string' ? value : JSON.stringify(value);
+      } catch {
+        serialized = String(value);
+      }
+      return `- ${key}: ${serialized}`;
+    });
 
   const propLines =
     doc?.propRows.map(

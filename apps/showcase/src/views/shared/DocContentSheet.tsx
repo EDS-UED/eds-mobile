@@ -50,7 +50,7 @@ function createDocContentSheetStyles(colors: ShowcaseColorMap) {
       paddingHorizontal: theme.layout.pageInset,
       paddingVertical: 12,
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: colors['stroke-divider-page'] as string,
+      borderBottomColor: colors['stroke-divider-shallow'] as string,
     },
     title: {
       fontSize: 16,

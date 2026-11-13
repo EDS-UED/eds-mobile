@@ -4,7 +4,7 @@ import { iconSizeForControl } from '../../../shared/controlMetrics.js';
 import { resolveColor } from '../../../shared/resolveColor.js';
 import { disabledOpacity, iconContainerLabelScale } from '../../../shared/themeScalars.js';
 import { EgSpinner } from '../../../shared/EgSpinner.js';
-import { MotionPressable } from '../../../shared/MotionPressable.js';
+import { EgEdsAnimaPress } from '../../../shared/motion/EgEdsAnimaPress.js';
 import { edsFontStyle } from '../../../shared/fontFamily.js';
 import { StyleSheet, Text, type ViewStyle } from 'react-native';
 
@@ -36,7 +36,7 @@ export function EgIconContainerButton({
   const isDisabled = disabled || loading;
 
   return (
-    <MotionPressable
+    <EgEdsAnimaPress
       testID={testID ?? 'button-icon-container'}
       accessibilityLabel={accessibilityLabel}
       disabled={isDisabled}
@@ -71,7 +71,7 @@ export function EgIconContainerButton({
             borderRadius: mobileTheme.spacing['radius-full'] as number,
             backgroundColor: bg,
             borderColor,
-            borderWidth: figmaType === 'secondary' ? (mobileTheme.spacing['stroke-sm'] as number) : 0,
+            borderWidth: figmaType === 'secondary' ? (mobileTheme.spacing['stroke-md'] as number) : 0,
             opacity: isDisabled ? disabledOpacity() : 1,
           },
           style,
@@ -94,7 +94,7 @@ export function EgIconContainerButton({
           {label}
         </Text>
       )}
-    </MotionPressable>
+    </EgEdsAnimaPress>
   );
 }
 

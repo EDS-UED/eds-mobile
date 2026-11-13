@@ -1,8 +1,4 @@
-import { useCallback } from 'react';
 import { Pressable, StyleSheet, Text, View, type TextStyle } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { resolveMotionRecipe } from '@eds/mobile-animations';
-import mobileTheme from '@eds/mobile-tokens/theme';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 
@@ -14,11 +10,9 @@ type ShowcaseCardRowProps = {
   onPress?: () => void;
   disabled?: boolean;
   monoTitle?: boolean;
+  /** 无浅底块 — 族页「构成」等仅文本可点行。 */
+  variant?: 'card' | 'plain';
 };
-
-const pressMotion = resolveMotionRecipe('press');
-const pressScale = mobileTheme.motion.scale['scale-press'] as number;
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export function ShowcaseCardRow({
   title,
@@ -26,48 +20,25 @@ export function ShowcaseCardRow({
   onPress,
   disabled = false,
   monoTitle = false,
+  variant = 'card',
 }: ShowcaseCardRowProps) {
   const colors = useShowcaseColors();
-  const scale = useSharedValue(1);
-  const inactiveOpacity = mobileTheme.motion.opacity['opacity-disabled'] as number;
-
-  const animatedStyle = useAnimatedStyle(
-    () => ({
-      transform: [{ scale: scale.value }],
-    }),
-    [scale],
-  );
-
-  const handlePressIn = useCallback(() => {
-    if (disabled) {
-      return;
-    }
-    scale.value = withSpring(pressScale, pressMotion.springConfig);
-  }, [disabled, scale]);
-
-  const handlePressOut = useCallback(() => {
-    if (disabled) {
-      return;
-    }
-    scale.value = withSpring(1, pressMotion.springConfig);
-  }, [disabled, scale]);
+  const inactiveOpacity = 0.5;
 
   const titleStyle: TextStyle = monoTitle
     ? { ...styles.title, ...styles.monoTitle }
     : styles.title;
+  const isPlain = variant === 'plain';
 
   return (
-    <AnimatedPressable
+    <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={disabled ? undefined : onPress}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
       style={[
-        styles.card,
-        animatedStyle,
-        showcaseShallowBlockSurface(colors['material-card-shallow'] as string),
+        isPlain ? styles.plainRow : styles.card,
+        !isPlain ? showcaseShallowBlockSurface(colors['material-card-shallow'] as string) : undefined,
         { opacity: disabled ? inactiveOpacity : 1 },
       ]}
     >
@@ -77,7 +48,7 @@ export function ShowcaseCardRow({
           <Text style={[styles.hint, { color: colors['text-base-secondary'] as string }]}>{hint}</Text>
         ) : null}
       </View>
-    </AnimatedPressable>
+    </Pressable>
   );
 }
 
@@ -87,6 +58,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: theme.layout.cardPaddingHorizontal,
     paddingVertical: theme.layout.cardPaddingVertical,
+  },
+  plainRow: {
+    justifyContent: 'center',
+    paddingVertical: theme.layout.titleHintGap,
   },
   copy: {
     gap: theme.layout.titleHintGap,

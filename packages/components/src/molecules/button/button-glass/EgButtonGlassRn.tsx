@@ -4,21 +4,10 @@ import { GlassInteraction } from '../../../atoms/glass/GlassInteraction.js';
 import { EgButtonGlassContent } from './_shared/EgButtonGlassContent.js';
 import { resolveEgButtonGlassShellStyle } from './_shared/resolveEgButtonGlassShellStyle.js';
 import { resolveEgButtonGlassSlots } from './_shared/resolveEgButtonGlassSlots.js';
-import type { MotionPressIntensity } from '../../../shared/themeScalars.js';
-import type { EgButtonGlassIconCount, EgButtonGlassKind, EgButtonGlassProps } from './EgButtonGlass.types.js';
+import type { EgButtonGlassProps } from './EgButtonGlass.types.js';
+import { resolveEgButtonGlassPressIntensity } from './_shared/resolveEgButtonGlassPressIntensity.js';
 
-/** RN 点按缩放 — 文本 md · 单 icon lg · 双 icon md。 */
-function resolveEgButtonGlassPressIntensity(
-  kind: EgButtonGlassKind,
-  iconCount: EgButtonGlassIconCount,
-): MotionPressIntensity {
-  if (kind === 'text') {
-    return 'md';
-  }
-  return iconCount === 2 ? 'md' : 'lg';
-}
-
-/** Android / iOS ≤25 — RN 栈，`EgGlass` + `glass-button-box`。 */
+/** Android / iOS ≤25 — RN 栈 · `EgGlass` + `glass-button-box`（模糊 · 竖向高光 · vulvar 内/外阴影 · iOS 27 液态玻璃近似）。 */
 export function EgButtonGlassRn(props: EgButtonGlassProps & Pick<ViewProps, 'style'>) {
   const {
     kind,

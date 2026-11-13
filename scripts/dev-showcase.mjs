@@ -9,15 +9,19 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 console.log('[dev-showcase] ensuring packages/dist…');
-const ensure = spawnSync(
-  'node',
-  ['scripts/ensure-built.mjs', '@eds/mobile-tokens', '@eds/mobile-components'],
-  { cwd: repoRoot, stdio: 'inherit' },
-);
+// Metro 直链 components/animations 源码；dev 只需 tokens dist（theme · fonts · motion catalog）。
+const ensure = spawnSync('node', ['scripts/ensure-built.mjs', '@eds/mobile-tokens'], {
+  cwd: repoRoot,
+  stdio: 'inherit',
+});
 if (ensure.status !== 0) process.exit(ensure.status ?? 1);
 
-console.log('[dev-showcase] syncing token CSS manifest for showcase…');
-const manifest = spawnSync('node', ['apps/showcase/scripts/extract-dist-css-manifest.mjs'], {
+const manifestArgs = ['apps/showcase/scripts/extract-dist-css-manifest.mjs'];
+if (process.env.EDS_FORCE_CSS_MANIFEST === '1') {
+  manifestArgs.push('--force');
+}
+console.log('[dev-showcase] dist CSS manifest (skip if up to date)…');
+const manifest = spawnSync('node', manifestArgs, {
   cwd: repoRoot,
   stdio: 'inherit',
 });
@@ -71,9 +75,10 @@ function shutdown(code = 0) {
 process.on('SIGINT', () => shutdown(0));
 process.on('SIGTERM', () => shutdown(0));
 
-start('watch-tokens', 'node', ['scripts/watch-tokens.mjs']);
-start('watch-showcase-nav', 'node', ['scripts/watch-showcase-nav.mjs']);
+// Metro 先起，避免与 token watch 首帧 rebuild 抢 CPU。
 start('expo', 'pnpm', ['--filter', '@eds/mobile-showcase', 'exec', 'expo', 'start', '--port', '8080'], repoRoot);
+start('watch-showcase-nav', 'node', ['scripts/watch-showcase-nav.mjs']);
+start('watch-tokens', 'node', ['scripts/watch-tokens.mjs']);
 
 console.log('[dev-showcase] live on save:');
 console.log('  · showcase src / components / animations → Fast Refresh');

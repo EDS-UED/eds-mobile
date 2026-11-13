@@ -15,7 +15,7 @@ function verifyManifestCoverage() {
     }
   }
 
-  for (const className of ['motion-tap', 'glass-button-box', 'typography-display']) {
+  for (const className of ['motion-press', 'glass-button-box', 'glass-sheets-box', 'typography-display']) {
     const bucket = className.startsWith('motion')
       ? manifest.classes.motion
       : className.startsWith('glass-')

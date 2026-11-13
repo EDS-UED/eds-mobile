@@ -10,7 +10,7 @@ export function MotionDemoView() {
   return (
     <>
       <MotionDemo mode={mode} />
-      <Stack.Title>动效演示</Stack.Title>
+      <Stack.Title>Motion 演示</Stack.Title>
     </>
   );
 }

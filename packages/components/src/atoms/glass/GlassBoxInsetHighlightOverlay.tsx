@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View, type ViewStyle } from 'react-native';
 
 import { getNativeLinearGradient } from './nativeLinearGradient.js';
 import { formatRgba, parseHexColor } from './glassBoxColorUtils.js';
@@ -16,7 +16,8 @@ function androidApiLevel(): number {
 
 type GlassBoxInsetHighlightOverlayProps = {
   shadows: GlassBoxShadowLayer[];
-  borderRadius: number;
+  /** 与宿主 clip 同一圆角样式（含 `borderCurve`），见 `glassBoxCornerStyle`。 */
+  cornerStyle: ViewStyle;
 };
 
 /**
@@ -25,7 +26,7 @@ type GlassBoxInsetHighlightOverlayProps = {
  */
 export function GlassBoxInsetHighlightOverlay({
   shadows,
-  borderRadius,
+  cornerStyle,
 }: GlassBoxInsetHighlightOverlayProps) {
   const insetStyle = rnGlassBoxInsetShadowClipStyle(shadows);
   const insetLayer = shadows.find((layer) => layer.inset);
@@ -52,7 +53,7 @@ export function GlassBoxInsetHighlightOverlay({
         locations={[0, 0.45]}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
-        style={[styles.overlay, { borderRadius }]}
+        style={[styles.overlay, cornerStyle]}
       />
     );
   }
@@ -60,7 +61,7 @@ export function GlassBoxInsetHighlightOverlay({
   return (
     <View
       pointerEvents="none"
-      style={[styles.overlay, { borderRadius }, insetStyle]}
+      style={[styles.overlay, cornerStyle, insetStyle]}
     />
   );
 }

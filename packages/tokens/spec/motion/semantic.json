@@ -1,20 +1,21 @@
 {
   "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
-  "$description": "EDS Mobile Motion Semantic — 封装好的场景 class（沿用现有命名，非文档 8 场景）。只引用 Recipe，不存底层参数。",
+  "$description": "EDS Mobile Motion Semantic — press / slide / layout-content（同壳正文 crossfade）/ menu（浮层倒出）/ sheets（Sheet）。",
   "groups": [
     {
-      "comment": "1 · Tap（点按 · event-tap*）",
+      "comment": "Press（点按 · EgEdsAnimaPress）",
       "styles": [
         {
           "title": "点按反馈 · Button / List Item / Icon",
-          "className": "motion-tap",
+          "className": "motion-press",
+          "scenarioId": "press",
           "recipe": "press",
           "properties": {
-            "transition": "var(--motion-recipe-tap)"
+            "transition": "var(--motion-recipe-press)"
           },
           "stateStyles": [
             {
-              "hostClass": "motion-tap.is-active",
+              "hostClass": "motion-press.is-active",
               "title": "按下态",
               "properties": {
                 "transform": "scale(var(--motion-scale-press))"
@@ -23,160 +24,225 @@
           ],
           "notes": [
             "Semantic → Recipe(press) → Base(spring.press · haptic.light)",
-            "松手回弹 → Recipe(press-scale-out) · spring.press-release · sm/md/lg/xl 共用"
+            "松手回弹 → Recipe(press-scale-out) · spring.press-release"
           ]
         }
       ]
     },
     {
-      "comment": "1.5 · Focus（Input / Search 边框 · 无 hover）",
+      "comment": "Slide（Tab / Menu 滑选）",
       "styles": [
         {
-          "title": "聚焦态 · Input / Search",
-          "className": "motion-focus",
-          "recipe": "enter",
-          "properties": {
-            "transition": "var(--motion-recipe-enter)"
-          },
-          "notes": ["Semantic → Recipe(enter) → Base(timing.easeIn)"]
-        }
-      ]
-    },
-    {
-      "comment": "2 · Layout（大位移 · Drawer / Panel）",
-      "styles": [
-        {
-          "title": "大位移进出场",
-          "className": "motion-layout",
-          "recipe": "enter",
-          "activeModifier": "is-active",
-          "properties": {
-            "transition": "var(--motion-recipe-enter)",
-            "opacity": "var(--motion-opacity-hidden)",
-            "transform": "translateY(var(--motion-distance-sm))"
-          },
-          "activeState": {
-            "opacity": "var(--motion-opacity-visible)",
-            "transform": "translateY(0)"
-          },
-          "parentActiveSelectors": [".is-active"],
-          "selfActiveSelectors": []
-        }
-      ]
-    },
-    {
-      "comment": "3 · Flotation（Sheet / Modal / Toast / Popover）",
-      "styles": [
-        {
-          "title": "浮层进出场",
-          "className": "motion-flotation",
-          "recipe": "sheet",
-          "activeModifier": "is-active",
-          "properties": {
-            "transition": "var(--motion-recipe-flotation-enter)",
-            "opacity": "var(--motion-opacity-hidden)",
-            "transform": "translateY(var(--motion-offset-flotation-y)) scale(var(--motion-scale-present))"
-          },
-          "activeState": {
-            "opacity": "var(--motion-opacity-visible)",
-            "transform": "translateY(0) scale(1)"
-          },
-          "parentActiveSelectors": [".is-active"],
-          "selfActiveSelectors": []
-        }
-      ]
-    },
-    {
-      "comment": "4 · Deform（Tab 指示器 / Toggle / Segmented）",
-      "styles": [
-        {
-          "title": "控件形变",
-          "className": "motion-deform",
-          "recipe": "control",
+          "title": "滑选切换 · Tab / Menu",
+          "className": "motion-slide",
+          "scenarioId": "slide",
+          "recipe": "slide",
           "properties": {
             "transition": "var(--motion-recipe-control)"
           },
-          "notes": ["Semantic → Recipe(control) → Base(spring.control)"]
+          "notes": [
+            "Semantic → Recipe(slide) → Base(spring.control)",
+            "跟手 · Recipe(drag) · spring.drag",
+            "RN 指示器落位 · EdsSemanticAnima('slide') + spring.slide-commit（Base · spring-*-damping/stiffness）"
+          ]
         }
       ]
     },
     {
-      "comment": "5 · Page（Stack Push / Pop）",
+      "comment": "Layout Content（同壳内容切换 · crossfade · Layout Deform 内容层）",
       "styles": [
         {
-          "title": "页面转场",
-          "className": "motion-page",
-          "recipe": "navigation",
+          "title": "内容切换 · Detail Tab / EgTab 正文",
+          "className": "motion-layout-content",
+          "scenarioId": "layout-content",
+          "recipe": "layout-content",
           "properties": {
-            "transition": "var(--motion-recipe-page-push)"
-          },
-          "notes": ["Semantic → Recipe(navigation) → Base(spring.navigation · timing.navigationPush)"]
-        }
-      ]
-    },
-    {
-      "comment": "6 · Layout Deform（容器 morph）",
-      "styles": [
-        {
-          "title": "容器尺寸 morph",
-          "className": "motion-layout-deform",
-          "recipe": "layout-deform",
-          "properties": {
-            "overflow": "hidden",
-            "transition": "var(--motion-recipe-layout-deform-shell)"
-          }
-        }
-      ]
-    },
-    {
-      "comment": "7 · Glass（Liquid Glass 交互）",
-      "styles": [
-        {
-          "title": "Glass 普通交互 · Button / Tab / Icon Button",
-          "className": "motion-glass-interactive",
-          "recipe": "glass-press",
-          "properties": {
-            "transition": "var(--motion-recipe-glass-press)"
+            "transition": "var(--motion-recipe-layout-deform-content)",
+            "opacity": "var(--motion-opacity-visible)",
+            "transform": "translateY(0)"
           },
           "stateStyles": [
             {
-              "hostClass": "motion-glass-interactive.is-active",
-              "title": "Glass 按下态",
+              "hostClass": "motion-layout-content.is-exiting",
+              "title": "退出 · 旧 Tab 正文",
               "properties": {
-                "transform": "scale(var(--motion-glass-scale-press))"
+                "opacity": "var(--motion-opacity-hidden)",
+                "transform": "translateY(var(--motion-offset-layout-deform-y))"
+              }
+            },
+            {
+              "hostClass": "motion-layout-content.is-entering",
+              "title": "进入首帧 snap",
+              "properties": {
+                "transition": "none",
+                "opacity": "var(--motion-opacity-hidden)",
+                "transform": "translateY(var(--motion-offset-layout-deform-y))"
               }
             }
           ],
           "notes": [
-            "Semantic → Recipe(glass-press) → Base(motion-glass-scale-press)",
-            "松手回弹 → press-scale-out · sm/md/lg/xl 共用"
+            "EdsSemanticAnima('layout-content') · mid-swap 120ms",
+            "RN · EgEdsAnimaLayoutContent + useMotionLayoutContentSwitch"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "comment": "Menu（iOS 27 浮层倒出 · Menu / Popover / 浮动 Sheet）",
+      "styles": [
         {
-          "title": "Glass 光泽反馈 · Shimmer",
-          "className": "motion-glass-shimmer",
-          "recipe": "glass-shimmer",
+          "title": "浮层倒出 · 容器自触发点缩放展开 + 回弹",
+          "className": "motion-menu",
+          "scenarioId": "menu",
+          "recipe": "menu",
           "properties": {
-            "transition": "var(--motion-recipe-glass-shimmer)"
-          }
-        },
-        {
-          "title": "Glass 容器 Morph",
-          "className": "motion-glass-morph",
-          "recipe": "glass-morph",
-          "properties": {
-            "overflow": "hidden",
-            "transition": "var(--motion-recipe-glass-morph)"
-          }
-        },
-        {
-          "title": "Glass 无动效 · Reduce Motion",
-          "className": "motion-glass-none",
-          "properties": {
-            "transition": "none",
-            "animation": "none"
+            "transition": "var(--motion-recipe-menu)",
+            "transform": "scale(1)",
+            "opacity": "var(--motion-opacity-visible)"
           },
-          "notes": ["显式关闭 Glass 动画"]
+          "stateStyles": [
+            {
+              "hostClass": "motion-menu.is-collapsed",
+              "title": "收起 · 缩回触发点（transform-origin 由 consumer 指向触发器）",
+              "properties": {
+                "transform": "scale(var(--motion-scale-menu-origin))",
+                "opacity": "var(--motion-opacity-hidden)"
+              }
+            }
+          ],
+          "notes": [
+            "Semantic → Recipe(menu) → Base(spring.menu-in · scale-menu-origin · scale-menu-trigger-lift · haptic.light)",
+            "收回 → Recipe(menu-dismiss) · spring.menu-out",
+            "RN · 同一 progress：触发器鼓起后隐去（化为水滴）→ 容器 scaleY 领先 scaleX（竖长水滴 · p + 1.5·p·(1−p)²，p = 1 处 C¹ 连续）· 外壳圆角 全圆 → 面板 radius · 不位移，spring 过冲带出 scale 回弹 · 内容后半程显出；收回为缩放收起：朝触发器等比缩小、不位移 · 圆角回全圆 · 内容随壳缩小中段隐去 · 外壳保持实体至 p≈0.3，再与鼓起的触发器交叉融合",
+            "RN · EgMenu（RN 栈）浮层 · menuContainerStyle",
+            "RN 性能约定 · 逐帧只动 transform / opacity 与无阴影外壳 radius；阴影放固定圆角独立层、外形近到位才淡入；浮层首次布局后下一帧再起 spring；展开落定后重测命中区；分段窗口一律 smoothstep"
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "Sheets（iOS 27 Sheet · 悬浮卡片 ↔ 贴边全高）",
+      "styles": [
+        {
+          "title": "Sheet 呈现 · 悬浮档 → 全高贴边",
+          "className": "motion-sheets",
+          "scenarioId": "sheets",
+          "recipe": "sheets",
+          "properties": {
+            "transition": "var(--motion-recipe-sheets)",
+            "transform": "translateY(0)",
+            "left": "var(--motion-offset-sheets-inset)",
+            "right": "var(--motion-offset-sheets-inset)",
+            "bottom": "var(--motion-offset-sheets-inset)",
+            "border-radius": "var(--motion-radius-sheets-floating)"
+          },
+          "stateStyles": [
+            {
+              "hostClass": "motion-sheets.is-attached",
+              "title": "全高档 · 贴边",
+              "properties": {
+                "left": "0",
+                "right": "0",
+                "bottom": "0",
+                "border-radius": "var(--motion-radius-sheets-attached) var(--motion-radius-sheets-attached) 0 0"
+              }
+            },
+            {
+              "hostClass": "motion-sheets.is-dismissed",
+              "title": "收起 · 滑出屏幕底部",
+              "properties": {
+                "transform": "translateY(100%)"
+              }
+            }
+          ],
+          "notes": [
+            "Semantic → Recipe(sheets) → Base(spring.sheets-present · offset-sheets-inset · radius-sheets-*)",
+            "档位吸附 → Recipe(sheets-detent) · spring.sheets-detent（继承松手速度 · 中 ↔ 大明显回弹）· 下滑收起 → Recipe(sheets-dismiss)",
+            "RN · 可滚动档长按内容区 → 拖拽容器（滚动暂停至松手）",
+            "RN · 由 Sheet 高度连续推导：最高部分档 → 全高档之间 inset → 0、底角 → 0、顶角 floating → attached、遮罩 dim-floating → 1",
+            "RN · EgSheets（面板 box-flotation · 遮罩按档位 effect-sheets-background → material-base-tertiary · EgNavBar） · sheetsFrame"
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "Page（普通页面左右切换 · push / pop）",
+      "styles": [
+        {
+          "title": "普通页面左右切换 · 自右推入 / 右移返回（弹层内同用）",
+          "className": "motion-page",
+          "scenarioId": "page",
+          "recipe": "page",
+          "properties": {
+            "transition": "var(--motion-recipe-page)",
+            "transform": "translateX(0)"
+          },
+          "stateStyles": [
+            {
+              "hostClass": "motion-page.is-entering",
+              "title": "入场起点 / 离场终点 · 容器右侧外",
+              "properties": {
+                "transform": "translateX(100%)"
+              }
+            },
+            {
+              "hostClass": "motion-page.is-covered",
+              "title": "被新页覆盖 · 视差左移并压暗",
+              "properties": {
+                "transform": "translateX(calc(var(--motion-ratio-page-parallax) * -100%))",
+                "filter": "brightness(calc(1 - var(--motion-opacity-page-dim)))"
+              }
+            }
+          ],
+          "notes": [
+            "Semantic → Recipe(page) → Base(spring.page-push · ratio-page-parallax · opacity-page-dim)",
+            "返回 → Recipe(page-back) · spring.page-pop；新页 / 返回页与下层页共用同一进度（0 = 下层页在位，1 = 新页在位）",
+            "入场离场均轻过冲回弹：spring 过冲时页面左右各外扩背景（bleed），不露底",
+            "页面内可嵌套 motion-page-shot（弹层页面 / 卡片），嵌套不改变任一方动效",
+            "业务默认：createEgEdsAnimaPageNavigator() + screenOptions = EgEdsAnimaPage({ direction, dragDismiss })（@eds/mobile-components）；iOS 26+ 系统 native-stack（系统 NavBar · 转场），Android · iOS ≤25 本 spring",
+            "RN · 左缘侧滑返回跟手，松手按速度投影决定返回 / 复位并继承速度 · pageMotion.pageTransitionFrame"
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "Page Shot（弹层页面 / 卡片 → 整页 · App Store Today）",
+      "styles": [
+        {
+          "title": "弹层页面 / 卡片展开整页 · 关闭 / 下拉飞回源 frame",
+          "className": "motion-page-shot",
+          "scenarioId": "page-shot",
+          "recipe": "page-shot",
+          "properties": {
+            "transition": "var(--motion-recipe-page-shot)",
+            "transform": "none",
+            "border-radius": "0"
+          },
+          "stateStyles": [
+            {
+              "hostClass": "motion-page-shot.is-collapsed",
+              "title": "收起 · 回到触发元素 frame（几何 top / left / width / height 与其圆角）",
+              "properties": {
+                "border-radius": "var(--motion-radius-page-shot)"
+              }
+            },
+            {
+              "hostClass": "motion-page-shot.is-dragging",
+              "title": "下拉跟手 · 缩小并加圆角",
+              "properties": {
+                "transform": "scale(var(--motion-scale-page-shot-dismiss))",
+                "border-radius": "var(--motion-radius-page-shot)"
+              }
+            }
+          ],
+          "notes": [
+            "Semantic → Recipe(page-shot) → Base(spring.page-shot-open · opacity-page-shot-dim · scale-page-shot-dismiss · radius-page-shot)",
+            "两类页面切换：普通左右切换 → motion-page；弹层页面、卡片 → motion-page-shot（触发元素不同，动效一致；与 motion-page 可互相嵌套，收起时弹层内整个栈随整页飞回）",
+            "点按触发源 → Recipe(press) 下沉；松手展开：frame 源 → 整页、圆角 → 0、背后压暗 0 → opacity-page-shot-dim，正文于展开后段淡入",
+            "关闭 / 下拉 / 根页左缘侧滑松手 → Recipe(page-shot-dismiss) · spring.page-shot-close 飞回触发元素 · 先快后慢（起步 ratio-page-shot-close-launch，跟手更快取跟手速度）；未过阈值弹回整页",
+            "RN · 页面内容按整页宽排版、随 frame 等比缩放并顶部对齐裁切（卡片即整页顶部）· pageShotMotion.pageShotFrame",
+            "业务入口：EgEdsAnimaPageShot（renderRoot / renderPage）+ EgEdsAnimaPageShotTrigger（@eds/mobile-components）"
+          ]
         }
       ]
     }
@@ -186,143 +252,51 @@
       "title": "无过渡",
       "className": "motion-none",
       "standaloneTransition": "none",
-      "notes": ["Reduce Motion 降级 · Semantic → instant"]
+      "notes": ["Reduce Motion · press 降级"]
     },
     {
       "title": "Reduce Motion 降级 · 仅 fade",
       "className": "motion-reduced-fade",
       "standaloneTransition": "opacity var(--motion-duration-fade) var(--motion-easing-standard)",
-      "notes": ["Slide/Translate → Fade · motion.accessibility.reducedMotion"]
+      "notes": ["slide 等位移 → fade"]
     }
   ],
   "reducedMotionScenarioClasses": [
-    "motion-tap",
-    "motion-tap.is-active",
-    "motion-focus",
-    "motion-layout",
-    "motion-flotation",
-    "motion-deform",
+    "motion-press",
+    "motion-press.is-active",
+    "motion-slide",
+    "motion-layout-content",
+    "motion-layout-content.is-exiting",
+    "motion-layout-content.is-entering",
+    "motion-menu",
+    "motion-menu.is-collapsed",
+    "motion-sheets",
+    "motion-sheets.is-attached",
+    "motion-sheets.is-dismissed",
     "motion-page",
-    "motion-layout-deform",
-    "motion-glass-interactive",
-    "motion-glass-interactive.is-active",
-    "motion-glass-shimmer",
-    "motion-glass-morph"
+    "motion-page.is-entering",
+    "motion-page.is-covered",
+    "motion-page-shot",
+    "motion-page-shot.is-collapsed",
+    "motion-page-shot.is-dragging"
   ],
   "reducedMotion": {
     "mediaQuery": "prefers-reduced-motion: reduce",
     "durationToken": "var(--motion-0)",
     "simplifications": [
-      { "from": "motion-layout", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
-      { "from": "motion-flotation", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
+      { "from": "motion-press", "toStrategy": "instant", "utilityClass": "motion-none" },
+      { "from": "motion-slide", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
+      { "from": "motion-layout-content", "toStrategy": "instant", "utilityClass": "motion-none" },
+      { "from": "motion-menu", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
+      { "from": "motion-sheets", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-page", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
-      { "from": "motion-layout-deform", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
-      { "from": "motion-tap", "toStrategy": "instant", "utilityClass": "motion-none" },
-      { "from": "motion-glass-interactive", "toStrategy": "instant", "utilityClass": "motion-glass-none" },
-      { "from": "motion-glass-shimmer", "toStrategy": "instant", "utilityClass": "motion-glass-none" },
-      { "from": "motion-glass-morph", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" }
+      { "from": "motion-page-shot", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" }
     ],
-    "rules": [
-      "Slide → Fade",
-      "Shared Element → Cross Fade",
-      "Large Title collapse → Opacity only",
-      "禁止 animation: none 一刀切；使用 motion-reduced-fade / motion-none"
-    ],
+    "rules": ["Press → instant", "Slide → fade", "Layout Content → instant / 无位移", "Menu → fade（无缩放 / 位移）", "Sheets → fade（呈现 / 收起不滑动；拖拽档位仍可用）", "Page → fade（无位移 / 视差）", "Page Shot → fade（整页原地淡入淡出，不自源 frame 展开）"],
     "hapticReduced": {
       "enabled": false,
-      "notes": ["Reduce Motion 开启时可选择弱化 haptic；由 consumer AccessibilityInfo 决定"]
+      "notes": ["由 consumer AccessibilityInfo 决定"]
     }
   },
-  "compositions": [
-    {
-      "id": "ios-navigation",
-      "label": "iOS Navigation",
-      "semanticClass": "motion-page",
-      "push": { "recipe": "navigation" },
-      "pop": { "recipe": "navigation" },
-      "interactivePop": { "recipe": "interactive" }
-    },
-    {
-      "id": "ios-sheet",
-      "label": "iOS Sheet",
-      "semanticClass": "motion-flotation",
-      "presentation": { "recipe": "sheet" },
-      "interaction": { "recipe": "interactive" },
-      "dismiss": { "recipe": "dismiss" },
-      "snapPoints": [0.25, 0.5, 0.75, 1],
-      "haptic": { "snap": "selection" }
-    },
-    {
-      "id": "ios-modal",
-      "label": "iOS Modal",
-      "semanticClass": "motion-flotation",
-      "presentation": { "recipe": "modal" },
-      "content": { "recipe": "modal", "scaleFrom": "motion-scale-present", "opacityFrom": "motion-opacity-hidden" },
-      "backdrop": { "opacity": "motion-opacity-dim" },
-      "dismiss": { "recipe": "exit", "springRef": "default" }
-    },
-    {
-      "id": "ios-popover",
-      "label": "iOS Popover",
-      "semanticClass": "motion-flotation",
-      "presentation": { "recipe": "modal" },
-      "scale": { "from": "motion-scale-present", "to": "1" },
-      "opacity": { "from": "motion-opacity-hidden", "to": "motion-opacity-visible" }
-    },
-    {
-      "id": "ios-large-title",
-      "label": "iOS Large Title",
-      "type": "scroll-linked",
-      "scrollRange": { "start": 0, "end": 44 },
-      "scale": { "from": 1, "to": 0.82 },
-      "opacity": { "from": 1, "to": 0 },
-      "navigationBar": { "opacityFrom": 0, "opacityTo": 1 }
-    },
-    {
-      "id": "shared-element",
-      "label": "Shared Element",
-      "recipe": "layout-deform",
-      "timingRef": "easeInOut",
-      "notes": ["Asset Card → Detail · 非普通 page transition"]
-    },
-    {
-      "id": "list-insert",
-      "label": "List Insert",
-      "recipe": "enter",
-      "springRef": "default"
-    },
-    {
-      "id": "list-delete",
-      "label": "List Delete",
-      "recipe": "interactive"
-    },
-    {
-      "id": "transaction",
-      "label": "Crypto Transaction",
-      "states": ["pending", "confirming", "confirmed"],
-      "recipe": "layout-deform",
-      "success": { "recipe": "success" }
-    },
-    {
-      "id": "swap",
-      "label": "Crypto Swap",
-      "recipe": "enter",
-      "timingRef": "easeInOut",
-      "notes": ["Token A ↔ Token B · Quote morph"]
-    },
-    {
-      "id": "security-signing",
-      "label": "Security Signing",
-      "presentation": { "recipe": "sheet" },
-      "success": { "recipe": "success" },
-      "error": { "recipe": "error" }
-    },
-    {
-      "id": "wallet-connect",
-      "label": "Wallet Connect",
-      "states": ["idle", "connecting", "connected"],
-      "recipe": "enter",
-      "haptic": { "connected": "success" }
-    }
-  ]
+  "compositions": []
 }

@@ -8,12 +8,14 @@ export {
   mobileMotionRecipes,
   mobileMotionCompositions,
   mobileMotionSemanticMap,
+  mobileMotionScenarioById,
 } from './generated/mobileMotion.generated.js';
 
 export {
   resolveMotionSpring,
   resolveMotionTiming,
-  resolveMotionRecipe,
+  EdsRecipeAnima,
+  EdsSemanticAnima,
   resolveMotionComposition,
 } from './resolve.js';
 export type {
@@ -21,31 +23,22 @@ export type {
   MotionTimingName,
   MotionHapticName,
   MotionRecipeId,
+  EdsRecipeAnimaId,
+  EdsSemanticScenarioId,
+  MotionSemanticClassName,
   MotionCompositionId,
 } from './resolve.js';
 
 import {
   mobileMotionSprings,
-  mobileMotionTimings,
 } from './generated/mobileMotion.generated.js';
 
-/** Back-compat named spring exports */
-export const iosSpringInteractive = mobileMotionSprings.interactive;
+/** Back-compat named spring exports（与 spec springs 同步） */
 export const iosSpringPress = mobileMotionSprings.press;
+export const iosSpringPressRelease = mobileMotionSprings['press-release'];
 export const iosSpringControl = mobileMotionSprings.control;
-export const iosSpringNavigation = mobileMotionSprings.navigation;
-export const iosSpringModal = mobileMotionSprings.modal;
-export const iosSpringSheet = mobileMotionSprings.sheet;
+export const iosSpringSlideCommit = mobileMotionSprings['slide-commit'];
 export const iosSpringDrag = mobileMotionSprings.drag;
-export const iosSpringBouncy = mobileMotionSprings.bouncy;
-export const iosSpringDefault = mobileMotionSprings.default;
-export const iosSpringGentle = mobileMotionSprings.gentle;
 export const iosSpringSnappy = mobileMotionSprings.snappy;
-
-/** Back-compat named timing exports */
-export const iosTimingNavigationPush = mobileMotionTimings.navigationPush;
-export const iosTimingEaseInOut = mobileMotionTimings.easeInOut;
-export const iosTimingEaseOut = mobileMotionTimings.easeOut;
-export const iosTimingEaseIn = mobileMotionTimings.easeIn;
 
 export { mobileMotion as default } from './generated/mobileMotion.generated.js';

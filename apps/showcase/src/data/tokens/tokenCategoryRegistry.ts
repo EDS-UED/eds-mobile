@@ -8,7 +8,7 @@ import {
   getMotionTokenByName,
 } from './motionTokenCatalog';
 import { getScaleBaseEntries, getScaleSemanticGroups, getScaleTokenByName } from './scaleTokenCatalog';
-import { SCALE_BASE_SHOWCASE } from './showcaseTokenGroupComments';
+import { MOTION_SHOWCASE_SECTION_TITLES, SCALE_BASE_SHOWCASE } from './showcaseTokenGroupComments';
 import type { TokenEntry } from './tokenCatalogTypes';
 import { getTypographyTokenByName } from './typographyTokenCatalog';
 
@@ -83,14 +83,14 @@ export const tokenCategoryRegistry: TokenCategoryConfig[] = [
   },
   {
     id: 'motion',
-    label: 'Motion',
-    lead: 'Base & Recipe & Semantic',
+    label: 'Animas',
+    lead: 'Base · Recipe · Semantic',
     specPath: 'packages/tokens/spec/motion',
     routeId: 'motion',
     getSections: () => [
-      { title: 'Base', variant: 'rows', groups: getMotionBaseGroups() },
-      { title: 'Recipe', variant: 'rows', groups: getMotionRecipeGroups() },
-      { title: 'Semantic', variant: 'rows', groups: getMotionSemanticGroups() },
+      { title: MOTION_SHOWCASE_SECTION_TITLES.base, variant: 'rows', groups: getMotionBaseGroups() },
+      { title: MOTION_SHOWCASE_SECTION_TITLES.recipe, variant: 'rows', groups: getMotionRecipeGroups() },
+      { title: MOTION_SHOWCASE_SECTION_TITLES.semantic, variant: 'rows', groups: getMotionSemanticGroups() },
     ],
     resolveToken: getMotionTokenByName,
   },

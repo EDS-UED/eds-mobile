@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Pressable, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { resolveMotionRecipe } from '@eds/mobile-animations';
+import { EdsRecipeAnima } from '@eds/mobile-animations';
 import type { EgCommonProps, ToggleSize } from '../../../shared/types.js';
 import type { ThemeMode } from '../../../theme/index.js';
 import { switchThumbStyle, switchTrackStyle } from '../_shared/toggleStyles.js';
@@ -16,7 +16,7 @@ export type EgSwitchProps = EgCommonProps & {
   mode?: ThemeMode;
 };
 
-const controlMotion = resolveMotionRecipe('control');
+const controlMotion = EdsRecipeAnima('slide');
 
 export function EgSwitch({
   size = 'md',

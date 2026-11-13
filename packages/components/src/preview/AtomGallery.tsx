@@ -106,7 +106,7 @@ export function AtomGallery({
                   {
                     minWidth: cellMinWidth,
                     backgroundColor: colors['material-card-shallow'] as string,
-                    borderColor: colors['stroke-divider-page'] as string,
+                    borderColor: colors['stroke-divider-shallow'] as string,
                   },
                 ]}
               >
@@ -150,7 +150,7 @@ export function AtomGallery({
                 {
                   minWidth: cellMinWidth,
                   backgroundColor: colors['material-card-shallow'] as string,
-                  borderColor: colors['stroke-divider-page'] as string,
+                  borderColor: colors['stroke-divider-shallow'] as string,
                 },
               ]}
             >
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexBasis: ATOM_GALLERY_CELL_BASIS,
     maxWidth: ATOM_GALLERY_CELL_MAX,
-    borderWidth: spacing['stroke-sm'] as number,
+    borderWidth: spacing['stroke-md'] as number,
     borderRadius: spacing['radius-md'] as number,
     paddingVertical: spacing['spacing-8'] as number,
     paddingHorizontal: spacing['spacing-4'] as number,

@@ -18,4 +18,15 @@ export function getThemeSpacing() {
   return mobileTheme.spacing;
 }
 
+export function getThemeColorBaseP3(mode: ThemeMode) {
+  return mobileTheme.colorBaseP3[mode];
+}
+
+export {
+  edsBrandColorValue,
+  edsColorFromDisplayP3,
+  type EdsDisplayP3ColorObject,
+  type EdsDisplayP3Components,
+} from '../shared/edsColorValue.js';
+
 export { mobileTheme };

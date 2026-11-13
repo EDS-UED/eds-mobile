@@ -41,7 +41,7 @@ export function writeMotionCatalogJson(specDir, distDir) {
 
   const catalog = {
     architecture: 'Base → Recipe → Semantic',
-    note: 'Semantic 沿用现有 class（motion-tap 等），不采用文档 8 场景分组。',
+    note: 'Semantic class = motion-{scenarioId}，与 EdsSemanticAnima 同名。',
     resolution: buildResolutionChain(baseSpec, recipeSpec, semanticSpec),
     css: {
       base: baseSpec,
@@ -109,6 +109,19 @@ export function generateMobileMotionRuntime(specDir, animationsSrcDir) {
     compositionMap[composition.id] = composition;
   }
 
+  /** RN `EdsSemanticAnima('<scenarioId>')` → `.motion-*` class（默认 class 去 `motion-` 前缀；可含空格）。 */
+  const scenarioById = {};
+  for (const group of semanticSpec.groups ?? []) {
+    for (const style of group.styles ?? []) {
+      const scenarioId =
+        style.scenarioId ??
+        String(style.className ?? '').replace(/^motion-/, '');
+      if (scenarioId && style.className) {
+        scenarioById[scenarioId] = style.className;
+      }
+    }
+  }
+
   const springWithSnappy = { ...springs, snappy: springs.press };
 
   const lines = [
@@ -127,6 +140,8 @@ export function generateMobileMotionRuntime(specDir, animationsSrcDir) {
     `export const mobileMotionCompositions = ${JSON.stringify(compositionMap, null, 2)} as const;`,
     '',
     `export const mobileMotionSemanticMap = ${JSON.stringify(semanticMap, null, 2)} as const;`,
+    '',
+    `export const mobileMotionScenarioById = ${JSON.stringify(scenarioById, null, 2)} as const;`,
     '',
     'export const mobileMotion = {',
     '  spring: mobileMotionSprings,',

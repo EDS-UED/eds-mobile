@@ -41,7 +41,7 @@ export function GlassToolbarDemo({
         styles.canvas,
         {
           backgroundColor: colors.page as string,
-          borderColor: colors['stroke-divider-page'] as string,
+          borderColor: colors['stroke-divider-shallow'] as string,
         },
         style,
       ]}

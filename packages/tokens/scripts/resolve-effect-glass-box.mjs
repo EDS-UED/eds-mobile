@@ -112,6 +112,17 @@ function parseShadowLayer(layer, scalePool, themeColors) {
     return null;
   }
 
+  if (parts.length === 4) {
+    return {
+      offsetX: parsePx(parts[0]) ?? 0,
+      offsetY: parsePx(parts[1]) ?? 0,
+      blurRadius: parsePx(parts[2]) ?? 0,
+      spread: 0,
+      color: parts[3],
+      inset,
+    };
+  }
+
   const offsetX = parsePx(parts[0]) ?? 0;
   const offsetY = parsePx(parts[1]) ?? 0;
   const blurRadius = parsePx(parts[2]) ?? 0;
@@ -121,8 +132,22 @@ function parseShadowLayer(layer, scalePool, themeColors) {
   return { offsetX, offsetY, blurRadius, spread, color, inset };
 }
 
+export function isAnnotatedBoxShadow(value) {
+  return Boolean(value && typeof value === 'object' && Array.isArray(value.layers));
+}
+
+export function normalizeBoxShadowProperty(value) {
+  if (isAnnotatedBoxShadow(value)) {
+    return value.layers
+      .map((layer) => String(layer.shadow ?? '').trim())
+      .filter(Boolean)
+      .join(', ');
+  }
+  return value;
+}
+
 function parseBoxShadow(value, effectBaseSpec, scalePool, themeColors) {
-  const trimmed = String(value).trim();
+  const trimmed = String(normalizeBoxShadowProperty(value)).trim();
   const shadowVar = /^var\(--([a-z0-9-]+)\)$/.exec(trimmed);
   if (shadowVar) {
     const layers = findEffectShadowToken(effectBaseSpec, shadowVar[1]);
@@ -132,8 +157,51 @@ function parseBoxShadow(value, effectBaseSpec, scalePool, themeColors) {
         .filter(Boolean);
     }
   }
-  const single = parseShadowLayer(trimmed, scalePool, themeColors);
+
+  const segments = splitBoxShadowSegments(trimmed);
+  if (segments.length > 1) {
+    return segments
+      .map((segment) =>
+        parseShadowLayer(replaceVarsInString(segment, scalePool, themeColors), scalePool, themeColors),
+      )
+      .filter(Boolean);
+  }
+
+  const single = parseShadowLayer(replaceVarsInString(trimmed, scalePool, themeColors), scalePool, themeColors);
   return single ? [single] : [];
+}
+
+function splitBoxShadowSegments(input) {
+  const segments = [];
+  let index = 0;
+  const text = String(input).trim();
+
+  while (index < text.length) {
+    while (text[index] === ',') {
+      index += 1;
+    }
+    if (index >= text.length) {
+      break;
+    }
+
+    let depth = 0;
+    let end = index;
+    for (; end < text.length; end += 1) {
+      const char = text[end];
+      if (char === '(') {
+        depth += 1;
+      } else if (char === ')') {
+        depth -= 1;
+      } else if (char === ',' && depth === 0) {
+        break;
+      }
+    }
+
+    segments.push(text.slice(index, end).trim());
+    index = end + 1;
+  }
+
+  return segments.filter(Boolean);
 }
 
 function parseBorder(value, scalePool, themeColors) {

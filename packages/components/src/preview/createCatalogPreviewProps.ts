@@ -145,7 +145,47 @@ export function createCatalogPreviewProps(
       return { ...base, size: 'md', defaultDecided: false };
 
     case 'dropdown-trigger':
-      return { ...base, placeholder: 'Trigger' };
+      return {
+        ...base,
+        defaultSelectedId: 'messages',
+        triggerIcon: 'eds-more-ios',
+        size: 'md',
+        forceRnImplementation: true,
+        placement: 'bottom',
+        align: 'start',
+        menuWidth: 268,
+        menuMaxHeight: 580,
+      };
+
+    case 'menu-body':
+      return {
+        ...base,
+        sections: [
+          {
+            items: [
+              { id: 'messages', label: '信息', icon: 'eds-chatbot' },
+              { id: 'junk', label: '垃圾信息', icon: 'eds-black-list-fill' },
+              { id: 'deleted', label: '最近删除', icon: 'eds-recycle' },
+            ],
+          },
+          {
+            title: '筛选方式',
+            items: [
+              { id: 'unread', label: '未读', icon: 'eds-text-search' },
+              { id: 'drafts', label: '草稿', icon: 'eds-editor' },
+            ],
+          },
+          { items: [{ id: 'filters', label: '管理过滤' }] },
+        ],
+        defaultSelectedId: 'messages',
+        triggerIcon: 'eds-more-ios',
+        size: 'md',
+        forceRnImplementation: true,
+        placement: 'bottom',
+        align: 'start',
+        menuWidth: 268,
+        menuMaxHeight: 580,
+      };
 
     case 'tab-bar-base':
       return {
@@ -166,6 +206,27 @@ export function createCatalogPreviewProps(
       };
     case 'tab-bar-item':
       return { ...base, label: 'Label', selected: true };
+
+    case 'tab-tabs':
+      return {
+        ...base,
+        defaultSelectedId: '1',
+        items: [
+          { id: '1', label: 'Label' },
+          { id: '2', label: 'Label' },
+          { id: '3', label: 'Label' },
+        ],
+      };
+    case 'tab-segmented-control':
+      return {
+        ...base,
+        size: 'md',
+        defaultSelectedIndex: 0,
+        segments: ['Label', 'Label', 'Label'],
+      };
+
+    case 'feedback-reddot':
+      return base;
 
     default:
       if (entry.family === 'icon' || entry.family === 'crypto') {

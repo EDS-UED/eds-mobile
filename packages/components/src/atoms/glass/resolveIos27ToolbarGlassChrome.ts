@@ -20,7 +20,7 @@ export function resolveIos27ToolbarGlassChrome(mode: ThemeMode): ViewStyle {
 
   return {
     borderColor: mixGlassBorderColor(face, preset.borderOpacity),
-    borderWidth: spacing['stroke-sm'] as number,
+    borderWidth: spacing['stroke-md'] as number,
     shadowColor: '#000000',
     shadowOpacity: Math.min(shadowOpacity, 0.08),
     shadowRadius: shadowOffsetY + (spacing['spacing-1'] as number),

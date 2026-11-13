@@ -36,7 +36,7 @@ function LabeledStackCard({ node }: { node: LiquidGlassStackNode }) {
         ]}
       >
         <Text style={[primaryTitleStyle, { color: primaryColor }]}>{node.primary}</Text>
-        <Text style={[styles.secondary, { color: secondaryColor, opacity: 0.6 }]}>{node.secondary}</Text>
+        <Text style={[styles.secondary, { color: secondaryColor }]}>{node.secondary}</Text>
       </View>
     </View>
   );
@@ -58,13 +58,13 @@ function PlatformBranch({ node }: { node: LiquidGlassStackNode }) {
         ]}
       >
         <Text style={[primaryTitleStyle, { color: primaryColor }]}>{node.primary}</Text>
-        <Text style={[styles.secondary, { color: secondaryColor, opacity: 0.6 }]}>{node.secondary}</Text>
+        <Text style={[styles.secondary, { color: secondaryColor }]}>{node.secondary}</Text>
       </View>
     </View>
   );
 }
 
-/** 居中树桩 — Liquid Glass → EgGlass → Token / RN → 平台 iOS · Android · Web 分叉。 */
+/** 居中树桩 — Liquid Glass → 业务用法 → Token → 平台分叉（iOS 26+ 原生 · 其他系统毛玻璃）。 */
 export function LiquidGlassStackTree({ conceptTitle, trunk, stacks, platformSplit }: LiquidGlassStackTreeProps) {
   const colors = useShowcaseColors();
 
@@ -146,8 +146,6 @@ const styles = StyleSheet.create({
   },
   secondary: {
     ...theme.font.rowHint,
-    fontFamily: 'Menlo',
-    lineHeight: 18,
   },
   platformSectionLabel: {
     ...theme.font.sectionLabel,

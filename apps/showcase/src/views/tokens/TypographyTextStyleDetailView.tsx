@@ -1,20 +1,23 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { getTypographyTokenByName } from '@/data/tokens/typographyTokenCatalog';
 import { TOKEN_DEMO_TEXT } from '@/data/tokens/tokenDemoText';
+import { tokenDetailPropRows } from '@/data/tokens/tokenDetailPropRows';
 import {
   isTypographyTextStyleClassName,
   textStyleRoleFromClassName,
   textStyleSampleStyle,
 } from '@/data/tokens/typographyTextStyleUtils';
+import { resolveTokenListPrimaryLabel } from '@/data/tokens/tokenListDisplayName';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { TokenDetailCodeSnippet } from '@/views/shared/TokenDetailCodeSnippet';
-import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
+import { CustomizePanel } from '@/views/shared/CustomizePanel';
+import { PropsDocTable } from '@/views/shared/PropsDocTable';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { TokenDetailRootView } from '@/views/tokens/TokenDetailRootView';
 
 export function TypographyTextStyleDetailView() {
-  const screenStyles = useShowcaseScreenStyles();
   const { tokenName } = useLocalSearchParams<{ tokenName: string }>();
   const colors = useShowcaseColors();
   const entry = tokenName ? getTypographyTokenByName(tokenName) : undefined;
@@ -30,47 +33,33 @@ export function TypographyTextStyleDetailView() {
   }
 
   const role = textStyleRoleFromClassName(entry.name);
+  const title = resolveTokenListPrimaryLabel('typography', entry);
 
   return (
-    <>
-      <ScrollView
-        style={screenStyles.scrollRoot}
-        contentContainerStyle={styles.content}
-        contentInsetAdjustmentBehavior="automatic"
-      >
-        <View style={styles.hero}>
-          <Text style={[textStyleSampleStyle(role), styles.sample, { color: colors['text-base-primary'] as string }]}>
-            {TOKEN_DEMO_TEXT}
-          </Text>
-          <View style={styles.formats}>
-            <TokenDetailCodeSnippet categoryId="typography" entry={entry} />
-          </View>
-        </View>
-      </ScrollView>
-    </>
+    <TokenDetailRootView
+      title={title}
+      preview={
+        <Text
+          style={[
+            textStyleSampleStyle(role),
+            styles.sample,
+            { color: colors['text-base-primary'] as string },
+          ]}
+        >
+          {TOKEN_DEMO_TEXT}
+        </Text>
+      }
+      customize={<CustomizePanel controls={[]} state={{}} onChange={() => {}} />}
+      usageContent={<TokenDetailCodeSnippet categoryId="typography" entry={entry} />}
+      propsContent={<PropsDocTable rows={tokenDetailPropRows(entry)} />}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingBottom: theme.layout.scrollBottom,
-    paddingHorizontal: theme.layout.pageInset,
-    paddingTop: theme.layout.tokenBlockGap,
-  },
-  hero: {
-    width: '100%',
-    alignItems: 'center',
-  },
   sample: {
     textAlign: 'center',
-  },
-  formats: {
-    alignSelf: 'stretch',
-    marginTop: theme.layout.tokenDetailSwatchTitleGap,
-    width: '100%',
+    paddingVertical: theme.layout.cardPaddingVertical,
   },
   missing: {
     flex: 1,

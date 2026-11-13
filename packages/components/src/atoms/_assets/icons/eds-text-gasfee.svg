@@ -1,0 +1,10 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_eds_text_gasfee)">
+<path d="M27 9C27 7.22222 27 8.55556 27 5C27 3.89543 26.1046 3 25 3L7 3C5.89544 3 5 3.89543 5 5V27C5 28.1046 5.89544 29 7 29C9.88889 29 13.0556 29 14.5 29M11 8.98528H21M11 16H15M22.2423 14H27.6269M26.55 19.8462L23.3192 22.4308L26.55 23.7231L23.3192 26.3077M19.55 18.8701V27.2837C19.55 28.232 20.318 29 21.2663 29H28.603C29.5512 29 30.3192 28.232 30.3192 27.2837V18.8701C30.3192 17.9219 29.5512 17.1538 28.603 17.1538H21.2663C20.318 17.1538 19.55 17.9229 19.55 18.8701Z" stroke="#000000" style="stroke:#000000;stroke:color(display-p3 0 0 0);stroke-opacity:1;" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_eds_text_gasfee">
+<rect width="32" height="32" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
+</svg>

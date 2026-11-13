@@ -30,11 +30,12 @@
       "comment": "圆角（Radius）",
       "tokens": [
         { "name": "radius-0", "value": "var(--scale-0)" },
-        { "name": "radius-xs", "value": "var(--scale-2)", "comment": "8px" },
-        { "name": "radius-sm", "value": "var(--scale-3)", "comment": "12px" },
-        { "name": "radius-md", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "radius-xs", "value": "var(--scale-3)", "comment": "12px" },
+        { "name": "radius-sm", "value": "var(--scale-4)", "comment": "16px" },
+        { "name": "radius-md", "value": "var(--scale-5)", "comment": "20px" },
         { "name": "radius-lg", "value": "var(--scale-6)", "comment": "24px" },
         { "name": "radius-xl", "value": "var(--scale-8)", "comment": "32px" },
+        { "name": "radius-2xl", "value": "var(--scale-9)", "comment": "36px" },
         { "name": "radius-full", "value": "var(--scale-full)", "comment": "888px" }
       ]
     },
@@ -42,9 +43,10 @@
       "comment": "描边（Stroke）",
       "tokens": [
         { "name": "stroke-xs", "value": "0.2px", "comment": "0.2px" },
-        { "name": "stroke-sm", "value": "var(--scale-025)", "comment": "1px" },
-        { "name": "stroke-md", "value": "var(--scale-0375)", "comment": "1.5px" },
-        { "name": "stroke-lg", "value": "var(--scale-05)", "comment": "2px" }
+        { "name": "stroke-sm", "value": "var(--scale-0125)", "comment": "0.5px" },
+        { "name": "stroke-md", "value": "var(--scale-025)", "comment": "1px" },
+        { "name": "stroke-lg", "value": "var(--scale-0375)", "comment": "1.5px" },
+        { "name": "stroke-xl", "value": "var(--scale-05)", "comment": "2px" }
       ]
     },
     {
@@ -91,7 +93,11 @@
         { "name": "avatar-sm", "value": "var(--scale-6)", "comment": "24px" },
         { "name": "avatar-md", "value": "var(--scale-8)", "comment": "32px" },
         { "name": "avatar-lg", "value": "var(--scale-9)", "comment": "36px" },
-        { "name": "avatar-xl", "value": "var(--scale-10)", "comment": "40px" }
+        { "name": "avatar-xl", "value": "var(--scale-10)", "comment": "40px" },
+        { "name": "avatar-2xl", "value": "var(--scale-11)", "comment": "44px" },
+        { "name": "avatar-3xl", "value": "var(--scale-12)", "comment": "48px" },
+        { "name": "avatar-4xl", "value": "var(--scale-13)", "comment": "52px" },
+        { "name": "avatar-5xl", "value": "var(--scale-14)", "comment": "56px" }
       ]
     },
     {

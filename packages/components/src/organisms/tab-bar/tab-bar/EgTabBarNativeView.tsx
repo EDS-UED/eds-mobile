@@ -65,7 +65,10 @@ export function EgTabBarNativeView({
       const { selectedScreenKey, provenance: next } = event.nativeEvent;
       setProvenance(next);
       const index = tabs.findIndex((tab) => tab.routeName === selectedScreenKey);
-      if (index < 0 || index === selectedIndex) {
+      if (index < 0) {
+        return;
+      }
+      if (index === selectedIndex) {
         return;
       }
       if (selectedIndexProp === undefined) {

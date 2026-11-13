@@ -17,3 +17,5 @@ function getIOSMajorVersion(): number {
 export function isIos26OrLater(): boolean {
   return Platform.OS === 'ios' && getIOSMajorVersion() >= 26;
 }
+
+export { getIOSMajorVersion };

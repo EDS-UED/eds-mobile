@@ -1,3 +1,5 @@
+import mobileTheme from '@eds/mobile-tokens/theme';
+
 export type IconKind = 'stroke' | 'fill' | 'mixed';
 
 export type IconFillTone = 'primary' | 'brand' | 'decor';
@@ -11,9 +13,21 @@ export type ProcessedIcon = {
   fillTone: IconFillTone;
 };
 
-const BASE_INK = '#020304';
+/** Figma 单色描边/填充 · 与 light `eds-base` 同步；改 base.json 后须 `pnpm build:tokens` 再 `generate:assets`。 */
+const BASE_INK = String(mobileTheme.colors.light.base).toUpperCase();
+/** Figma / Desktop 历史导出 hex · 仅导入归一化，见 `legacyFigmaBaseInk.ts`。 */
+const LEGACY_FIGMA_BASE_INK = '#020304';
 /** EDS Mobile brand (Figma material-brand sRGB). */
 const BRAND_MAGENTA = '#5F2243';
+
+function normalizeFigmaBaseInk(raw: string): string {
+  const ink = BASE_INK.toLowerCase();
+  return raw
+    .replace(new RegExp(`${LEGACY_FIGMA_BASE_INK}([0-9a-f]{2})?`, 'gi'), (_match, alpha?: string) =>
+      alpha ? `${ink}${alpha}` : ink,
+    )
+    .replace(/color\(display-p3 0\.0078 0\.0118 0\.0157\)/gi, 'color(display-p3 0 0 0)');
+}
 
 const IGNORED_FILLS = new Set(['#FFF', '#FFFFFF', 'NONE']);
 
@@ -129,7 +143,7 @@ function usesFixedPalette(raw: string, colors: Set<string>): boolean {
 }
 
 function processFixedSvg(iconName: string, raw: string): ProcessedIcon {
-  let svg = normalizeSvgShell(iconName, raw);
+  let svg = normalizeSvgShell(iconName, normalizeFigmaBaseInk(raw));
   svg = stripRedundantStylesOnly(svg);
   return {
     markup: svg.trim(),
@@ -192,20 +206,22 @@ function detectShapePaint(raw: string): { hasStroke: boolean; hasFill: boolean }
 }
 
 export function processSvg(iconName: string, raw: string): ProcessedIcon {
+  const normalizedRaw = normalizeFigmaBaseInk(raw);
+
   if (/^eds-application-\d+$/.test(iconName) || /^eds-business-\d+$/.test(iconName)) {
-    return processFixedSvg(iconName, raw);
+    return processFixedSvg(iconName, normalizedRaw);
   }
 
-  const colors = collectPaintColors(raw);
+  const colors = collectPaintColors(normalizedRaw);
 
-  if (usesFixedPalette(raw, colors)) {
-    return processFixedSvg(iconName, raw);
+  if (usesFixedPalette(normalizedRaw, colors)) {
+    return processFixedSvg(iconName, normalizedRaw);
   }
 
-  const paint = detectShapePaint(raw);
+  const paint = detectShapePaint(normalizedRaw);
   const role = resolveTokenRole(colors, paint.hasStroke, paint.hasFill);
 
-  let svg = normalizeSvgShell(iconName, raw);
+  let svg = normalizeSvgShell(iconName, normalizedRaw);
 
   if (role.colorMode === 'token') {
     svg = annotateTokenShapes(svg);

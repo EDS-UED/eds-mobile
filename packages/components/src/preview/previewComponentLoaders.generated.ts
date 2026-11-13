@@ -51,11 +51,12 @@ export const previewComponentLoaders: Record<string, PreviewLoader> = {
   EgBaseTab: () => require('../molecules/tab/base-tab/EgBaseTab.js').EgBaseTab,
   EgSegmentedControlBase: () => require('../molecules/tab/segmented-control-base/EgSegmentedControlBase.js').EgSegmentedControlBase,
   EgSegmentedControl: () => require('../molecules/tab/segmented-control/EgSegmentedControl.js').EgSegmentedControl,
-  EgTabs: () => require('../molecules/tab/tabs/EgTabs.js').EgTabs,
+  EgTab: () => require('../molecules/tab/tab/EgTab.js').EgTab,
   EgTriggerDropdown: () => require('../molecules/dropdown/trigger-dropdown/EgTriggerDropdown.js').EgTriggerDropdown,
   EgFormSubmissionFeedback: () => require('../molecules/feedback/form-submission-feedback/EgFormSubmissionFeedback.js').EgFormSubmissionFeedback,
   EgStatusCardFeedback: () => require('../molecules/feedback/status-card-feedback/EgStatusCardFeedback.js').EgStatusCardFeedback,
   EgToastFeedback: () => require('../molecules/feedback/toast-feedback/EgToastFeedback.js').EgToastFeedback,
+  EgReddot: () => require('../molecules/feedback/reddot/EgReddot.js').EgReddot,
   EgTabBar: () => require('../organisms/tab-bar/tab-bar/EgTabBar.js').EgTabBar,
   EgTabBarItem: () => require('../organisms/tab-bar/tab-bar-item/EgTabBarItem.js').EgTabBarItem,
   EgTabBarGlassBg: () => require('../organisms/tab-bar/tab-bar-glass-bg/EgTabBarGlassBg.js').EgTabBarGlassBg,
@@ -209,6 +210,9 @@ export const previewComponentLoaders: Record<string, PreviewLoader> = {
   EgIconZoomOut: () => require('../atoms/icon/icon-zoom-out/EgIconZoomOut.js').EgIconZoomOut,
   EgIconIConDrawType6: () => require('../atoms/icon/icon-icon-draw-type6/EgIconIConDrawType6.js').EgIconIConDrawType6,
   EgIconOvalTickMini: () => require('../atoms/icon/icon-oval-tick-mini/EgIconOvalTickMini.js').EgIconOvalTickMini,
+  EgMenu: () => require('../molecules/dropdown/menu/EgMenu.js').EgMenu,
+  EgMenuTrigger: () => require('../molecules/dropdown/menu/EgMenuTrigger.js').EgMenuTrigger,
+  EgSheets: () => require('../organisms/sheets/EgSheets.js').EgSheets,
 };
 
 const cache = new Map<string, ComponentType<Record<string, unknown>> | null>();

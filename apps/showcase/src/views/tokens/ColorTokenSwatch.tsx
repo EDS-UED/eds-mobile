@@ -21,7 +21,7 @@ export function ColorTokenSwatch({ value, size = 32 }: ColorTokenSwatchProps) {
           height: size,
           borderRadius: theme.radius.full,
           backgroundColor: isTransparent ? (colors['box-page'] as string) : value,
-          borderColor: colors['stroke-divider-page'] as string,
+          borderColor: colors['stroke-divider-shallow'] as string,
         },
       ]}
     >

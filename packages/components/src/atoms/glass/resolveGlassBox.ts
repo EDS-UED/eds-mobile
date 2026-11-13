@@ -5,6 +5,7 @@ import type { ViewStyle } from 'react-native';
 export type GlassBoxClassName =
   | 'glass-button-box'
   | 'glass-flotation-box'
+  | 'glass-sheets-box'
   | 'glass-tabbar-box'
   | 'glass-tabbar-bg'
   | 'glass-mask-box';

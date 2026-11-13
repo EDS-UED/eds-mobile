@@ -6,7 +6,7 @@ import { disabledOpacity } from '../../../shared/themeScalars.js';
 import { fieldTypography, searchFieldTypography } from '../../../shared/typographyStyles.js';
 import type { ControlSize, FieldEvent } from '../../../shared/types.js';
 
-export type FieldKind = 'input' | 'search' | 'textarea' | 'dropdown';
+export type FieldKind = 'input' | 'search' | 'textarea' | 'dropdown' | 'menu';
 
 export type FieldVisualState = {
   kind: FieldKind;
@@ -74,7 +74,7 @@ export function createFieldStyles(state: FieldVisualState): {
         ? (spacing['spacing-2'] as number)
         : undefined,
     borderRadius: fieldRadius(state.kind, state.size),
-    borderWidth: spacing['stroke-sm'] as number,
+    borderWidth: spacing['stroke-md'] as number,
     borderColor: 'transparent',
     gap: state.kind === 'search' ? (spacing['spacing-2'] as number) : (spacing['spacing-3'] as number),
     opacity: state.disabled ? disabledOpacity() : 1,
@@ -130,7 +130,7 @@ export function createFieldStyles(state: FieldVisualState): {
       break;
   }
 
-  if (state.kind === 'dropdown') {
+  if (state.kind === 'dropdown' || state.kind === 'menu') {
     container.minHeight = dropdownHeight(state.size);
     container.maxHeight = dropdownHeight(state.size);
   }

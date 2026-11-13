@@ -1,5 +1,5 @@
 import effectBaseSpec from '../../../../../packages/tokens/spec/effect/base.json';
-import effectSemanticSpec from '../../../../../packages/tokens/spec/effect/semantic.json';
+import effectSemanticCatalog from './generated/effectSemanticCatalog.json';
 
 import { distClassDetailLines, distVarLines } from './distCssManifest';
 import type { TokenEntry, TokenGroup } from './tokenCatalogTypes';
@@ -37,13 +37,13 @@ export function getEffectBaseEntries(): TokenEntry[] {
 }
 
 export function getEffectSemanticGroups(): TokenGroup[] {
-  return effectSemanticSpec.groups.map((group) => ({
+  return effectSemanticCatalog.groups.map((group) => ({
     comment: group.comment,
-    tokens: group.styles.map((style) => ({
-      name: style.className,
+    tokens: group.tokens.map((token) => ({
+      name: token.name,
       layer: 'semantic' as const,
-      cssVar: `.${style.className}`,
-      detailLines: distClassDetailLines('effect', style.className),
+      cssVar: `.${token.name}`,
+      detailLines: distClassDetailLines('effect', token.name),
     })),
   }));
 }

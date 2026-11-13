@@ -33,7 +33,7 @@ export function GlassSurface({
   const preset = resolveGlassVariant(variant);
   const face = resolveGlassFaceColor(mode);
   const borderRadius = resolveGlassBorderRadius(shape);
-  const stroke = mobileTheme.spacing['stroke-sm'] as number;
+  const stroke = mobileTheme.spacing['stroke-md'] as number;
   const radiusStyle: ViewStyle =
     borderRadius === '50%' ? { borderRadius: 9999 } : { borderRadius };
   const BlurView = !isWeb ? getNativeBlurView() : null;

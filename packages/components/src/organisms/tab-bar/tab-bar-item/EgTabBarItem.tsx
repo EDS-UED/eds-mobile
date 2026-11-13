@@ -82,16 +82,34 @@ export function EgTabBarItem(
   );
 
   if (embedded) {
+    const hostProps = {
+      style: StyleSheet.flatten([styles.itemHost, style]),
+      onLayout,
+      accessibilityRole: 'tab' as const,
+      accessibilityState: { selected, disabled },
+      accessibilityLabel: accessibilityLabel ?? label,
+      testID: testID ?? 'tab-bar-item',
+    };
+
+    if (onPress) {
+      return (
+        <View {...hostProps} pointerEvents="box-none">
+          <Pressable
+            disabled={disabled}
+            onPress={onPress}
+            style={({ pressed }) =>
+              StyleSheet.flatten([styles.item, pressed && !disabled ? styles.itemPressed : undefined]) ??
+              styles.item
+            }
+          >
+            {content}
+          </Pressable>
+        </View>
+      );
+    }
+
     return (
-      <View
-        style={StyleSheet.flatten([styles.itemHost, style])}
-        onLayout={onLayout}
-        pointerEvents="none"
-        accessibilityRole="tab"
-        accessibilityState={{ selected, disabled }}
-        accessibilityLabel={accessibilityLabel ?? label}
-        testID={testID ?? 'tab-bar-item'}
-      >
+      <View {...hostProps} pointerEvents="none">
         <View style={styles.item}>{content}</View>
       </View>
     );

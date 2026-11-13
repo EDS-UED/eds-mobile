@@ -13,18 +13,23 @@
       "dark": "color(var(--eds-flotation) / 1)"
     },
     {
+      "name": "box-page-card",
+      "light": "color(var(--eds-page-card) / 1)",
+      "dark": "color(var(--eds-page-card) / 1)"
+    },
+    {
       "name": "stroke-hide",
       "light": "color(var(--eds-base) / 0)",
       "dark": "color(var(--eds-base) / 0)"
     },
     {
-      "name": "stroke-divider-module",
-      "light": "color(var(--eds-base) / 0.09)",
+      "name": "stroke-divider-deep",
+      "light": "color(var(--eds-base) / 0.1)",
       "dark": "color(var(--eds-base) / 0.1)"
     },
     {
-      "name": "stroke-divider-page",
-      "light": "color(var(--eds-base) / 0.09)",
+      "name": "stroke-divider-shallow",
+      "light": "color(var(--eds-base) / 0.08)",
       "dark": "color(var(--eds-base) / 0.1)"
     },
     {
@@ -39,8 +44,8 @@
     },
     {
       "name": "stroke-base-tertiary",
-      "light": "color(var(--eds-base) / 0.4)",
-      "dark": "color(var(--eds-base) / 0.4)"
+      "light": "color(var(--eds-base) / 0.25)",
+      "dark": "color(var(--eds-base) / 0.25)"
     },
     {
       "name": "stroke-base-quaternary",
@@ -56,6 +61,11 @@
       "name": "stroke-color-danger",
       "light": "color(var(--eds-danger) / 1)",
       "dark": "color(var(--eds-danger) / 1)"
+    },
+    {
+      "name": "stroke-decor",
+      "light": "color(var(--eds-decor) / 1)",
+      "dark": "color(var(--eds-decor) / 1)"
     },
     {
       "name": "stroke-same-white",
@@ -154,13 +164,18 @@
     },
     {
       "name": "material-card-moderate",
-      "light": "color(var(--eds-base) / 0.05)",
+      "light": "color(var(--eds-base) / 0.04)",
       "dark": "color(var(--eds-base) / 0.06)"
     },
     {
       "name": "material-card-deep",
-      "light": "color(var(--eds-base) / 0.07)",
+      "light": "color(var(--eds-base) / 0.05)",
       "dark": "color(var(--eds-base) / 0.09)"
+    },
+    {
+      "name": "material-card-same-white",
+      "light": "color(var(--eds-same-white) / 1)",
+      "dark": "color(var(--eds-base) / 0.06)"
     },
     {
       "name": "material-brand",
@@ -338,19 +353,9 @@
       "dark": "color(var(--eds-overlay) / 0.88)"
     },
     {
-      "name": "stroke-outline-subtle",
-      "light": "color(var(--eds-same-black) / 0.03)",
-      "dark": "color(var(--eds-same-black) / 0.6)"
-    },
-    {
-      "name": "stroke-outline-shallow",
-      "light": "color(var(--eds-same-black) / 0.12)",
-      "dark": "color(var(--eds-same-black) / 0.2)"
-    },
-    {
-      "name": "stroke-outline-deep",
-      "light": "color(var(--eds-same-black) / 0.13)",
-      "dark": "color(var(--eds-same-black) / 0.6)"
+      "name": "effect-sheets-background",
+      "light": "color(var(--eds-same-black) / 0.2)",
+      "dark": "color(var(--eds-same-black) / 0.4)"
     },
     {
       "name": "event-tap",

@@ -6,10 +6,17 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const port = Number(process.env.RCT_METRO_PORT || process.env.EXPO_DEV_SERVER_PORT || 8080);
-const url = `ws://127.0.0.1:${port}/message`;
+export function resolveMetroReloadPort() {
+  return Number(
+    process.env.EDS_CONSUMER_METRO_PORT ||
+      process.env.RCT_METRO_PORT ||
+      process.env.EXPO_DEV_SERVER_PORT ||
+      8080,
+  );
+}
 
-export async function triggerMetroReload({ quiet = false } = {}) {
+export async function triggerMetroReload({ quiet = false, port = resolveMetroReloadPort() } = {}) {
+  const url = `ws://127.0.0.1:${port}/message`;
   try {
     const ws = new WebSocket(url);
 

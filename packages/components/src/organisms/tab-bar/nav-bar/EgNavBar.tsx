@@ -17,9 +17,12 @@ export function shouldUseEgNavBarNativeStack(): boolean {
  *   （列表 `paddingTop` 用 `egNavBarScrollContentReserve`）。
  */
 export function EgNavBar(props: EgNavBarProps) {
-  if (shouldUseEgNavBarNativeStack() && !props.forceRnImplementation) {
+  const chromeContext = props.chromeContext ?? 'stack';
+
+  if (shouldUseEgNavBarNativeStack() && !props.forceRnImplementation && chromeContext !== 'overlay') {
     reportNativeEnhancementBypass('EgNavBar', 'egNavBarNativeStackOptions / egNavBarNativeStackScreenOptions');
     return null;
   }
+
   return <EgNavBarRn {...props} />;
 }

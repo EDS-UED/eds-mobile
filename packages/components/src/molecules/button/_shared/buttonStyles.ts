@@ -54,6 +54,12 @@ export function createButtonStyles(state: ButtonVisualState): { container: ViewS
       label.color = resolveColor(colors, 'text-base-quaternary');
       return { container, label };
     }
+    if (state.tone === 'subtle' && variant === 'solid') {
+      container.backgroundColor = resolveColor(colors, 'material-hide');
+      container.borderColor = resolveColor(colors, 'stroke-divider-shallow');
+      label.color = resolveColor(colors, 'text-base-quaternary');
+      return { container, label };
+    }
     container.backgroundColor = resolveColor(colors, 'material-card-moderate');
     label.color = resolveColor(colors, 'text-base-quaternary');
     return { container, label };
@@ -153,16 +159,22 @@ function applyToneColors(
 
   if (tone === 'subtle') {
     if (variant === 'solid') {
-      container.backgroundColor = pressed
-        ? resolveColor(colors, 'event-tap')
-        : resolveColor(colors, 'material-card-moderate');
-      label.color = pressed
-        ? resolveColor(colors, 'text-base-secondary')
-        : resolveColor(colors, 'text-base-primary');
+      const strokeDivider = resolveColor(colors, 'stroke-divider-shallow');
       if (state.active) {
-        container.backgroundColor = resolveColor(colors, 'event-focus');
-        label.color = resolveColor(colors, 'text-base-secondary');
+        container.backgroundColor = resolveColor(colors, 'material-brand-weaken');
+        container.borderColor = resolveColor(colors, 'stroke-hide');
+        label.color = resolveColor(colors, 'text-base-primary');
+        return;
       }
+      if (pressed) {
+        container.backgroundColor = resolveColor(colors, 'event-tap');
+        container.borderColor = resolveColor(colors, 'stroke-hide');
+        label.color = resolveColor(colors, 'text-base-secondary');
+        return;
+      }
+      container.backgroundColor = resolveColor(colors, 'material-hide');
+      container.borderColor = strokeDivider;
+      label.color = resolveColor(colors, 'text-base-primary');
       return;
     }
     if (variant === 'soft') {

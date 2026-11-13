@@ -1,6 +1,6 @@
 import type { ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
 
-export type EgAvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type EgAvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
 
 export type EgAvatarVariant = 'initials' | 'robot';
 

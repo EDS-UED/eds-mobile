@@ -1,12 +1,15 @@
 import {
   CREGIS_TAB_BAR_ITEMS,
+  EgCregisTabBar,
+  EgTabBar,
   GlassBlurScope,
   shouldUseEgTabBarNativeStack,
 } from '@eds/mobile-components';
-import { EgTabBarRn } from '@eds/mobile-components/preview/rn';
 import { catalogPreviewCanvasStyle } from '@eds/mobile-components/catalog';
 import { router } from 'expo-router';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+
+import { edsTokenFont } from '@/views/shared/resolveEdsTheme';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
@@ -73,21 +76,34 @@ export function ShowcaseTabBarPreview({
       },
     });
 
+  const nativeTabBarHint =
+    'iOS 26+ 底部使用系统 NativeTabs（滑动选中由系统 Tab 条负责）。卡片内不绘制 RN 浮条 · 见「全屏演示」。';
+
   return (
     <View style={[styles.host, { width: railWidth, alignSelf: 'stretch' }]}>
       <View style={styles.stageWrap} testID={testID}>
-        <GlassBlurScope>
-          {variant === 'cregis' ? (
-            <EgTabBarRn
-              {...barProps}
-              items={CREGIS_TAB_BAR_ITEMS}
-              selectionAccent="decor"
-              testID={testID ?? 'tab-bar-cregis'}
-            />
-          ) : (
-            <EgTabBarRn {...barProps} testID={testID ?? 'tab-bar-base'} />
-          )}
-        </GlassBlurScope>
+        {shouldUseEgTabBarNativeStack() ? (
+          <Text
+            style={[
+              styles.nativeHint,
+              { color: colors['text-base-secondary'] as string },
+            ]}
+          >
+            {nativeTabBarHint}
+          </Text>
+        ) : (
+          <GlassBlurScope>
+            {variant === 'cregis' ? (
+              <EgCregisTabBar
+                {...barProps}
+                items={CREGIS_TAB_BAR_ITEMS}
+                testID={testID ?? 'tab-bar-cregis'}
+              />
+            ) : (
+              <EgTabBar {...barProps} testID={testID ?? 'tab-bar-base'} />
+            )}
+          </GlassBlurScope>
+        )}
       </View>
       <ShowcaseCardRow
         title="全屏演示"
@@ -115,5 +131,10 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  nativeHint: {
+    ...edsTokenFont('body-medium', '400'),
+    textAlign: 'center',
+    paddingVertical: showcaseTheme.layout.cardPaddingVertical,
   },
 });

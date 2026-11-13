@@ -1,6 +1,6 @@
 {
   "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
-  "$description": "EDS Mobile Motion Base — duration / easing / distance / scale / opacity。仅物理量，无场景语义。",
+  "$description": "EDS Mobile Motion Base — press / slide / layout-content 等场景按需补 token。",
   "groups": [
     {
       "comment": "Duration ladder（--motion-N · ms）",
@@ -8,18 +8,17 @@
         "motion-0": "0ms",
         "motion-1": "85ms",
         "motion-2": "180ms",
-        "motion-3": "280ms",
-        "motion-4": "400ms",
-        "motion-5": "500ms",
-        "motion-6": "250ms",
-        "motion-7": "350ms",
+        "motion-3": "250ms",
+        "motion-4": "280ms",
+        "motion-5": "350ms",
+        "motion-6": "400ms",
+        "motion-7": "500ms",
         "motion-8": "800ms",
-        "motion-9": "2000ms"
+        "motion-9": "2000ms",
+        "motion-10": "3000ms"
       },
       "usageNotes": [
-        "0 instant · 1 micro (press/selection) · 2 fast (fade/icon)",
-        "3 normal (simple transition) · 4 slow (large content) · 5 emphasis",
-        "6 control (tab/toggle) · 7 navigation timing · 8–9 spinner"
+        "阶梯 N 与 ms 同步递增 · 1 micro/press · 2 fade · 3 control(slide) · 4 enter · 5 navigation · 6 slow · 7 emphasis · 8 spin · 9 spin-slow · 10 extended"
       ]
     },
     {
@@ -30,29 +29,18 @@
         "motion-ease-3": "cubic-bezier(0.4, 0, 1, 1)",
         "motion-ease-4": "cubic-bezier(0.4, 0, 0.2, 1)",
         "motion-ease-5": "linear",
-        "motion-ease-6": "cubic-bezier(0.34, 1.4, 0.64, 1)",
-        "motion-ease-7": "cubic-bezier(0.34, 1.45, 0.64, 1)",
-        "motion-ease-8": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "motion-ease-9": "cubic-bezier(0.32, 0.72, 0, 1)"
+        "motion-ease-6": "cubic-bezier(0.34, 1.2, 0.64, 1)",
+        "motion-ease-7": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "motion-ease-8": "cubic-bezier(0, 0, 0.2, 1)",
+        "motion-ease-9": "cubic-bezier(0.32, 0.72, 0, 1)",
+        "motion-ease-10": "cubic-bezier(0.42, 0, 0.58, 1)"
       },
       "usageNotes": [
-        "ease-1 standard · ease-2 entrance · ease-3 exit · ease-4 product",
-        "ease-5 linear (spinner) · ease-6/7 spring-emphasis · ease-8 decelerate",
-        "ease-9 navigation push (iOS-like)"
+        "1 standard · 2 enter · 3 exit · 4 product · 5 linear · 6–7 spring-emphasis · 8 decelerate · 9 navigation · 10 standard-alt"
       ]
     },
     {
-      "comment": "Opacity",
-      "tokenList": [
-        { "name": "motion-opacity-hidden", "value": "0" },
-        { "name": "motion-opacity-dim", "value": "0.4" },
-        { "name": "motion-opacity-subtle", "value": "0.7" },
-        { "name": "motion-opacity-visible", "value": "1" },
-        { "name": "motion-opacity-disabled", "value": "0.5" }
-      ]
-    },
-    {
-      "comment": "Scale",
+      "comment": "Scale · Press",
       "tokenList": [
         {
           "name": "motion-scale-press",
@@ -63,78 +51,219 @@
         { "name": "motion-scale-press-sm", "value": "1.04", "comment": "Tap press · sm" },
         { "name": "motion-scale-press-md", "value": "1.2", "comment": "Tap press · md" },
         { "name": "motion-scale-press-lg", "value": "1.35", "comment": "Tap press · lg" },
-        { "name": "motion-scale-subtle", "value": "0.98" },
-        { "name": "motion-scale-emphasis", "value": "1.04" },
-        { "name": "motion-scale-present", "value": "0.96", "comment": "Sheet / Modal / Popover 入场" }
+        { "name": "motion-scale-press-down-xs", "value": "0.98", "comment": "Tap press · shrink · xs" },
+        { "name": "motion-scale-press-down-sm", "value": "0.96", "comment": "Tap press · shrink · sm" },
+        { "name": "motion-scale-press-down-md", "value": "0.94", "comment": "Tap press · shrink · md" },
+        { "name": "motion-scale-press-down-lg", "value": "0.92", "comment": "Tap press · shrink · lg" }
       ]
     },
     {
-      "comment": "Glass（Liquid Glass 交互基线）",
+      "comment": "Opacity · Layout Content",
+      "tokenList": [
+        { "name": "motion-opacity-visible", "value": "1" },
+        { "name": "motion-opacity-hidden", "value": "0" }
+      ]
+    },
+    {
+      "comment": "Scale · Menu（浮层自触发点倒出）",
       "tokenList": [
         {
-          "name": "motion-glass-scale-press",
-          "value": "1.2",
-          "comment": "Glass press scale · default md"
+          "name": "motion-scale-menu-origin",
+          "value": "0.2",
+          "comment": "浮层容器起始缩放（≈ 触发器尺寸）· transform-origin 指向触发器"
         },
-        { "name": "motion-glass-scale-press-xs", "value": "1.02", "comment": "Glass press · xs" },
-        { "name": "motion-glass-scale-press-sm", "value": "1.04", "comment": "Glass press · sm" },
-        { "name": "motion-glass-scale-press-md", "value": "1.2", "comment": "Glass press · md" },
-        { "name": "motion-glass-scale-press-lg", "value": "1.35", "comment": "Glass press · lg · EgButtonGlass RN" },
-        { "name": "motion-glass-opacity-shimmer", "value": "0.10", "comment": "Glass Shimmer 最大透明度" }
+        {
+          "name": "motion-scale-menu-trigger-lift",
+          "value": "1.15",
+          "comment": "触发器交接峰值缩放：展开时鼓起后化为水滴，收回时并入后鼓起回弹"
+        }
       ]
     },
     {
-      "comment": "Distance（px · 对齐 spacing scale）",
+      "comment": "Offset · Layout Deform / Content",
       "tokenList": [
-        { "name": "motion-distance-xs", "value": "4px" },
-        { "name": "motion-distance-sm", "value": "8px" },
-        { "name": "motion-distance-md", "value": "16px" },
-        { "name": "motion-distance-lg", "value": "24px" },
-        { "name": "motion-distance-xl", "value": "40px" },
-        { "name": "motion-offset-small", "value": "var(--motion-distance-sm)" },
-        { "name": "motion-offset-flotation-y", "value": "calc(-1 * var(--spacing-2-5))" },
-        { "name": "motion-offset-page-push", "value": "30%" },
-        { "name": "motion-offset-layout-deform-y", "value": "var(--spacing-2-5)" }
+        {
+          "name": "motion-offset-layout-deform-y",
+          "value": "var(--spacing-2-5)",
+          "comment": "10px · 内容 crossfade 向下 nudge"
+        },
+        {
+          "name": "motion-offset-sheets-inset",
+          "value": "var(--spacing-2)",
+          "comment": "8px · Sheets 悬浮档 Sheet 与屏幕左右 / 底边间隙；升至全高档时收为 0"
+        },
+        {
+          "name": "motion-offset-sheets-top",
+          "value": "var(--spacing-0)",
+          "comment": "Sheets 大尺寸（large）档顶边与设备系统条（状态栏 / 刘海 · safe area top）间距 · spacing-0（紧贴系统条底）"
+        }
+      ]
+    },
+    {
+      "comment": "Radius · Sheets（悬浮卡片 → 贴边 Sheet）",
+      "tokenList": [
+        {
+          "name": "motion-radius-sheets-floating",
+          "value": "var(--radius-2xl)",
+          "comment": "悬浮档四角圆角"
+        },
+        {
+          "name": "motion-radius-sheets-attached",
+          "value": "var(--radius-2xl)",
+          "comment": "全高贴边档顶角圆角（底角 0）"
+        }
+      ]
+    },
+    {
+      "comment": "Opacity · Sheets 遮罩",
+      "tokenList": [
+        {
+          "name": "motion-opacity-sheets-dim-floating",
+          "value": "0.4",
+          "comment": "悬浮档遮罩强度（× material-same-black）；全高档为 1"
+        }
+      ]
+    },
+    {
+      "comment": "Page · 普通页面左右切换（push / pop）",
+      "tokenList": [
+        {
+          "name": "motion-ratio-page-parallax",
+          "value": "0.3",
+          "comment": "推入时下层页视差位移 = 容器宽 × 0.3（向左）；返回时下层页整屏同速推回"
+        },
+        {
+          "name": "motion-opacity-page-dim",
+          "value": "0.2",
+          "comment": "被覆盖页压暗强度（× material-same-black ≈ 10% 黑）"
+        }
+      ]
+    },
+    {
+      "comment": "Page Shot · 弹层页面 / 卡片 → 整页（App Store Today 式展开）",
+      "tokenList": [
+        {
+          "name": "motion-ratio-page-shot-close-launch",
+          "value": "12",
+          "comment": "收回起步速度（progress / s · 1 = 整页→触发元素全程）— 离场先快后慢：起步即峰值、临界阻尼平稳减速落位；跟手松手更快时取跟手速度"
+        },
+        {
+          "name": "motion-opacity-page-shot-dim",
+          "value": "0.8",
+          "comment": "弹层整页展开后背后页面压暗强度（× material-same-black ≈ 40% 黑 · App Store 实测）"
+        },
+        {
+          "name": "motion-scale-page-shot-dismiss",
+          "value": "0.82",
+          "comment": "下拉 / 根页侧滑收起跟手最小缩放（拖满阈值时）"
+        },
+        {
+          "name": "motion-radius-page-shot",
+          "value": "var(--radius-2xl)",
+          "comment": "跟手时整页圆角（静止整页为 0；收起终点用触发元素圆角）"
+        }
       ]
     }
   ],
   "springs": {
-    "default": { "response": 0.55, "dampingFraction": 0.82, "blendDuration": 0.15, "reanimated": { "damping": 19, "stiffness": 130, "mass": 1 } },
-    "interactive": { "response": 0.15, "dampingFraction": 0.86, "blendDuration": 0.25, "reanimated": { "damping": 72, "stiffness": 1755, "mass": 1 } },
-    "navigation": { "response": 0.38, "dampingFraction": 0.88, "blendDuration": 0.20, "reanimated": { "damping": 29, "stiffness": 273, "mass": 1 } },
-    "sheet": { "response": 0.48, "dampingFraction": 0.86, "blendDuration": 0.20, "reanimated": { "damping": 23, "stiffness": 171, "mass": 1 } },
-    "modal": { "response": 0.38, "dampingFraction": 0.90, "blendDuration": 0.15, "reanimated": { "damping": 30, "stiffness": 273, "mass": 1 } },
-    "control": { "response": 0.28, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 37, "stiffness": 503, "mass": 1 } },
     "press": { "response": 0.32, "dampingFraction": 0.88, "blendDuration": 0.12, "reanimated": { "damping": 46, "stiffness": 560, "mass": 1 } },
     "press-release": {
       "response": 0.44,
       "dampingFraction": 0.66,
       "blendDuration": 0.12,
       "reanimated": { "damping": 17, "stiffness": 350, "mass": 1 },
-      "comment": "Scale release bounce · sm/md/lg/xl 共用（recipe press-scale-out）"
+      "comment": "Scale release bounce · recipe press-scale-out"
+    },
+    "control": { "response": 0.28, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 37, "stiffness": 503, "mass": 1 } },
+    "slide-commit": {
+      "response": 0.30,
+      "dampingFraction": 0.81,
+      "blendDuration": 0.10,
+      "reanimated": { "damping": 34, "stiffness": 440, "mass": 1 },
+      "comment": "Semantic slide · 指示器落位 · 约 1% 轻过冲"
     },
     "drag": { "response": 0.32, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 32, "stiffness": 385, "mass": 1 } },
-    "bouncy": { "response": 0.42, "dampingFraction": 0.68, "blendDuration": 0.10, "reanimated": { "damping": 20, "stiffness": 224, "mass": 1 } },
-    "gentle": { "response": 0.60, "dampingFraction": 0.92, "blendDuration": 0.20, "reanimated": { "damping": 19, "stiffness": 110, "mass": 1 } }
+    "menu-in": {
+      "response": 0.36,
+      "dampingFraction": 0.74,
+      "blendDuration": 0.12,
+      "reanimated": { "damping": 26, "stiffness": 305, "mass": 1 },
+      "comment": "Semantic menu · 水滴自触发器缩放展开 · 约 3% 柔和过冲回弹落位（≈ 360ms 到位）"
+    },
+    "menu-out": {
+      "response": 0.31,
+      "dampingFraction": 0.8,
+      "blendDuration": 0.10,
+      "reanimated": { "damping": 33, "stiffness": 420, "mass": 1 },
+      "comment": "Recipe menu-dismiss · 缩回触发器 · 尾段放缓让水滴与触发器交叉融合（触发器并入时鼓起回弹）"
+    },
+    "sheets-present": {
+      "response": 0.42,
+      "dampingFraction": 0.82,
+      "blendDuration": 0.12,
+      "reanimated": { "damping": 25, "stiffness": 224, "mass": 1 },
+      "comment": "Semantic sheets · Sheet 自底部滑入到初始档位 · 轻微过冲回弹"
+    },
+    "sheets-detent": {
+      "response": 0.36,
+      "dampingFraction": 0.72,
+      "blendDuration": 0.10,
+      "reanimated": { "damping": 25, "stiffness": 305, "mass": 1 },
+      "comment": "Recipe sheets-detent · 松手吸附档位（继承手势速度）· 中 ↔ 大明显回弹"
+    },
+    "page-push": {
+      "response": 0.40,
+      "dampingFraction": 0.8,
+      "blendDuration": 0.12,
+      "reanimated": { "damping": 25, "stiffness": 246, "mass": 1 },
+      "comment": "Semantic page · 普通页面左右切换：新页自右推入 / 下层页视差左移 · 约 1.5% 轻过冲回弹"
+    },
+    "page-pop": {
+      "response": 0.38,
+      "dampingFraction": 0.76,
+      "blendDuration": 0.10,
+      "reanimated": { "damping": 25, "stiffness": 273, "mass": 1 },
+      "comment": "Recipe page-back · 当前页右移离场 · 下层页整屏同速推回 约 2.6% 轻过冲（侧滑返回继承手势速度）"
+    },
+    "page-shot-open": {
+      "response": 0.44,
+      "dampingFraction": 0.78,
+      "blendDuration": 0.12,
+      "reanimated": { "damping": 22, "stiffness": 204, "mass": 1 },
+      "comment": "Semantic page-shot · 弹层页面 / 卡片自源 frame 展开铺满整页 · 约 2% 过冲（App Store Today 实测拟合 · ≈ 280ms 落定）"
+    },
+    "page-shot-close": {
+      "response": 0.34,
+      "dampingFraction": 1.0,
+      "blendDuration": 0.10,
+      "reanimated": { "damping": 37, "stiffness": 342, "mass": 1 },
+      "comment": "Recipe page-shot-dismiss · 弹层整页飞回触发元素 · 先快后慢：起步速度 ratio-page-shot-close-launch + 临界阻尼（≈ 55ms 过半 · 165ms 达 90% · 无过冲）"
+    }
   },
   "haptics": {
     "selection": "selection",
-    "light": "light",
-    "medium": "medium",
-    "heavy": "heavy",
-    "success": "success",
-    "warning": "warning",
-    "error": "error"
-  },
-  "timings": {
-    "navigationPush": { "duration": 350, "easing": [0.32, 0.72, 0, 1] },
-    "easeInOut": { "duration": 350, "easing": [0.42, 0, 0.58, 1] },
-    "easeOut": { "duration": 300, "easing": [0, 0, 0.58, 1] },
-    "easeIn": { "duration": 250, "easing": [0.42, 0, 1, 1] }
+    "light": "light"
   },
   "interaction": {
     "velocityAware": true,
     "interruptible": true,
     "preserveVelocity": true
+  },
+  "timings": {
+    "layout-deform-content-opacity": {
+      "duration": 180,
+      "easing": [0.42, 0, 0.58, 1],
+      "comment": "Layout Content crossfade · 对齐 CSS ease"
+    },
+    "layout-deform-content-transform": {
+      "duration": 350,
+      "easing": [0.22, 1, 0.36, 1],
+      "comment": "Layout Content translateY · motion-easing-float"
+    },
+    "sheets-dismiss": {
+      "duration": 800,
+      "easing": [0.32, 0.72, 0, 1],
+      "comment": "Recipe sheets-dismiss · 下滑收起（无弹簧 · 先快后慢）· motion-8 · motion-easing-sheets · 终点 = 当前可视高度（刚好出屏）"
+    }
   }
 }

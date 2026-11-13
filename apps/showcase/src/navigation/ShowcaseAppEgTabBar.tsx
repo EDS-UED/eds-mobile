@@ -1,11 +1,17 @@
-import { createEgTabBarBottomTabsBinding } from '@eds/mobile-components';
+import { createEgTabBarExpoBottomTabsBinding } from '@eds/mobile-components';
 import type { BottomTabBarProps } from 'expo-router/build/react-navigation/bottom-tabs/types';
 
 import { ShowcaseEgTabBarShell } from '@/navigation/ShowcaseEgTabBarShell';
 import { showcaseEgTabBarItems } from '@/navigation/showcaseNavTabs';
 
-export function ShowcaseAppEgTabBar({ state, navigation }: BottomTabBarProps) {
-  const binding = createEgTabBarBottomTabsBinding(showcaseEgTabBarItems, state, navigation);
+/** Expo Router 58 自定义 tabBar — 与内置 BottomTabBar 同契约（route.key · tabPress）。 */
+export function ShowcaseAppEgTabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
+  const binding = createEgTabBarExpoBottomTabsBinding(
+    showcaseEgTabBarItems,
+    state,
+    emitter,
+    navigateToTab,
+  );
 
   return <ShowcaseEgTabBarShell {...binding} />;
 }

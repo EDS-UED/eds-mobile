@@ -15,12 +15,14 @@ alwaysApply: true
 - **RN 默认栈** → §6.0（无明确原生增强声明，一律 RN 同路径；禁止默认分叉）
 - token 无 spec → **停改**，先问
 - Figma 真源：[EDS Mobile Figma](https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/) · fileKey `LlB2jT8KdxM6taf5wOSAEM`
-- 「同步」→ §5；不确定先问
+- **业务 consumer 与 EDS 解耦（默认）**：本仓无论改 token / 组件 / 公共 API / Showcase / **推送 GitHub**，业务侧**不会**因此自动更新，运行中的 App **不受影响**；只有用户说 **「同步」** 才按 §5.2 把**当前本仓最新** EDS 刷到 link consumer（`pnpm sync` 等）
+- 用户说 **「同步」** → §5.2；未说 **「同步」** → **禁止**动业务侧；不确定先问
+- **禁止**在未获 **「同步」** 时改业务 consumer、跑 `pnpm sync`、开 `watch:linked-consumers` 或代业务做 EAS / preview 更新
 
 | 用户说 | ✅ | ❌ |
 |--------|----|----|
-| 对齐 Desktop 命名 | §7 对照表；**不**强行改 Mobile export | 把 Mobile slug 改成 `-scene-`  unless 用户明确要求 |
-| 同步 | §5 全流程 | touch `eds-desktop` / `@eds/desktop-*` |
+| 对齐 Desktop 命名 | §7 对照表；**不**强行改 Mobile export | 把 Mobile slug 改成 `-scene-` unless 用户明确要求 |
+| **同步** | §5.2 — 构建本仓 EDS → `pnpm sync` 等，业务侧**此时**才吃到最新设计系统 | 以为 push / 改完 EDS 业务就会变；每次改完 **主动** sync / watch / 催升包；未说「同步」就改 consumer |
 | **推送** | **§10** 全流程（§9 → 全量 commit → push；本地/worktree 不剩） | 只 commit 不 push、漏 add、推前跳过 §9、未确认就问「要不要 push」 |
 
 ### 0.1 Agent 协作方式
@@ -44,7 +46,7 @@ alwaysApply: true
 ## 2. 公共 API 与废弃
 
 - **不留 `@deprecated`**：`packages/components` 公共 export 一旦废弃就**当轮删干净** — prop、类型、`index.ts`、内部兼容分支一并移除。
-- **破坏性变更必须同轮迁移 consumer**（若有）：删/改 export 后 §5 sync + §9 验证。
+- **破坏性变更**在本仓 + Showcase **当轮**删净、§9 验证；**不**因此修改或「帮业务迁完」consumer — 业务在 **「同步」** 前仍用已装版本、**不受影响**；用户说 **「同步」** 时 §5.2 再刷 link consumer 并（按需）typecheck
 - **名字互换要先让位再占位**；全仓扫描须 `rg --hidden`。
 - showcase / packages 内 `@deprecated` 同样当轮清；**不得**留「先标记后清理」。
 - **`generate-catalog.mjs` 不得覆盖已实现组件**：见 §3.3。
@@ -158,6 +160,8 @@ Figma `--corner-smoothing`（60%）在 RN 上 **禁止** 裸写 `borderRadius: t
 
 ## 5. 包名与同步
 
+> **原则**：EDS Mobile 在本仓演进；**业务 consumer 默认不跟跑**。不论改动多大、是否已 push，业务侧**只有**口令 **「同步」** 才会安装/链接到**最新** `@eds/mobile-*`（或 `@eds-evergreen/mobile`）。
+
 | 层 | 包 |
 |----|-----|
 | tokens | `@eds/mobile-tokens` |
@@ -167,12 +171,27 @@ Figma `--corner-smoothing`（60%）在 RN 上 **禁止** 裸写 `borderRadius: t
 | workflows | `@eds/mobile-workflows` |
 | 对外 npm | `@eds-evergreen/mobile` |
 
+### 5.1 与业务 consumer 的边界（默认）
+
+| | 说明 |
+|---|------|
+| **EDS 侧** | 改动只落在 `eds-mobile` + Showcase（`pnpm dev:showcase`）；§9 通过即可交付；**推送**只更新远程本仓，**不等于**业务已更新 |
+| **业务侧** | 继续用当前已解析的 link / npm 版本；**不因** EDS 改 spec、删 export、发版而自动变化 |
+| **Agent** | 任务收尾**默认**只验本仓 + Showcase；**禁止** `pnpm sync`、改 `~/Projects/**` 下 consumer、`watch:linked-consumers`、代跑 EAS Update / `preview:update`，除非本轮用户说了 **「同步」**（或联调且任务**明确**要求 watch — 见 `docs/consumer-linked-dev.md`） |
+| **谁决定升级** | **业务** — 何时拉新代码、重装依赖、发 preview；EDS 不代劳、不催促 |
+
+### 5.2 用户说「同步」时
+
+**含义**：把**当前工作区/本仓最新**设计系统（构建产物 + link 依赖）刷到扫描到的 business consumer — **唯一**会改变业务侧 EDS 版本的 Agent 动作。
+
 | 用户说 | 行为 |
 |--------|------|
-| 「同步」 | `pnpm build:mobile` → link consumer `pnpm install` |
+| 「同步」 | `pnpm build:mobile`（或按本次 diff 的 §9 子集）→ `pnpm sync`（link consumer 内 `pnpm install`）→ 仅在被点名或 §2 破坏性变更且需验集成时跑 **该 consumer** typecheck |
 | 「列出可同步项目」 | `pnpm sync:list` |
 
-扫描 `~/Projects/**/package.json` 含 `link:`/`file:` 指向 `eds-mobile/packages/*`。**单向** Mobile → consumer ✅。
+扫描 `~/Projects/**/package.json` 含 `link:`/`file:` 指向 `eds-mobile/packages/*`。**单向** Mobile → consumer ✅；**触发权仅在「同步」**，非 push、非每轮改 EDS 的默认步骤。
+
+本地 Metro 联调（token reload 到业务 8081）：**仅**业务已在联调且用户/任务明确要求时，见 `docs/consumer-linked-dev.md` 开 `watch:linked-consumers` — **非**改 spec 后的默认步骤；**也**不能替代口令 **「同步」**（装依赖 / 对齐版本仍靠 §5.2）。
 
 ## 6. Mobile 专项
 
@@ -190,6 +209,9 @@ Figma `--corner-smoothing`（60%）在 RN 上 **禁止** 裸写 `borderRadius: t
 
 - Agent 认为**必须**上原生增强 → **先问用户或写进 spec**，不得静默分叉。
 - **已声明**的原生增强：仅在该组件 / 场景入口内叠加；**不得**改 token 语义或 Eg* 对外契约；原生不可用 → 仍呈现 RN + token 外观（见 §6.1），**不得空白**。
+- **已声明 · Android 平滑圆角**：`SmoothCornerView`（`packages/components/android` · Expo 模块 `EdsSmoothCorner`）— Android 13+ Outline path 裁成 Figma 60% squircle；用于 `EgGlass` 裁切层与 `EgSheets` 卡片。iOS 仍 `borderCurve: 'continuous'`；Android ≤12 / Expo Go / 未重编 dev client → 普通圆角。
+- **已声明 · iOS 26+ page / page-shot NavBar 原生**：`createEgEdsAnimaPageNavigator` → native-stack（系统 `UINavigationBar` 样式 / 交互 + 系统 push / pop 转场与侧滑）；`EgEdsAnimaPageShot` 弹层内页面栈 → react-native-screens `ScreenStack`（同上），栏项为 EDS 玻璃钮（返回 / 关闭）；page-shot 展开 / 收回仍为 EDS spring。Android · iOS ≤25 → EDS page spring + RN `EgNavBar`。
+- **已声明 · iOS 26+ `glass-mask-box` 原生背景**：`GlassMaskScrollEdgeScope` 区内 `EgGlass box="glass-mask-box"` 不绘 RN 层，背景由同区 `GlassMaskScrollEdgeHost`（react-native-screens 系统栏 scroll edge effect，无标题 / 栏项）承载；栏布局 / 文本 / 边距仍为 EDS RN（如 `EgSheets` 顶栏）。系统栏不可改高且原生栈裁切自身边界 → 原生栈恒贴宿主顶，EDS 栏下边距补齐到实测系统栏高（EgSheets 内嵌栏 64pt；UIKit 真 sheet `pageSheet` 内为 70pt，因 EgSheets 为 RN 卡片非系统 sheet 容器，定调保持 64），不得下移原生栈（会露白色硬边）；RN 栈仍「上下边距 + 内容」定高。区外与 Android · iOS ≤25 → RN mask。
 
 ### 6.1 EDSGlassView 顶层原则
 
@@ -199,7 +221,7 @@ RN **只做**：统一 API（`EdsGlassView` / `GlassView`）、token 解析、�
 |---|------|
 | 1 | **React Native 栈** — API + 解析 + 兜底；consumer 只引 Eg* / `EdsGlassView`。 |
 | 2 | **Token 真源** — `effect` Glass Box + `spec/liquid-glass/surface.json` → `mobileTheme.glass.surface`；**禁止** `dist/css/material` / `material-glass-*` CSS 叙事；Android 与无增强 iOS **同一套数值**。 |
-| 3 | **iOS 增强** — 消费该样式时，可在 `EdsGlassView` **内部**接原生材质；不可用 → 仍用第 2 步外观，**不得空白**。 |
+| 3 | **平台分流** — **iOS 26+**：各 Eg* 整体切系统原生（材质 + 交互，`shouldUseIosNativeGlassMaterial`）；**Android · iOS ≤25**：一律第 2 步毛玻璃兜底，**无 Android 平台增强**；原生不可用 → 仍用第 2 步外观，**不得空白**。 |
 | 4 | **动效** — `motion` spec（`glass-press` / `glass-shimmer` / `glass-morph`）为兜底；iOS 可叠原生交互，**语义仍走 recipe**。 |
 
 **渲染栈（默认）**
@@ -221,9 +243,8 @@ EdsGlassView
 1. effect 收敛**单一语义档**（如 `effect-glass-liquid`），替代分散 atomic 叙事。  
 2. **样式名 → `resolveGlassAppearance()`** 单链；iOS 增强由样式触发。  
 3. Android blur 观感 / expo-blur 参数调优。  
-4. iOS 26+ 系统液态材质增强（**自研 native**，非 Callstack 平行 API）。  
-5. RN 默认路径与 Web `liquid-glass.js` 边界写清 spec；清理 Skia shader 默认叙事。  
-6. 真机 demo：限制同时 active blur；列表/Tab 默认 frost preset。
+4. RN 默认路径与 Web `liquid-glass.js` 边界写清 spec；清理 Skia shader 默认叙事。  
+5. 真机 demo：限制同时 active blur；列表/Tab 默认 frost preset。
 
 - Event 语义：`event-tap*`（非 desktop `event-hover`）
 - Brand 基色：真源 `spec/color/base.json` → `--eds-brand`（Mobile Figma 默认；**consumer 项目自行覆盖**，非全局固定 hex）
@@ -231,10 +252,16 @@ EdsGlassView
 - **Motion 三层（同架构文档 · Semantic 沿用现有 class）** — `Base → Recipe → Semantic` · 见 `spec/motion/README.md`：
   - **Base** — 唯一底层参数（duration / spring / haptic / opacity / scale …）→ `base.css`
   - **Recipe** — 组合 Base（`namedRecipes` + `--motion-recipe-*`）→ `recipe.css`
-  - **Semantic** — 场景 class（`.motion-tap` 等，**非**文档 8 场景）+ `compositions[]` / `reducedMotion` → `semantic.css`
-  - **RN** — 同 spec 生成 `@eds/mobile-animations`（`resolveMotionRecipe` / `resolveMotionComposition`）
+  - **Semantic** — 场景 class（`.motion-press` 等，与 `EdsSemanticAnima('<scenarioId>')` 同名）+ `compositions[]` / `reducedMotion` → `semantic.css`
+  - **RN** — 同 spec 生成 `@eds/mobile-animations`（`EdsRecipeAnima` · `EdsSemanticAnima` · `resolveMotionComposition`）
 - 解析链 Semantic → Recipe → Base；catalog：`@eds/mobile-tokens/motion/catalog`
 - consumer 禁止硬编码 spring；Reduce Motion 用 `motion-reduced-fade`
+- **场景动效业务入口（声明）** — EDS 封装好，业务只按 showcase「定制」配参数，禁止用 `EdsSemanticAnima` 手拼：命名 `EgEdsAnima{场景}` — press `EgEdsAnimaPress` · slide `EgEdsAnimaSlide` · layout-content `EgEdsAnimaLayoutContent` · page `EgEdsAnimaPage({ direction, dragDismiss })` · page-shot `EgEdsAnimaPageShot` + `EgEdsAnimaPageShotTrigger`；menu / sheets 入口即 catalog 组件 `EgMenu` / `EgSheets`（§3 命名，不另起名）
+- **页面切换（声明）** — 两类，动效各自唯一：
+ - **普通左右切换** → `EdsSemanticAnima('page')`（返回 / 侧滑 `page-back`）
+ - **弹层页面、卡片等** → `EdsSemanticAnima('page-shot')`：自**触发元素** frame 展开整页、收起飞回；卡片 / 按钮 / 列表行等仅触发元素不同，**动效一致**（不另做无源 / 淡入变体）
+ - **可互相嵌套**：page 页面里可开 page-shot，page-shot 弹层内可左右切换 page；嵌套不改变任一方动效
+ - **业务默认**：页面切换 — `createEgEdsAnimaPageNavigator()` + `screenOptions={EgEdsAnimaPage({ direction, dragDismiss })}`（`@eds/mobile-components`）；平台分流见 §6.0「page / page-shot NavBar」声明
 
 ## 7. EDS Desktop 对照（跨端 · 不强制改名）
 
@@ -272,7 +299,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 | `packages/tokens/**` | `pnpm build:tokens` |
 | `packages/mobile/**`（npm _bundle） | `pnpm build:mobile` |
 | `apps/showcase/**` | `pnpm --filter @eds/mobile-showcase typecheck` |
-| 公共 export 增删改名（§2） | 上述 + `pnpm sync` + consumer typecheck |
+| 公共 export 增删改名（§2） | 上述；consumer typecheck + `pnpm sync` **仅当用户本轮说「同步」** |
 
 - 批量改名后 `rg --hidden` 回扫残留
 - 报告须区分「本次引入」与「预先存在」失败
@@ -312,3 +339,11 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 - 2026-10-12：移除 `dist/css/material`、`spec/material/`、`mobileTheme.glass.material`；GlassSurface preset 迁至 `spec/liquid-glass/surface.json` → `glass.surface`；showcase 无 Material token 页。
 - 2026-10-12：§6.0 **RN 默认栈（原生增强闸门）** — 无明确声明不得默认原生分叉；原 EDSGlassView 原则顺延 §6.1。
 - 2026-10-14：§10 **推送** — 「推送」= §9 全绿 → 全量 commit（默认 main）→ push；本仓无 Pages；Desktop Pages 另仓；禁止只 commit / 漏文件 / 默认 force push main。
+- 2026-10-29：§5 — EDS 改动默认不主动同步业务 consumer；仅用户说 **「同步」** 时 §5.2；§9 破坏性 API 的 consumer 验证同口令触发。
+- 2026-10-29：§0 / §2 / §5 — 明确业务侧默认不受 EDS 改动与 push 影响；**「同步」** 为刷最新设计系统到 consumer 的唯一口令；§2 破坏性变更不再默认同轮改 consumer。
+- 2026-11-11：§6.0 — 用户声明 Android 平滑圆角原生增强（`SmoothCornerView` / `EdsSmoothCorner`，Android 13+）。
+- 2026-11-11：§6.0 — 用户声明 iOS 26+ `glass-mask-box` 原生背景（系统 scroll edge effect · `GlassMaskScrollEdgeScope` / `Host`）；首个场景 `EgSheets` 顶栏。
+- 2026-11-11：§6 Motion — 声明页面切换两类：`page`（普通左右）/ `page-shot`（弹层页面、卡片等，触发元素不同动效一致）；二者可互相嵌套；业务页面切换默认 `edsPageScreenOptions`（`@react-navigation/stack`）。
+- 2026-11-11：§6 Motion — 场景动效业务入口统一 `EgEdsAnima{场景}`（Press / Slide / LayoutContent / Page / PageShot）；删 `MotionPressable`、`EgMotionLayoutContent`、`edsPage*ScreenOptions` / interpolator；menu / sheets 沿用 `EgMenu` / `EgSheets`。
+- 2026-11-11：§6.0 — 用户声明 iOS 26+ page / page-shot NavBar 原生（native-stack / RNS `ScreenStack` · 系统栏与转场）；其余平台 EDS page spring + `EgNavBar`；业务入口 `createEgEdsAnimaPageNavigator` + `EgEdsAnimaPage`。
+- 2026-11-09：§6.1 — 玻璃平台分流定调：iOS 26+ 完全原生（材质 + 交互）；Android 与 iOS ≤25 一律毛玻璃兜底；移除 Android 平台增强（react-native-android-liquid-glass）。

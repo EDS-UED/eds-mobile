@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * iOS 26+ 系统 Tab 条只接受位图 → EDS SVG 栅格化为 template PNG（@1x/@2x/@3x）。
- * 描边与 EgIcon Tab 尺寸一致：`stroke-lg`（2px @24pt）→ @3x 位图约 6px 线宽。
+ * 描边与 EgIcon Tab 尺寸一致：`stroke-xl`（2px @24pt）→ @3x 位图约 6px 线宽。
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -15,7 +15,7 @@ const outDir = join(root, 'src/organisms/tab-bar/_shared/native-tab-icons');
 
 /** 与 token `symbol-lg` / TabBar `ICON_PT` 一致 */
 const ICON_PT = 24;
-/** 与 token `stroke-lg`（2px）一致 — 须与 colorizeIconMarkup 同步 */
+/** 与 token `stroke-xl`（2px）一致 — 须与 colorizeIconMarkup 同步 */
 const STROKE_LG_PX = 2;
 const ICON_VIEWBOX_SIZE = 32;
 const SCALES = [1, 2, 3];

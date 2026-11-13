@@ -1,91 +1,206 @@
 {
   "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
-  "$description": "EDS Mobile Motion Recipe — 组合 Base 参数为可复用配方；Semantic 只引用 recipe id + css var。",
+  "$description": "EDS Mobile Motion Recipe — press / slide / layout-content 等。",
   "namedRecipes": [
-    { "id": "press", "label": "Press", "springRef": "press", "hapticRef": "light", "cssRecipe": "motion-recipe-tap", "semanticClass": "motion-tap" },
+    { "id": "press", "label": "Press", "springRef": "press", "hapticRef": "light", "cssRecipe": "motion-recipe-press", "semanticClass": "motion-press" },
     {
       "id": "press-scale-out",
       "label": "Press Scale Out",
       "springRef": "press-release",
-      "cssRecipe": "motion-recipe-tap",
+      "cssRecipe": "motion-recipe-press",
       "notes": "松手回弹 · sm/md/lg/xl 共用"
     },
-    { "id": "interactive", "label": "Interactive", "springRef": "interactive", "hapticRef": "selection", "velocityAware": true, "interruptible": true },
-    { "id": "navigation", "label": "Navigation", "springRef": "navigation", "timingRef": "navigationPush", "cssRecipe": "motion-recipe-page-push", "semanticClass": "motion-page" },
-    { "id": "sheet", "label": "Sheet", "springRef": "sheet", "hapticRef": "selection", "cssRecipe": "motion-recipe-flotation-enter", "semanticClass": "motion-flotation" },
-    { "id": "modal", "label": "Modal", "springRef": "modal", "cssRecipe": "motion-recipe-flotation-enter", "semanticClass": "motion-flotation" },
-    { "id": "control", "label": "Control", "springRef": "control", "cssRecipe": "motion-recipe-control", "semanticClass": "motion-deform", "hapticRef": "selection" },
-    { "id": "enter", "label": "Enter", "timingRef": "easeIn", "cssRecipe": "motion-recipe-enter", "semanticClass": "motion-focus" },
-    { "id": "exit", "label": "Exit", "timingRef": "easeOut", "cssRecipe": "motion-recipe-exit" },
-    { "id": "expand", "label": "Expand", "springRef": "gentle", "cssRecipe": "motion-recipe-enter", "semanticClass": "motion-layout" },
-    { "id": "collapse", "label": "Collapse", "springRef": "gentle", "timingRef": "easeOut", "cssRecipe": "motion-recipe-exit", "semanticClass": "motion-layout" },
-    { "id": "layout-deform", "label": "Layout Deform", "springRef": "gentle", "cssRecipe": "motion-recipe-layout-deform-shell", "semanticClass": "motion-layout-deform" },
-    { "id": "glass-press", "label": "Glass Press", "springRef": "press", "hapticRef": "light", "cssRecipe": "motion-recipe-glass-press", "semanticClass": "motion-glass-interactive" },
-    { "id": "glass-shimmer", "label": "Glass Shimmer", "timingRef": "easeIn", "cssRecipe": "motion-recipe-glass-shimmer", "semanticClass": "motion-glass-shimmer" },
-    { "id": "glass-morph", "label": "Glass Morph", "springRef": "gentle", "cssRecipe": "motion-recipe-glass-morph", "semanticClass": "motion-glass-morph" },
-    { "id": "scroll-fade", "label": "Scroll Fade", "cssRecipe": "motion-recipe-scroll-fade" },
-    { "id": "drag", "label": "Drag", "springRef": "drag", "hapticRef": "light", "velocityAware": true, "interruptible": true },
-    { "id": "dismiss", "label": "Dismiss", "springRef": "interactive", "timingRef": "easeOut", "semanticClass": "motion-flotation", "velocityAware": true },
-    { "id": "success", "label": "Success", "springRef": "bouncy", "hapticRef": "success" },
-    { "id": "error", "label": "Error", "springRef": "press", "timingRef": "easeOut", "hapticRef": "error" },
-    { "id": "loading", "label": "Loading", "timingRef": "easeInOut", "cssRecipe": "motion-recipe-fade" }
+    {
+      "id": "slide",
+      "label": "Slide",
+      "springRef": "control",
+      "cssRecipe": "motion-recipe-control",
+      "semanticClass": "motion-slide",
+      "hapticRef": "selection",
+      "velocityAware": true,
+      "interruptible": true
+    },
+    {
+      "id": "drag",
+      "label": "Drag",
+      "springRef": "drag",
+      "hapticRef": "light",
+      "velocityAware": true,
+      "interruptible": true,
+      "notes": "slide 跟手 · 非独立 Semantic"
+    },
+    {
+      "id": "layout-content",
+      "label": "Layout Content",
+      "timingRef": "layout-deform-content-opacity",
+      "cssRecipe": "motion-recipe-layout-deform-content",
+      "semanticClass": "motion-layout-content",
+      "interruptible": true,
+      "notes": "同壳 Tab / Detail 正文 crossfade · RN 双时长见 base.timings"
+    },
+    {
+      "id": "menu",
+      "label": "Menu",
+      "springRef": "menu-in",
+      "hapticRef": "light",
+      "cssRecipe": "motion-recipe-menu",
+      "semanticClass": "motion-menu",
+      "interruptible": true,
+      "notes": "iOS 27 浮层倒出 · Menu / Popover 整个容器自触发点缩放展开，spring 轻过冲回弹落位；壳与内容同一 transform，不分层"
+    },
+    {
+      "id": "menu-dismiss",
+      "label": "Menu Dismiss",
+      "springRef": "menu-out",
+      "cssRecipe": "motion-recipe-menu",
+      "interruptible": true,
+      "notes": "收回触发点 · 非独立 Semantic"
+    },
+    {
+      "id": "sheets",
+      "label": "Sheets",
+      "springRef": "sheets-present",
+      "cssRecipe": "motion-recipe-sheets",
+      "semanticClass": "motion-sheets",
+      "velocityAware": true,
+      "interruptible": true,
+      "notes": "iOS 27 Sheet · 自底部滑入；部分高度档为悬浮卡片（四周 inset · 四角圆角），升至全高档时 inset → 0、底角 → 0 贴边"
+    },
+    {
+      "id": "sheets-detent",
+      "label": "Sheets Detent",
+      "springRef": "sheets-detent",
+      "hapticRef": "selection",
+      "velocityAware": true,
+      "interruptible": true,
+      "notes": "拖拽松手按速度投影吸附档位 · 非独立 Semantic"
+    },
+    {
+      "id": "sheets-dismiss",
+      "label": "Sheets Dismiss",
+      "timingRef": "sheets-dismiss",
+      "velocityAware": false,
+      "interruptible": true,
+      "notes": "下滑 / 点遮罩 / 关闭按钮收起 · 定时下滑（无弹簧 · 先快后慢）· 非独立 Semantic"
+    },
+    {
+      "id": "page",
+      "label": "Page",
+      "springRef": "page-push",
+      "cssRecipe": "motion-recipe-page",
+      "semanticClass": "motion-page",
+      "velocityAware": true,
+      "interruptible": true,
+      "notes": "普通页面左右切换（弹层内的左右切换同用）· 新页自右推入（下层页同步视差左移 × motion-ratio-page-parallax 并压暗）· spring 轻过冲回弹落位"
+    },
+    {
+      "id": "page-back",
+      "label": "Page Back",
+      "springRef": "page-pop",
+      "cssRecipe": "motion-recipe-page",
+      "velocityAware": true,
+      "interruptible": true,
+      "notes": "返回 · 当前页右移离场、下层页整屏同速推回（非视差）轻回弹；左缘侧滑跟手松手继承速度 · iOS 26+ 原生栈为系统 pop · 非独立 Semantic"
+    },
+    {
+      "id": "page-shot",
+      "label": "Page Shot",
+      "springRef": "page-shot-open",
+      "cssRecipe": "motion-recipe-page-shot",
+      "semanticClass": "motion-page-shot",
+      "interruptible": true,
+      "notes": "弹层页面 / 卡片（App Store Today 式）· 自触发源 frame（卡片、按钮、列表行…）展开铺满整页（圆角 → 0、背后压暗；触发元素不同，动效一致），正文在后段淡入；弹层内左右切换走 page；点按触发源沿用 press"
+    },
+    {
+      "id": "page-shot-dismiss",
+      "label": "Page Shot Dismiss",
+      "springRef": "page-shot-close",
+      "cssRecipe": "motion-recipe-page-shot",
+      "velocityAware": true,
+      "interruptible": true,
+      "notes": "关闭 / 下拉 / 根页左缘侧滑收起 · 跟手缩至 motion-scale-page-shot-dismiss 并加圆角，松手飞回触发元素 · 先快后慢（起步 motion-ratio-page-shot-close-launch · 临界阻尼无过冲）（弹层内整个页面栈一并收起）· 非独立 Semantic"
+    }
   ],
   "groups": [
     {
       "comment": "Duration roles（→ motion-N）",
       "tokenList": [
-        { "name": "motion-duration-instant", "value": "var(--motion-0)" },
         { "name": "motion-duration-micro", "value": "var(--motion-1)" },
-        { "name": "motion-duration-fast", "value": "var(--motion-2)" },
-        { "name": "motion-duration-normal", "value": "var(--motion-3)" },
-        { "name": "motion-duration-slow", "value": "var(--motion-4)" },
-        { "name": "motion-duration-emphasis", "value": "var(--motion-5)" },
-        { "name": "motion-duration-control", "value": "var(--motion-6)" },
-        { "name": "motion-duration-navigation", "value": "var(--motion-7)" },
-        { "name": "motion-duration-spin", "value": "var(--motion-8)" },
-        { "name": "motion-duration-spin-slow", "value": "var(--motion-9)" },
+        { "name": "motion-duration-press", "value": "var(--motion-1)" },
+        { "name": "motion-duration-control", "value": "var(--motion-3)" },
         { "name": "motion-duration-fade", "value": "var(--motion-2)" },
-        { "name": "motion-duration-enter", "value": "var(--motion-3)" },
-        { "name": "motion-duration-exit", "value": "var(--motion-2)" },
-        { "name": "motion-duration-tap", "value": "var(--motion-1)" },
-        { "name": "motion-duration-shift", "value": "var(--motion-3)" },
-        { "name": "motion-duration-scroll-fade", "value": "var(--motion-5)" },
-        { "name": "motion-duration-layout-deform", "value": "var(--motion-7)" },
-        { "name": "motion-duration-layout-deform-content", "value": "var(--motion-2)" },
-        { "name": "motion-delay-layout-deform-content-swap", "value": "120ms" },
-        { "name": "motion-delay-feedback-tick", "value": "var(--motion-3)" },
-        { "name": "motion-glass-duration-press", "value": "150ms" },
-        { "name": "motion-glass-duration-release", "value": "220ms" },
-        { "name": "motion-glass-duration-shimmer", "value": "var(--motion-3)" },
-        { "name": "motion-glass-duration-morph", "value": "420ms" }
+        {
+          "name": "motion-duration-layout-deform",
+          "value": "var(--motion-5)",
+          "comment": "350ms · Layout Deform shell / content transform"
+        },
+        {
+          "name": "motion-duration-layout-deform-content",
+          "value": "var(--motion-2)",
+          "comment": "180ms · Layout Content opacity"
+        },
+        {
+          "name": "motion-duration-menu",
+          "value": "var(--motion-6)",
+          "comment": "400ms · Menu 容器展开（CSS 近似 spring menu-in）"
+        },
+        {
+          "name": "motion-duration-sheets",
+          "value": "var(--motion-7)",
+          "comment": "500ms · Sheets Sheet 呈现 / 档位切换（CSS 近似 spring sheets-present）"
+        },
+        {
+          "name": "motion-duration-page",
+          "value": "var(--motion-5)",
+          "comment": "350ms · Page 左右切换（CSS 近似 spring page-push / page-pop）"
+        },
+        {
+          "name": "motion-duration-page-shot",
+          "value": "var(--motion-6)",
+          "comment": "400ms · Page Shot 弹层页面 / 卡片展开 / 收起（CSS 近似 spring page-shot-open / close）"
+        },
+        {
+          "name": "motion-delay-layout-deform-content-swap",
+          "value": "120ms",
+          "comment": "正文淡出中途换 Tab 数据"
+        }
       ]
     },
     {
       "comment": "Easing roles",
       "tokenList": [
         { "name": "motion-easing-standard", "value": "var(--motion-ease-1)" },
-        { "name": "motion-easing-enter", "value": "var(--motion-ease-2)" },
-        { "name": "motion-easing-exit", "value": "var(--motion-ease-3)" },
         { "name": "motion-easing-product", "value": "var(--motion-ease-4)" },
-        { "name": "motion-easing-linear", "value": "var(--motion-ease-5)" },
-        { "name": "motion-easing-spring", "value": "var(--motion-ease-6)" },
-        { "name": "motion-easing-spring-emphasis", "value": "var(--motion-ease-7)" },
-        { "name": "motion-easing-decelerate", "value": "var(--motion-ease-8)" },
-        { "name": "motion-easing-navigation", "value": "var(--motion-ease-9)" }
+        {
+          "name": "motion-easing-float",
+          "value": "var(--motion-ease-7)",
+          "comment": "Layout Content translateY"
+        },
+        {
+          "name": "motion-easing-menu",
+          "value": "var(--motion-ease-9)",
+          "comment": "Menu 表面展开 · iOS sheet 曲线"
+        },
+        {
+          "name": "motion-easing-decelerate",
+          "value": "var(--motion-ease-8)",
+          "comment": "Menu 容器出现"
+        },
+        {
+          "name": "motion-easing-sheets",
+          "value": "var(--motion-ease-9)",
+          "comment": "Sheets Sheet · iOS sheet 曲线"
+        },
+        {
+          "name": "motion-easing-page",
+          "value": "var(--motion-ease-6)",
+          "comment": "Page / Page Shot · 轻过冲回弹（CSS 近似 spring）"
+        }
       ]
     },
     {
       "comment": "Property bundles",
       "tokenList": [
-        {
-          "name": "motion-property-paint",
-          "value": "background-color, color, border-color, box-shadow, opacity, outline-color, fill"
-        },
-        {
-          "name": "motion-property-geometry",
-          "value": "flex, max-width, width, min-width, max-height, transform, left, padding"
-        },
-        { "name": "motion-property-fade", "value": "opacity" },
         { "name": "motion-property-transform", "value": "transform, opacity" }
       ]
     },
@@ -93,100 +208,46 @@
       "comment": "Recipes",
       "tokenList": [
         {
-          "name": "motion-recipe-fade",
-          "value": "opacity var(--motion-duration-fade) var(--motion-easing-standard)"
-        },
-        {
-          "name": "motion-recipe-enter",
-          "value": "opacity var(--motion-duration-enter) var(--motion-easing-enter), transform var(--motion-duration-enter) var(--motion-easing-enter)"
-        },
-        {
-          "name": "motion-recipe-exit",
-          "value": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-exit) var(--motion-easing-exit)"
-        },
-        {
-          "name": "motion-recipe-tap",
-          "value": "background-color var(--motion-duration-tap) var(--motion-easing-standard), color var(--motion-duration-tap) var(--motion-easing-standard), border-color var(--motion-duration-tap) var(--motion-easing-standard), opacity var(--motion-duration-tap) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-tap) var(--motion-easing-standard)"
-        },
-        {
-          "name": "motion-recipe-flotation-enter",
-          "value": "opacity var(--motion-duration-enter) var(--motion-easing-standard), transform var(--motion-duration-emphasis) var(--motion-easing-spring-emphasis)"
-        },
-        {
-          "name": "motion-recipe-flotation-exit",
-          "value": "opacity var(--motion-duration-exit) var(--motion-easing-exit), transform var(--motion-duration-fast) var(--motion-easing-decelerate)"
+          "name": "motion-recipe-press",
+          "value": "background-color var(--motion-duration-press) var(--motion-easing-standard), color var(--motion-duration-press) var(--motion-easing-standard), border-color var(--motion-duration-press) var(--motion-easing-standard), opacity var(--motion-duration-press) var(--motion-easing-standard), transform var(--motion-duration-micro) var(--motion-easing-product), fill var(--motion-duration-press) var(--motion-easing-standard)"
         },
         {
           "name": "motion-recipe-control",
           "value": "transform var(--motion-duration-control) var(--motion-easing-product), width var(--motion-duration-control) var(--motion-easing-product)"
         },
         {
-          "name": "motion-recipe-shift",
-          "value": "flex var(--motion-duration-shift) var(--motion-easing-standard), max-width var(--motion-duration-shift) var(--motion-easing-standard), width var(--motion-duration-shift) var(--motion-easing-standard), min-width var(--motion-duration-shift) var(--motion-easing-standard), max-height var(--motion-duration-shift) var(--motion-easing-standard), transform var(--motion-duration-shift) var(--motion-easing-standard), left var(--motion-duration-shift) var(--motion-easing-standard), padding var(--motion-duration-shift) var(--motion-easing-standard)"
-        },
-        {
-          "name": "motion-recipe-scroll-fade",
-          "value": "opacity var(--motion-duration-scroll-fade) var(--motion-easing-decelerate)"
-        },
-        {
-          "name": "motion-recipe-scroll-fade-background",
-          "value": "background var(--motion-duration-scroll-fade) var(--motion-easing-decelerate)"
-        },
-        {
-          "name": "motion-recipe-page-push",
-          "value": "opacity var(--motion-duration-navigation) var(--motion-easing-navigation), transform var(--motion-duration-navigation) var(--motion-easing-navigation)"
-        },
-        {
-          "name": "motion-recipe-layout-deform-shell",
-          "value": "height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-height var(--motion-duration-layout-deform) var(--motion-easing-decelerate), width var(--motion-duration-layout-deform) var(--motion-easing-decelerate), max-width var(--motion-duration-layout-deform) var(--motion-easing-decelerate)"
-        },
-        {
           "name": "motion-recipe-layout-deform-content",
-          "value": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-decelerate)"
+          "value": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-float)"
         },
         {
-          "name": "motion-recipe-glass-press",
-          "value": "transform var(--motion-glass-duration-press) var(--motion-easing-standard)"
+          "name": "motion-recipe-sheets",
+          "value": "transform var(--motion-duration-sheets) var(--motion-easing-sheets), height var(--motion-duration-sheets) var(--motion-easing-sheets), left var(--motion-duration-sheets) var(--motion-easing-sheets), right var(--motion-duration-sheets) var(--motion-easing-sheets), bottom var(--motion-duration-sheets) var(--motion-easing-sheets), border-radius var(--motion-duration-sheets) var(--motion-easing-sheets)"
         },
         {
-          "name": "motion-recipe-glass-shimmer",
-          "value": "opacity var(--motion-glass-duration-shimmer) var(--motion-easing-standard)"
+          "name": "motion-recipe-menu",
+          "value": "transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate)"
         },
         {
-          "name": "motion-recipe-glass-morph",
-          "value": "var(--motion-recipe-layout-deform-shell)"
+          "name": "motion-recipe-page",
+          "value": "transform var(--motion-duration-page) var(--motion-easing-page), filter var(--motion-duration-page) var(--motion-easing-standard)"
+        },
+        {
+          "name": "motion-recipe-page-shot",
+          "value": "transform var(--motion-duration-page-shot) var(--motion-easing-page), top var(--motion-duration-page-shot) var(--motion-easing-page), left var(--motion-duration-page-shot) var(--motion-easing-page), width var(--motion-duration-page-shot) var(--motion-easing-page), height var(--motion-duration-page-shot) var(--motion-easing-page), border-radius var(--motion-duration-page-shot) var(--motion-easing-page)"
         }
-      ]
-    },
-    {
-      "comment": "Displace（方向位移 glue）",
-      "tokenList": [
-        { "name": "motion-displace-from-bottom", "value": "translateY(var(--motion-distance-sm))" },
-        { "name": "motion-displace-from-top", "value": "translateY(calc(-1 * var(--motion-distance-sm)))" },
-        { "name": "motion-displace-from-left", "value": "translateX(calc(-1 * var(--motion-distance-sm)))" },
-        { "name": "motion-displace-from-right", "value": "translateX(var(--motion-distance-sm))" }
       ]
     }
   ],
   "reducedMotionOverrides": [
     { "name": "motion-duration-micro", "value": "var(--motion-0)" },
-    { "name": "motion-duration-fast", "value": "var(--motion-0)" },
-    { "name": "motion-duration-normal", "value": "var(--motion-0)" },
-    { "name": "motion-duration-slow", "value": "var(--motion-0)" },
-    { "name": "motion-duration-emphasis", "value": "var(--motion-0)" },
+    { "name": "motion-duration-press", "value": "var(--motion-0)" },
     { "name": "motion-duration-control", "value": "var(--motion-0)" },
-    { "name": "motion-duration-navigation", "value": "var(--motion-0)" },
     { "name": "motion-duration-fade", "value": "var(--motion-0)" },
-    { "name": "motion-duration-enter", "value": "var(--motion-0)" },
-    { "name": "motion-duration-exit", "value": "var(--motion-0)" },
-    { "name": "motion-duration-tap", "value": "var(--motion-0)" },
-    { "name": "motion-duration-shift", "value": "var(--motion-0)" },
-    { "name": "motion-duration-scroll-fade", "value": "var(--motion-0)" },
-    { "name": "motion-duration-spin", "value": "var(--motion-0)" },
-    { "name": "motion-duration-spin-slow", "value": "var(--motion-0)" },
     { "name": "motion-duration-layout-deform", "value": "var(--motion-0)" },
     { "name": "motion-duration-layout-deform-content", "value": "var(--motion-0)" },
-    { "name": "motion-delay-layout-deform-content-swap", "value": "var(--motion-0)" },
-    { "name": "motion-delay-feedback-tick", "value": "var(--motion-0)" }
+    { "name": "motion-duration-menu", "value": "var(--motion-0)" },
+    { "name": "motion-duration-sheets", "value": "var(--motion-0)" },
+    { "name": "motion-duration-page", "value": "var(--motion-0)" },
+    { "name": "motion-duration-page-shot", "value": "var(--motion-0)" }
   ]
 }

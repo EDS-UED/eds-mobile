@@ -36,6 +36,35 @@ function toHexByte(value) {
   return Math.round(value).toString(16).padStart(2, '0');
 }
 
+/**
+ * tag-palette.json · `ref:eds-same-black` | `ref:eds-base/0.05`
+ * CSS：`var(--eds-*)` / `color(var(--eds-*) / α)`；RN：解析为 hex。
+ */
+export function resolveTagPaletteRef(raw, themeName, baseSpec) {
+  if (typeof raw !== 'string' || !raw.startsWith('ref:')) {
+    return { kind: 'hex', value: raw };
+  }
+
+  const body = raw.slice(4);
+  const slash = body.indexOf('/');
+  if (slash >= 0) {
+    const edsKey = body.slice(0, slash);
+    const alpha = body.slice(slash + 1);
+    const css = `color(var(--${edsKey}) / ${alpha})`;
+    return {
+      kind: 'css',
+      css,
+      hex: resolveSemanticColorToHex(css, themeName, baseSpec),
+    };
+  }
+
+  return {
+    kind: 'css',
+    css: `var(--${body})`,
+    hex: resolveSemanticColorToHex(`color(var(--${body}) / 1)`, themeName, baseSpec),
+  };
+}
+
 /** Resolve spec reference syntax to 6- or 8-digit hex for RN / JSON consumers. */
 export function resolveSemanticColorToHex(value, themeName, baseSpec) {
   const reference = parseEdsColorReference(value);

@@ -75,8 +75,7 @@ export function MotionCatalogDetailView() {
 
         <DocSection title="RN runtime">
           <Text style={styles.body}>
-            Consumer 使用 resolveMotionRecipe / resolveMotionComposition（@eds/mobile-animations），禁止硬编码
-            spring。Reduce Motion 走 motion-reduced-fade。
+            Consumer：`EdsRecipeAnima` · `EdsSemanticAnima('press' | 'slide' | 'layout-content' | 'menu' | 'sheets' | 'page' | 'page-shot')`。Reduce Motion：`motion-none` / `motion-reduced-fade`。
           </Text>
         </DocSection>
       </ScrollView>

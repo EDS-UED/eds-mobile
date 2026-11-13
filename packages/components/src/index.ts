@@ -48,12 +48,18 @@ export {
   EgButtonGlassNavIconPlusSlotContent,
   egButtonGlassAvatarElementMarginPx,
   egButtonGlassAvatarInsetPx,
+  egButtonGlassSplitPairGapPx,
+  resolveEgButtonGlassPressIntensity,
   shouldUseEgButtonGlassNativeStack,
+  resolveEgButtonGlassRenderStack,
+  readEgButtonGlassStackDiagnostics,
 } from './molecules/button/button-glass';
 export type {
   EgButtonGlassProps,
   EgButtonGlassKind,
   EgButtonGlassIconCount,
+  EgButtonGlassRenderStack,
+  EgButtonGlassStackDiagnostics,
 } from './molecules/button/button-glass';
 export { EgInput } from './molecules/input/input';
 export { EgSearch } from './molecules/input/search';
@@ -74,11 +80,12 @@ export { EgDecide } from './molecules/toggle/decide';
 export { EgBaseTab } from './molecules/tab/base-tab';
 export { EgSegmentedControlBase } from './molecules/tab/segmented-control-base';
 export { EgSegmentedControl } from './molecules/tab/segmented-control';
-export { EgTabs } from './molecules/tab/tabs';
+export { EgTab } from './molecules/tab/tab';
 export { EgTriggerDropdown } from './molecules/dropdown/trigger-dropdown';
 export { EgFormSubmissionFeedback } from './molecules/feedback/form-submission-feedback';
 export { EgStatusCardFeedback } from './molecules/feedback/status-card-feedback';
 export { EgToastFeedback } from './molecules/feedback/toast-feedback';
+export { EgReddot } from './molecules/feedback/reddot';
 export {
   EgTabBar,
   EgTabBarBottomTabsDock,
@@ -95,6 +102,7 @@ export {
   tabBarTrackIntrinsicHeight,
   TAB_BAR_PILL_TRACK_HEIGHT,
   createEgTabBarBottomTabsBinding,
+  createEgTabBarExpoBottomTabsBinding,
   egTabBarRouteNameForIndex,
   egTabBarSelectedIndexForActiveRoute,
 } from './organisms/tab-bar/tab-bar';
@@ -107,6 +115,7 @@ export type {
   EgTabBarBottomTabNavigation,
   EgTabBarBottomTabNavigationState,
   EgTabBarBottomTabRoute,
+  EgTabBarExpoBottomTabsEmitter,
   EgTabBarNavBindItem,
 } from './organisms/tab-bar/tab-bar';
 export { EgTabBarItem } from './organisms/tab-bar/tab-bar-item';
@@ -130,6 +139,7 @@ export {
   shouldUseEgNavBarNativeStack,
   egNavBarNativeStackOptions,
   egNavBarNativeStackScreenOptions,
+  egNavBarNativeStackHeaderGlassItem,
   useEgNavBarScroll,
   EG_NAV_BAR_PADDING_BOTTOM,
   EG_NAV_BAR_PADDING_HORIZONTAL,
@@ -141,6 +151,7 @@ export type {
   EgNavBarProps,
   EgNavBarAction,
   EgNavBarBackground,
+  EgNavBarScrollEdgeEffect,
   EgNavBarScrollOffset,
   EgNavBarNativeStackOptions,
   EgNavBarNativeStackOptionsInput,
@@ -293,6 +304,21 @@ export { EgIconZoomIn } from './atoms/icon/icon-zoom-in';
 export { EgIconZoomOut } from './atoms/icon/icon-zoom-out';
 export { EgIconIConDrawType6 } from './atoms/icon/icon-icon-draw-type6';
 export { EgIconOvalTickMini } from './atoms/icon/icon-oval-tick-mini';
+export {
+  EgMenu,
+  EgMenuTrigger,
+  shouldUseEgMenuNativeStack,
+  resolveEgMenuRenderStack,
+} from './molecules/dropdown/menu';
+export type {
+  EgMenuItem,
+  EgMenuProps,
+  EgMenuSection,
+  EgMenuTriggerContext,
+  EgMenuTriggerProps,
+} from './molecules/dropdown/menu';
+export { EgSheets } from './organisms/sheets';
+export type { EgSheetsDetent, EgSheetsProps } from './organisms/sheets';
 export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';
 export type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';
 export {
@@ -308,8 +334,6 @@ export {
   nativeBlurIntensity,
   resolveAndroidBlurMethod,
   getNativeLinearGradient,
-  getAndroidLiquidGlassView,
-  isAndroidLiquidGlassAvailable,
   getSkiaModule,
   isSkiaGlassAvailable,
   resolveGlassBoxComposition,
@@ -343,4 +367,28 @@ export { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './p
 export type { ParityMeasurement, ParityReport } from './preview/ParityHarness';
 export { LiquidGlassDemo } from './preview/LiquidGlassDemo';
 export { MotionDemo } from './preview/MotionDemo';
+export { EgEdsAnimaPress } from './shared/motion/EgEdsAnimaPress.js';
+export type { EgEdsAnimaPressProps } from './shared/motion/EgEdsAnimaPress.js';
+export { useEgSlideTrack } from './shared/motion/useEgSlideTrack.js';
+export type { EgSlideTrackOptions } from './shared/motion/useEgSlideTrack.js';
+export { EgEdsAnimaSlide } from './shared/motion/EgEdsAnimaSlide.js';
+export type { EgEdsAnimaSlideItem, EgEdsAnimaSlideProps } from './shared/motion/EgEdsAnimaSlide.js';
+export {
+  EgEdsAnimaPage,
+  createEgEdsAnimaPageNavigator,
+  shouldUseEgEdsAnimaNativePage,
+} from './shared/motion/EgEdsAnimaPage.js';
+export type { EgEdsAnimaPageDirection, EgEdsAnimaPageOptions } from './shared/motion/EgEdsAnimaPage.js';
+export { EgEdsAnimaPageShot, EgEdsAnimaPageShotTrigger } from './shared/motion/EgEdsAnimaPageShot.js';
+export type {
+  EgEdsAnimaPageShotPageApi,
+  EgEdsAnimaPageShotProps,
+  EgEdsAnimaPageShotRootApi,
+  EgEdsAnimaPageShotSource,
+  EgEdsAnimaPageShotTriggerProps,
+} from './shared/motion/EgEdsAnimaPageShot.js';
+export { EgEdsAnimaLayoutContent } from './shared/motion/EgEdsAnimaLayoutContent.js';
+export type { EgEdsAnimaLayoutContentProps } from './shared/motion/EgEdsAnimaLayoutContent.js';
+export { useMotionPressScale } from './shared/useMotionPressScale.js';
+export type { MotionPressRecipe, UseMotionPressScaleOptions } from './shared/useMotionPressScale.js';
 export * from './theme';

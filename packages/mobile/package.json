@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "README.md"],
+  "files": ["dist", "android", "expo-module.config.json", "README.md"],
   "scripts": {
     "build": "node scripts/assemble.mjs",
     "typecheck": "echo \"Assembled from workspace packages\""
@@ -20,32 +20,46 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./animations": {
+      "types": "./dist/animations/index.d.ts",
       "import": "./dist/animations/index.js",
-      "types": "./dist/animations/index.d.ts"
+      "require": "./dist/animations/index.js",
+      "default": "./dist/animations/index.js"
     },
     "./components": {
+      "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js",
-      "types": "./dist/components/index.d.ts"
+      "require": "./dist/components/index.js",
+      "default": "./dist/components/index.js"
     },
     "./tokens": {
+      "types": "./dist/tokens/js/theme.d.ts",
       "import": "./dist/tokens/js/theme.js",
-      "types": "./dist/tokens/js/theme.d.ts"
+      "require": "./dist/tokens/js/theme.js",
+      "default": "./dist/tokens/js/theme.js"
     },
     "./tokens/css": "./dist/tokens/css/index.css",
     "./tokens/json": "./dist/tokens/json/tokens.json",
     "./tokens/corner-smoothing": {
-      "import": "./dist/tokens/js/corner-smoothing.js"
+      "import": "./dist/tokens/js/corner-smoothing.js",
+      "require": "./dist/tokens/js/corner-smoothing.js",
+      "default": "./dist/tokens/js/corner-smoothing.js"
     },
     "./tokens/fonts-native": {
+      "types": "./dist/tokens/js/fonts-native.d.ts",
       "import": "./dist/tokens/js/fonts-native.js",
-      "types": "./dist/tokens/js/fonts-native.d.ts"
+      "require": "./dist/tokens/js/fonts-native.js",
+      "default": "./dist/tokens/js/fonts-native.js"
     },
     "./tokens/liquid-glass": {
-      "import": "./dist/tokens/js/liquid-glass.js"
+      "import": "./dist/tokens/js/liquid-glass.js",
+      "require": "./dist/tokens/js/liquid-glass.js",
+      "default": "./dist/tokens/js/liquid-glass.js"
     },
     "./tokens/motion/catalog": "./dist/tokens/json/motion/catalog.json"
   }

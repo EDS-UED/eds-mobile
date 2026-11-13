@@ -20,6 +20,12 @@
       "types": "./dist/catalogEntry.d.ts",
       "default": "./dist/catalogEntry.js"
     },
+    "./glass": {
+      "react-native": "./src/atoms/glass/index.ts",
+      "import": "./dist/atoms/glass/index.js",
+      "types": "./dist/atoms/glass/index.d.ts",
+      "default": "./dist/atoms/glass/index.js"
+    },
     "./preview/liquid-glass": {
       "react-native": "./src/preview/LiquidGlassDemo.tsx",
       "import": "./dist/preview/LiquidGlassDemo.js",
@@ -31,6 +37,12 @@
       "import": "./dist/preview/MotionDemo.js",
       "types": "./dist/preview/MotionDemo.d.ts",
       "default": "./dist/preview/MotionDemo.js"
+    },
+    "./preview/layout-content": {
+      "react-native": "./src/preview/LayoutContentTabDemo.tsx",
+      "import": "./dist/preview/LayoutContentTabDemo.js",
+      "types": "./dist/preview/LayoutContentTabDemo.d.ts",
+      "default": "./dist/preview/LayoutContentTabDemo.js"
     },
     "./preview/atom-gallery": {
       "react-native": "./src/preview/AtomGallery.tsx",
@@ -53,7 +65,9 @@
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "android",
+    "expo-module.config.json"
   ],
   "scripts": {
     "generate": "node scripts/generate-catalog.mjs && pnpm generate:assets",
@@ -66,6 +80,7 @@
     "lint": "echo \"No linter configured yet\""
   },
   "peerDependencies": {
+    "@expo/ui": ">=58",
     "expo-router": ">=6",
     "react": ">=18",
     "react-native": ">=0.74",
@@ -73,13 +88,19 @@
     "react-native-reanimated": ">=3",
     "react-native-safe-area-context": ">=4",
     "react-native-screens": ">=4.20",
-    "react-native-svg": ">=15"
+    "react-native-svg": ">=15",
+    "@react-navigation/native": ">=7",
+    "@react-navigation/native-stack": ">=7",
+    "@react-navigation/stack": ">=7"
   },
   "peerDependenciesMeta": {
     "expo-router": {
       "optional": true
     },
     "react-native-screens": {
+      "optional": true
+    },
+    "@expo/ui": {
       "optional": true
     }
   },
@@ -88,12 +109,15 @@
     "@eds/mobile-tokens": "workspace:*"
   },
   "devDependencies": {
+    "@react-navigation/native": "^7.4.0",
+    "@react-navigation/native-stack": "^7.19.0",
+    "@react-navigation/stack": "^7.12.1",
     "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.0.8",
-    "react-native-gesture-handler": "~2.32.0",
-    "react-native-reanimated": "~4.5.1",
-    "react-native-safe-area-context": "5.7.0",
-    "react-native-worklets": "~0.10.1",
+    "react-native-gesture-handler": "~3.3.0",
+    "react-native-reanimated": "~4.7.1",
+    "react-native-safe-area-context": "~5.10.1",
+    "react-native-worklets": "~0.13.0",
     "typescript": "^5.7.3"
   }
 }

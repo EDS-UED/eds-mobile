@@ -3,6 +3,17 @@ import type { ViewStyle } from 'react-native';
 
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import type { TokenEntry } from '@/data/tokens/tokenCatalogTypes';
+import {
+  formatEdsRecipeAnimaCall,
+  formatEdsSemanticAnimaCall,
+  formatMotionBaseThemeAccessLine,
+  motionBaseDisplayName,
+  motionBaseThemeAccess,
+  motionRecipeIdForTokenEntry,
+  motionSemanticHasRecipe,
+  motionSemanticScenarioIdForTokenEntry,
+  resolveMotionTokenLiveNativeSnippet,
+} from '@/data/tokens/motionNativeDisplay';
 import { resolveEffectPreviewModel } from '@/views/tokens/effectTokenPreviewStyle';
 
 export type NativeSnippetPlatform = 'ios' | 'android';
@@ -174,11 +185,54 @@ function scaleNativeSnippet(entry: TokenEntry): string {
 }
 
 function motionNativeSnippet(entry: TokenEntry): string {
-  return [
-    "import { resolveMotionRecipe } from '@eds/mobile-animations';",
-    '',
-    `resolveMotionRecipe(${quote(entry.name.replace(/^motion-/, ''))})`,
-  ].join('\n');
+  const live = resolveMotionTokenLiveNativeSnippet(entry);
+
+  if (entry.layer === 'base') {
+    const access = motionBaseThemeAccess(entry.name);
+    const lines = [
+      "import mobileTheme from '@eds/mobile-tokens/theme';",
+      '',
+      `${formatMotionBaseThemeAccessLine(access)} // ${motionBaseDisplayName(entry.name)}`,
+    ];
+    if (live) {
+      lines.push('', live);
+    }
+    return lines.join('\n');
+  }
+
+  if (entry.layer === 'recipe') {
+    const recipeId = motionRecipeIdForTokenEntry(entry);
+    if (!recipeId) {
+      return entry.name;
+    }
+    const lines = [
+      "import { EdsRecipeAnima } from '@eds/mobile-animations';",
+      '',
+      `${formatEdsRecipeAnimaCall(recipeId)}.springConfig`,
+    ];
+    if (live) {
+      lines.push('', live);
+    }
+    return lines.join('\n');
+  }
+
+  if (entry.layer === 'semantic') {
+    const scenario = motionSemanticScenarioIdForTokenEntry(entry);
+    if (scenario && motionSemanticHasRecipe(entry.name)) {
+      const lines = [
+        "import { EdsSemanticAnima } from '@eds/mobile-animations';",
+        '',
+        `${formatEdsSemanticAnimaCall(scenario)}.springConfig`,
+      ];
+      if (live) {
+        lines.push('', live);
+      }
+      return lines.join('\n');
+    }
+    return [`// CSS · .${entry.name}`, `// ${entry.cssVar}`].join('\n');
+  }
+
+  return entry.name;
 }
 
 export function resolveTokenDetailNativeSnippet(

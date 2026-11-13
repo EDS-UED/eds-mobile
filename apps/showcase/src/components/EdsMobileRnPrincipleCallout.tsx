@@ -18,7 +18,7 @@ export function EdsMobileRnPrincipleCallout() {
       style={[
         styles.card,
         showcaseShallowBlockSurface(colors['material-card-shallow'] as string),
-        { borderColor: colors['stroke-divider-page'] as string },
+        { borderColor: colors['stroke-divider-shallow'] as string },
       ]}
     >
       <Text style={[styles.title, { color: colors['text-base-primary'] as string }]}>

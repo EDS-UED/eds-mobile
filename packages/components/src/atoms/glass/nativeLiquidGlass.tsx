@@ -51,10 +51,20 @@ export function isNativeLiquidGlassAvailable(): boolean {
   }
 
   try {
+    if (!getNativeGlassView()) {
+      liquidGlassAvailable = false;
+      return false;
+    }
     const mod = require('expo-glass-effect');
-    liquidGlassAvailable = Boolean(
-      mod.isLiquidGlassAvailable?.() && mod.isGlassEffectAPIAvailable?.(),
-    );
+    const runtimeApi = Boolean(mod.isGlassEffectAPIAvailable?.());
+    if (!runtimeApi) {
+      liquidGlassAvailable = false;
+      return false;
+    }
+    // `isLiquidGlassAvailable` = 编译进宿主 App 的能力（Expo Go 常为 false）；
+    // 运行时以 `isGlassEffectAPIAvailable` 为准（expo #40911），避免 EgButtonGlass 误走 RN。
+    const compiled = Boolean(mod.isLiquidGlassAvailable?.());
+    liquidGlassAvailable = compiled || runtimeApi;
   } catch {
     liquidGlassAvailable = false;
   }

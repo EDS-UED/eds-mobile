@@ -1,14 +1,14 @@
-import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-
-import { EgSymbol } from '../../../atoms/_shared/symbol/EgSymbol.js';
+import type { ReactElement, ReactNode } from 'react';
+import { EgNavBarActionView } from './EgNavBarActionView.js';
 import { edsFontStyle } from '../../../shared/fontFamily.js';
-import { buttonTypography, presetBodyMediumStrong } from '../../../shared/typographyStyles.js';
+import { presetBodyMediumStrong } from '../../../shared/typographyStyles.js';
 import { getThemeColors } from '../../../theme/index.js';
-import { mobileTheme } from '../../../theme/index.js';
-import type { EgNavBarAction, EgNavBarBackground, EgNavBarProps } from './EgNavBar.types.js';
-
-type ScrollEdgeEffect = 'automatic' | 'hard' | 'soft' | 'hidden';
+import type {
+  EgNavBarAction,
+  EgNavBarBackground,
+  EgNavBarProps,
+  EgNavBarScrollEdgeEffect as ScrollEdgeEffect,
+} from './EgNavBar.types.js';
 
 /** expo-router `Stack.Screen options` / native-stack `screenOptions` 子集。 */
 export type EgNavBarNativeStackOptions = {
@@ -19,21 +19,39 @@ export type EgNavBarNativeStackOptions = {
   headerTitleAlign: 'center';
   headerTitleStyle: { fontSize: number; fontWeight: '600'; fontFamily?: string; color: string };
   headerBackVisible: boolean;
+  /** iOS 26+ 自定义栏须走 `unstable_header*Items`；legacy 槽勿塞 `EgButtonGlass`。 */
   headerLeft?: () => ReactNode;
   headerRight?: () => ReactNode;
+  unstable_headerLeftItems?: () => ReturnType<typeof egNavBarNativeStackHeaderGlassItem>[];
+  unstable_headerRightItems?: () => ReturnType<typeof egNavBarNativeStackHeaderGlassItem>[];
   scrollEdgeEffects: { top: ScrollEdgeEffect };
 };
 
 export type EgNavBarNativeStackOptionsInput = Pick<
   EgNavBarProps,
-  'title' | 'left' | 'right' | 'showLeft' | 'showTitle' | 'showRight' | 'background' | 'mode'
->;
-
-const SCROLL_EDGE: Record<EgNavBarBackground, ScrollEdgeEffect> = {
-  auto: 'automatic',
-  visible: 'hard',
-  hidden: 'hidden',
+  | 'title'
+  | 'left'
+  | 'right'
+  | 'showLeft'
+  | 'showTitle'
+  | 'showRight'
+  | 'background'
+  | 'scrollEdgeEffect'
+  | 'mode'
+> & {
+  /** `background="auto"` — 内容已滚入栏下（`useEgNavBarScroll().scrollEdgeActive`）；静止 `hidden` · 滚入 `soft`。 */
+  scrollEdgeActive?: boolean;
 };
+
+/** 系统栏 scroll edge：`auto` 静止隐藏、内容滚入栏下为 `soft`；`visible` 常显 `hard`；`hidden` 常隐。 */
+export function resolveEgNavBarScrollEdge(
+  background: EgNavBarBackground,
+  scrollEdgeActive = false,
+): ScrollEdgeEffect {
+  if (background === 'visible') return 'hard';
+  if (background === 'hidden') return 'hidden';
+  return scrollEdgeActive ? 'soft' : 'hidden';
+}
 
 /**
  * iOS 26+ 系统栏 scroll edge 依赖非空 `title`；`showTitle: false` 时仍须保留文案并透明隐藏。
@@ -44,33 +62,24 @@ export function resolveEgNavBarNativeStackTitle(title: string | undefined): stri
   return trimmed ? trimmed : ' ';
 }
 
-const itemGap = mobileTheme.spacing['spacing-4'] as number;
+function NativeBarItem({ action, mode }: { action: EgNavBarAction; mode: EgNavBarProps['mode'] }) {
+  return <EgNavBarActionView action={action} mode={mode} />;
+}
 
-function NativeBarItem({ action, color }: { action: EgNavBarAction; color: string }) {
-  const kind = action.kind ?? 'icon';
-  const iconCount = action.iconCount === 2 ? 2 : 1;
-  return (
-    <Pressable
-      onPress={action.onPress}
-      disabled={action.disabled}
-      accessibilityRole="button"
-      accessibilityLabel={action.accessibilityLabel ?? (kind === 'text' ? action.label : action.icon)}
-    >
-      {kind === 'text' ? (
-        <Text style={[buttonTypography(action.size ?? 'md'), { color }]}>{action.label ?? ''}</Text>
-      ) : (
-        <View style={styles.icons}>
-          <EgSymbol name={action.icon ?? 'eds-list-lattice-mobile'} size="md" />
-          {iconCount === 2 ? <EgSymbol name={action.iconAlt ?? action.icon ?? 'eds-add'} size="md" /> : null}
-        </View>
-      )}
-    </Pressable>
-  );
+/** iOS 26+ — 单颗栏项；须配合 `unstable_header*Items` + `hidesSharedBackground`（勿用 legacy `headerLeft` 叠 GlassView）。 */
+export function egNavBarNativeStackHeaderGlassItem(
+  element: ReactElement,
+): {
+  type: 'custom';
+  element: ReactElement;
+  hidesSharedBackground: true;
+} {
+  return { type: 'custom', element, hidesSharedBackground: true };
 }
 
 /**
  * iOS 26+ — 导航栏交给系统 `UINavigationBar`（Liquid Glass + scroll edge effect）。
- * 栏项内容不再包 `EgButtonGlass`：系统已为 bar item 提供玻璃底，避免双层玻璃。
+ * 自定义栏项：`EgNavBarActionView`（`EgButtonGlass`）+ `unstable_header*Items`（`egNavBarNativeStackHeaderGlassItem`）。
  *
  * `<Stack.Screen options={egNavBarNativeStackOptions({ title: '详情' })} />`
  */
@@ -83,6 +92,8 @@ export function egNavBarNativeStackOptions(input: EgNavBarNativeStackOptionsInpu
     showTitle = true,
     showRight = true,
     background = 'auto',
+    scrollEdgeEffect,
+    scrollEdgeActive = false,
     mode = 'light',
   } = input;
   const color = getThemeColors(mode)['text-base-primary'] as string;
@@ -103,15 +114,30 @@ export function egNavBarNativeStackOptions(input: EgNavBarNativeStackOptionsInpu
       color: showTitle ? color : 'transparent',
     },
     headerBackVisible: showLeft && left == null,
-    headerLeft: showLeft && left ? () => <NativeBarItem action={left} color={color} /> : showLeft ? undefined : () => null,
-    headerRight: showRight && right ? () => <NativeBarItem action={right} color={color} /> : undefined,
-    scrollEdgeEffects: { top: SCROLL_EDGE[background] },
+    headerLeft: undefined,
+    headerRight: undefined,
+    unstable_headerLeftItems:
+      showLeft && left
+        ? () => [egNavBarNativeStackHeaderGlassItem(<NativeBarItem action={left} mode={mode} />)]
+        : showLeft
+          ? undefined
+          : () => [],
+    unstable_headerRightItems:
+      showRight && right
+        ? () => [egNavBarNativeStackHeaderGlassItem(<NativeBarItem action={right} mode={mode} />)]
+        : undefined,
+    scrollEdgeEffects: { top: scrollEdgeEffect ?? resolveEgNavBarScrollEdge(background, scrollEdgeActive) },
   };
 }
 
-export type EgNavBarNativeStackScreenOptionsInput = Pick<EgNavBarProps, 'background' | 'mode'> & {
+export type EgNavBarNativeStackScreenOptionsInput = Pick<
+  EgNavBarProps,
+  'background' | 'scrollEdgeEffect' | 'mode'
+> & {
   /** 返回动作（Stack `screenOptions` 回调里的 `navigation.goBack`）。 */
   onBack: () => void;
+  /** 返回钮无障碍文案（默认「返回」）。 */
+  backAccessibilityLabel?: string;
 };
 
 /**
@@ -121,17 +147,19 @@ export type EgNavBarNativeStackScreenOptionsInput = Pick<EgNavBarProps, 'backgro
 export function egNavBarNativeStackScreenOptions({
   onBack,
   background = 'auto',
+  scrollEdgeEffect,
   mode = 'light',
+  backAccessibilityLabel = '返回',
 }: EgNavBarNativeStackScreenOptionsInput) {
   const { title: _title, headerLeft: _left, headerRight: _right, ...base } = egNavBarNativeStackOptions({
     background,
+    scrollEdgeEffect,
     mode,
   });
-  const color = getThemeColors(mode)['text-base-primary'] as string;
   const back: EgNavBarAction = {
     kind: 'icon',
     icon: 'eds-arrow-left-ios',
-    accessibilityLabel: '返回',
+    accessibilityLabel: backAccessibilityLabel,
     onPress: onBack,
   };
 
@@ -139,15 +167,11 @@ export function egNavBarNativeStackScreenOptions({
     ...base,
     headerLargeTitleEnabled: false,
     headerBackVisible: false,
-    headerLeft: ({ canGoBack }: { canGoBack?: boolean }) =>
-      canGoBack ? <NativeBarItem action={back} color={color} /> : null,
+    headerLeft: undefined,
+    unstable_headerLeftItems: ({ canGoBack }: { canGoBack?: boolean }) =>
+      canGoBack
+        ? [egNavBarNativeStackHeaderGlassItem(<NativeBarItem action={back} mode={mode} />)]
+        : [],
   };
 }
 
-const styles = StyleSheet.create({
-  icons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: itemGap,
-  },
-});

@@ -1,95 +1,85 @@
 # EDS Mobile Motion
 
-统一架构（与架构文档一致）：
-
 ```text
 Base → Recipe → Semantic
 ```
 
-**Semantic 沿用现有 class**（`motion-tap` / `motion-page` / `motion-flotation` 等），**不采用**文档中的 8 场景分组（Navigation / Presentation / Interaction …）。
+**Semantic class** 与 RN **`EdsSemanticAnima('<scenarioId>')`** 同名：`className = motion-{scenarioId}`。
+
+当前 spec 含 **`press`** · **`slide`** · **`layout-content`** · **`menu`** · **`sheets`** · **`page`** · **`page-shot`** 七个场景；新增 Semantic 时按需补 Base / Recipe（勿私造未引用参数）。
 
 ---
 
-## 1. Base — 「参数是什么？」
+## 1. Base
 
-`base.json` → `dist/css/motion/base.css`
-
-| 类别 | 内容 |
-|------|------|
-| Timing | duration ladder · easing |
-| Physics | **Spring**（response / dampingFraction / reanimated） |
-| Transform | distance · scale |
-| Visual | opacity |
-| Interaction | velocityAware · interruptible · preserveVelocity |
-| Haptic | selection · light · success … |
-
-Base 是**唯一**保存完整底层参数的层。
+`base.json` → `dist/css/motion/base.css` · RN `mobileTheme.motion`
 
 ---
 
-## 2. Recipe — 「怎么组合？」
+## 2. Recipe
 
-`recipe.json` → `dist/css/motion/recipe.css`
+`recipe.json` → `namedRecipes[]` + `--motion-recipe-*`
 
-- `namedRecipes[]`：press / navigation / sheet / control … → 引用 Base（`springRef` / `timingRef` / `hapticRef`）
-- RN 字段：`velocityAware` · `interruptible` · `semanticClass` · `label`
-- CSS `--motion-recipe-*`：Web transition 配方（引用 Base duration/easing）
-
-Recipe **不重复定义** Base 数值。
-
----
-
-## 3. Semantic — 「属于哪个场景？」
-
-`semantic.json` → `semantic.css` + `utilities.css`
-
-| class | recipe |
-|-------|--------|
-| `.motion-tap` | press |
-| `.motion-focus` | enter |
-| `.motion-layout` | enter |
-| `.motion-flotation` | sheet |
-| `.motion-deform` | control |
-| `.motion-page` | navigation |
-| `.motion-layout-deform` | layout-deform |
-
-Semantic **只引用 recipe id**，不存 spring 数值。
-
-RN 多步编排见 `semantic.json` → `compositions[]`（ios-sheet / ios-navigation / transaction …）。
-
-Reduce Motion 见 `semantic.json` → `reducedMotion` + utility class `motion-reduced-fade`。
+| id | 用途 |
+|----|------|
+| `press` | 按下 |
+| `press-scale-out` | 松手回弹（无独立 Semantic） |
+| `slide` | 滑选落位 |
+| `drag` | slide 跟手（无独立 Semantic） |
+| `layout-content` | 同壳正文 crossfade |
+| `menu` | 浮层自触发点倒出 |
+| `menu-dismiss` | 浮层收回（无独立 Semantic） |
+| `sheets` | Sheet 呈现（悬浮 ↔ 贴边） |
+| `sheets-detent` | Sheet 档位吸附（无独立 Semantic） |
+| `sheets-dismiss` | Sheet 收起（无独立 Semantic） |
+| `page` | 普通页面左右切换（下层视差 · 轻回弹；弹层内同用） |
+| `page-back` | 返回 / 侧滑返回（无独立 Semantic） |
+| `page-shot` | 弹层页面 / 卡片展开整页（App Store Today · 内可嵌套 `page`） |
+| `page-shot-dismiss` | 整页飞回源 frame / 下拉收起（无独立 Semantic） |
 
 ---
 
-## 解析链
+## 3. Semantic
 
-```text
-.motion-tap  →  recipe: press  →  base: spring.press + haptic.light
-.motion-page  →  recipe: navigation  →  base: spring.navigation + timing.navigationPush
-ios-sheet (composition)  →  recipes: sheet + interactive + dismiss
-```
+| class | scenarioId | recipe |
+|-------|------------|--------|
+| `.motion-press` | `press` | `press` |
+| `.motion-slide` | `slide` | `slide` |
+| `.motion-layout-content` | `layout-content` | `layout-content` |
+| `.motion-menu` | `menu` | `menu` |
+| `.motion-sheets` | `sheets` | `sheets` |
+| `.motion-page` | `page` | `page` |
+| `.motion-page-shot` | `page-shot` | `page-shot` |
 
-Dev Inspect / catalog：`@eds/mobile-tokens/motion/catalog` → `resolution` 字段
+**页面切换（声明）**：普通左右切换 → `page`；弹层页面、卡片等 → `page-shot`（触发元素不同，动效一致）；二者可互相嵌套。业务页面切换默认 `createEgEdsAnimaPageNavigator()` + `screenOptions={EgEdsAnimaPage({ direction, dragDismiss })}`（`@eds/mobile-components`）— iOS 26+ 系统 native-stack（系统 NavBar 样式 / 交互 / 转场），Android · iOS ≤25 走本 spec spring + `EgNavBar`；page-shot 弹层内页面栈同理；弹层页面 / 卡片用 `EgEdsAnimaPageShot` + `EgEdsAnimaPageShotTrigger`。
 
 ---
 
 ## RN
 
-由 **同一份 spec** 生成 `@eds/mobile-animations`：
+| 层 | 入口 |
+|----|------|
+| Base | `mobileTheme.motion`（`motion-ratio-*` → `.ratio`）· Showcase `base-*` |
+| Recipe | `EdsRecipeAnima('<recipeId>')` |
+| Semantic | `EdsSemanticAnima('<scenarioId>')` |
 
 ```typescript
-import { mobileMotion, resolveMotionRecipe, resolveMotionComposition } from '@eds/mobile-animations';
+import { EdsRecipeAnima, EdsSemanticAnima } from '@eds/mobile-animations';
 
-const press = resolveMotionRecipe('press');
-const sheet = resolveMotionComposition('ios-sheet');
+EdsSemanticAnima('press');
+EdsSemanticAnima('slide');
+EdsSemanticAnima('page');
+EdsSemanticAnima('page-shot');
+EdsRecipeAnima('press-scale-out');
+EdsRecipeAnima('drag');
 ```
 
-Crypto 等业务**复用**上述 Semantic / Composition，不另建 Motion 层。
+`compositions[]` 暂空；多步编排后续随 Semantic 增加再写 spec。
 
 ---
 
 ## 入口
 
 ```css
-@import '@eds/mobile-tokens/motion'; /* base + recipe + semantic + utilities */
+@import '@eds/mobile-tokens/motion';
 ```

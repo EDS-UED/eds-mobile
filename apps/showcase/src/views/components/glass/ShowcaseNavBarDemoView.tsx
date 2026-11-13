@@ -8,6 +8,8 @@ import {
   useEgNavBarScroll,
 } from '@eds/mobile-components';
 import type { EgNavBarAction, EgNavBarBackground } from '@eds/mobile-components';
+
+import { parseScrollEdgeEffect } from '@/data/components/sheetsCustomizeModel';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,6 +26,8 @@ export type ShowcaseNavBarDemoParams = {
   showRight?: string;
   rightIconCount?: string;
   background?: string;
+  /** iOS 26+ scroll edge；缺省 / `follow` = 按 background 映射。 */
+  scrollEdgeEffect?: string;
   /** `cregis-home` — 无可见标题 + 左品牌文案 + 右双 icon（scroll edge 验收）。 */
   scenario?: string;
 };
@@ -46,7 +50,7 @@ export function ShowcaseNavBarDemoView() {
   const colors = useShowcaseColors();
   const { colorTheme } = useShowcaseThemeContext();
   const insets = useSafeAreaInsets();
-  const { scrollOffset, onScroll, scrollEventThrottle } = useEgNavBarScroll();
+  const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll();
 
   const cregisHome = params.scenario === 'cregis-home';
   const title = params.title ?? (cregisHome ? '主页' : '标题');
@@ -54,6 +58,7 @@ export function ShowcaseNavBarDemoView() {
   const showTitle = flag(params.showTitle, cregisHome ? false : true);
   const showRight = flag(params.showRight, true);
   const background = BACKGROUNDS.find((item) => item === params.background) ?? 'auto';
+  const scrollEdgeEffect = parseScrollEdgeEffect(params.scrollEdgeEffect);
   const right: EgNavBarAction = {
     kind: 'icon',
     icon: 'eds-list-lattice-mobile',
@@ -109,6 +114,8 @@ export function ShowcaseNavBarDemoView() {
               showTitle,
               showRight,
               background,
+              scrollEdgeEffect,
+              scrollEdgeActive,
               mode: colorTheme,
             }),
             contentStyle: { backgroundColor: pageBackground },
@@ -118,6 +125,8 @@ export function ShowcaseNavBarDemoView() {
           style={{ backgroundColor: pageBackground }}
           contentInsetAdjustmentBehavior="automatic"
           contentContainerStyle={styles.content}
+          onScroll={onScroll}
+          scrollEventThrottle={scrollEventThrottle}
         >
           {content}
         </ScrollView>

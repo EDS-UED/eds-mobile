@@ -16,5 +16,12 @@ package-lock.json
 .turbo/
 .build/
 
+# Assembled from packages/components (scripts/assemble.mjs)
+packages/mobile/android/
+packages/mobile/expo-module.config.json
+
+# Android native build output
+packages/components/android/build/
+
 # Parity probe reports
 artifacts/

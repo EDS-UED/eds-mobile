@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import { EgSpinner } from '../../../shared/EgSpinner.js';
-import { MotionPressable } from '../../../shared/MotionPressable.js';
+import { EgEdsAnimaPress } from '../../../shared/motion/EgEdsAnimaPress.js';
 import type { ButtonFigmaType, ButtonTone, ControlSize, EgCommonProps, EgLabelProps } from '../../../shared/types.js';
 import type { ThemeMode } from '../../../theme/index.js';
 import { createButtonStyles, spinnerColor } from './buttonStyles.js';
@@ -41,11 +41,12 @@ export function EgButtonBase({
   const resolvedMode: ThemeMode = mode;
 
   return (
-    <MotionPressable
+    <EgEdsAnimaPress
       testID={testID}
       accessibilityLabel={accessibilityLabel ?? (typeof content === 'string' ? content : 'Button')}
       disabled={isDisabled}
       onPress={onPress}
+      pressScaleDirection="down"
       style={[styles.root, style]}
     >
       {({ pressed }) => {
@@ -78,7 +79,7 @@ export function EgButtonBase({
           </View>
         );
       }}
-    </MotionPressable>
+    </EgEdsAnimaPress>
   );
 }
 

@@ -7,18 +7,22 @@ export type {
   DocPropRow,
 } from './types.js';
 export type { RnDocConfig } from './rnDocRegistry.js';
-export {
-  familyBodyPreviewSlug,
-  rnDocBySlug,
-  resolveRnDocConfig,
-} from './rnDocRegistry.js';
+export { familyBodyPreviewSlug } from './familyBodyPreviewSlug.js';
+export { rnDocBySlug, resolveRnDocConfig } from './rnDocRegistry.js';
 export {
   filterDocCustomizeControls,
   isAllowedTypeCustomizeControl,
   isControlVisible,
 } from './types.js';
 export { buildRnSelfClosingSnippet } from './buildRnUsageSnippet.js';
+export {
+  buildRnAiPrompt,
+  figmaNameFromCatalogEntry,
+  resolveRnAiCustomizeState,
+  tierFamilyFromEntry,
+} from './buildRnAiPrompt.js';
 export { mergeCatalogPreviewProps } from './mergeCatalogPreviewProps.js';
+export { applyMenuTriggerPreviewProps } from './applyMenuTriggerPreviewProps.js';
 export {
   buildComponentCatalogNav,
   componentCatalogNav,

@@ -25,7 +25,7 @@ export function ShowcaseListGroup({ label, children, style }: ShowcaseListGroupP
           styles.card,
           {
             backgroundColor: colors['material-card-shallow'] as string,
-            borderColor: colors['stroke-divider-page'] as string,
+            borderColor: colors['stroke-divider-shallow'] as string,
           },
         ]}
       >

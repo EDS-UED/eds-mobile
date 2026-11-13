@@ -3,24 +3,33 @@
   "scenarioKeys": {
     "button": "glass-button-box",
     "flotation": "glass-flotation-box",
+    "sheets": "glass-sheets-box",
     "tabBar": "glass-tabbar-box",
     "tabBarBg": "glass-tabbar-bg",
     "mask": "glass-mask-box"
   },
   "groups": [
     {
-      "comment": "玻璃容器（Glass Box）",
+      "comment": "材质容器",
       "styles": [
         {
           "title": "玻璃按钮容器（Button Box）",
           "className": "glass-button-box",
           "properties": {
             "border-radius": "var(--radius-xl)",
-            "border": "var(--stroke-xs) solid var(--stroke-base-quaternary)",
-            "background": "linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box)",
-            "box-shadow": "var(--eds-shadow-box-subtle)",
-            "backdrop-filter": "var(--eds-blur-glass)",
-            "-webkit-backdrop-filter": "var(--eds-blur-glass)"
+            "border": "var(--stroke-xs) solid var(--stroke-base-tertiary)",
+            "background": "var(--material-face-quaternary)",
+            "box-shadow": "var(--eds-shadow-box-subtle)"
+          }
+        },
+        {
+          "title": "Sheets 容器（Sheets Box）",
+          "className": "glass-sheets-box",
+          "properties": {
+            "border-radius": "var(--radius-2xl)",
+            "border": "var(--stroke-xs) solid var(--material-base-secondary)",
+            "background": "var(--box-flotation)",
+            "box-shadow": "var(--eds-shadow-box-shallow)"
           }
         },
         {

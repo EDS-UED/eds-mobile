@@ -35,41 +35,39 @@ const OVERLAY_GRADIENT_END = { x: 0.5, y: 0 } as const;
 
 function resolveOverlayGradient(
   composition: GlassBoxComposition,
-  colors: ReturnType<typeof getThemeColors>,
 ): { colors: string[]; locations: number[] } | null {
   const gradientLayer = composition.layers.find((layer) => layer.kind === 'overlayGradient');
-  if (gradientLayer?.kind === 'overlayGradient' && gradientLayer.stops.length >= 2) {
-    return {
-      colors: gradientLayer.stops.map((stop) => rnColorFromHex(stop.color)),
-      locations: gradientLayer.stops.map((stop) => stop.position),
-    };
+  if (gradientLayer?.kind !== 'overlayGradient' || gradientLayer.stops.length < 2) {
+    return null;
   }
-
-  const fallbackBottom = rnColorFromHex(colors['effect-overlay-subtle'] as string);
-  const fallbackTop = rnColorFromHex(colors['effect-overlay-shallow'] as string);
   return {
-    colors: [fallbackBottom, fallbackTop],
-    locations: [0, 1],
+    colors: gradientLayer.stops.map((stop) => rnColorFromHex(stop.color)),
+    locations: gradientLayer.stops.map((stop) => stop.position),
   };
 }
 
 export function GlassBoxEffectLayers({ mode, composition }: GlassBoxEffectLayersProps) {
   const colors = getThemeColors(mode);
   const fillLayer = composition.layers.find((layer) => layer.kind === 'fill');
-  const overlay = resolveOverlayGradient(composition, colors);
+  const overlay = resolveOverlayGradient(composition);
 
   const fillColor =
     fillLayer?.kind === 'fill'
       ? rnColorFromHex(fillLayer.color)
-      : rnColorFromHex(colors['effect-box'] as string);
+      : overlay
+        ? 'transparent'
+        : rnColorFromHex(colors['effect-box'] as string);
 
   const blurTargetRef = useGlassBlurTargetRef();
   const BlurView = getNativeBlurView();
   const LinearGradient = getNativeLinearGradient();
+  const useBackdropBlur = composition.backdropBlur != null;
   const blurTint: 'light' | 'dark' = mode === 'dark' ? 'dark' : 'light';
   const blurIntensity = backdropBlurIntensity(composition);
   const androidBlurMethod = resolveAndroidBlurMethod();
   const iosBlur = Platform.OS === 'ios';
+
+  const fillLayerView = <View style={[styles.boxFill, { backgroundColor: fillColor }]} />;
 
   const blurProps = {
     intensity: blurIntensity,
@@ -81,12 +79,16 @@ export function GlassBoxEffectLayers({ mode, composition }: GlassBoxEffectLayers
 
   return (
     <>
-      {BlurView ? (
-        <BlurView style={styles.blurBackdrop} {...blurProps}>
-          <View style={[styles.boxFill, { backgroundColor: fillColor }]} />
+      {BlurView && useBackdropBlur ? (
+        <BlurView
+          key={Platform.OS === 'android' ? (blurTargetRef ? 'android-blur-target' : 'android-blur-idle') : 'ios-blur'}
+          style={styles.blurBackdrop}
+          {...blurProps}
+        >
+          {fillLayerView}
         </BlurView>
       ) : (
-        <View style={[styles.boxFill, { backgroundColor: fillColor }]} />
+        fillLayerView
       )}
       {LinearGradient && overlay ? (
         <LinearGradient

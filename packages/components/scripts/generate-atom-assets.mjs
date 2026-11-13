@@ -17,7 +17,34 @@ import {
 } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import mobileTheme from '@eds/mobile-tokens/theme';
 import { processSvg } from '../src/atoms/_shared/icon/processSvg.ts';
+
+/** 与 `legacyFigmaBaseInk.ts` / `processSvg` 保持一致 · Desktop 同步归一化。 */
+const LEGACY_FIGMA_BASE_INK = '#020304';
+
+function normalizeLegacyBaseInkInMarkup(raw) {
+  const ink = String(mobileTheme.colors.light.base ?? '#000000').toLowerCase();
+  return raw
+    .replace(new RegExp(`${LEGACY_FIGMA_BASE_INK}([0-9a-f]{2})?`, 'gi'), (_match, alpha) =>
+      alpha ? `${ink}${alpha}` : ink,
+    )
+    .replace(/color\(display-p3 0\.0078 0\.0118 0\.0157\)/gi, 'color(display-p3 0 0 0)');
+}
+
+/** Desktop 同步仍可能带回旧基色；落盘前统一为当前 eds-base。 */
+function normalizeSyncedSvgDir(targetDir) {
+  if (!existsSync(targetDir)) return;
+  for (const file of readdirSync(targetDir)) {
+    if (!file.endsWith('.svg')) continue;
+    const filePath = join(targetDir, file);
+    const raw = readFileSync(filePath, 'utf8');
+    const next = normalizeLegacyBaseInkInMarkup(raw);
+    if (next !== raw) {
+      writeFileSync(filePath, next);
+    }
+  }
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = join(__dirname, '..');
@@ -261,6 +288,8 @@ function writeCryptoRegistry() {
 
 syncAssetsFromDesktop(desktopIcons, assetsIcons);
 syncAssetsFromDesktop(desktopCrypto, assetsCrypto);
+normalizeSyncedSvgDir(assetsIcons);
+normalizeSyncedSvgDir(assetsCrypto);
 writeIconRegistry();
 writeCryptoRegistry();
 

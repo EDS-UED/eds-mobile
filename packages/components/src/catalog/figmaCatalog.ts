@@ -1,4 +1,4 @@
-/** Auto-generated from EDS Mobile Figma — 205 components */
+/** Auto-generated from EDS Mobile Figma — 206 components */
 export type FigmaComponentEntry = {
   figmaName: string;
   exportName: string;
@@ -522,7 +522,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Tabs",
-    "exportName": "EgTabs",
+    "exportName": "EgTab",
     "tier": "molecules",
     "family": "tab",
     "slug": "tab-tabs",
@@ -573,6 +573,15 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "kind": "set",
     "variantCount": 2,
     "figmaId": "201:1030"
+  },
+  {
+    "figmaName": "Reddot",
+    "tier": "molecules",
+    "family": "feedback",
+    "figmaPage": "Feedback 反馈 ✅ 🕒",
+    "kind": "component",
+    "exportName": "EgReddot",
+    "slug": "feedback-reddot"
   },
   {
     "figmaName": "TabBar",

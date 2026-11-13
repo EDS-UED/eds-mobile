@@ -12,7 +12,12 @@ export function egButtonGlassInsetPx(): number {
   return mobileTheme.spacing['spacing-1'] as number;
 }
 
-/** 双 icon / icon+头像胶囊 — 左右内边距 `spacing-4`（补偿双列内容宽）。 */
+/** 两颗独立玻璃钮（2 拆分）间距 — `spacing-3`（12px）。 */
+export function egButtonGlassSplitPairGapPx(): number {
+  return mobileTheme.spacing['spacing-3'] as number;
+}
+
+/** 双 icon / icon+头像胶囊 — 左右内边距 `spacing-4`。 */
 export function egButtonGlassDualPaddingHorizontalPx(): number {
   return mobileTheme.spacing['spacing-4'] as number;
 }
@@ -146,42 +151,30 @@ export function resolveEgButtonGlassShellStyle(
 }
 
 /**
- * iOS 26+ — Pressable 内边距与 RN `resolveEgButtonGlassShellStyle` 一致。
- * 系统 Liquid Glass 的 ~4pt 是材质 inset，不替代文本 / 双 icon 的 Figma 边距。
+ * iOS 26+ — 内容区布局（**不**叠 RN `spacing-1` / `spacing-4` / EgButton 文本 padding；材质 inset 由系统 GlassView 承担）。
  */
 export function resolveEgButtonGlassNativePressableStyle(
   kind: EgButtonGlassKind,
   size: ControlSize,
   iconCount: EgButtonGlassIconCount = 1,
-  rightIsAvatar = false,
+  _rightIsAvatar = false,
 ): ViewStyle {
-  const shell = resolveEgButtonGlassShellStyle(kind, size, iconCount, rightIsAvatar);
-  const padding: ViewStyle = {};
-  if (shell.paddingHorizontal != null) {
-    padding.paddingHorizontal = shell.paddingHorizontal;
-  }
-  if (shell.paddingVertical != null) {
-    padding.paddingVertical = shell.paddingVertical;
-  }
-  if (shell.paddingLeft != null) {
-    padding.paddingLeft = shell.paddingLeft;
-  }
-  if (shell.paddingRight != null) {
-    padding.paddingRight = shell.paddingRight;
-  }
-
   const minSize = egButtonGlassIconMinSize();
-  const isSingleIcon = kind === 'icon' && iconCount === 1;
-  const isDualIcon = kind === 'icon' && iconCount === 2;
 
-  if (isDualIcon) {
-    const { paddingLeft, paddingRight } = resolveEgButtonGlassDualCapsuleHorizontalPadding(rightIsAvatar);
+  if (kind === 'text') {
     return {
-      paddingLeft,
-      paddingRight,
+      paddingHorizontal: buttonPaddingHorizontal(size),
+      paddingVertical: buttonPaddingVertical(size),
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+    };
+  }
+
+  if (iconCount === 2) {
+    return {
       alignSelf: 'stretch',
       width: '100%',
-      height: minSize,
       minHeight: minSize,
       alignItems: 'center',
       justifyContent: 'center',
@@ -189,17 +182,16 @@ export function resolveEgButtonGlassNativePressableStyle(
   }
 
   return {
-    ...padding,
+    width: '100%',
+    height: '100%',
+    minHeight: minSize,
     alignItems: 'center',
     justifyContent: 'center',
-    ...(isSingleIcon
-      ? { width: '100%', height: '100%' }
-      : { alignSelf: 'center' as const }),
   };
 }
 
 /**
- * iOS 26+ 系统 Liquid Glass — 外框尺寸与圆角（padding 在 Pressable，不在 GlassView）。
+ * iOS 26+ — 外框几何（圆 / 胶囊）；双 icon 宽度 = 内容行 + 左右各 `spacing-1` 呼吸。
  */
 export function resolveEgButtonGlassNativeContainerStyle(
   kind: EgButtonGlassKind,
@@ -210,6 +202,7 @@ export function resolveEgButtonGlassNativeContainerStyle(
   const spacing = mobileTheme.spacing;
   const minSize = egButtonGlassIconMinSize();
   const radiusFull = spacing['radius-full'] as number;
+  const systemInset = egButtonGlassInsetPx();
 
   if (kind === 'text') {
     return {
@@ -220,18 +213,16 @@ export function resolveEgButtonGlassNativeContainerStyle(
   }
 
   if (iconCount === 2) {
-    const { paddingLeft, paddingRight } = resolveEgButtonGlassDualCapsuleHorizontalPadding(rightIsAvatar);
     const rowWidth = rightIsAvatar
       ? egButtonGlassIconPlusSlotRowWidth()
       : egButtonGlassDualIconRowWidth();
     return {
       height: minSize,
       minHeight: minSize,
-      minWidth: paddingLeft + paddingRight + rowWidth,
+      minWidth: rowWidth + systemInset * 2,
       borderRadius: radiusFull,
       alignSelf: 'flex-start',
       flexShrink: 0,
-      alignItems: 'stretch',
     };
   }
 

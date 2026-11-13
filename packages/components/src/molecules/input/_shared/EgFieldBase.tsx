@@ -49,7 +49,7 @@ function resolveEvent(
   event: FieldEvent,
 ): FieldEvent {
   if (disabled) return 'disable';
-  if (kind === 'dropdown') return event;
+  if (kind === 'dropdown' || kind === 'menu') return event;
   if (focused) return 'entering';
   if (pressed) return 'tap';
   return event;
@@ -66,7 +66,7 @@ export function EgFieldBase({
   disabled = false,
   value,
   defaultValue,
-  placeholder = kind === 'dropdown' ? 'Select' : 'Input',
+  placeholder = kind === 'menu' ? 'Menu' : kind === 'dropdown' ? 'Select' : 'Input',
   echoValue,
   showClear,
   showPaste = false,
@@ -83,7 +83,7 @@ export function EgFieldBase({
   onMax,
   leading,
   trailing,
-  showChevron = kind === 'dropdown',
+  showChevron = kind === 'dropdown' || kind === 'menu',
   testID,
   mode = 'light',
   style,
@@ -137,7 +137,7 @@ export function EgFieldBase({
   };
 
   const fieldText =
-    kind === 'dropdown' ? (
+    kind === 'dropdown' || kind === 'menu' ? (
       <Text
         style={[
           visual.input,

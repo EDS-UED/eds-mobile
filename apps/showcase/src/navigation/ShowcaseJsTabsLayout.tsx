@@ -1,4 +1,4 @@
-import { GlassBlurScope } from '@eds/mobile-components';
+import { GlassBlurScope } from '@eds/mobile-components/glass';
 import { Tabs } from 'expo-router';
 
 import { ShowcaseRootProviders } from '@/layout/ShowcaseRootProviders';

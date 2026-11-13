@@ -116,7 +116,7 @@ export function AnimationsHomeView() {
             <ShowcasePageIntro
               homeLargeTitle
               subtitle
-              lead={`动效规格来自 token spec（Base → Recipe → Semantic）。运行时请用 resolveMotionRecipe，共 ${motionCatalogEntries.length} 条语义 class。`}
+              lead={`Motion 图形动画与 Animas 动效 spec 对照。Catalog 共 ${motionCatalogEntries.length} 条 class 解析链。`}
             />
 
             <View style={screenStyles.cardList}>

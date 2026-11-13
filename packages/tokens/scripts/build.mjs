@@ -4,12 +4,12 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { verifyColorSpecAgainstDist } from './verify-color-spec.mjs';
 import { buildRnTheme } from './build-rn-theme.mjs';
-import { mapColorTokenValue } from './color-reference.mjs';
+import { mapColorTokenValue, resolveTagPaletteRef } from './color-reference.mjs';
 import {
   writeMotionCatalogJson,
   generateMobileMotionRuntime,
 } from './motion-build.mjs';
-import { buildGlassBoxCompositions } from './resolve-effect-glass-box.mjs';
+import { buildGlassBoxCompositions, isAnnotatedBoxShadow } from './resolve-effect-glass-box.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
@@ -58,6 +58,7 @@ const COLOR_BASE_ORDER = [
   'eds-same-black',
   'eds-same-white',
   'eds-page',
+  'eds-page-card',
   'eds-flotation',
   'eds-overlay',
 ];
@@ -758,10 +759,27 @@ function resolveLayerStyle(baseStyle, layer, baseSpec) {
   return layerStyle;
 }
 
+function appendEffectProperty(lines, property, value) {
+  if (property === 'box-shadow' && isAnnotatedBoxShadow(value)) {
+    lines.push('  box-shadow:');
+    value.layers.forEach((layer, index) => {
+      if (layer.comment) {
+        lines.push(`    /* ${layer.comment} */`);
+      }
+      const shadow = String(layer.shadow ?? '').trim();
+      const ending = index < value.layers.length - 1 ? ',' : ';';
+      lines.push(`    ${shadow}${ending}`);
+    });
+    return;
+  }
+
+  lines.push(`  ${property}: ${value};`);
+}
+
 function appendEffectStyleRules(lines, themeName, resolvedStyle, { includeNotes = false } = {}) {
   lines.push(`${buildEffectSemanticClassSelector(themeName, resolvedStyle.className)} {`);
   for (const [property, value] of Object.entries(resolvedStyle.properties ?? {})) {
-    lines.push(`  ${property}: ${value};`);
+    appendEffectProperty(lines, property, value);
   }
 
   if (includeNotes) {
@@ -996,7 +1014,16 @@ function resolveColorBaseEntry(entry) {
   return entry;
 }
 
-function buildTagBaseSpec(tagPalette) {
+function tagBaseEntry(raw, themeName, colorBase) {
+  const resolved = resolveTagPaletteRef(raw, themeName, colorBase);
+  if (resolved.kind === 'css') {
+    return { css: resolved.css };
+  }
+  const hex = String(resolved.value).slice(0, 7);
+  return { hex, displayP3: hexToDisplayP3Components(hex) };
+}
+
+function buildTagBaseSpec(tagPalette, colorBase) {
   const light = {};
   const dark = {};
   const tagGroupRoles = {
@@ -1012,14 +1039,8 @@ function buildTagBaseSpec(tagPalette) {
     for (const [key, themeValues] of Object.entries(tagPalette[groupKey] ?? {})) {
       for (const role of roles) {
         const varName = `eds-tag-${groupKey}-${key}-${role}`;
-        light[varName] = {
-          hex: themeValues.light[role],
-          displayP3: hexToDisplayP3Components(themeValues.light[role]),
-        };
-        dark[varName] = {
-          hex: themeValues.dark[role],
-          displayP3: hexToDisplayP3Components(themeValues.dark[role]),
-        };
+        light[varName] = tagBaseEntry(themeValues.light[role], 'light', colorBase);
+        dark[varName] = tagBaseEntry(themeValues.dark[role], 'dark', colorBase);
       }
     }
   }
@@ -1052,6 +1073,9 @@ function expandTagPaletteSemanticTokens(tagPalette) {
 }
 
 function formatColorBaseCssDeclarations(name, entry) {
+  if (entry?.css) {
+    return [`  --${name}: ${entry.css};`];
+  }
   const { hex, displayP3 } = resolveColorBaseEntry(entry);
   const lines = [`  --${name}: ${hex};`];
 
@@ -1060,6 +1084,10 @@ function formatColorBaseCssDeclarations(name, entry) {
     lines.push(
       `  --${name}: color(display-p3 ${formatDisplayP3Component(r)} ${formatDisplayP3Component(g)} ${formatDisplayP3Component(b)});`,
     );
+  }
+
+  if (entry?.comment) {
+    lines.push(`  /* ${entry.comment} */`);
   }
 
   return lines;
@@ -1320,11 +1348,14 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
     lines.push('');
     lines.push('  /* Physics · Spring（Base 唯一真源） */');
     for (const [name, spring] of Object.entries(baseSpec.springs)) {
-      lines.push(`  --motion-base-spring-${name}-response: ${spring.response};`);
-      lines.push(`  --motion-base-spring-${name}-damping-fraction: ${spring.dampingFraction};`);
-      lines.push(`  --motion-base-spring-${name}-blend-duration: ${spring.blendDuration}s;`);
+      lines.push(`  --motion-spring-${name}-response: ${spring.response};`);
+      lines.push(`  --motion-spring-${name}-damping-fraction: ${spring.dampingFraction};`);
+      lines.push(`  --motion-spring-${name}-blend-duration: ${spring.blendDuration}s;`);
       if (spring.reanimated) {
         const { damping, stiffness, mass } = spring.reanimated;
+        lines.push(`  --motion-spring-${name}-damping: ${damping};`);
+        lines.push(`  --motion-spring-${name}-stiffness: ${stiffness};`);
+        lines.push(`  --motion-spring-${name}-mass: ${mass};`);
         lines.push(`  --ios-spring-${name}: damping:${damping},stiffness:${stiffness},mass:${mass};`);
       }
     }
@@ -1334,7 +1365,7 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
     lines.push('');
     lines.push('  /* Haptic */');
     for (const [name, value] of Object.entries(baseSpec.haptics)) {
-      lines.push(`  --motion-base-haptic-${name}: ${JSON.stringify(value)};`);
+      lines.push(`  --motion-haptic-${name}: ${JSON.stringify(value)};`);
     }
   }
 
@@ -1353,7 +1384,7 @@ function writeMotionBaseCssFile(destination, selector, baseSpec, headerLines = [
     lines.push('  /* Interaction defaults */');
     for (const [name, value] of Object.entries(baseSpec.interaction)) {
       const cssName = name.replace(/([A-Z])/g, '-$1').toLowerCase();
-      lines.push(`  --motion-base-interaction-${cssName}: ${value ? 1 : 0};`);
+      lines.push(`  --motion-interaction-${cssName}: ${value ? 1 : 0};`);
     }
   }
 
@@ -1408,7 +1439,7 @@ function writeMotionSemanticCssFile(destination, semanticSpec, headerLines = [])
     '/**',
     ' * Do not edit directly, this file was auto-generated from Figma tokens.',
     ...headerLines.map((line) => (line.startsWith(' *') ? line : ` * ${line}`)),
-    ' * Motion semantic — Tap / Layout / Flotation / Deform / Page (.motion-tap · .motion-layout · .motion-flotation · .motion-deform · .motion-page).',
+    ' * Motion semantic — Press / Layout / Sheets / Deform / Page (.motion-press · .motion-layout · .motion-sheets · .motion-deform · .motion-page).',
     ' * Recipes: @eds/mobile-tokens/motion/recipe',
     ' */',
     '',
@@ -1532,7 +1563,7 @@ function buildMotionSystem() {
   ]);
 
   writeMotionSemanticCssFile(join(cssDir, 'motion/semantic.css'), semanticSpec, [
-    ' * Motion System — semantic scenario classes (.motion-tap · .motion-page …).',
+    ' * Motion System — semantic scenario classes (.motion-press · .motion-page …).',
     ' * Source: spec/motion/semantic.json',
   ]);
 
@@ -1695,8 +1726,9 @@ function buildColorSystem() {
 }
 
 function buildTagColorSystem() {
+  const colorBase = loadJson('color/base.json');
   const tagPalette = loadJson('color/tag-palette.json');
-  const tagBaseSpec = buildTagBaseSpec(tagPalette);
+  const tagBaseSpec = buildTagBaseSpec(tagPalette, colorBase);
   const tagSemanticTokens = expandTagPaletteSemanticTokens(tagPalette);
   const semanticGroups = groupTagSemanticTokens(tagSemanticTokens);
 

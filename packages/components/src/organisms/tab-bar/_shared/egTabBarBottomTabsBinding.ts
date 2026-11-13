@@ -50,6 +50,72 @@ export function egTabBarRouteNameForIndex(
   return item.routeName ?? item.key;
 }
 
+export type EgTabBarExpoBottomTabsEmitter = {
+  emit: (event: {
+    type: 'tabPress';
+    target: string;
+    canPreventDefault: true;
+  }) => { defaultPrevented?: boolean } | undefined;
+};
+
+/**
+ * Expo Router 58+ 自定义 `tabBar` — 与 `BottomTabBar.js` 同序：`tabPress` → `navigateToTab(route.key)`。
+ */
+export function createEgTabBarExpoBottomTabsBinding(
+  items: EgTabBarNavBindItem[],
+  state: EgTabBarBottomTabNavigationState,
+  emitter: EgTabBarExpoBottomTabsEmitter,
+  navigateToTab: (routeKey: string) => void,
+): {
+  selectedIndex: number;
+  onSelectedIndexChange: (index: number) => void;
+} {
+  const selectedIndex = egTabBarSelectedIndexForActiveRoute(
+    items,
+    state.routes[state.index]?.name,
+  );
+
+  return {
+    selectedIndex,
+    onSelectedIndexChange: (index: number) => {
+      if (index < 0 || index >= items.length || index === selectedIndex) {
+        return;
+      }
+
+      const routeName = egTabBarRouteNameForIndex(items, index);
+      if (!routeName) {
+        return;
+      }
+
+      const route = state.routes.find((entry) => entry.name === routeName);
+      if (!route) {
+        if (typeof __DEV__ !== 'undefined' && __DEV__) {
+          console.warn(`[EgTabBar] tab route not in navigator state: "${routeName}"`);
+        }
+        return;
+      }
+
+      let defaultPrevented = false;
+      try {
+        const event = emitter.emit({
+          type: 'tabPress',
+          target: route.key,
+          canPreventDefault: true,
+        });
+        defaultPrevented = event?.defaultPrevented === true;
+      } catch (error) {
+        console.error('[EgTabBar] tabPress emit failed', error);
+      }
+
+      if (defaultPrevented) {
+        return;
+      }
+
+      navigateToTab(route.key);
+    },
+  };
+}
+
 /** React Navigation Bottom Tabs ↔ EgTabBar 受控选中与 `tabPress` / navigate。 */
 export function createEgTabBarBottomTabsBinding<
   Nav extends {
@@ -80,19 +146,23 @@ export function createEgTabBarBottomTabsBinding<
         return;
       }
 
-      const event = navigation.emit({
-        type: 'tabPress',
-        target: route.key,
-        canPreventDefault: true,
-      });
+      let defaultPrevented = false;
+      try {
+        const event = navigation.emit({
+          type: 'tabPress',
+          target: route.key,
+          canPreventDefault: true,
+        });
+        defaultPrevented = event?.defaultPrevented === true;
+      } catch (error) {
+        console.error('[EgTabBar] tabPress emit failed', error);
+      }
 
-      if (event.defaultPrevented) {
+      if (defaultPrevented || activeRoute?.name === routeName) {
         return;
       }
 
-      if (activeRoute?.name !== routeName) {
-        navigation.navigate(routeName);
-      }
+      navigation.navigate(routeName);
     },
   };
 }

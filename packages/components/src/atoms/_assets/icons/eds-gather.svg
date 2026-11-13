@@ -1,6 +1,6 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_2094_15889)">
-<path d="M5.40741 8.2501H26.5926M7.33333 4.25H24.6667M27 12.2502H5C3.89543 12.2502 3 13.0043 3 13.9344V26.566C3 27.4962 3.89543 28.2502 5 28.2502H27C28.1046 28.2502 29 27.4962 29 26.566V13.9344C29 13.0043 28.1046 12.2502 27 12.2502Z" stroke="#020304" style="stroke:#020304;stroke:color(display-p3 0.0078 0.0118 0.0157);stroke-opacity:1;" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.40741 8.2501H26.5926M7.33333 4.25H24.6667M27 12.2502H5C3.89543 12.2502 3 13.0043 3 13.9344V26.566C3 27.4962 3.89543 28.2502 5 28.2502H27C28.1046 28.2502 29 27.4962 29 26.566V13.9344C29 13.0043 28.1046 12.2502 27 12.2502Z" stroke="#000000" style="stroke:#000000;stroke:color(display-p3 0 0 0);stroke-opacity:1;" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 <defs>
 <clipPath id="clip0_2094_15889">

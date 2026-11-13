@@ -98,6 +98,7 @@ function isEffectBoxRoot(element) {
   return (
     element.classList.contains('glass-button-box') ||
     element.classList.contains('glass-flotation-box') ||
+    element.classList.contains('glass-sheets-box') ||
     element.classList.contains('glass-tabbar-box') ||
     element.classList.contains('glass-mask-box')
   );

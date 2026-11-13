@@ -28,7 +28,7 @@ export function ShowcaseListRow({
       style={({ pressed }) => [
         styles.row,
         nested && styles.rowNested,
-        !isLast && { borderBottomColor: colors['stroke-divider-page'] as string, ...styles.rowDivider },
+        !isLast && { borderBottomColor: colors['stroke-divider-shallow'] as string, ...styles.rowDivider },
         pressed && { backgroundColor: colors['event-tap'] as string },
       ]}
     >

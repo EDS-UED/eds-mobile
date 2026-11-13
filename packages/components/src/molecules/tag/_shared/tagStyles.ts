@@ -30,7 +30,7 @@ export function createTagStyles(state: TagVisualState): { container: ViewStyle; 
     paddingHorizontal: state.size === 'lg' ? spacing['spacing-2'] : spacing['spacing-1-5'],
     paddingVertical: state.size === 'sm' ? spacing['spacing-05'] : spacing['spacing-1'],
     borderRadius: spacing['radius-xs'] as number,
-    borderWidth: spacing['stroke-sm'] as number,
+    borderWidth: spacing['stroke-md'] as number,
     borderColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',

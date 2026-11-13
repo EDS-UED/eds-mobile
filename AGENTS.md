@@ -14,7 +14,7 @@
 4. **202 个 Figma 组件**必须在 catalog；export / slug 由 `generate-catalog.mjs` 驱动。
 5. **公共 API 不留 `@deprecated`**（§2）。
 6. **场景组件** preset 在 `packages/components` 统一维护（§8）。
-7. **`pnpm sync`** 仅更新 link 到 `eds-mobile` 的 consumer（§5）。
+7. **业务 consumer** — 本仓任意改动（含 **推送**）**不会**自动更新业务 App；业务侧**不受影响**，直至用户说 **「同步」** 才 §5.2 刷最新 EDS。日常只验证本仓 + Showcase（§9）；**禁止**未说「同步」就 `pnpm sync` / 改 consumer。
 8. **无明确原生增强声明 → 一律 RN 栈**（token + RN `boxShadow` / blur / Reanimated 等同路径）；禁止默认 `Platform.OS` 双实现或 elevation/Skia 替 token 语义。详案：`.cursor/rules/work.mdc` **§6.0**。
 9. 用户说 **「推送」** → `.cursor/rules/work.mdc` **§10**（§9 全绿 → 全量 commit → push；本仓无 GitHub Pages）。
 

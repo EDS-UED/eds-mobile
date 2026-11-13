@@ -43,7 +43,7 @@ export function ShowcaseTabBarDemoView() {
   const colors = useShowcaseColors();
   const { colorTheme } = useShowcaseThemeContext();
   const insets = useSafeAreaInsets();
-  const { scrollOffset, onScroll, scrollEventThrottle } = useEgNavBarScroll();
+  const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll();
 
   const pageBackground = colors.page as string;
 
@@ -88,6 +88,7 @@ export function ShowcaseTabBarDemoView() {
               showTitle: true,
               showRight: false,
               background: 'auto',
+              scrollEdgeActive,
               mode: colorTheme,
             }),
             contentStyle: { backgroundColor: pageBackground },
@@ -102,6 +103,8 @@ export function ShowcaseTabBarDemoView() {
               style={{ backgroundColor: pageBackground }}
               contentInsetAdjustmentBehavior="automatic"
               contentContainerStyle={styles.content}
+              onScroll={onScroll}
+              scrollEventThrottle={scrollEventThrottle}
             >
               {content}
             </ScrollView>

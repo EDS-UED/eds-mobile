@@ -1,8 +1,8 @@
-import { resolveMotionRecipe } from '@eds/mobile-animations';
+import { EdsRecipeAnima } from '@eds/mobile-animations';
 
 import colorSemanticSpec from '../../../../../packages/tokens/spec/color/semantic.json';
 
-const pressRecipe = resolveMotionRecipe('press');
+const pressRecipe = EdsRecipeAnima('press');
 
 function resolveEventTapBaseAlpha() {
   const token = colorSemanticSpec.tokens.find((entry) => entry.name === 'event-tap-base');

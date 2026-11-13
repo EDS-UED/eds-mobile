@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useCallback } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { resolveMotionRecipe } from '@eds/mobile-animations';
+import { EdsRecipeAnima } from '@eds/mobile-animations';
 import mobileTheme from '@eds/mobile-tokens/theme';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 
@@ -18,7 +18,7 @@ type TokenBaseTileProps = {
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-const pressMotion = resolveMotionRecipe('press');
+const pressMotion = EdsRecipeAnima('press');
 const pressScale = mobileTheme.motion.scale['scale-press'] as number;
 
 export function TokenBaseTile({ categoryId, entry, colors }: TokenBaseTileProps) {
@@ -50,7 +50,7 @@ export function TokenBaseTile({ categoryId, entry, colors }: TokenBaseTileProps)
         styles.tile,
         {
           backgroundColor: colors['material-card-shallow'] as string,
-          borderColor: colors['stroke-divider-page'] as string,
+          borderColor: colors['stroke-divider-shallow'] as string,
         },
         animatedStyle,
       ]}

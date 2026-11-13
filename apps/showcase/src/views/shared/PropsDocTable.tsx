@@ -17,7 +17,7 @@ function createPropsDocTableStyles(colors: ShowcaseColorMap) {
       gap: 2,
       paddingBottom: 8,
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: colors['stroke-divider-page'] as string,
+      borderBottomColor: colors['stroke-divider-shallow'] as string,
     },
     name: {
       fontSize: 14,

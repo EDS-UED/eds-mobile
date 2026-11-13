@@ -17,9 +17,11 @@ export function glassBoxRadiusStyle(
   }
 
   const radiusXl = mobileTheme.spacing['radius-xl'] as number;
-  if (compositionRadius === radiusXl) {
+  const radius2xl = mobileTheme.spacing['radius-2xl'] as number;
+  if (compositionRadius === radiusXl || compositionRadius === radius2xl) {
+    const radius = compositionRadius === radius2xl ? radius2xl : radiusXl;
     return {
-      borderRadius: radiusXl,
+      borderRadius: radius,
       borderCurve: 'continuous',
     };
   }
@@ -28,6 +30,19 @@ export function glassBoxRadiusStyle(
     borderRadius: compositionRadius,
     borderCurve: 'continuous',
   };
+}
+
+/** 实际圆角样式 · 非胶囊一律 continuous；被压到短边一半（胶囊）时按 §4.2 不加 borderCurve。 */
+export function glassBoxCornerStyle(
+  borderRadius: number,
+  width: number,
+  height: number,
+): ViewStyle {
+  if (borderRadius <= 0) {
+    return { borderRadius: 0 };
+  }
+  const isCapsule = width > 0 && height > 0 && borderRadius >= Math.min(width, height) / 2;
+  return isCapsule ? { borderRadius } : { borderRadius, borderCurve: 'continuous' };
 }
 
 export function capGlassBoxBorderRadius(

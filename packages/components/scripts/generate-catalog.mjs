@@ -73,15 +73,16 @@ const CATALOG = [
   { figmaName: 'Base_ Tab', exportName: 'EgTabBase', tier: 'molecules', family: 'tab', slug: 'tab-base', figmaPage: 'Tab 切换✅', kind: 'set', variantCount: 2, figmaId: '493:4549' },
   { figmaName: 'Base_Segmented Control', exportName: 'EgSegmentedControlBase', tier: 'molecules', family: 'tab', slug: 'segmented-control-base', figmaPage: 'Tab 切换✅', kind: 'set', variantCount: 12, figmaId: '493:4119' },
   { figmaName: 'Segmented Control', exportName: 'EgSegmentedControl', tier: 'molecules', family: 'tab', slug: 'segmented-control', figmaPage: 'Tab 切换✅', kind: 'set', variantCount: 6, figmaId: '493:4341' },
-  { figmaName: 'Tabs', exportName: 'EgTabs', tier: 'molecules', family: 'tab', slug: 'tabs', figmaPage: 'Tab 切换✅', kind: 'component', figmaId: '491:3819' },
+  { figmaName: 'Tabs', exportName: 'EgTab', tier: 'molecules', family: 'tab', slug: 'tabs', figmaPage: 'Tab 切换✅', kind: 'component', figmaId: '491:3819' },
 
   // —— Molecules · Drop-Down ——
-  { figmaName: 'Trigger', exportName: 'EgDropdownTrigger', tier: 'molecules', family: 'dropdown', slug: 'dropdown-trigger', figmaPage: 'Drop-Down 下拉✅', kind: 'set', variantCount: 15, figmaId: '297:3791' },
+  { figmaName: 'Trigger', exportName: 'EgMenuTrigger', tier: 'molecules', family: 'dropdown', slug: 'dropdown-trigger', figmaPage: 'Drop-Down 下拉✅', kind: 'set', variantCount: 15, figmaId: '297:3791' },
 
   // —— Molecules · Feedback ——
   { figmaName: 'Form Submission', exportName: 'EgFormSubmission', tier: 'molecules', family: 'feedback', slug: 'form-submission', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2, figmaId: '203:1064' },
   { figmaName: 'Status Card', exportName: 'EgStatusCard', tier: 'molecules', family: 'feedback', slug: 'status-card', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2, figmaId: '200:792' },
   { figmaName: 'Toast', exportName: 'EgToast', tier: 'molecules', family: 'feedback', slug: 'toast', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2, figmaId: '201:1030' },
+  { figmaName: 'Reddot', tier: 'molecules', family: 'feedback', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'component' },
 
   // —— Organisms · TabBar ——
   { figmaName: 'TabBar', exportName: 'EgTabBar', tier: 'organisms', family: 'tab-bar', slug: 'tab-bar', figmaPage: 'TabBar✅', kind: 'set', variantCount: 10, figmaId: '710:137' },
@@ -182,12 +183,14 @@ const EXPORT_OVERRIDES = {
   'input:Combo/Textarea Input': 'EgComboTextareaInput',
   'tab:Segmented Control': 'EgSegmentedControl',
   'tab:Base_Segmented Control': 'EgSegmentedControlBase',
+  'tab:Tabs': 'EgTab',
   'tab-bar:TabBar-Item': 'EgTabBarItem',
   'tab-bar:Glass BG.': 'EgTabBarGlassBg',
   'tab-bar:Apply_TabBar@Cregis': 'EgCregisTabBar',
   'tab-bar:Apply_TabBar@UDun': 'EgUDunTabBar',
   'tab-bar:NavBar': 'EgNavBar',
   'popovers:Notes': 'EgNotesPopover',
+  'feedback:Reddot': 'EgReddot',
 };
 
 const SCAFFOLD_MARKER = 'RN implementation —';
@@ -306,6 +309,8 @@ function removeOrphanComponentDirs(entries) {
   const expected = new Set(
     entries.map((e) => join(srcDir, e.tier, e.family, kebabFromExport(e.exportName))),
   );
+  /** Showcase infra / 手维实现 — 不在 Figma 202 路径下，禁止当 orphan 删除。 */
+  expected.add(join(srcDir, 'molecules', 'dropdown', 'menu'));
 
   for (const tier of ['atoms', 'molecules', 'organisms', 'templates']) {
     const tierPath = join(srcDir, tier);
@@ -415,10 +420,15 @@ writeFileSync(
   `/** Auto-generated — real RN implementations (no scaffold marker) */\nimport type { FigmaComponentEntry } from './figmaCatalog.js';\n\nexport const implementedComponentSlugs = new Set(${JSON.stringify(implementedSlugs)}) as ReadonlySet<string>;\n\nexport function isImplementedCatalogEntry(entry: Pick<FigmaComponentEntry, 'slug'>): boolean {\n  return implementedComponentSlugs.has(entry.slug);\n}\n`,
 );
 
-const previewLoaderLines = FINAL_CATALOG.map((entry) => {
-  const rel = `../${entry.tier}/${entry.family}/${kebabFromExport(entry.exportName)}/${entry.exportName}.js`;
-  return `  ${entry.exportName}: () => require('${rel}').${entry.exportName},`;
-});
+const previewLoaderLines = [
+  ...FINAL_CATALOG.map((entry) => {
+    const rel = `../${entry.tier}/${entry.family}/${kebabFromExport(entry.exportName)}/${entry.exportName}.js`;
+    return `  ${entry.exportName}: () => require('${rel}').${entry.exportName},`;
+  }),
+  `  EgMenu: () => require('../molecules/dropdown/menu/EgMenu.js').EgMenu,`,
+  `  EgMenuTrigger: () => require('../molecules/dropdown/menu/EgMenuTrigger.js').EgMenuTrigger,`,
+  `  EgSheets: () => require('../organisms/sheets/EgSheets.js').EgSheets,`,
+];
 
 writeFileSync(
   join(srcDir, 'preview/previewComponentLoaders.generated.ts'),
@@ -441,12 +451,18 @@ const exports = FINAL_CATALOG.filter(
   EgButtonGlassNavIconPlusSlotContent,
   egButtonGlassAvatarElementMarginPx,
   egButtonGlassAvatarInsetPx,
+  egButtonGlassSplitPairGapPx,
+  resolveEgButtonGlassPressIntensity,
   shouldUseEgButtonGlassNativeStack,
+  resolveEgButtonGlassRenderStack,
+  readEgButtonGlassStackDiagnostics,
 } from './molecules/button/button-glass';
 export type {
   EgButtonGlassProps,
   EgButtonGlassKind,
   EgButtonGlassIconCount,
+  EgButtonGlassRenderStack,
+  EgButtonGlassStackDiagnostics,
 } from './molecules/button/button-glass';`;
   }
   if (e.exportName === 'EgNavBar') {
@@ -455,6 +471,7 @@ export type {
   shouldUseEgNavBarNativeStack,
   egNavBarNativeStackOptions,
   egNavBarNativeStackScreenOptions,
+  egNavBarNativeStackHeaderGlassItem,
   useEgNavBarScroll,
   EG_NAV_BAR_PADDING_BOTTOM,
   EG_NAV_BAR_PADDING_HORIZONTAL,
@@ -466,6 +483,7 @@ export type {
   EgNavBarProps,
   EgNavBarAction,
   EgNavBarBackground,
+  EgNavBarScrollEdgeEffect,
   EgNavBarScrollOffset,
   EgNavBarNativeStackOptions,
   EgNavBarNativeStackOptionsInput,
@@ -526,6 +544,7 @@ export type {
   tabBarTrackIntrinsicHeight,
   TAB_BAR_PILL_TRACK_HEIGHT,
   createEgTabBarBottomTabsBinding,
+  createEgTabBarExpoBottomTabsBinding,
   egTabBarRouteNameForIndex,
   egTabBarSelectedIndexForActiveRoute,
 } from './organisms/tab-bar/tab-bar';
@@ -538,6 +557,7 @@ export type {
   EgTabBarBottomTabNavigation,
   EgTabBarBottomTabNavigationState,
   EgTabBarBottomTabRoute,
+  EgTabBarExpoBottomTabsEmitter,
   EgTabBarNavBindItem,
 } from './organisms/tab-bar/tab-bar';`;
   }
@@ -545,7 +565,23 @@ export type {
 });
 writeFileSync(
   join(srcDir, 'index.ts'),
-  `${exports.join('\n')}\nexport { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';\nexport type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';\nexport {\n  EgGlass,\n  GlassSurface,\n  GlassInteraction,\n  GlassContainer,\n  GlassControlShell,\n  GlassBlurScope,\n  GlassBlurBackdrop,\n  useGlassBlurTargetRef,\n  getNativeBlurView,\n  nativeBlurIntensity,\n  resolveAndroidBlurMethod,\n  getNativeLinearGradient,\n  getAndroidLiquidGlassView,\n  isAndroidLiquidGlassAvailable,\n  getSkiaModule,\n  isSkiaGlassAvailable,\n  resolveGlassBoxComposition,\n  glassBoxViewStyle,\n  glassBoxNativeBlurIntensity,\n} from './atoms/glass/index.js';\nexport type {\n  EgGlassProps,\n  GlassVariant,\n  GlassShape,\n  GlassSurfaceProps,\n  GlassInteractionProps,\n  GlassContainerProps,\n  GlassControlShape,\n  GlassControlShellProps,\n  GlassBoxClassName,\n  GlassBoxComposition,\n  GlassBoxLayer,\n  GlassBoxShadowLayer,\n} from './atoms/glass/index.js';\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog';\nexport { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs';\nexport { createCatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport type { CatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas';\nexport { resolvePreviewComponent } from './preview/resolvePreviewComponent';\nexport { AtomGallery, atomGalleryFamily } from './preview/AtomGallery';\nexport type { AtomGalleryFamily } from './preview/AtomGallery';\nexport { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './preview/ParityHarness';\nexport type { ParityMeasurement, ParityReport } from './preview/ParityHarness';\nexport { LiquidGlassDemo } from './preview/LiquidGlassDemo';\nexport { MotionDemo } from './preview/MotionDemo';\nexport * from './theme';\n`,
+  `${exports.join('\n')}
+export {
+  EgMenu,
+  EgMenuTrigger,
+  shouldUseEgMenuNativeStack,
+  resolveEgMenuRenderStack,
+} from './molecules/dropdown/menu';
+export type {
+  EgMenuItem,
+  EgMenuProps,
+  EgMenuSection,
+  EgMenuTriggerContext,
+  EgMenuTriggerProps,
+} from './molecules/dropdown/menu';
+export { EgSheets } from './organisms/sheets';
+export type { EgSheetsDetent, EgSheetsProps } from './organisms/sheets';
+export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';\nexport type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';\nexport {\n  EgGlass,\n  GlassSurface,\n  GlassInteraction,\n  GlassContainer,\n  GlassControlShell,\n  GlassBlurScope,\n  GlassBlurBackdrop,\n  useGlassBlurTargetRef,\n  getNativeBlurView,\n  nativeBlurIntensity,\n  resolveAndroidBlurMethod,\n  getNativeLinearGradient,\n  getSkiaModule,\n  isSkiaGlassAvailable,\n  resolveGlassBoxComposition,\n  glassBoxViewStyle,\n  glassBoxNativeBlurIntensity,\n} from './atoms/glass/index.js';\nexport type {\n  EgGlassProps,\n  GlassVariant,\n  GlassShape,\n  GlassSurfaceProps,\n  GlassInteractionProps,\n  GlassContainerProps,\n  GlassControlShape,\n  GlassControlShellProps,\n  GlassBoxClassName,\n  GlassBoxComposition,\n  GlassBoxLayer,\n  GlassBoxShadowLayer,\n} from './atoms/glass/index.js';\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog';\nexport { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs';\nexport { createCatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport type { CatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas';\nexport { resolvePreviewComponent } from './preview/resolvePreviewComponent';\nexport { AtomGallery, atomGalleryFamily } from './preview/AtomGallery';\nexport type { AtomGalleryFamily } from './preview/AtomGallery';\nexport { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './preview/ParityHarness';\nexport type { ParityMeasurement, ParityReport } from './preview/ParityHarness';\nexport { LiquidGlassDemo } from './preview/LiquidGlassDemo';\nexport { MotionDemo } from './preview/MotionDemo';\nexport { EgEdsAnimaPress } from './shared/motion/EgEdsAnimaPress.js';\nexport type { EgEdsAnimaPressProps } from './shared/motion/EgEdsAnimaPress.js';\nexport { useEgSlideTrack } from './shared/motion/useEgSlideTrack.js';\nexport type { EgSlideTrackOptions } from './shared/motion/useEgSlideTrack.js';\nexport { EgEdsAnimaSlide } from './shared/motion/EgEdsAnimaSlide.js';\nexport type { EgEdsAnimaSlideItem, EgEdsAnimaSlideProps } from './shared/motion/EgEdsAnimaSlide.js';\nexport {\n  EgEdsAnimaPage,\n  createEgEdsAnimaPageNavigator,\n  shouldUseEgEdsAnimaNativePage,\n} from './shared/motion/EgEdsAnimaPage.js';\nexport type { EgEdsAnimaPageDirection, EgEdsAnimaPageOptions } from './shared/motion/EgEdsAnimaPage.js';\nexport { EgEdsAnimaPageShot, EgEdsAnimaPageShotTrigger } from './shared/motion/EgEdsAnimaPageShot.js';\nexport type {\n  EgEdsAnimaPageShotPageApi,\n  EgEdsAnimaPageShotProps,\n  EgEdsAnimaPageShotRootApi,\n  EgEdsAnimaPageShotSource,\n  EgEdsAnimaPageShotTriggerProps,\n} from './shared/motion/EgEdsAnimaPageShot.js';\nexport { EgEdsAnimaLayoutContent } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport type { EgEdsAnimaLayoutContentProps } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport { useMotionPressScale } from './shared/useMotionPressScale.js';\nexport type { MotionPressRecipe, UseMotionPressScaleOptions } from './shared/useMotionPressScale.js';\nexport * from './theme';\n`,
 );
 
 console.log(`✓ Generated ${FINAL_CATALOG.length} components in packages/components/src`);

@@ -19,8 +19,8 @@ export type AnimationDemoLink = {
 export const animationDemos: AnimationDemoLink[] = [
   {
     id: 'motion-demo',
-    label: '动效演示',
-    lead: 'Semantic class · spring · reduced motion',
+    label: 'Motion 演示',
+    lead: '封装图形动画 · spring · reduced motion',
     route: 'MotionDemo',
   },
   {

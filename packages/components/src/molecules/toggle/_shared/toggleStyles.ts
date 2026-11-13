@@ -53,7 +53,7 @@ export function checkboxStyle(
     width: dimension,
     height: dimension,
     borderRadius: mobileTheme.spacing['radius-xs'] as number,
-    borderWidth: mobileTheme.spacing['stroke-sm'] as number,
+    borderWidth: mobileTheme.spacing['stroke-md'] as number,
     borderColor: checked
       ? resolveColor(colors, 'material-brand')
       : resolveColor(colors, 'stroke-base-quaternary'),
@@ -76,7 +76,7 @@ export function radioStyle(
     width: dimension,
     height: dimension,
     borderRadius: dimension / 2,
-    borderWidth: mobileTheme.spacing['stroke-md'] as number,
+    borderWidth: mobileTheme.spacing['stroke-lg'] as number,
     borderColor: checked
       ? resolveColor(colors, 'material-brand')
       : resolveColor(colors, 'stroke-base-quaternary'),

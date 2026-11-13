@@ -1,10 +1,18 @@
 import { catalogPreviewCanvasStyle } from '@eds/mobile-components/catalog';
 import {
+  applyMenuTriggerPreviewProps,
   findShowcaseCatalogEntry,
   mergeCatalogPreviewProps,
   resolveRnDocConfig,
   resolveShowcasePreviewComponent,
 } from '@/data/components';
+import { readTabSegmentCount } from '@/data/components/tabCustomizeModel';
+import {
+  buildRnAiPrompt,
+  figmaNameFromCatalogEntry,
+  resolveRnAiCustomizeState,
+  tierFamilyFromEntry,
+} from '@/data/components/buildRnAiPrompt';
 import { showcaseInfraPreviewDefaults } from '@/data/components/showcaseInfraPreviewDefaults';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -15,17 +23,20 @@ import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { CustomizePanel } from '@/views/shared/CustomizePanel';
+import { CopyAiPromptFooter, COPY_AI_PROMPT_FOOTER_HEIGHT } from '@/views/shared/CopyAiPromptFooter';
 import { DocContentSheet } from '@/views/shared/DocContentSheet';
 import { DocSection } from '@/views/shared/DocSection';
 import { InspectSheet } from '@/views/shared/InspectSheet';
 import { PropsDocTable } from '@/views/shared/PropsDocTable';
 import { ShowcaseInspectTarget } from '@/views/shared/ShowcaseInspectTarget';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { UsageSnippetBlock } from '@/views/shared/UsageSnippetBlock';
 import {
   ComponentDetailDocActions,
   type ComponentDetailDocPanel,
 } from '@/views/components/ComponentDetailDocActions';
+import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
 
 const STACK_HEADER_BAR = Platform.select({ ios: 44, android: 56, default: 44 }) as number;
 
@@ -40,6 +51,9 @@ function createComponentDetailStyles(colors: ShowcaseColorMap) {
     },
     scrollContent: {
       paddingBottom: theme.layout.scrollBottom,
+    },
+    scrollWithFixedFooter: {
+      paddingBottom: 0,
     },
     scrollInspect: {
       paddingBottom: 160,
@@ -68,6 +82,10 @@ export function ComponentDetailView() {
   const styles = useThemedStyles(createComponentDetailStyles);
   const insets = useSafeAreaInsets();
   const previewTopInset = insets.top + STACK_HEADER_BAR + theme.layout.cardPaddingVertical;
+  const scrollBottomInset =
+    COPY_AI_PROMPT_FOOTER_HEIGHT +
+    Math.max(insets.bottom, edsSpacing('spacing-3')) +
+    edsSpacing('spacing-4');
   const { slug: slugParam } = useLocalSearchParams<{ slug: string }>();
   const slug = slugParam ?? '';
   const entry = findShowcaseCatalogEntry(slug);
@@ -94,10 +112,21 @@ export function ComponentDetailView() {
     }
     const infraDefaults = showcaseInfraPreviewDefaults(slug);
     if (infraDefaults) {
-      return { mode: previewMode, testID: slug, ...infraDefaults, ...customize };
+      const merged = { mode: previewMode, testID: slug, ...infraDefaults, ...customize };
+      return entry ? applyMenuTriggerPreviewProps(entry, merged) : merged;
     }
     return mergeCatalogPreviewProps(entry, customize, previewMode);
   }, [colorTheme, customize, entry, slug]);
+
+  const previewRemountKey = useMemo(() => {
+    if (!entry) {
+      return slug;
+    }
+    if (entry.exportName === 'EgTab' || entry.exportName === 'EgSegmentedControl') {
+      return `${entry.slug}-${readTabSegmentCount(customize)}-${String(customize.size ?? 'md')}`;
+    }
+    return entry.slug;
+  }, [customize, entry, slug]);
 
   const usageCode = useMemo(() => {
     if (doc?.buildUsageSnippet) {
@@ -105,6 +134,19 @@ export function ComponentDetailView() {
     }
     return `<${doc?.componentTag ?? exportName} />`;
   }, [customize, doc, exportName]);
+
+  const aiPrompt = useMemo(() => {
+    const snippet = usageCode.trim() || `<${exportName} />`;
+    return buildRnAiPrompt({
+      exportName,
+      slug,
+      figmaName: figmaNameFromCatalogEntry(entry),
+      ...tierFamilyFromEntry(entry),
+      doc: doc ?? undefined,
+      customizeState: resolveRnAiCustomizeState(doc ?? undefined, customize),
+      usageSnippet: snippet,
+    });
+  }, [customize, doc, entry, exportName, slug, usageCode]);
 
   const styleLines = useMemo(() => {
     const lines = Object.entries(customize)
@@ -125,9 +167,10 @@ export function ComponentDetailView() {
         style={styles.root}
         keyboardShouldPersistTaps="handled"
         contentInsetAdjustmentBehavior="never"
-        contentContainerStyle={
-          mode === 'inspect' ? styles.scrollInspect : styles.scrollContent
-        }
+        contentContainerStyle={[
+          mode === 'inspect' ? styles.scrollInspect : styles.scrollWithFixedFooter,
+          { paddingBottom: scrollBottomInset },
+        ]}
       >
         <View style={[styles.previewStage, { paddingTop: previewTopInset }]}>
           <View style={styles.canvas}>
@@ -140,7 +183,7 @@ export function ComponentDetailView() {
               onMeasuredLayout={setMeasuredLayout}
             >
               {PreviewComponent && entry ? (
-                <PreviewComponent {...previewProps} />
+                <PreviewComponent key={previewRemountKey} {...previewProps} />
               ) : PreviewComponent ? (
                 <PreviewComponent testID={slug} {...customize} />
               ) : (
@@ -153,13 +196,19 @@ export function ComponentDetailView() {
         <ComponentDetailDocActions onOpen={setDocPanel} />
 
         <DocSection title="定制">
-          <CustomizePanel
-            controls={doc?.customizeControls ?? []}
-            state={customize}
-            onChange={setCustomize}
-          />
+          {doc?.customizeLayout === 'menu-sections' ? (
+            <MenuSectionsCustomizePanel state={customize} onChange={setCustomize} />
+          ) : (
+            <CustomizePanel
+              controls={doc?.customizeControls ?? []}
+              state={customize}
+              onChange={setCustomize}
+            />
+          )}
         </DocSection>
       </ScrollView>
+
+      <CopyAiPromptFooter prompt={aiPrompt} />
 
       <DocContentSheet
         visible={docPanel != null}

@@ -4,28 +4,28 @@ export type ButtonShowcaseVariant = 'solid' | 'outline' | 'text';
 export type ButtonShowcaseWidth = 'hug' | 'fill';
 
 export const BUTTON_SHOWCASE_TONES = [
-  { value: 'brand', label: 'Brand' },
-  { value: 'decor', label: 'Decor' },
-  { value: 'danger', label: 'Danger' },
-  { value: 'option', label: 'Option' },
+  { value: 'brand', label: '品牌' },
+  { value: 'decor', label: '装饰' },
+  { value: 'danger', label: '危险' },
+  { value: 'option', label: '选项' },
 ] as const;
 
 export const BUTTON_SHOWCASE_VARIANTS = [
-  { value: 'solid', label: 'Solid' },
-  { value: 'outline', label: 'Outline' },
-  { value: 'text', label: 'Text' },
+  { value: 'solid', label: '实心' },
+  { value: 'outline', label: '描边' },
+  { value: 'text', label: '文字' },
 ] as const;
 
 export const BUTTON_SHOWCASE_WIDTHS = [
-  { value: 'hug', label: 'Hug' },
-  { value: 'fill', label: 'Fill' },
+  { value: 'hug', label: '自适应' },
+  { value: 'fill', label: '充满' },
 ] as const;
 
 export const BUTTON_SHOWCASE_SIZES = [
-  { value: 'lg', label: 'LG' },
-  { value: 'md', label: 'MD' },
-  { value: 'sm', label: 'SM' },
-  { value: 'xs', label: 'XS' },
+  { value: 'lg', label: '大' },
+  { value: 'md', label: '中' },
+  { value: 'sm', label: '小' },
+  { value: 'xs', label: '特小' },
 ] as const;
 
 export const buttonShowcaseDefaults = {
@@ -33,7 +33,7 @@ export const buttonShowcaseDefaults = {
   variant: 'solid' as ButtonShowcaseVariant,
   width: 'hug' as ButtonShowcaseWidth,
   size: 'lg',
-  label: 'Button',
+  label: '按钮',
   disabled: false,
   loading: false,
 };

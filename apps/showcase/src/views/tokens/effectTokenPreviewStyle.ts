@@ -31,6 +31,7 @@ import { resolveGlassBoxPreviewComposition } from '@/views/tokens/glassBoxPrevie
 const GLASS_BOX_CLASS_NAMES = new Set<string>([
   'glass-button-box',
   'glass-flotation-box',
+  'glass-sheets-box',
   'glass-tabbar-box',
   'glass-mask-box',
 ]);
@@ -137,27 +138,30 @@ function compositionToPreview(className: GlassBoxClassName, mode: EffectPreviewT
     (layer: GlassBoxLayer) => layer.kind === 'overlayGradient',
   );
 
+  const outerShadow = composition.shadows.find((shadow: GlassBoxShadow) => !shadow.inset);
+
   const circleStyle: ViewStyle = {
     width: EFFECT_PREVIEW_DIAMETER,
     height: EFFECT_PREVIEW_DIAMETER,
     borderRadius: EFFECT_PREVIEW_DIAMETER / 2,
     backgroundColor: fillLayer?.kind === 'fill' ? fillLayer.color : 'transparent',
     overflow: 'hidden',
+    ...(composition.border
+      ? {
+          borderWidth: composition.border.width,
+          borderColor: composition.border.color,
+        }
+      : null),
+    ...(outerShadow
+      ? {
+          shadowColor: outerShadow.color,
+          shadowOffset: { width: outerShadow.offsetX, height: outerShadow.offsetY },
+          shadowOpacity: 1,
+          shadowRadius: outerShadow.blurRadius,
+          elevation: Math.max(2, Math.round(outerShadow.blurRadius)),
+        }
+      : null),
   };
-
-  if (composition.border) {
-    circleStyle.borderWidth = composition.border.width;
-    circleStyle.borderColor = composition.border.color;
-  }
-
-  const outerShadow = composition.shadows.find((shadow: GlassBoxShadow) => !shadow.inset);
-  if (outerShadow) {
-    circleStyle.shadowColor = outerShadow.color;
-    circleStyle.shadowOffset = { width: outerShadow.offsetX, height: outerShadow.offsetY };
-    circleStyle.shadowOpacity = 1;
-    circleStyle.shadowRadius = outerShadow.blurRadius;
-    circleStyle.elevation = Math.max(2, Math.round(outerShadow.blurRadius));
-  }
 
   const overlay =
     gradientLayer?.kind === 'overlayGradient' && gradientLayer.stops.length >= 2

@@ -9,7 +9,7 @@ export type EgButtonGlassKind = 'text' | 'icon';
 export type EgButtonGlassIconCount = 1 | 2;
 
 export type EgButtonGlassProps = {
-  /** 文本胶囊 / 圆形 / 双 icon 胶囊 — 导航栏玻璃按钮。 */
+  /** 文本胶囊 / 圆形 / 双 icon 胶囊。 */
   kind: EgButtonGlassKind;
   /** `kind="text"` 时必填。 */
   label?: string;
@@ -29,7 +29,7 @@ export type EgButtonGlassProps = {
   iconSlot?: ReactNode;
   /** legacy — 同 `avatarSlot`（`iconCount={2}` 右侧）。 */
   iconSlotEnd?: ReactNode;
-  /** 文本胶囊字号 / 边距档 — 与 EgButton 一致（RN / iOS 26+ 原生 Pressable 同 token）。 */
+  /** 文本胶囊字号 / 边距档 — 与 EgButton 一致。 */
   size?: ControlSize;
   mode?: ThemeMode;
   variant?: GlassVariant;

@@ -1,7 +1,16 @@
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { Stack } from 'expo-router';
-import type { PropsWithChildren } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import type { ComponentType, PropsWithChildren } from 'react';
+import { ScrollView, StyleSheet, View, type NativeSyntheticEvent } from 'react-native';
+
+type SegmentedControlChangeEvent = NativeSyntheticEvent<{ selectedSegmentIndex: number }>;
+
+const TokenSegmentedControl = SegmentedControl as ComponentType<{
+  values: string[];
+  selectedIndex: number;
+  onChange: (event: SegmentedControlChangeEvent) => void;
+  style?: object;
+}>;
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
@@ -35,10 +44,12 @@ export function TokenSegmentScrollLayout({
         stickyHeaderIndices={[0]}
       >
         <View style={[styles.segmentBar, { backgroundColor: colors['box-page'] as string }]}>
-          <SegmentedControl
+          <TokenSegmentedControl
             values={[...segmentLabels]}
             selectedIndex={segmentIndex}
-            onChange={(event) => onSegmentIndexChange(event.nativeEvent.selectedSegmentIndex)}
+            onChange={(event: SegmentedControlChangeEvent) =>
+              onSegmentIndexChange(event.nativeEvent.selectedSegmentIndex)
+            }
             style={styles.segmentControl}
           />
         </View>

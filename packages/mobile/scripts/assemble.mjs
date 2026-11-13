@@ -24,6 +24,12 @@ for (const { from, to } of SOURCES) {
   copyDir(from, to);
 }
 
+/** Android 平滑圆角原生模块 · Expo autolinking 需包根 `expo-module.config.json` + `android/`。 */
+const nativeAndroidDir = join(mobileRoot, 'android');
+rmSync(nativeAndroidDir, { recursive: true, force: true });
+copyDir(join(repoRoot, 'components/android'), nativeAndroidDir);
+cpSync(join(repoRoot, 'components/expo-module.config.json'), join(mobileRoot, 'expo-module.config.json'));
+
 writeFileSync(
   join(distRoot, 'index.js'),
   `export * from './components/index.js';\nexport { default as mobileTheme } from './tokens/js/theme.js';\nexport * from './animations/index.js';\n`,

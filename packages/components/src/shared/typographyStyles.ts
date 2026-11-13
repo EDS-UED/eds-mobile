@@ -15,8 +15,20 @@ function preset(sizeKey: keyof typeof base, lineKey: keyof typeof base, weightKe
   };
 }
 
-const BODY_MEDIUM_STRONG = preset('size-body-medium', 'line-height-body-medium', 'weight-semibold');
-const BODY_SMALL_STRONG = preset('size-body-small', 'line-height-body-small', 'weight-semibold');
+const BODY_LARGE_STRONG = preset('size-body-large', 'line-height-body-large', 'weight-medium');
+const BODY_MEDIUM_STRONG = preset('size-body-medium', 'line-height-body-medium', 'weight-medium');
+const TITLE = preset('size-title', 'line-height-title', 'weight-bold');
+
+/** Body Large Strong · 19 / 26 · `eds-body-large-strong-weight` → weight-medium（500）。 */
+export function presetBodyLargeStrong(): TextPreset {
+  return BODY_LARGE_STRONG;
+}
+
+/** Title · 21 / 28 · `eds-title-weight` → weight-bold。 */
+export function presetTitle(): TextPreset {
+  return TITLE;
+}
+const BODY_SMALL_STRONG = preset('size-body-small', 'line-height-body-small', 'weight-medium');
 
 export function presetBodyMediumStrong(): TextPreset {
   return BODY_MEDIUM_STRONG;
@@ -25,21 +37,40 @@ export function presetBodyMediumStrong(): TextPreset {
 export function presetBodySmallStrong(): TextPreset {
   return BODY_SMALL_STRONG;
 }
+
+const BODY_LARGE_HEAVY = preset('size-body-large', 'line-height-body-large', 'weight-bold');
+const BODY_MEDIUM_HEAVY = preset('size-body-medium', 'line-height-body-medium', 'weight-semibold');
+const BODY_SMALL_HEAVY = preset('size-body-small', 'line-height-body-small', 'weight-semibold');
+
+/** Body Large Heavy · 19 / 26 · `eds-body-large-heavy-weight` → weight-bold（700）。 */
+export function presetBodyLargeHeavy(): TextPreset {
+  return BODY_LARGE_HEAVY;
+}
+
+/** Body Medium Heavy · 17 / 24 · `eds-body-medium-heavy-weight` → weight-semibold（600）。 */
+export function presetBodyMediumHeavy(): TextPreset {
+  return BODY_MEDIUM_HEAVY;
+}
+
+/** Body Small Heavy · 15 / 20 · `eds-body-small-heavy-weight` → weight-semibold（600）。 */
+export function presetBodySmallHeavy(): TextPreset {
+  return BODY_SMALL_HEAVY;
+}
 const BODY_SMALL = preset('size-body-small', 'line-height-body-small', 'weight-regular');
 const FOOTNOTE_STRONG = preset('size-footnote', 'line-height-footnote', 'weight-semibold');
 const DETAIL_STRONG = preset('size-detail', 'line-height-detail', 'weight-semibold');
 
-/** LG · MD：17 / 600；SM · XS：15 / 600（typography base token）。 */
+/** XL · LG：17 / semibold（Body Medium Heavy）；MD · SM · XS：15 / semibold（Body Small Heavy）。 */
 export function buttonTypography(size: ControlSize): TextPreset {
   switch (size) {
     case 'xl':
     case 'lg':
+      return BODY_MEDIUM_HEAVY;
     case 'md':
-      return BODY_MEDIUM_STRONG;
     case 'sm':
     case 'xs':
     default:
-      return BODY_SMALL_STRONG;
+      return BODY_SMALL_HEAVY;
   }
 }
 

@@ -1,0 +1,33 @@
+{
+  "groups": [
+    {
+      "comment": "材质容器",
+      "tokens": [
+        {
+          "name": "glass-button-box",
+          "title": "玻璃按钮容器（Button Box）"
+        },
+        {
+          "name": "glass-sheets-box",
+          "title": "Sheets 容器（Sheets Box）"
+        },
+        {
+          "name": "glass-flotation-box",
+          "title": "浮层容器（Flotation Box）"
+        },
+        {
+          "name": "glass-tabbar-box",
+          "title": "TabBar 容器（TabBar Box）"
+        },
+        {
+          "name": "glass-tabbar-bg",
+          "title": "TabBar 底衬（Glass BG）"
+        },
+        {
+          "name": "glass-mask-box",
+          "title": "置顶容器（Mask Box）"
+        }
+      ]
+    }
+  ]
+}

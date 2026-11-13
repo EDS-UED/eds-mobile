@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { resolveMotionRecipe } from '@eds/mobile-animations';
+import { EdsRecipeAnima } from '@eds/mobile-animations';
 import mobileTheme from '@eds/mobile-tokens/theme';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 
@@ -18,7 +18,7 @@ type ColorTokenBaseTileProps = {
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-const pressMotion = resolveMotionRecipe('press');
+const pressMotion = EdsRecipeAnima('press');
 const pressScale = mobileTheme.motion.scale['scale-press'] as number;
 function isLightFill(value: string) {
   if (value === 'transparent') {
@@ -59,7 +59,7 @@ export function ColorTokenBaseTile({ entry, colors }: ColorTokenBaseTileProps) {
   const tileStyle = useMemo(
     () => ({
       backgroundColor: isTransparent ? (colors['box-page'] as string) : entry.value,
-      borderColor: needsBorder ? (colors['stroke-divider-page'] as string) : undefined,
+      borderColor: needsBorder ? (colors['stroke-divider-shallow'] as string) : undefined,
       borderWidth: needsBorder ? 1 : 0,
     }),
     [entry.value, isTransparent, needsBorder],

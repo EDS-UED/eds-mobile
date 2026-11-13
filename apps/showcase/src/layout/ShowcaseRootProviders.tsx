@@ -5,13 +5,12 @@ import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, DarkTheme, DefaultTheme } from 'expo-router/react-navigation';
-import { edsFontAssets } from '@eds/mobile-tokens/fonts-native';
-
 import { ShowcaseDevProvider } from '@/hooks/useShowcaseDev';
+import { resolveShowcaseFontAssets } from '@/layout/showcaseDevFonts';
 import { ShowcaseThemeProvider } from '@/theme/ShowcaseThemeProvider';
 
 export function ShowcaseRootProviders({ children }: PropsWithChildren) {
-  const [fontsLoaded, fontError] = useFonts(edsFontAssets);
+  const [fontsLoaded, fontError] = useFonts(resolveShowcaseFontAssets());
   const scheme = useColorScheme();
 
   useEffect(() => {
@@ -23,7 +22,8 @@ export function ShowcaseRootProviders({ children }: PropsWithChildren) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ThemeProvider value={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+        {/* expo-router fork 与 @react-navigation/core 同时增广全局 ReactNavigation.Theme（colors ColorValue vs string） */}
+        <ThemeProvider value={(scheme === 'dark' ? DarkTheme : DefaultTheme) as unknown as ReactNavigation.Theme}>
           <ShowcaseThemeProvider>
             <ShowcaseDevProvider>
               <StatusBar style="auto" />

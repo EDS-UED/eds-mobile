@@ -47,6 +47,15 @@
       }
     },
     {
+      "title": "Body Large Heavy",
+      "className": "typography-body-large-heavy",
+      "properties": {
+        "font-size": "var(--eds-body-large-heavy-size)",
+        "font-weight": "var(--eds-body-large-heavy-weight)",
+        "line-height": "var(--eds-body-large-heavy-line-height)"
+      }
+    },
+    {
       "title": "Body Medium",
       "className": "typography-body-medium",
       "properties": {
@@ -65,6 +74,15 @@
       }
     },
     {
+      "title": "Body Medium Heavy",
+      "className": "typography-body-medium-heavy",
+      "properties": {
+        "font-size": "var(--eds-body-medium-heavy-size)",
+        "font-weight": "var(--eds-body-medium-heavy-weight)",
+        "line-height": "var(--eds-body-medium-heavy-line-height)"
+      }
+    },
+    {
       "title": "Body Small",
       "className": "typography-body-small",
       "properties": {
@@ -80,6 +98,15 @@
         "font-size": "var(--eds-body-small-strong-size)",
         "font-weight": "var(--eds-body-small-strong-weight)",
         "line-height": "var(--eds-body-small-strong-line-height)"
+      }
+    },
+    {
+      "title": "Body Small Heavy",
+      "className": "typography-body-small-heavy",
+      "properties": {
+        "font-size": "var(--eds-body-small-heavy-size)",
+        "font-weight": "var(--eds-body-small-heavy-weight)",
+        "line-height": "var(--eds-body-small-heavy-line-height)"
       }
     },
     {

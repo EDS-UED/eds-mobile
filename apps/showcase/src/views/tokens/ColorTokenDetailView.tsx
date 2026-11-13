@@ -1,20 +1,46 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { getColorTokenByName, resolveColorTheme } from '@/data/tokens/colorTokenCatalog';
 import { resolveTokenListPrimaryLabel } from '@/data/tokens/tokenListDisplayName';
+import type { DocPropRow } from '@/data/components';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
-import { edsFontFamily } from '@/lib/edsFontFamily';
 import { TokenDetailCodeSnippet } from '@/views/shared/TokenDetailCodeSnippet';
-import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
-import { edsTypographyRole } from '@/views/shared/resolveEdsTheme';
+import { CustomizePanel } from '@/views/shared/CustomizePanel';
+import { PropsDocTable } from '@/views/shared/PropsDocTable';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { ColorTokenSwatch } from '@/views/tokens/ColorTokenSwatch';
+import { TokenDetailRootView } from '@/views/tokens/TokenDetailRootView';
 
 /** Color detail hero swatch — fixed preview size (px). */
 const COLOR_DETAIL_SWATCH_PX = 192;
 
+function colorTokenPropRows(entry: {
+  name: string;
+  layer: string;
+  cssVar: string;
+  value: string;
+  cssReference?: string;
+}): DocPropRow[] {
+  const rows: DocPropRow[] = [
+    {
+      name: entry.cssVar,
+      type: 'color',
+      defaultValue: entry.value,
+      description: `layer · ${entry.layer}`,
+    },
+  ];
+  if (entry.cssReference) {
+    rows.push({
+      name: 'reference',
+      type: 'CSS',
+      defaultValue: entry.cssReference,
+      description: 'dist semantic',
+    });
+  }
+  return rows;
+}
+
 export function ColorTokenDetailView() {
-  const screenStyles = useShowcaseScreenStyles();
   const { tokenName } = useLocalSearchParams<{ tokenName: string }>();
   const colorTheme = resolveColorTheme(useColorScheme());
   const colors = useShowcaseColors();
@@ -37,52 +63,20 @@ export function ColorTokenDetailView() {
     detailLines: [],
   };
 
+  const title = resolveTokenListPrimaryLabel('color', catalogEntry);
+
   return (
-    <>
-      <ScrollView
-        style={screenStyles.scrollRoot}
-        contentContainerStyle={styles.content}
-        contentInsetAdjustmentBehavior="automatic"
-      >
-        <View style={styles.hero}>
-          <ColorTokenSwatch value={entry.value} size={COLOR_DETAIL_SWATCH_PX} />
-          <Text style={[styles.heroTitle, { color: colors['text-base-primary'] as string }]}>
-            {resolveTokenListPrimaryLabel('color', catalogEntry)}
-          </Text>
-          <View style={styles.formats}>
-            <TokenDetailCodeSnippet categoryId="color" entry={catalogEntry} />
-          </View>
-        </View>
-      </ScrollView>
-    </>
+    <TokenDetailRootView
+      title={title}
+      preview={<ColorTokenSwatch value={entry.value} size={COLOR_DETAIL_SWATCH_PX} />}
+      customize={<CustomizePanel controls={[]} state={{}} onChange={() => {}} />}
+      usageContent={<TokenDetailCodeSnippet categoryId="color" entry={catalogEntry} />}
+      propsContent={<PropsDocTable rows={colorTokenPropRows(entry)} />}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingBottom: theme.layout.scrollBottom,
-    paddingHorizontal: theme.layout.pageInset,
-    paddingTop: theme.layout.tokenBlockGap,
-  },
-  hero: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  /** typography-display · centered */
-  heroTitle: {
-    ...edsTypographyRole('display'),
-    fontFamily: edsFontFamily('700'),
-    marginTop: theme.layout.tokenDetailSwatchTitleGap,
-    textAlign: 'center',
-  },
-  formats: {
-    alignSelf: 'stretch',
-    marginTop: theme.layout.tokenDetailTitleSubtextGap,
-    width: '100%',
-  },
   missing: {
     flex: 1,
     alignItems: 'center',

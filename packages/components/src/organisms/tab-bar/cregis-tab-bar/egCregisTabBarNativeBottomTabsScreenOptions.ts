@@ -18,7 +18,7 @@ export type EgCregisTabBarNativeBottomTabsScreenOptions = {
  */
 export function egCregisTabBarNativeBottomTabsScreenOptions({ mode = 'light' }: { mode?: ThemeMode } = {}) {
   const colors = getThemeColors(mode);
-  const tint = egTabBarNativeActiveTintColor(colors, 'decor');
+  const tint = egTabBarNativeActiveTintColor(colors, 'brand');
 
   return ({ route }: { route: { name: string } }): EgCregisTabBarNativeBottomTabsScreenOptions => {
     const tab = CREGIS_TAB_BAR_NATIVE_TABS.find((t) => t.routeName === route.name);

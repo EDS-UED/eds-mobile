@@ -14,6 +14,10 @@ export const SHOWCASE_GLASS_EG_SLUG = 'glass-eg';
 /** Icon/Crypto 运行时入口 — Atoms · `atoms/_shared/symbol`。 */
 export const SHOWCASE_SYMBOL_BODY_SLUG = 'symbol-body';
 
+export const SHOWCASE_MENU_BODY_SLUG = 'menu-body';
+
+export const SHOWCASE_SHEETS_BODY_SLUG = 'sheets-body';
+
 export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
   {
     figmaName: 'EgGlass',
@@ -22,6 +26,26 @@ export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
     tier: 'atoms',
     family: 'glass',
     slug: SHOWCASE_GLASS_EG_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'Menu',
+    showcaseLabel: 'Menu 本体 · iOS 26+ 系统 Menu / 其它 RN 浮层',
+    exportName: 'EgMenu',
+    tier: 'organisms',
+    family: 'menu',
+    slug: SHOWCASE_MENU_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'Sheets',
+    showcaseLabel: 'Sheets · 底部浮层（悬浮档 ↔ 大尺寸贴边）',
+    exportName: 'EgSheets',
+    tier: 'organisms',
+    family: 'sheets',
+    slug: SHOWCASE_SHEETS_BODY_SLUG,
     figmaPage: INFRA_PAGE,
     kind: 'component',
   },

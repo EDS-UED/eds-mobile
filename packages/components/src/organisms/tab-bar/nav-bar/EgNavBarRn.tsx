@@ -7,11 +7,18 @@ import {
   type LayoutChangeEvent,
   type ViewStyle,
 } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  type SharedValue,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EgGlass } from '../../../atoms/glass/EgGlass.js';
+import { egButtonGlassIconMinSize } from '../../../molecules/button/button-glass/_shared/resolveEgButtonGlassShellStyle.js';
 import { EgNavBarActionView } from './EgNavBarActionView.js';
+import { egNavBarSlotMotion } from './egNavBarSlotMotion.js';
 import { presetBodyMediumStrong, presetTitle } from '../../../shared/typographyStyles.js';
 import { getThemeColors, mobileTheme } from '../../../theme/index.js';
 import {
@@ -63,6 +70,91 @@ function EgNavBarSlot({ visible, minWidth, align, onContentWidth, shiftStyle, ch
   );
 }
 
+const LAYOUT_SLOT_ANCHOR_WIDTH = 320;
+
+function actionKey(action: EgNavBarAction | undefined): string {
+  if (!action) return 'none';
+  return [action.kind ?? 'icon', action.icon, action.iconAlt, action.iconCount, action.label, action.size]
+    .map((part) => part ?? '')
+    .join('|');
+}
+
+type LayoutSlotProps = {
+  visible: boolean;
+  contentKey: string;
+  align: 'flex-start' | 'flex-end';
+  onContentWidth: (width: number) => void;
+  shiftStyle?: ReturnType<typeof useAnimatedStyle>;
+  /** 槽位当前占位宽度（0 = 收起），供靠左标题等联动。 */
+  width: SharedValue<number>;
+  children: ReactNode;
+};
+
+/**
+ * `slotTransition="layout"` 槽位：锚定层贴外侧边，宽度动画让出 / 收回空间；
+ * 操作以 key 切换 → 新旧 crossfade + 缩放，离场副本停在原位不随宽度漂移。
+ */
+function EgNavBarLayoutSlot({
+  visible,
+  contentKey,
+  align,
+  onContentWidth,
+  shiftStyle,
+  width,
+  children,
+}: LayoutSlotProps) {
+  const motion = egNavBarSlotMotion();
+  /** 挂载即可见的槽位首帧直接到位；之后的显隐 / 换内容一律动画。 */
+  const snapNextLayout = useSharedValue(visible);
+
+  useEffect(() => {
+    if (!visible) {
+      width.value = withTiming(0, motion.timing);
+    }
+  }, [visible, width]);
+
+  const sizeStyle = useAnimatedStyle(() => ({ width: width.value }), [width]);
+
+  return (
+    <Animated.View
+      style={[styles.layoutSlot, sizeStyle, shiftStyle]}
+      pointerEvents="box-none"
+      accessibilityElementsHidden={!visible}
+      importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'}
+    >
+      <View
+        style={[
+          styles.layoutSlotAnchor,
+          align === 'flex-end'
+            ? { right: 0, justifyContent: 'flex-end' }
+            : { left: 0, justifyContent: 'flex-start' },
+        ]}
+        pointerEvents="box-none"
+      >
+        {visible ? (
+          <Animated.View
+            key={contentKey}
+            entering={motion.entering}
+            exiting={motion.exiting}
+            onLayout={(event: LayoutChangeEvent) => {
+              const next = event.nativeEvent.layout.width;
+              onContentWidth(next);
+              if (snapNextLayout.value) {
+                snapNextLayout.value = false;
+                width.value = next;
+                return;
+              }
+              width.value = withTiming(next, motion.timing);
+            }}
+          >
+            {children}
+          </Animated.View>
+        ) : null}
+      </View>
+    </Animated.View>
+  );
+}
+
 /** RN 顶栏 · 背景 `glass-mask-box`（Android / iOS ≤25 · 以及 iOS 26+ overlay 如 EgSheets）。 */
 export function EgNavBarRn(props: EgNavBarProps) {
   const {
@@ -87,7 +179,9 @@ export function EgNavBarRn(props: EgNavBarProps) {
     mode = 'light',
     testID,
     style,
+    slotTransition = 'fade',
   } = props;
+  const layoutTransition = slotTransition === 'layout';
 
   const insets = useSafeAreaInsets();
   const statusZone = topInset ?? insets.top;
@@ -130,6 +224,24 @@ export function EgNavBarRn(props: EgNavBarProps) {
     [edgeShift],
   );
 
+  const leftSlotWidth = useSharedValue(0);
+  const rightSlotWidth = useSharedValue(0);
+  const titleMarginTarget = leftVisible ? titleLeadingGap : titleLeadingInset;
+  const titleMargin = useSharedValue(titleMarginTarget);
+  useEffect(() => {
+    titleMargin.value = layoutTransition
+      ? withTiming(titleMarginTarget, egNavBarSlotMotion().timing)
+      : titleMarginTarget;
+  }, [layoutTransition, titleMargin, titleMarginTarget]);
+  const titleMarginStyle = useAnimatedStyle(() => ({ marginLeft: titleMargin.value }), [titleMargin]);
+
+  const leftAction = (
+    <EgNavBarActionView action={left} mode={mode} testID="nav-bar-left" />
+  );
+  const rightAction = right ? (
+    <EgNavBarActionView action={right} mode={mode} testID="nav-bar-right" />
+  ) : null;
+
   return (
     <View
       testID={testID ?? 'tab-bar-nav-bar'}
@@ -160,7 +272,18 @@ export function EgNavBarRn(props: EgNavBarProps) {
         ]}
         pointerEvents="box-none"
       >
-        {leading && !leftVisible ? null : (
+        {layoutTransition ? (
+          <EgNavBarLayoutSlot
+            visible={leftVisible}
+            contentKey={actionKey(left)}
+            align="flex-start"
+            onContentWidth={setLeftWidth}
+            shiftStyle={leadingShiftStyle}
+            width={leftSlotWidth}
+          >
+            {leftAction}
+          </EgNavBarLayoutSlot>
+        ) : leading && !leftVisible ? null : (
           <EgNavBarSlot
             visible={leftVisible}
             minWidth={sideWidth}
@@ -168,7 +291,7 @@ export function EgNavBarRn(props: EgNavBarProps) {
             onContentWidth={setLeftWidth}
             shiftStyle={leadingShiftStyle}
           >
-            <EgNavBarActionView action={left} mode={mode} testID="nav-bar-left" />
+            {leftAction}
           </EgNavBarSlot>
         )}
 
@@ -178,7 +301,7 @@ export function EgNavBarRn(props: EgNavBarProps) {
             leading
               ? [
                   styles.titleWrapLeading,
-                  { marginLeft: leftVisible ? titleLeadingGap : titleLeadingInset },
+                  layoutTransition ? titleMarginStyle : { marginLeft: titleMarginTarget },
                 ]
               : null,
             titleFadeStyle,
@@ -199,17 +322,28 @@ export function EgNavBarRn(props: EgNavBarProps) {
           </Text>
         </Animated.View>
 
-        <EgNavBarSlot
-          visible={rightVisible}
-          minWidth={sideWidth}
-          align="flex-end"
-          onContentWidth={setRightWidth}
-          shiftStyle={trailingShiftStyle}
-        >
-          {right ? (
-            <EgNavBarActionView action={right} mode={mode} testID="nav-bar-right" />
-          ) : null}
-        </EgNavBarSlot>
+        {layoutTransition ? (
+          <EgNavBarLayoutSlot
+            visible={rightVisible}
+            contentKey={actionKey(right)}
+            align="flex-end"
+            onContentWidth={setRightWidth}
+            shiftStyle={trailingShiftStyle}
+            width={rightSlotWidth}
+          >
+            {rightAction}
+          </EgNavBarLayoutSlot>
+        ) : (
+          <EgNavBarSlot
+            visible={rightVisible}
+            minWidth={sideWidth}
+            align="flex-end"
+            onContentWidth={setRightWidth}
+            shiftStyle={trailingShiftStyle}
+          >
+            {rightAction}
+          </EgNavBarSlot>
+        )}
       </View>
     </View>
   );
@@ -232,6 +366,19 @@ const styles = StyleSheet.create({
   },
   slot: {
     flexDirection: 'row',
+  },
+  layoutSlot: {
+    minHeight: egButtonGlassIconMinSize(),
+    overflow: 'visible',
+  },
+  /** 定宽锚定层 — 宽于任何操作，离场副本相对它定位，槽位宽度变化时不漂移。 */
+  layoutSlotAnchor: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: LAYOUT_SLOT_ANCHOR_WIDTH,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   titleWrap: {
     flex: 1,

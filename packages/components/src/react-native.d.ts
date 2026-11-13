@@ -252,7 +252,12 @@ declare module 'react-native-reanimated' {
       y2: number,
     ) => (value: number) => number;
   };
-  export const useSharedValue: <T>(initial: T) => { value: T };
+  export type SharedValue<T> = { value: T };
+  export const useSharedValue: <T>(initial: T) => SharedValue<T>;
+  export class Keyframe {
+    constructor(definitions: Record<number | string, Record<string, unknown>>);
+    duration(durationMs: number): Keyframe;
+  }
   export function useDerivedValue<T>(
     updater: () => T,
     dependencies?: ReadonlyArray<unknown>,

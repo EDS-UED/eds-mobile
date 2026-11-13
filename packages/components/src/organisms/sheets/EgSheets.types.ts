@@ -2,7 +2,12 @@ import type { ReactNode } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { ThemeMode } from '../../theme/index.js';
-import type { EgNavBarScrollEdgeEffect } from '../tab-bar/nav-bar/EgNavBar.types.js';
+import type {
+  EgNavBarAction,
+  EgNavBarScrollEdgeEffect,
+} from '../tab-bar/nav-bar/EgNavBar.types.js';
+
+export type { EgNavBarAction };
 
 /**
  * 档位 · small 28% / medium 50% 屏高；
@@ -32,11 +37,14 @@ export type EgSheetsProps = {
   showLeft?: boolean;
   /** 左侧返回按钮点击回调（按钮样式与图标不可定制）。 */
   onBack?: () => void;
-  /**
-   * 顶部右侧按钮 · EDS 锁定为关闭（`eds-close`，点击走 sheets 收起），业务侧禁止修改 / 替换，仅可显隐。
-   * 默认显示。
-   */
+  /** 显示顶栏右侧操作；默认 `true`。 */
   showRight?: boolean;
+  /**
+   * 覆盖顶栏右侧 `EgNavBar` 操作（如编辑态 `kind: 'text'`「保存」）。
+   * 缺省为关闭（`eds-close` · 点击收起 Sheet）。
+   * 未指定 `size` 时默认 `md`。
+   */
+  rightAction?: EgNavBarAction;
   /** 遮罩点击 / 下拉 / 系统返回可收起；关闭按钮不受影响。 */
   dismissible?: boolean;
   /**

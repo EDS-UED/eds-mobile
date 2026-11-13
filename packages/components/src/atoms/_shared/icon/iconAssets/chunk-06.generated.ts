@@ -220,6 +220,12 @@ const assets: Record<string, Asset> = {
     "kind": "fill",
     "fillTone": "primary"
   },
+  "eds-reset": {
+    "markup": "<svg viewBox=\"0 0 32 32\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M18 27C24.0751 27 29 22.0751 29 16C29 9.92487 24.0751 5 18 5C11.9249 5 7 9.92487 7 16C7 16.7218 7 22.25 7 23M3 19.5L7 24L11 19.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"eds-i-s\"/>\n</svg>",
+    "colorMode": "token",
+    "kind": "stroke",
+    "fillTone": "primary"
+  },
   "eds-safely-dollar": {
     "markup": "<svg viewBox=\"0 0 32 32\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M17.4723 27.5479C16.9907 27.7198 16.4989 27.87 15.9998 28C11.4501 26.8216 7.57347 23.851 5.25617 19.7674C2.93888 15.6839 2.37905 10.8364 3.70468 6.33333C8.21125 6.53926 12.6211 4.98505 15.9998 2C19.3786 4.98505 23.7884 6.53926 28.295 6.33333C28.9213 8.45956 29.1267 10.6638 28.9256 12.8261M29.5 19.8214C29.5 19.8214 28.2587 18.4926 26.2416 18.6568C24.2265 18.8248 23.2538 20.0123 23.2538 21.2056C23.2538 24.6804 29.5 22.271 29.5 25.8374C29.5 27.674 25.3564 28.9723 22.8878 26.8111M26.4299 16.56V18.48M26.4299 28.08V30\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"eds-i-s\"/>\n</svg>",
     "colorMode": "token",

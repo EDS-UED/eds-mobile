@@ -310,6 +310,7 @@ export const iconAssetChunkByFileName: Record<string, number> = {
   "eds-recycle": 2,
   "eds-reduction": 2,
   "eds-reduction-mini": 2,
+  "eds-reset": 6,
   "eds-routing-numbers": 2,
   "eds-safely-dollar": 6,
   "eds-safes": 5,

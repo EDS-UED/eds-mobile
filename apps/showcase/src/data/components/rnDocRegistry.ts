@@ -1,7 +1,7 @@
 import {
   AVATAR_NATIVE_PALETTE_SIZE,
   formatAvatarPaletteName,
-} from '@eds/mobile-components/catalog';
+} from '@eds/mobile-components';
 
 import type { DocCustomizeControl, DocPropRow } from './types.js';
 import { buildRnSelfClosingSnippet } from './buildRnUsageSnippet.js';

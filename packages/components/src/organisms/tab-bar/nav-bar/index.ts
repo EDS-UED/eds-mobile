@@ -21,6 +21,7 @@ export type {
   EgNavBarScrollOffset,
   EgNavBarTitleAlign,
   EgNavBarChromeContext,
+  EgNavBarSlotTransition,
 } from './EgNavBar.types.js';
 export type {
   EgNavBarNativeStackOptions,

@@ -310,6 +310,7 @@ export const iconAssetNames = [
   "eds-recycle",
   "eds-reduction",
   "eds-reduction-mini",
+  "eds-reset",
   "eds-routing-numbers",
   "eds-safely-dollar",
   "eds-safes",

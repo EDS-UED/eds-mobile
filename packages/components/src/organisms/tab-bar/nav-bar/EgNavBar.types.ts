@@ -45,6 +45,8 @@ export type EgNavBarScrollOffset = { value: number };
  */
 export type EgNavBarChromeContext = 'stack' | 'overlay';
 
+export type EgNavBarSlotTransition = 'fade' | 'layout';
+
 export type EgNavBarProps = {
   /**
    * 中间标题 — 17 / 600（body-medium-strong），单行截断。
@@ -91,6 +93,12 @@ export type EgNavBarProps = {
   testID?: string;
   /** 顶栏宿主；EgSheets 等浮层传 `overlay`。默认 `stack`。 */
   chromeContext?: EgNavBarChromeContext;
+  /**
+   * 左 / 右操作显隐、右操作内容切换时的过渡（仅 RN 栏）。
+   * - `fade`（默认）：槽位原地淡入淡出。
+   * - `layout`：layout-deform-content — 操作 crossfade + 缩放，靠左标题与胶囊宽度随布局平移（EgSheets）。
+   */
+  slotTransition?: EgNavBarSlotTransition;
   /**
    * Tab 根页等无 Stack 系统栏时 — iOS 26+ 仍绘制 RN 栏（`glass-mask-box`）。
    * `chromeContext="overlay"` 时 iOS 26+ 默认即 RN 栏，无需本项。

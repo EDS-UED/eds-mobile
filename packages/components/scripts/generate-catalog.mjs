@@ -312,6 +312,9 @@ function removeOrphanComponentDirs(entries) {
   /** Showcase infra / 手维实现 — 不在 Figma 202 路径下，禁止当 orphan 删除。 */
   expected.add(join(srcDir, 'molecules', 'dropdown', 'menu'));
   expected.add(join(srcDir, 'molecules', 'tab', 'tab-block'));
+  expected.add(join(srcDir, 'organisms', 'data-list'));
+  expected.add(join(srcDir, 'organisms', 'item'));
+  expected.add(join(srcDir, 'organisms', 'tab-bar', 'tab-bar-text'));
 
   for (const tier of ['atoms', 'molecules', 'organisms', 'templates']) {
     const tierPath = join(srcDir, tier);
@@ -429,6 +432,9 @@ const previewLoaderLines = [
   `  EgMenu: () => require('../molecules/dropdown/menu/EgMenu.js').EgMenu,`,
   `  EgMenuTrigger: () => require('../molecules/dropdown/menu/EgMenuTrigger.js').EgMenuTrigger,`,
   `  EgSheets: () => require('../organisms/sheets/EgSheets.js').EgSheets,`,
+  `  EgTabBlock: () => require('../molecules/tab/tab-block/EgTabBlock.js').EgTabBlock,`,
+  `  EgDataList: () => require('../organisms/data-list/EgDataList.js').EgDataList,`,
+  `  EgTabBarText: () => require('../organisms/tab-bar/tab-bar-text/EgTabBarText.js').EgTabBarText,`,
 ];
 
 writeFileSync(
@@ -586,7 +592,42 @@ export type {
 } from './molecules/dropdown/menu';
 export { EgSheets } from './organisms/sheets';
 export type { EgSheetsDetent, EgSheetsProps } from './organisms/sheets';
-export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';\nexport type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';\nexport {\n  EgGlass,\n  GlassSurface,\n  GlassInteraction,\n  GlassContainer,\n  GlassControlShell,\n  GlassBlurScope,\n  GlassBlurBackdrop,\n  useGlassBlurTargetRef,\n  getNativeBlurView,\n  nativeBlurIntensity,\n  resolveAndroidBlurMethod,\n  getNativeLinearGradient,\n  getSkiaModule,\n  isSkiaGlassAvailable,\n  resolveGlassBoxComposition,\n  glassBoxViewStyle,\n  glassBoxNativeBlurIntensity,\n} from './atoms/glass/index.js';\nexport type {\n  EgGlassProps,\n  GlassVariant,\n  GlassShape,\n  GlassSurfaceProps,\n  GlassInteractionProps,\n  GlassContainerProps,\n  GlassControlShape,\n  GlassControlShellProps,\n  GlassBoxClassName,\n  GlassBoxComposition,\n  GlassBoxLayer,\n  GlassBoxShadowLayer,\n} from './atoms/glass/index.js';\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog';\nexport { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs';\nexport { createCatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport type { CatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas';\nexport { resolvePreviewComponent } from './preview/resolvePreviewComponent';\nexport { AtomGallery, atomGalleryFamily } from './preview/AtomGallery';\nexport type { AtomGalleryFamily } from './preview/AtomGallery';\nexport { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './preview/ParityHarness';\nexport type { ParityMeasurement, ParityReport } from './preview/ParityHarness';\nexport { LiquidGlassDemo } from './preview/LiquidGlassDemo';\nexport { MotionDemo } from './preview/MotionDemo';\nexport { EgEdsAnimaPress } from './shared/motion/EgEdsAnimaPress.js';\nexport type { EgEdsAnimaPressProps } from './shared/motion/EgEdsAnimaPress.js';\nexport { useEgSlideTrack } from './shared/motion/useEgSlideTrack.js';\nexport type { EgSlideTrackOptions } from './shared/motion/useEgSlideTrack.js';\nexport { EgEdsAnimaSlide } from './shared/motion/EgEdsAnimaSlide.js';\nexport type { EgEdsAnimaSlideItem, EgEdsAnimaSlideProps } from './shared/motion/EgEdsAnimaSlide.js';\nexport {\n  EgEdsAnimaPage,\n  createEgEdsAnimaPageNavigator,\n  shouldUseEgEdsAnimaNativePage,\n} from './shared/motion/EgEdsAnimaPage.js';\nexport type { EgEdsAnimaPageDirection, EgEdsAnimaPageOptions } from './shared/motion/EgEdsAnimaPage.js';\nexport { EgEdsAnimaPageShot, EgEdsAnimaPageShotTrigger } from './shared/motion/EgEdsAnimaPageShot.js';\nexport type {\n  EgEdsAnimaPageShotPageApi,\n  EgEdsAnimaPageShotProps,\n  EgEdsAnimaPageShotRootApi,\n  EgEdsAnimaPageShotSource,\n  EgEdsAnimaPageShotTriggerProps,\n} from './shared/motion/EgEdsAnimaPageShot.js';\nexport { EgEdsAnimaLayoutContent } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport type { EgEdsAnimaLayoutContentProps } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport { useMotionPressScale } from './shared/useMotionPressScale.js';\nexport type { MotionPressRecipe, UseMotionPressScaleOptions } from './shared/useMotionPressScale.js';\nexport * from './theme';\n`,
+export {
+  EgDataList,
+  EgDataListRow,
+  EG_DATA_LIST_GRAPHIC_TEXT_GAP,
+  EG_DATA_LIST_SUB_TEXT_MAX_LINES,
+  EG_DATA_LIST_ROW_GAP,
+  EG_DATA_LIST_ROW_MARGIN_H,
+  EG_DATA_LIST_ROW_PAD_H,
+  EG_DATA_LIST_ROW_PAD_V,
+  EG_DATA_LIST_ROW_RADIUS,
+  EG_DATA_LIST_SCENE_CONTENT_INSET,
+  getEgDataListRowLayout,
+} from './organisms/data-list';
+export type { EgDataListProps, EgDataListRowProps, EgDataListRowLayout } from './organisms/data-list';
+export {
+  EgItem,
+  EgItemGroup,
+  EG_ITEM_GROUP_INSET,
+  EG_ITEM_GROUP_RADIUS,
+  EG_ITEM_ICON_GAP,
+  EG_ITEM_ICON_SLOT,
+  EG_ITEM_MIN_HEIGHT,
+  EG_ITEM_PAD_H,
+  EG_ITEM_PAD_V,
+  EG_ITEM_TAP_RADIUS,
+  EG_ITEM_TRAILING_GAP,
+  getEgItemDividerInset,
+} from './organisms/item';
+export type { EgItemGroupProps, EgItemProps } from './organisms/item';
+export {
+  EgTabBarText,
+  buildEgTabBarTextItems,
+  EG_TAB_BAR_TEXT_MAX_TABS,
+} from './organisms/tab-bar/tab-bar-text';
+export type { EgTabBarTextProps } from './organisms/tab-bar/tab-bar-text';
+export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';\nexport type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';\nexport {\n  EgGlass,\n  EgScrollEdgeEffect,\n  resolveEgScrollEdgeEffect,\n  GlassSurface,\n  GlassInteraction,\n  GlassContainer,\n  GlassControlShell,\n  GlassBlurScope,\n  GlassBlurBackdrop,\n  useGlassBlurTargetRef,\n  getNativeBlurView,\n  nativeBlurIntensity,\n  resolveAndroidBlurMethod,\n  getNativeLinearGradient,\n  getSkiaModule,\n  isSkiaGlassAvailable,\n  resolveGlassBoxComposition,\n  glassBoxViewStyle,\n  glassBoxNativeBlurIntensity,\n} from './atoms/glass/index.js';\nexport type {\n  EgGlassProps,\n  EgScrollEdgeEffectProps,\n  EgScrollEdgeEffectStyle,\n  EgScrollEdgeEffectEdge,\n  EgScrollEdgeEffectContainer,\n  GlassVariant,\n  GlassShape,\n  GlassSurfaceProps,\n  GlassInteractionProps,\n  GlassContainerProps,\n  GlassControlShape,\n  GlassControlShellProps,\n  GlassBoxClassName,\n  GlassBoxComposition,\n  GlassBoxLayer,\n  GlassBoxShadowLayer,\n} from './atoms/glass/index.js';\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog';\nexport { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs';\nexport { createCatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport type { CatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas';\nexport { resolvePreviewComponent } from './preview/resolvePreviewComponent';\nexport { AtomGallery, atomGalleryFamily } from './preview/AtomGallery';\nexport type { AtomGalleryFamily } from './preview/AtomGallery';\nexport { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './preview/ParityHarness';\nexport type { ParityMeasurement, ParityReport } from './preview/ParityHarness';\nexport { LiquidGlassDemo } from './preview/LiquidGlassDemo';\nexport { MotionDemo } from './preview/MotionDemo';\nexport { EgEdsAnimaPress } from './shared/motion/EgEdsAnimaPress.js';\nexport type { EgEdsAnimaPressProps } from './shared/motion/EgEdsAnimaPress.js';\nexport { useEgSlideTrack } from './shared/motion/useEgSlideTrack.js';\nexport type { EgSlideTrackOptions } from './shared/motion/useEgSlideTrack.js';\nexport { EgEdsAnimaSlide } from './shared/motion/EgEdsAnimaSlide.js';\nexport type { EgEdsAnimaSlideItem, EgEdsAnimaSlideProps } from './shared/motion/EgEdsAnimaSlide.js';\nexport {\n  EgEdsAnimaPage,\n  createEgEdsAnimaPageNavigator,\n  shouldUseEgEdsAnimaNativePage,\n} from './shared/motion/EgEdsAnimaPage.js';\nexport type { EgEdsAnimaPageDirection, EgEdsAnimaPageOptions } from './shared/motion/EgEdsAnimaPage.js';\nexport { EgEdsAnimaPageShot, EgEdsAnimaPageShotTrigger } from './shared/motion/EgEdsAnimaPageShot.js';\nexport type {\n  EgEdsAnimaPageShotPageApi,\n  EgEdsAnimaPageShotProps,\n  EgEdsAnimaPageShotRootApi,\n  EgEdsAnimaPageShotSource,\n  EgEdsAnimaPageShotTriggerProps,\n} from './shared/motion/EgEdsAnimaPageShot.js';\nexport { EgEdsAnimaLayoutContent } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport type { EgEdsAnimaLayoutContentProps } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport { useMotionPressScale } from './shared/useMotionPressScale.js';\nexport type { MotionPressRecipe, UseMotionPressScaleOptions } from './shared/useMotionPressScale.js';\nexport { EdsSansText } from './shared/EdsSansText.js';\nexport type { EdsSansTextProps } from './shared/EdsSansText.js';\nexport * from './theme';\n`,
 );
 
 console.log(`✓ Generated ${FINAL_CATALOG.length} components in packages/components/src`);

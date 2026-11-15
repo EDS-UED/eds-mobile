@@ -19,8 +19,15 @@ export function shouldUseEgNavBarNativeStack(): boolean {
 export function EgNavBar(props: EgNavBarProps) {
   const chromeContext = props.chromeContext ?? 'stack';
 
-  if (shouldUseEgNavBarNativeStack() && !props.forceRnImplementation && chromeContext !== 'overlay') {
-    reportNativeEnhancementBypass('EgNavBar', 'egNavBarNativeStackOptions / egNavBarNativeStackScreenOptions');
+  if (shouldUseEgNavBarNativeStack() && chromeContext !== 'overlay') {
+    if (props.forceRnImplementation) {
+      reportNativeEnhancementBypass(
+        'EgNavBar',
+        'forceRnImplementation 在 iOS 26+ stack 已忽略 — 使用 egNavBarNativeStackOptions / egNavBarNativeStackScreenOptions',
+      );
+    } else {
+      reportNativeEnhancementBypass('EgNavBar', 'egNavBarNativeStackOptions / egNavBarNativeStackScreenOptions');
+    }
     return null;
   }
 

@@ -6,6 +6,7 @@ import {
   resolveMenuDefaultSelectedId,
   stripMenuCustomizeMeta,
 } from './menuCustomizeModel.js';
+import { resolveTabBarTextAiCustomizeState } from './tabBarTextCustomizeModel.js';
 import { resolveTabSlideAiCustomizeState } from './tabCustomizeModel.js';
 
 const EDS_MOBILE_AI_RULES = [
@@ -44,6 +45,9 @@ export function resolveRnAiCustomizeState(
     (doc.componentTag === 'EgTab' || doc.componentTag === 'EgSegmentedControl')
   ) {
     return resolveTabSlideAiCustomizeState(doc, customizeState);
+  }
+  if (doc?.componentTag === 'EgTabBarText') {
+    return resolveTabBarTextAiCustomizeState(doc, customizeState);
   }
   return customizeState;
 }

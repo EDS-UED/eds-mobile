@@ -62,6 +62,13 @@ export function buildEgTabPreviewItems(count: number): { id: string; label: stri
   });
 }
 
+export function buildEgTabBlockPreviewItems(count: number): { id: string; label: string; count?: number }[] {
+  return Array.from({ length: count }, (_, index) => {
+    const id = String(index + 1);
+    return index === 1 ? { id, label: 'Label', count: 12 } : { id, label: 'Label' };
+  });
+}
+
 export function buildEgSegmentedControlPreviewSegments(count: number): string[] {
   return Array.from({ length: count }, () => 'Label');
 }
@@ -77,6 +84,12 @@ export function isEgTabPreviewEntry(
   entry: Pick<{ slug: string; exportName: string }, 'slug' | 'exportName'>,
 ): boolean {
   return entry.exportName === 'EgTab' || entry.slug === 'tab-tabs';
+}
+
+export function isEgTabBlockPreviewEntry(
+  entry: Pick<{ slug: string; exportName: string }, 'slug' | 'exportName'>,
+): boolean {
+  return entry.exportName === 'EgTabBlock' || entry.slug === 'tab-block';
 }
 
 export function isEgSegmentedControlPreviewEntry(
@@ -96,6 +109,16 @@ export function applyTabSlidePreviewProps(
       ...base,
       defaultSelectedId: '1',
       items: buildEgTabPreviewItems(count),
+    };
+  }
+
+  if (isEgTabBlockPreviewEntry(entry)) {
+    const count = readTabSegmentCount(props);
+    const base = stripTabSlideCustomizeMeta(props);
+    return {
+      ...base,
+      selectedId: '1',
+      items: buildEgTabBlockPreviewItems(count),
     };
   }
 

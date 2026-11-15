@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { GlassBoxEffectPreview } from '@/views/tokens/GlassBoxEffectPreview';
+import { ScrollEdgeEffectMiniPreview } from '@/views/tokens/ScrollEdgeEffectMiniPreview';
 
 type GlassPreviewModeProps = {
   mode?: 'light' | 'dark';
@@ -13,7 +14,7 @@ type ShowcaseEgGlassPreviewProps = GlassPreviewModeProps & {
   box?: GlassBoxClassName;
 };
 
-/** EgGlass 详情 — 各 Type 均为 Effect Glass Box 240px 预览（非 EgTabBar 场景）。 */
+/** EgGlass 详情 — BlurGlass 盒预览。 */
 export function ShowcaseEgGlassPreview({
   box = 'glass-button-box',
   mode = 'light',
@@ -28,6 +29,18 @@ export function ShowcaseEgGlassPreview({
           <GlassBoxEffectPreview className={box} mode={mode} colors={colors} />
         </View>
       </GlassBlurScope>
+    </View>
+  );
+}
+
+type ShowcaseEgScrollEdgePreviewProps = GlassPreviewModeProps & Record<string, unknown>;
+
+/** EgScrollEdgeEffect 详情 — 迷你页面模拟。 */
+export function ShowcaseEgScrollEdgePreview(props: ShowcaseEgScrollEdgePreviewProps) {
+  const colors = useShowcaseColors();
+  return (
+    <View style={styles.scrollEdgeStage} testID={props.testID}>
+      <ScrollEdgeEffectMiniPreview state={props} colors={colors} />
     </View>
   );
 }
@@ -62,5 +75,9 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     backgroundColor: 'rgba(255,255,255,0.85)',
+  },
+  scrollEdgeStage: {
+    width: '100%',
+    alignSelf: 'stretch',
   },
 });

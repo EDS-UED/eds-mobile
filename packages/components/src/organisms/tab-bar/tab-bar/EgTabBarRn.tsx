@@ -18,6 +18,7 @@ export function EgTabBarRn(props: EgTabBarProps & Pick<ViewProps, 'style'>) {
     style,
     previewBackdrop,
     selectionAccent = 'brand',
+    itemPresentation = 'icon',
   } = props;
 
   const {
@@ -34,7 +35,6 @@ export function EgTabBarRn(props: EgTabBarProps & Pick<ViewProps, 'style'>) {
 
   const shellPad = !edgeToEdge;
   const { rootMinHeight, shellPaddingBottom } = useEgTabBarShellLayout();
-
   return (
     <View
       style={StyleSheet.flatten([
@@ -95,6 +95,7 @@ export function EgTabBarRn(props: EgTabBarProps & Pick<ViewProps, 'style'>) {
                     accessibilityLabel={item.accessibilityLabel}
                     onLayout={onItemLayout(index)}
                     selectionAccent={selectionAccent}
+                    presentation={itemPresentation}
                     style={index < items.length - 1 ? egTabBarStyles.itemOverlap : undefined}
                   />
                 ))}

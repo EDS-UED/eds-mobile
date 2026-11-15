@@ -4,12 +4,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
-import { showcaseShallowBlockSurface, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import {
+  showcaseCardFillColor,
+  showcasePageBackgroundColor,
+  showcaseShallowBlockSurface,
+  showcaseTheme as theme,
+} from '@/views/shared/showcaseTheme';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { copyShowcaseText } from '@/views/shared/showcaseCopyText';
 
-/** 固定底栏高度（不含 safe area）— 与 ScrollView paddingBottom 对齐。 */
-export const COPY_AI_PROMPT_FOOTER_HEIGHT = 72;
+export {
+  COMPONENT_DETAIL_FOOTER_HEIGHT as COPY_AI_PROMPT_FOOTER_HEIGHT,
+} from '@/views/shared/ComponentDetailActionFooter';
 
 function createCopyAiPromptFooterStyles(colors: ShowcaseColorMap) {
   return StyleSheet.create({
@@ -20,7 +26,7 @@ function createCopyAiPromptFooterStyles(colors: ShowcaseColorMap) {
       bottom: 0,
       paddingHorizontal: theme.layout.pageInset,
       paddingTop: theme.layout.cardPaddingVertical,
-      backgroundColor: colors.page as string,
+      backgroundColor: showcasePageBackgroundColor(colors),
       borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: colors['stroke-divider-shallow'] as string,
     },
@@ -28,10 +34,7 @@ function createCopyAiPromptFooterStyles(colors: ShowcaseColorMap) {
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: theme.layout.cardPaddingVertical,
-      ...showcaseShallowBlockSurface(colors['material-card-shallow'] as string),
-      ...theme.blockRadius,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: colors['stroke-divider-shallow'] as string,
+      ...showcaseShallowBlockSurface(showcaseCardFillColor(colors)),
     },
     label: {
       fontSize: 15,
@@ -44,6 +47,8 @@ function createCopyAiPromptFooterStyles(colors: ShowcaseColorMap) {
 type CopyAiPromptFooterProps = {
   prompt: string;
 };
+
+/** @deprecated 使用 `ComponentDetailActionFooter`。 */
 
 export function CopyAiPromptFooter({ prompt }: CopyAiPromptFooterProps) {
   const styles = useThemedStyles(createCopyAiPromptFooterStyles);

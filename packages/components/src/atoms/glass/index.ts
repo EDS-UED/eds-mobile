@@ -11,7 +11,25 @@ export {
   GlassMaskScrollEdgeScope,
   useGlassMaskNativeEdge,
 } from './GlassMaskScrollEdge.js';
-export { getNativeBlurView, nativeBlurIntensity, resolveAndroidBlurMethod } from './nativeBlur.js';
+export {
+  GlassMaskBackdrop,
+  resolveGlassMaskBackdropTier,
+  useGlassMaskBackdropTier,
+  isGlassMaskShallowAvailable,
+} from './GlassMaskBackdrop.js';
+export type { GlassMaskBackdropTier } from './GlassMaskBackdrop.js';
+export { EgScrollEdgeEffect, resolveEgScrollEdgeEffect } from './EgScrollEdgeEffect.js';
+export type {
+  EgScrollEdgeEffectProps,
+  EgScrollEdgeEffectStyle,
+  EgScrollEdgeEffectEdge,
+  EgScrollEdgeEffectContainer,
+} from './EgScrollEdgeEffect.js';
+export {
+  getNativeBlurView,
+  nativeBlurIntensity,
+  resolveAndroidBlurMethod,
+} from './nativeBlur.js';
 export { getSkiaModule, isSkiaGlassAvailable } from './nativeSkia.js';
 export { resolveGlassVariant, resolveGlassBorderRadius } from './resolveGlassSurfacePresets.js';
 export {

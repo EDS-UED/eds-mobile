@@ -1,6 +1,8 @@
-import { Redirect, router, useLocalSearchParams } from 'expo-router';
-import type { ReactNode } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { ScrollView, Text, View } from 'react-native';
+
+import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
+import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
 import {
@@ -10,53 +12,32 @@ import {
   resolveFamilySceneEntries,
   SHOWCASE_FAMILY_SECTION_BODY,
   SHOWCASE_FAMILY_SECTION_COMPOSITION,
-  SHOWCASE_FAMILY_SECTION_EMPTY,
   SHOWCASE_FAMILY_SECTION_SCENES,
   showcaseCompositionListTitle,
-  showcaseSceneListTitle,
+  showcaseFamilyEntryTitle,
 } from '@/data/components/componentFamilyListModel';
-import { SHOWCASE_GLASS_EG_SLUG } from '@/data/components/showcaseInfraCatalog';
+import { isShowcaseInfraEntry } from '@/data/components/showcaseCatalog';
 import { familyEgComponentName, findFamilyNav } from '@/data/components/buildComponentCatalogNav';
-import { useShowcaseColors } from '@/hooks/useShowcaseColors';
-import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcaseLargeTitle } from '@/views/shared/ShowcaseLargeTitle';
+import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
-import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
-
-type FamilySectionProps = {
-  title: string;
-  colors: ReturnType<typeof useShowcaseColors>;
-  cardListStyle: object;
-  children: ReactNode;
-  empty?: boolean;
-};
-
-function FamilySection({ title, colors, cardListStyle, children, empty }: FamilySectionProps) {
-  return (
-    <View style={cardListStyle}>
-      <Text style={[styles.sectionTitle, { color: colors['text-base-tertiary'] as string }]}>{title}</Text>
-      {empty ? (
-        <Text style={[styles.sectionEmpty, { color: colors['text-base-tertiary'] as string }]}>
-          {SHOWCASE_FAMILY_SECTION_EMPTY}
-        </Text>
-      ) : (
-        children
-      )}
-    </View>
-  );
-}
+import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
+import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 
 export function ComponentFamilyView() {
   const screenStyles = useShowcaseScreenStyles();
-  const colors = useShowcaseColors();
   const { tier: tierParam, family } = useLocalSearchParams<{ tier: string; family: string }>();
   const tier = tierParam as FigmaComponentEntry['tier'];
   const familyNav = findFamilyNav(tier, family ?? '');
-
-  if (family === 'glass') {
-    return <Redirect href={`/(components)/detail/${SHOWCASE_GLASS_EG_SLUG}`} />;
-  }
+  const pageTitle = familyNav ? resolveFamilyPageTitle(familyNav) : (family ?? tier);
+  const {
+    onScroll,
+    scrollEventThrottle,
+    stackScreenOptions,
+    nativeStackNav,
+    rnNavBar,
+    rnScrollPaddingTop,
+  } = useShowcaseStackNav(pageTitle);
 
   if (!familyNav || !family) {
     return (
@@ -69,81 +50,66 @@ export function ComponentFamilyView() {
   const bodyEntry = resolveFamilyBodyEntry(familyNav);
   const sceneEntries = resolveFamilySceneEntries(familyNav);
   const compositionEntries = resolveFamilyCompositionEntries(familyNav);
-  const pageTitle = resolveFamilyPageTitle(familyNav);
   const hasSceneRows = Boolean(familyNav.galleryFamily) || sceneEntries.length > 0;
 
   return (
     <ShowcaseStackScreen>
-      <ScrollView
-        style={screenStyles.scrollRoot}
-        contentContainerStyle={screenStyles.scrollContent}
-        contentInsetAdjustmentBehavior="automatic"
-      >
-        <ShowcaseLargeTitle>{pageTitle}</ShowcaseLargeTitle>
-
-        <FamilySection
-          title={SHOWCASE_FAMILY_SECTION_BODY}
-          colors={colors}
-          cardListStyle={screenStyles.cardList}
-          empty={!bodyEntry}
+      <Stack.Screen options={stackScreenOptions} />
+      {rnNavBar}
+      <ShowcaseNavBlurBackdrop>
+        <ScrollView
+          style={screenStyles.scrollRoot}
+          contentContainerStyle={showcaseNavScrollContentStyle(
+            nativeStackNav,
+            rnScrollPaddingTop,
+            screenStyles.scrollContent,
+          )}
+          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+          onScroll={onScroll}
+          scrollEventThrottle={scrollEventThrottle}
         >
-          {bodyEntry ? (
-            <ShowcaseCardRow
-              title={familyEgComponentName(family)}
-              onPress={() => router.push(`/(components)/detail/${bodyEntry.slug}`)}
-            />
-          ) : null}
-        </FamilySection>
+          <ShowcaseSectionCard title={SHOWCASE_FAMILY_SECTION_BODY} empty={!bodyEntry}>
+            {bodyEntry ? (
+              <ShowcaseCardRow
+                title={familyEgComponentName(family)}
+                onPress={() => router.push(`/(components)/detail/${bodyEntry.slug}`)}
+              />
+            ) : null}
+          </ShowcaseSectionCard>
 
-        <FamilySection
-          title={SHOWCASE_FAMILY_SECTION_SCENES}
-          colors={colors}
-          cardListStyle={screenStyles.cardList}
-          empty={!hasSceneRows}
-        >
-          {familyNav.galleryFamily ? (
-            <ShowcaseCardRow
-              title="Gallery"
-              hint={`AtomGallery · ${familyNav.entries.length} entries`}
-              onPress={() => router.push(`/(components)/gallery/${tier}/${family}`)}
-            />
-          ) : null}
-          {sceneEntries.map((entry) => (
-            <ShowcaseCardRow
-              key={entry.slug}
-              title={showcaseSceneListTitle(family, entry.exportName)}
-              onPress={() => router.push(`/(components)/detail/${entry.slug}`)}
-            />
-          ))}
-        </FamilySection>
+          <ShowcaseSectionCard title={SHOWCASE_FAMILY_SECTION_SCENES} empty={!hasSceneRows}>
+            {familyNav.galleryFamily ? (
+              <ShowcaseCardRow
+                title="Gallery"
+                hint={`AtomGallery · ${familyNav.entries.length} entries`}
+                onPress={() => router.push(`/(components)/gallery/${tier}/${family}`)}
+              />
+            ) : null}
+            {sceneEntries.map((entry) => (
+              <ShowcaseCardRow
+                key={entry.slug}
+                title={showcaseFamilyEntryTitle(family, entry)}
+                hint={isShowcaseInfraEntry(entry) ? entry.showcaseLabel : undefined}
+                onPress={() => router.push(`/(components)/detail/${entry.slug}`)}
+              />
+            ))}
+          </ShowcaseSectionCard>
 
-        <FamilySection
-          title={SHOWCASE_FAMILY_SECTION_COMPOSITION}
-          colors={colors}
-          cardListStyle={screenStyles.cardList}
-          empty={compositionEntries.length === 0}
-        >
-          {compositionEntries.map((entry) => (
-            <ShowcaseCardRow
-              key={entry.slug}
-              variant="plain"
-              monoTitle
-              title={showcaseCompositionListTitle(entry)}
-              onPress={() => router.push(`/(components)/detail/${entry.slug}`)}
-            />
-          ))}
-        </FamilySection>
-      </ScrollView>
+          <ShowcaseSectionCard
+            title={SHOWCASE_FAMILY_SECTION_COMPOSITION}
+            empty={compositionEntries.length === 0}
+          >
+            {compositionEntries.map((entry) => (
+              <ShowcaseCardRow
+                key={entry.slug}
+                monoTitle
+                title={showcaseCompositionListTitle(entry)}
+                onPress={() => router.push(`/(components)/detail/${entry.slug}`)}
+              />
+            ))}
+          </ShowcaseSectionCard>
+        </ScrollView>
+      </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionTitle: {
-    ...theme.font.tokenGroupTitle,
-  },
-  sectionEmpty: {
-    ...theme.font.rowHint,
-    paddingVertical: theme.layout.cardPaddingVertical,
-  },
-});

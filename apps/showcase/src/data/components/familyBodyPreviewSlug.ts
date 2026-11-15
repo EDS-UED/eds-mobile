@@ -11,4 +11,8 @@ export const familyBodyPreviewSlug: Record<string, string> = {
   'segmented-control-body': 'tab-segmented-control',
   'avatar-body': 'avatar-body',
   'symbol-body': 'symbol-body',
+  'data-list-body': 'data-list-body',
+  'item-body': 'item-body',
+  'glass-body': 'glass-eg',
+  'scroll-edge-body': 'glass-scroll-edge',
 };

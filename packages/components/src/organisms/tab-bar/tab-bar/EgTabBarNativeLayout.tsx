@@ -1,7 +1,9 @@
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
 
 import { getThemeColors, resolveThemeMode, type ThemeMode } from '../../../theme/index.js';
+import { egTabBarTextNativeTriggerProps } from '../_shared/egTabBarTextNativeAppearance.js';
 import { egTabBarNativeActiveTintColor } from '../_shared/tabBarSelectionAccent.js';
+import { tabBarTextNativeLabelStyle } from '../_shared/tabBarTypography.js';
 import type {
   EgTabBarNativeLayoutProps,
   EgTabBarNativeTriggerIcon,
@@ -33,17 +35,37 @@ export function EgTabBarNativeLayout({
   tintColor: tintColorProp,
   selectionAccent = 'brand',
   minimizeBehavior = 'onScrollDown',
+  itemPresentation = 'icon',
 }: EgTabBarNativeLayoutProps) {
   const mode: ThemeMode = modeProp ?? resolveThemeMode(undefined);
   const colors = getThemeColors(mode);
   const tintColor =
     tintColorProp ?? egTabBarNativeActiveTintColor(colors, selectionAccent);
+  const textOnly = itemPresentation === 'text';
+  const textNativeTriggerProps = textOnly ? egTabBarTextNativeTriggerProps() : null;
 
   return (
-    <NativeTabs hidden={hidden} minimizeBehavior={minimizeBehavior} tintColor={tintColor}>
+    <NativeTabs
+      hidden={hidden}
+      minimizeBehavior={minimizeBehavior}
+      tintColor={tintColor}
+      {...(textOnly
+        ? {
+            labelStyle: {
+              default: tabBarTextNativeLabelStyle(),
+              selected: tabBarTextNativeLabelStyle(),
+            } as never,
+          }
+        : null)}
+    >
       {tabs.map((tab) => (
-        <NativeTabs.Trigger key={tab.routeName} name={tab.routeName} hidden={tab.hidden}>
-          {tab.icon?.src ? (
+        <NativeTabs.Trigger
+          key={tab.routeName}
+          name={tab.routeName}
+          hidden={tab.hidden}
+          {...(textNativeTriggerProps ? (textNativeTriggerProps as never) : {})}
+        >
+          {textOnly ? null : tab.icon?.src ? (
             <NativeTabs.Trigger.Icon
               src={tab.icon.src as never}
               renderingMode="template"
@@ -55,7 +77,11 @@ export function EgTabBarNativeLayout({
               md={tab.icon.md as never}
             />
           ) : null}
-          <NativeTabs.Trigger.Label>{tab.label}</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Label
+            selectedStyle={textOnly ? (tabBarTextNativeLabelStyle() as never) : undefined}
+          >
+            {tab.label}
+          </NativeTabs.Trigger.Label>
           {tab.badge != null && tab.badge !== '' ? (
             <NativeTabs.Trigger.Badge>{tab.badge}</NativeTabs.Trigger.Badge>
           ) : null}

@@ -213,6 +213,9 @@ export const previewComponentLoaders: Record<string, PreviewLoader> = {
   EgMenu: () => require('../molecules/dropdown/menu/EgMenu.js').EgMenu,
   EgMenuTrigger: () => require('../molecules/dropdown/menu/EgMenuTrigger.js').EgMenuTrigger,
   EgSheets: () => require('../organisms/sheets/EgSheets.js').EgSheets,
+  EgTabBlock: () => require('../molecules/tab/tab-block/EgTabBlock.js').EgTabBlock,
+  EgDataList: () => require('../organisms/data-list/EgDataList.js').EgDataList,
+  EgTabBarText: () => require('../organisms/tab-bar/tab-bar-text/EgTabBarText.js').EgTabBarText,
 };
 
 const cache = new Map<string, ComponentType<Record<string, unknown>> | null>();

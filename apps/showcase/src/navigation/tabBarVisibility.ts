@@ -4,17 +4,11 @@ const TAB_HOME_PATHS = [
   '/(animations)',
   '/(components)',
   '/(patterns)',
-  '/(workflows)',
+  '/(basics)',
 ] as const;
 
-const TAB_GROUP_NAMES = new Set([
-  '(tokens)',
-  '(animations)',
-  '(components)',
-  '(patterns)',
-  '(workflows)',
-]);
-const TAB_SLUGS = ['tokens', 'animations', 'components', 'patterns', 'workflows'] as const;
+const TAB_GROUP_NAMES = new Set(['(tokens)', '(animations)', '(components)', '(patterns)', '(basics)']);
+const TAB_SLUGS = ['tokens', 'animations', 'components', 'patterns', 'basics'] as const;
 
 const INNER_ROUTE_ROOTS = new Set([
   'category',

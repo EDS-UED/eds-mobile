@@ -1,0 +1,16 @@
+export { EgItem } from './EgItem.js';
+export type { EgItemProps, EgItemTrailingDisplay } from './EgItem.types.js';
+export { EgItemGroup } from './EgItemGroup.js';
+export type { EgItemGroupProps } from './EgItemGroup.types.js';
+export {
+  EG_ITEM_GROUP_INSET,
+  EG_ITEM_GROUP_RADIUS,
+  EG_ITEM_ICON_GAP,
+  EG_ITEM_ICON_SLOT,
+  EG_ITEM_MIN_HEIGHT,
+  EG_ITEM_PAD_H,
+  EG_ITEM_PAD_V,
+  EG_ITEM_TAP_RADIUS,
+  EG_ITEM_TRAILING_GAP,
+  getEgItemDividerInset,
+} from './egItemMetrics.js';

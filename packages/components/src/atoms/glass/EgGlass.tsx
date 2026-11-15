@@ -43,12 +43,29 @@ export type EgGlassProps = {
   previewBackdrop?: ReactNode;
   children?: ReactNode;
   testID?: string;
+  /** `glass-mask-box` 底部分割线 — scroll edge `hard` 时由宿主传入 `true`。 */
+  maskModuleDivider?: boolean;
 };
 
 /**
  * Effect Glass Box 毛玻璃兜底 — expo-blur + token 填色 / overlay + `boxShadow`（与 dist/css/effect 同栈，双端一致）。
  * 仅供 Android · iOS ≤25 的 RN 实现；iOS 26+ 由各 Eg* 整体切系统原生，不经本组件。
- * `glass-mask-box` 在 iOS 26+ `GlassMaskScrollEdgeScope` 内不绘 RN 层 — 背景为系统 scroll edge effect。
+ *
+ * ## `glass-mask-box`（置顶遮罩 · Mask Box）
+ *
+ * 与 `glass-button-box` 等同属 Glass Box，但语义为**滚动缘 / 顶栏遮罩**；叠色对齐 `eds-scroll-edge-effect`，模糊走 **遮罩深** `eds-blur-glass`（BlurGlass）。
+ *
+ * ### 选用顺序（`GlassMaskBackdrop` · NavBar 等）
+ *
+ * 1. **原生** — iOS 26+：系统 `scrollEdgeEffectStyle`；静止 `hidden`，内容滚入栏下 `soft`。不绘 RN。
+ * 2. **遮罩浅** — iOS 26 以下：`EgScrollEdgeEffect`（RN 栈默认）。
+ * 3. **遮罩深** — Android：强制本 `box`（毛玻璃 · `eds-blur-glass`）；背衬模糊需 `GlassBlurScope` + `GlassBlurBackdrop`。
+ *
+ * ### 兜底逻辑（遮罩深 · 本 `box`）
+ *
+ * iOS 26 以下遮罩浅用不了（`expo-blur` / `expo-linear-gradient` 原生模块未链接）时，`GlassMaskBackdrop` 自动改绘 `EgGlass box="glass-mask-box"`（BlurGlass 深模糊）。
+ *
+ * 在原生区内单独 `EgGlass box="glass-mask-box"` 时仅返回 children（系统已承载 scroll edge）。
  */
 export function EgGlass({
   box,
@@ -57,6 +74,7 @@ export function EgGlass({
   previewBackdrop,
   children,
   testID,
+  maskModuleDivider = false,
 }: EgGlassProps) {
   const composition = useMemo(() => resolveGlassBoxComposition(box, mode), [box, mode]);
   const colors = getThemeColors(mode);
@@ -132,8 +150,8 @@ export function EgGlass({
         <GlassBoxEffectLayers mode={mode} composition={composition} />
         <GlassBoxInsetHighlightOverlay shadows={outerShadows} cornerStyle={cornerStyle} />
       </SmoothCornerView>
-      {maskBox ? (
-        <View style={styles.maskModuleDivider} pointerEvents="none">
+      {maskBox && maskModuleDivider ? (
+        <View style={styles.maskModuleDivider} pointerEvents="none" collapsable={false}>
           <EgDivider variant="module" mode={mode} orientation="horizontal" />
         </View>
       ) : null}

@@ -11,10 +11,13 @@ import {
   showcaseCodeBlockStyle,
   showcaseCodeSnippetLayout,
 } from '@/views/shared/showcaseCodeSnippetLayout';
+import { showcaseCardFillColor } from '@/views/shared/showcaseTheme';
 
 type HighlightedNativeSnippetProps = {
   snippet: string;
   accessibilityLabel?: string;
+  /** `embedded` — 置于 {@link DocSection} 卡内，不叠第二层浅底与 padding。 */
+  surface?: 'standalone' | 'embedded';
 };
 
 function useNativeSyntaxColors(): NativeSnippetSyntaxColors {
@@ -50,10 +53,12 @@ function NativeLine({ line, syntaxColors }: { line: string; syntaxColors: Native
 export function HighlightedNativeSnippet({
   snippet,
   accessibilityLabel = '复制代码',
+  surface = 'standalone',
 }: HighlightedNativeSnippetProps) {
   const colors = useShowcaseColors();
   const syntaxColors = useNativeSyntaxColors();
   const lines = snippet.split('\n');
+  const embedded = surface === 'embedded';
 
   return (
     <Pressable
@@ -63,7 +68,7 @@ export function HighlightedNativeSnippet({
         void Clipboard.setStringAsync(snippet);
       }}
       style={({ pressed }) => [
-        showcaseCodeBlockStyle(colors['material-card-shallow'] as string),
+        embedded ? showcaseCodeSnippetLayout.embeddedBlock : showcaseCodeBlockStyle(showcaseCardFillColor(colors)),
         pressed && showcaseCodeSnippetLayout.pressed,
       ]}
     >

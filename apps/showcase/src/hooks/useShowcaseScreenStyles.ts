@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { useShowcaseTabBarInset } from '@/hooks/useShowcaseTabBarInset';
-import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 
 /** Scroll / list shell styles — background & text follow system light/dark. */
 export function useShowcaseScreenStyles() {
@@ -14,7 +14,7 @@ export function useShowcaseScreenStyles() {
       StyleSheet.create({
         scrollRoot: {
           flex: 1,
-          backgroundColor: colors['box-page'] as string,
+          backgroundColor: showcasePageBackgroundColor(colors),
         },
         scrollContent: {
           paddingBottom: theme.layout.scrollBottom,

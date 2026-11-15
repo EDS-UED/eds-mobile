@@ -1,5 +1,8 @@
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { Stack } from 'expo-router';
+
+import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
+import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import type { ComponentType, PropsWithChildren } from 'react';
 import { ScrollView, StyleSheet, View, type NativeSyntheticEvent } from 'react-native';
 
@@ -16,6 +19,7 @@ import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { edsScale } from '@/views/shared/resolveEdsTheme';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 
 type TokenSegmentScrollLayoutProps = PropsWithChildren<{
   title: string;
@@ -34,29 +38,46 @@ export function TokenSegmentScrollLayout({
 }: TokenSegmentScrollLayoutProps) {
   const screenStyles = useShowcaseScreenStyles();
   const colors = useShowcaseColors();
+  const {
+    onScroll,
+    scrollEventThrottle,
+    stackScreenOptions,
+    nativeStackNav,
+    rnNavBar,
+    rnScrollPaddingTop,
+  } = useShowcaseStackNav(title);
 
   return (
-    <>
-      <ScrollView
-        style={screenStyles.scrollRoot}
-        contentContainerStyle={styles.content}
-        contentInsetAdjustmentBehavior="automatic"
-        stickyHeaderIndices={[0]}
-      >
-        <View style={[styles.segmentBar, { backgroundColor: colors['box-page'] as string }]}>
-          <TokenSegmentedControl
-            values={[...segmentLabels]}
-            selectedIndex={segmentIndex}
-            onChange={(event: SegmentedControlChangeEvent) =>
-              onSegmentIndexChange(event.nativeEvent.selectedSegmentIndex)
-            }
-            style={styles.segmentControl}
-          />
-        </View>
-        {children}
-      </ScrollView>
-      <Stack.Title>{title}</Stack.Title>
-    </>
+    <View style={screenStyles.scrollRoot}>
+      <Stack.Screen options={stackScreenOptions} />
+      {rnNavBar}
+      <ShowcaseNavBlurBackdrop>
+        <ScrollView
+          style={screenStyles.scrollRoot}
+          contentContainerStyle={showcaseNavScrollContentStyle(
+            nativeStackNav,
+            rnScrollPaddingTop,
+            styles.content,
+          )}
+          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+          stickyHeaderIndices={[0]}
+          onScroll={onScroll}
+          scrollEventThrottle={scrollEventThrottle}
+        >
+          <View style={[styles.segmentBar, { backgroundColor: colors['box-page-card'] as string }]}>
+            <TokenSegmentedControl
+              values={[...segmentLabels]}
+              selectedIndex={segmentIndex}
+              onChange={(event: SegmentedControlChangeEvent) =>
+                onSegmentIndexChange(event.nativeEvent.selectedSegmentIndex)
+              }
+              style={styles.segmentControl}
+            />
+          </View>
+          {children}
+        </ScrollView>
+      </ShowcaseNavBlurBackdrop>
+    </View>
   );
 }
 

@@ -30,6 +30,7 @@ function ShowcaseNativeTabsShell() {
       mode={colorTheme}
       hidden={hidden}
       minimizeBehavior="onScrollDown"
+      itemPresentation="text"
     />
   );
 }

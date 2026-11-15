@@ -7,43 +7,41 @@ export type ShowcaseNavTab = EgTabBarNativeTabSpec & {
 };
 
 /** Expo Router tab route ↔ EgTabBar 项（顺序与根导航一致）。 */
+/** 纯文案底栏 — 无 SF / MD icon，与 EgTabBarText 一致。 */
 export const showcaseNavTabs = [
   {
     routeName: '(tokens)',
     key: 'tokens',
     label: '令牌',
     href: '/(tokens)' as Href,
-    icon: { sf: { default: 'paintpalette', selected: 'paintpalette.fill' }, md: 'palette' },
   },
   {
     routeName: '(animations)',
     key: 'animations',
     label: '动画',
     href: '/(animations)' as Href,
-    icon: { sf: { default: 'sparkles', selected: 'sparkles' }, md: 'auto_awesome' },
   },
   {
     routeName: '(components)',
     key: 'components',
     label: '组件',
     href: '/(components)' as Href,
-    icon: { sf: { default: 'square.grid.2x2', selected: 'square.grid.2x2.fill' }, md: 'widgets' },
   },
   {
     routeName: '(patterns)',
     key: 'patterns',
     label: '数据',
     href: '/(patterns)' as Href,
-    icon: { sf: { default: 'tablecells', selected: 'tablecells.fill' }, md: 'table_chart' },
   },
   {
-    routeName: '(workflows)',
-    key: 'workflows',
-    label: '业务流',
-    href: '/(workflows)' as Href,
-    icon: { sf: { default: 'arrow.triangle.branch', selected: 'arrow.triangle.branch' }, md: 'account_tree' },
+    routeName: '(basics)',
+    key: 'basics',
+    label: '基础',
+    href: '/(basics)' as Href,
   },
 ] as const satisfies readonly ShowcaseNavTab[];
+
+export const SHOWCASE_TAB_BAR_TEXT_TAB_COUNT = 5;
 
 /** Showcase EgTabBar `items` — 与 `createEgTabBarBottomTabsBinding` 共用。 */
 export const showcaseEgTabBarItems = showcaseNavTabs.map((tab) => ({

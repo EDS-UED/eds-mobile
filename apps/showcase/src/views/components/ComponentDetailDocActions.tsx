@@ -2,7 +2,11 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
-import { showcaseShallowBlockSurface, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import {
+  showcaseCardFillColor,
+  showcasePageCardSurface,
+  showcaseTheme as theme,
+} from '@/views/shared/showcaseTheme';
 
 export type ComponentDetailDocPanel = 'usage' | 'props';
 
@@ -24,8 +28,7 @@ function createDocActionStyles(colors: ShowcaseColorMap) {
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: theme.layout.cardPaddingVertical,
-      ...showcaseShallowBlockSurface(colors['material-card-shallow'] as string),
-      ...theme.blockRadius,
+      ...showcasePageCardSurface(showcaseCardFillColor(colors)),
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: colors['stroke-divider-shallow'] as string,
     },

@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
@@ -7,15 +7,21 @@ import {
   formatMotionCatalogHint,
   motionCatalogEntries,
 } from '@/data/animations/animationNav';
+import { motionScenarioDemos } from '@/data/animations/motionScenarioNav';
 import { useShowcaseTabBarInset } from '@/hooks/useShowcaseTabBarInset';
+import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
+import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
+import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcaseLargeTitle } from '@/views/shared/ShowcaseLargeTitle';
+import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
 import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
+import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { ShowcaseSearchBar } from '@/views/shared/ShowcaseSearchBar';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 
 function TabBarBackdropTestBalls() {
   const colors = useShowcaseColors();
@@ -72,6 +78,12 @@ function TabBarBackdropTestBalls() {
   );
 }
 
+const styles = StyleSheet.create({
+  catalogRow: {
+    paddingHorizontal: theme.layout.pageInset,
+  },
+});
+
 const ballStyles = StyleSheet.create({
   strip: {
     flexDirection: 'row',
@@ -87,6 +99,15 @@ const ballStyles = StyleSheet.create({
 
 export function AnimationsHomeView() {
   const screenStyles = useShowcaseScreenStyles();
+  const title = showcaseTabHomeTitles.animations;
+  const {
+    onScroll,
+    scrollEventThrottle,
+    stackScreenOptions,
+    nativeStackNav,
+    rnNavBar,
+    rnScrollPaddingTop,
+  } = useShowcaseTabHomeNav(title);
   const [query, setQuery] = useState('');
 
   const entries = useMemo(() => {
@@ -102,71 +123,92 @@ export function AnimationsHomeView() {
 
   return (
     <ShowcaseStackScreen>
-      <FlatList
-        style={screenStyles.scrollRoot}
-        data={entries}
-        keyExtractor={(item) => item.id}
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={screenStyles.scrollContent}
-        ItemSeparatorComponent={() => <View style={{ height: theme.layout.cardGap }} />}
-        ListHeaderComponent={
-          <>
-            <ShowcaseLargeTitle>动画</ShowcaseLargeTitle>
+      <Stack.Screen options={stackScreenOptions} />
+      {rnNavBar}
+      <ShowcaseNavBlurBackdrop>
+        <FlatList
+          style={screenStyles.scrollRoot}
+          data={entries}
+          keyExtractor={(item) => item.id}
+          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+          contentContainerStyle={showcaseNavScrollContentStyle(
+            nativeStackNav,
+            rnScrollPaddingTop,
+            screenStyles.scrollContent,
+          )}
+          onScroll={onScroll}
+          scrollEventThrottle={scrollEventThrottle}
+          ItemSeparatorComponent={() => <View style={{ height: theme.layout.cardGap }} />}
+          ListHeaderComponent={
+            <>
+              <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
-            <ShowcasePageIntro
-              homeLargeTitle
-              subtitle
-              lead={`Motion 图形动画与 Animas 动效 spec 对照。Catalog 共 ${motionCatalogEntries.length} 条 class 解析链。`}
-            />
+              <ShowcasePageIntro
+                homeLargeTitle
+                subtitle
+                lead={`Live 预览与定制在此；RN 代码片段与 motion 参数在 Tokens · Motion。Catalog 共 ${motionCatalogEntries.length} 条 class 解析链。`}
+              />
 
-            <View style={screenStyles.cardList}>
-              {animationDemos.map((demo) => (
-                <ShowcaseCardRow
-                  key={demo.id}
-                  title={demo.label}
-                  hint={demo.lead}
-                  onPress={() => {
-                    if (demo.route === 'MotionDemo') {
-                      router.push('/(animations)/motion-demo');
-                      return;
-                    }
-                    router.push('/(animations)/glass-demo');
-                  }}
-                />
-              ))}
+              <ShowcaseSectionCard title="场景演示">
+                {motionScenarioDemos.map((demo) => (
+                  <ShowcaseCardRow
+                    key={demo.id}
+                    title={demo.label}
+                    hint={demo.lead}
+                    onPress={() => router.push(`/(animations)/scenario/${demo.id}`)}
+                  />
+                ))}
+              </ShowcaseSectionCard>
+
+              <ShowcaseSectionCard title="综合演示">
+                {animationDemos.map((demo) => (
+                  <ShowcaseCardRow
+                    key={demo.id}
+                    title={demo.label}
+                    hint={demo.lead}
+                    onPress={() => {
+                      if (demo.route === 'MotionDemo') {
+                        router.push('/(animations)/motion-demo');
+                        return;
+                      }
+                      router.push('/(animations)/glass-demo');
+                    }}
+                  />
+                ))}
+              </ShowcaseSectionCard>
+
+              <ShowcaseSearchBar
+                value={query}
+                onChangeText={setQuery}
+                placeholder="搜索 motion class、recipe…"
+                accessibilityLabel="Search motion catalog"
+              />
+
+              <View style={{ height: theme.layout.cardGap }} />
+            </>
+          }
+          renderItem={({ item }) => (
+            <View style={{ paddingHorizontal: theme.layout.pageInset }}>
+              <ShowcaseCardRow
+                monoTitle
+                title={item.id}
+                hint={formatMotionCatalogHint(item)}
+                onPress={() => router.push(`/(animations)/motion/${item.id}`)}
+              />
             </View>
-
-            <ShowcaseSearchBar
-              value={query}
-              onChangeText={setQuery}
-              placeholder="搜索 motion class、recipe…"
-              accessibilityLabel="Search motion catalog"
-            />
-
-            <View style={{ height: theme.layout.cardGap }} />
-          </>
-        }
-        renderItem={({ item }) => (
-          <View style={{ paddingHorizontal: theme.layout.pageInset }}>
-            <ShowcaseCardRow
-              monoTitle
-              title={item.id}
-              hint={formatMotionCatalogHint(item)}
-              onPress={() => router.push(`/(animations)/motion/${item.id}`)}
-            />
-          </View>
-        )}
-        ListEmptyComponent={
-          <View style={screenStyles.cardList}>
-            <ShowcaseCardRow
-              disabled
-              title="无匹配结果"
-              hint="换个关键词试试，例如 tap、modal、glass"
-            />
-          </View>
-        }
-        ListFooterComponent={TabBarBackdropTestBalls}
-      />
+          )}
+          ListEmptyComponent={
+            <View style={screenStyles.cardList}>
+              <ShowcaseCardRow
+                disabled
+                title="无匹配结果"
+                hint="换个关键词试试，例如 tap、modal、glass"
+              />
+            </View>
+          }
+          ListFooterComponent={TabBarBackdropTestBalls}
+        />
+      </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );
 }

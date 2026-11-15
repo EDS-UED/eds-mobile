@@ -217,10 +217,13 @@ function flattenEffectGlassTokens(effectBaseSpec) {
   const out = {};
   for (const group of effectBaseSpec.groups ?? []) {
     for (const token of group.tokens ?? []) {
-      if (!token.name.startsWith('eds-glass-')) {
+      const scrollEdge = token.name.startsWith('eds-scroll-edge-');
+      if (!token.name.startsWith('eds-glass-') && !scrollEdge) {
         continue;
       }
-      const key = token.name.replace(/^eds-glass-/, '');
+      const key = scrollEdge
+        ? token.name.replace(/^eds-scroll-edge-/, 'scrollEdge.')
+        : token.name.replace(/^eds-glass-/, '');
       if (typeof token.value === 'string' && token.value.endsWith('px')) {
         out[key] = Number.parseFloat(token.value);
         continue;

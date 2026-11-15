@@ -92,26 +92,36 @@ function effectNativeSnippet(
   }
 
   if (entry.name.startsWith('glass-')) {
-    lines.splice(
-      0,
-      0,
+    if (entry.name === 'glass-mask-box') {
+      return [
+        "import { EgNavBar, EgScrollEdgeEffect, useEgNavBarScroll } from '@eds/mobile-components';",
+        '',
+        `const mode = ${quote(mode)} as const;`,
+        'const { scrollOffset, onScroll, scrollEventThrottle } = useEgNavBarScroll();',
+        '',
+        '// 参数真源：Effect glass-mask-box · 滚动缘用 EgScrollEdgeEffect（非 EgGlass 盒）',
+        '<EgNavBar title="标题" scrollEdgeEffect="hard" scrollOffset={scrollOffset} mode={mode} />',
+        '',
+        '<EgScrollEdgeEffect edge="bottom" effect="soft" mode={mode} />',
+        '',
+        '<ScrollView onScroll={onScroll} scrollEventThrottle={scrollEventThrottle}>',
+        '  {/* content */}',
+        '</ScrollView>',
+      ].join('\n');
+    }
+
+    return [
       "import { EgGlass } from '@eds/mobile-components';",
-      '',
-    );
-    lines.push(
       '',
       `const mode = ${quote(mode)} as const;`,
       '',
+      '// 参数真源：Effect Glass Box class',
       `<EgGlass box={${quote(entry.name)}} mode={mode} style={styles.glassBox} />`,
       '',
-      'StyleSheet.create({',
-      '  glassBox: {',
-      '    width: 240,',
-      '    height: 240,',
-      '  },',
+      'const styles = StyleSheet.create({',
+      '  glassBox: { width: 240, height: 240 },',
       '});',
-    );
-    return lines.join('\n');
+    ].join('\n');
   }
 
   lines.push(

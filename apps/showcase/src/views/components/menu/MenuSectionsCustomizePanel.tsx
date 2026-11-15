@@ -17,7 +17,11 @@ import { CustomizePanel } from '@/views/shared/CustomizePanel';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
-import { showcaseShallowBlockSurface, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import {
+  showcaseCardFillColor,
+  showcaseShallowBlockSurface,
+  showcaseTheme as theme,
+} from '@/views/shared/showcaseTheme';
 
 function createMenuSectionCustomizeStyles(colors: ShowcaseColorMap) {
   return StyleSheet.create({

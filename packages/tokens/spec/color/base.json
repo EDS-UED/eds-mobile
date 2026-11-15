@@ -56,8 +56,8 @@
       "displayP3": [1, 1, 1]
     },
     "eds-overlay": {
-      "hex": "#eff0f2",
-      "displayP3": [0.9373, 0.9412, 0.949]
+      "hex": "#ffffff",
+      "displayP3": [1, 1, 1]
     }
   },
   "dark": {

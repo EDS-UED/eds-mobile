@@ -3,16 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { resolveTokenListPrimaryLabel } from '@/data/tokens/tokenListDisplayName';
 import { resolveCatalogToken } from '@/data/tokens/tokenCategoryRegistry';
-import { tokenDetailPropRows } from '@/data/tokens/tokenDetailPropRows';
+import { effectTokenPropRows } from '@/data/tokens/effectTokenPropRows';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { TokenDetailCodeSnippet } from '@/views/shared/TokenDetailCodeSnippet';
-import { CustomizePanel } from '@/views/shared/CustomizePanel';
-import { PropsDocTable } from '@/views/shared/PropsDocTable';
+import { PropsDocCardList } from '@/views/shared/PropsDocCardList';
+import { resolveTokenPreviewDestination } from '@/data/tokens/tokenPreviewDestination';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
-import { isGlassBoxPreviewClass } from '@/views/tokens/effectTokenPreviewStyle';
-import { EffectTokenPreview } from '@/views/tokens/EffectTokenPreview';
 import { TokenDetailRootView } from '@/views/tokens/TokenDetailRootView';
 
+/** Effect 令牌 — 参数真源；主屏 USAGE（CSS / RN 片段）+ PROPS，无预览定制。 */
 export function EffectTokenDetailView() {
   const { tokenName } = useLocalSearchParams<{ tokenName: string }>();
   const colors = useShowcaseColors();
@@ -29,16 +28,14 @@ export function EffectTokenDetailView() {
   }
 
   const title = resolveTokenListPrimaryLabel('effect', entry);
-  const isGlassBox = isGlassBoxPreviewClass(entry.name);
 
   return (
     <TokenDetailRootView
       title={title}
-      previewMinHeight={isGlassBox ? 220 : 160}
-      preview={<EffectTokenPreview entry={entry} colors={colors} />}
-      customize={<CustomizePanel controls={[]} state={{}} onChange={() => {}} />}
+      layoutMode="reference"
+      previewDestination={resolveTokenPreviewDestination('effect', entry)}
       usageContent={<TokenDetailCodeSnippet categoryId="effect" entry={entry} />}
-      propsContent={<PropsDocTable rows={tokenDetailPropRows(entry)} />}
+      propsContent={<PropsDocCardList rows={effectTokenPropRows(entry)} />}
     />
   );
 }

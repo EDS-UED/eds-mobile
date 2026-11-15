@@ -18,7 +18,7 @@ export function ImplementationBadge({ implemented }: ImplementationBadgeProps) {
         {
           backgroundColor: implemented
             ? (colors['status-success-weaken'] as string)
-            : (colors['material-card-shallow'] as string),
+            : (colors['box-page'] as string),
         },
       ]}
     >

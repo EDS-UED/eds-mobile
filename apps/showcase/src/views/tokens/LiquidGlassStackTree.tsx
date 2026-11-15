@@ -3,7 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { LiquidGlassArchitecture, LiquidGlassStackNode } from '@/data/tokens/liquidGlassArchitecture';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { edsListRowTitleStyle, edsSpacing } from '@/views/shared/resolveEdsTheme';
-import { showcaseShallowBlockSurface, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import {
+  showcaseCardFillColor,
+  showcaseShallowBlockSurface,
+  showcaseTheme as theme,
+} from '@/views/shared/showcaseTheme';
 
 type LiquidGlassStackTreeProps = Pick<
   LiquidGlassArchitecture,

@@ -10,6 +10,8 @@ const showcasePreviewLoaders: Record<string, ShowcasePreviewLoader> = {
   EgDangerButton: () => require('@/views/components/ShowcaseButtonPreview').ShowcaseButtonPreview,
   EgOptionButton: () => require('@/views/components/ShowcaseButtonPreview').ShowcaseButtonPreview,
   ShowcaseEgGlassPreview: () => require('@/views/components/glass/ShowcaseGlassPreviews').ShowcaseEgGlassPreview,
+  ShowcaseEgScrollEdgePreview: () =>
+    require('@/views/components/glass/ShowcaseGlassPreviews').ShowcaseEgScrollEdgePreview,
   ShowcaseGlassControlShellPreview: () =>
     require('@/views/components/glass/ShowcaseGlassPreviews').ShowcaseGlassControlShellPreview,
   EgTabBar: () => require('@/views/components/glass/ShowcaseTabBarPreview').ShowcaseTabBarPreview,
@@ -19,8 +21,12 @@ const showcasePreviewLoaders: Record<string, ShowcasePreviewLoader> = {
   EgButtonGlass: () => require('@/views/components/glass/ShowcaseGlassButtonPreview').ShowcaseGlassButtonPreview,
   EgNavBar: () => require('@/views/components/glass/ShowcaseNavBarPreview').ShowcaseNavBarPreview,
   EgSheets: () => require('@/views/components/ShowcaseSheetsPreview').ShowcaseSheetsPreview,
+  EgDataList: () => require('@/views/components/ShowcaseEgDataListPreview').ShowcaseEgDataListPreview,
+  EgItem: () => require('@/views/components/ShowcaseEgItemPreview').ShowcaseEgItemPreview,
   EgDivider: () => require('@/views/components/ShowcaseDividerPreview').ShowcaseDividerPreview,
   EgTab: () => require('@/views/components/ShowcaseEgTabPreview').ShowcaseEgTabPreview,
+  EgTabBlock: () => require('@/views/components/ShowcaseEgTabBlockPreview').ShowcaseEgTabBlockPreview,
+  EgTabBarText: () => require('@/views/components/ShowcaseEgTabBarTextPreview').ShowcaseEgTabBarTextPreview,
   EgSymbol: () => require('@/views/components/ShowcaseSymbolPreview').ShowcaseSymbolPreview,
   EgAvatar: () => require('@/views/components/ShowcaseAvatarPreview').ShowcaseAvatarPreview,
   EgAvatarPreset0: () => require('@/views/components/ShowcaseAvatarPreview').ShowcaseAvatarPreset0Preview,

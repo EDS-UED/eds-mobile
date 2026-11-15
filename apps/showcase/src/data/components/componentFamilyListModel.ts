@@ -2,6 +2,7 @@ import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
 import { familyEgComponentName, type ComponentFamilyNav } from './buildComponentCatalogNav.js';
 import { familyBodyPreviewSlug } from './familyBodyPreviewSlug.js';
+import { isShowcaseInfraEntry, type ShowcaseCatalogEntry } from './showcaseCatalog.js';
 
 export const SHOWCASE_FAMILY_SECTION_BODY = '本体';
 export const SHOWCASE_FAMILY_SECTION_SCENES = '场景化';
@@ -68,6 +69,12 @@ export function resolveFamilySceneEntries(nav: ComponentFamilyNav): FigmaCompone
 
 /** 族页 Stack 大标题 — `Eg` + 族名（与 Tier 族列表一致）。 */
 export function resolveFamilyPageTitle(nav: ComponentFamilyNav): string {
+  if (nav.family === 'glass') {
+    return 'Glass';
+  }
+  if (nav.family === 'scroll-edge') {
+    return 'Scroll Edge';
+  }
   return familyEgComponentName(nav.family);
 }
 
@@ -99,6 +106,14 @@ export function showcaseSceneListTitle(family: string, exportName: string): stri
   }
 
   return exportName;
+}
+
+/** 族场景列表标题 — infra 用 figmaName（Eg*），Figma 项用场景化标题。 */
+export function showcaseFamilyEntryTitle(family: string, entry: ShowcaseCatalogEntry): string {
+  if (isShowcaseInfraEntry(entry)) {
+    return entry.figmaName;
+  }
+  return showcaseSceneListTitle(family, entry.exportName);
 }
 
 /** 构成列表标题 — 默认 catalog exportName。 */

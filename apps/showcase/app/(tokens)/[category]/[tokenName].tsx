@@ -2,9 +2,10 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { isTypographyTextStyleClassName } from '@/data/tokens/typographyTextStyleUtils';
 import { resolveCatalogToken } from '@/data/tokens/tokenCategoryRegistry';
-import { CatalogTokenDetailView } from '@/views/tokens/CatalogTokenDetailView';
 import { ColorTokenDetailView } from '@/views/tokens/ColorTokenDetailView';
 import { EffectTokenDetailView } from '@/views/tokens/EffectTokenDetailView';
+import { MotionTokenDetailView } from '@/views/tokens/MotionTokenDetailView';
+import { ReferenceCatalogTokenDetailView } from '@/views/tokens/ReferenceCatalogTokenDetailView';
 import { TypographyTextStyleDetailView } from '@/views/tokens/TypographyTextStyleDetailView';
 
 export default function TokenDetailScreen() {
@@ -18,12 +19,16 @@ export default function TokenDetailScreen() {
     return <EffectTokenDetailView />;
   }
 
+  if (category === 'motion') {
+    return <MotionTokenDetailView />;
+  }
+
   if (category === 'typography' && tokenName && isTypographyTextStyleClassName(tokenName)) {
     return <TypographyTextStyleDetailView />;
   }
 
   return (
-    <CatalogTokenDetailView
+    <ReferenceCatalogTokenDetailView
       categoryId={category ?? ''}
       resolveEntry={(name) => (category ? resolveCatalogToken(category, name) : undefined)}
     />

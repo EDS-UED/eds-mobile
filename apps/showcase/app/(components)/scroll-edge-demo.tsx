@@ -1,0 +1,1 @@
+export { ShowcaseScrollEdgeDemoView as default } from '@/views/components/glass/ShowcaseScrollEdgeDemoView';

@@ -91,6 +91,20 @@ declare module 'react-native' {
     testID?: string;
   };
 
+  export type SwitchProps = {
+    style?: StyleProp<ViewStyle>;
+    testID?: string;
+    accessibilityLabel?: string;
+    accessibilityRole?: string;
+    accessibilityState?: Record<string, boolean | undefined>;
+    value?: boolean;
+    disabled?: boolean;
+    onValueChange?: (value: boolean) => void;
+    trackColor?: { false?: ColorValue; true?: ColorValue };
+    thumbColor?: ColorValue;
+    ios_backgroundColor?: ColorValue;
+  };
+
   export type ScrollViewProps = {
     style?: StyleProp<ViewStyle>;
     contentContainerStyle?: StyleProp<ViewStyle>;

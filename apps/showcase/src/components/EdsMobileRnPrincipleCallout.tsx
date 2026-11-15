@@ -7,7 +7,7 @@ import {
 } from '@/content/edsGlassPrinciples';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { edsFontStyle } from '@/lib/edsFontFamily';
-import { showcaseShallowBlockSurface, showcaseTheme } from '@/views/shared/showcaseTheme';
+import { showcaseCardFillColor, showcaseShallowBlockSurface, showcaseTheme } from '@/views/shared/showcaseTheme';
 
 /** 真机 demo — §6.0 顶层原则 + 渲染栈 + 对话待办（暂放液态玻璃页顶）。 */
 export function EdsMobileRnPrincipleCallout() {

@@ -1,4 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
+import { Platform } from 'react-native';
 import { EgNavBarActionView } from './EgNavBarActionView.js';
 import { edsFontStyle } from '../../../shared/fontFamily.js';
 import { presetBodyMediumStrong } from '../../../shared/typographyStyles.js';
@@ -17,7 +18,12 @@ export type EgNavBarNativeStackOptions = {
   headerShadowVisible: false;
   title: string;
   headerTitleAlign: 'center';
-  headerTitleStyle: { fontSize: number; fontWeight: '600'; fontFamily?: string; color: string };
+  headerTitleStyle: {
+    fontSize: number;
+    fontFamily?: string;
+    fontWeight?: '600';
+    color: string;
+  };
   headerBackVisible: boolean;
   /** iOS 26+ 自定义栏须走 `unstable_header*Items`；legacy 槽勿塞 `EgButtonGlass`。 */
   headerLeft?: () => ReactNode;
@@ -43,12 +49,12 @@ export type EgNavBarNativeStackOptionsInput = Pick<
   scrollEdgeActive?: boolean;
 };
 
-/** 系统栏 scroll edge：`auto` 静止隐藏、内容滚入栏下为 `soft`；`visible` 常显 `hard`；`hidden` 常隐。 */
+/** 系统栏 scroll edge（iOS 26+ 页面）：`auto` 静止 `hidden`、滚入栏下 `soft`；`visible` 常显 `soft`；`hidden` 常隐。 */
 export function resolveEgNavBarScrollEdge(
   background: EgNavBarBackground,
   scrollEdgeActive = false,
 ): ScrollEdgeEffect {
-  if (background === 'visible') return 'hard';
+  if (background === 'visible') return 'soft';
   if (background === 'hidden') return 'hidden';
   return scrollEdgeActive ? 'soft' : 'hidden';
 }
@@ -98,8 +104,11 @@ export function egNavBarNativeStackOptions(input: EgNavBarNativeStackOptionsInpu
   } = input;
   const color = getThemeColors(mode)['text-base-primary'] as string;
   const titlePreset = presetBodyMediumStrong();
-  const font = edsFontStyle('600') as { fontFamily?: string };
   const nativeTitle = resolveEgNavBarNativeStackTitle(title);
+  const titleFont: { fontWeight?: '600'; fontFamily?: string } =
+    Platform.OS === 'ios'
+      ? { fontWeight: '600' }
+      : (edsFontStyle('600') as { fontFamily?: string });
 
   return {
     headerShown: true,
@@ -109,8 +118,7 @@ export function egNavBarNativeStackOptions(input: EgNavBarNativeStackOptionsInpu
     headerTitleAlign: 'center',
     headerTitleStyle: {
       fontSize: titlePreset.fontSize as number,
-      fontWeight: '600',
-      fontFamily: font.fontFamily,
+      ...titleFont,
       color: showTitle ? color : 'transparent',
     },
     headerBackVisible: showLeft && left == null,

@@ -21,7 +21,21 @@
     },
     "scheme": "eds-mobile-showcase",
     "plugins": [
-      "expo-font",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "../../packages/tokens/assets/fonts/EDSText-Regular.ttf",
+            "../../packages/tokens/assets/fonts/EDSText-Medium.ttf",
+            "../../packages/tokens/assets/fonts/EDSText-SemiBold.ttf",
+            "../../packages/tokens/assets/fonts/EDSText-Bold.ttf",
+            "../../packages/tokens/assets/fonts/IBMPlexMono-Regular.ttf",
+            "../../packages/tokens/assets/fonts/IBMPlexMono-Medium.ttf",
+            "../../packages/tokens/assets/fonts/IBMPlexMono-SemiBold.ttf",
+            "../../packages/tokens/assets/fonts/IBMPlexMono-Bold.ttf"
+          ]
+        }
+      ],
       "expo-router",
       "expo-status-bar"
     ]

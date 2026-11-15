@@ -1,6 +1,6 @@
 import { useColorScheme } from 'react-native';
 import { useMemo, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import {
   getColorBaseEntries,
@@ -9,6 +9,7 @@ import {
 } from '@/data/tokens/colorTokenCatalog';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { ColorTokenBaseTile } from '@/views/tokens/ColorTokenBaseTile';
+import { TokenCatalogListGroup } from '@/views/tokens/TokenCatalogListGroup';
 import { TokenListRow } from '@/views/tokens/TokenListRow';
 import { TokenSegmentScrollLayout } from '@/views/tokens/TokenSegmentScrollLayout';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
@@ -42,16 +43,11 @@ export function ColorTokensView({ title }: ColorTokensViewProps) {
           </View>
         ) : (
           semanticGroups.map((group) => (
-            <View key={group.comment} style={styles.group}>
-              <Text style={[styles.groupTitle, { color: colors['text-base-tertiary'] as string }]}>
-                {group.comment}
-              </Text>
-              <View style={styles.list}>
-                {group.tokens.map((entry) => (
-                  <TokenListRow key={entry.cssVar} categoryId="color" entry={entry} colors={colors} />
-                ))}
-              </View>
-            </View>
+            <TokenCatalogListGroup key={group.comment} title={group.comment}>
+              {group.tokens.map((entry) => (
+                <TokenListRow key={entry.cssVar} categoryId="color" entry={entry} colors={colors} />
+              ))}
+            </TokenCatalogListGroup>
           ))
         )}
       </View>
@@ -61,19 +57,11 @@ export function ColorTokensView({ title }: ColorTokensViewProps) {
 
 const styles = StyleSheet.create({
   groupList: {
-    gap: theme.layout.tokenBlockGap,
-    paddingHorizontal: theme.layout.pageInset,
+    gap: theme.layout.docSectionCardGap,
   },
-  group: {
-    gap: theme.layout.tokenItemGap,
-  },
-  groupTitle: {
-    ...theme.font.tokenGroupTitle,
-  },
-  list: {
-    gap: theme.layout.tokenSemanticRowGap,
-  },
+  /** Base — 每项自铺色圆角块，无分组卡片（§4.3 特例）。 */
   baseList: {
-    gap: theme.spacing['spacing-3'] as number,
+    gap: theme.layout.cardGap,
+    paddingHorizontal: theme.layout.pageInset,
   },
 });

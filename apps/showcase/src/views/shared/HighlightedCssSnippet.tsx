@@ -8,6 +8,7 @@ import {
   showcaseCodeBlockStyle,
   showcaseCodeSnippetLayout,
 } from '@/views/shared/showcaseCodeSnippetLayout';
+import { showcaseCardFillColor } from '@/views/shared/showcaseTheme';
 
 type CssTokenKind =
   | 'selector'
@@ -29,6 +30,7 @@ type CssSyntaxColors = Record<CssTokenKind, string>;
 
 type HighlightedCssSnippetProps = {
   snippet: string;
+  surface?: 'standalone' | 'embedded';
 };
 
 function useCssSyntaxColors(): CssSyntaxColors {
@@ -182,11 +184,12 @@ function CssLine({ line, syntaxColors }: { line: string; syntaxColors: CssSyntax
   );
 }
 
-export function HighlightedCssSnippet({ snippet }: HighlightedCssSnippetProps) {
+export function HighlightedCssSnippet({ snippet, surface = 'standalone' }: HighlightedCssSnippetProps) {
   const colors = useShowcaseColors();
   const syntaxColors = useCssSyntaxColors();
   const displaySnippet = normalizeDetailSnippet(snippet);
   const lines = displaySnippet.split('\n');
+  const embedded = surface === 'embedded';
 
   return (
     <Pressable
@@ -196,7 +199,7 @@ export function HighlightedCssSnippet({ snippet }: HighlightedCssSnippetProps) {
         void Clipboard.setStringAsync(displaySnippet);
       }}
       style={({ pressed }) => [
-        showcaseCodeBlockStyle(colors['material-card-shallow'] as string),
+        embedded ? showcaseCodeSnippetLayout.embeddedBlock : showcaseCodeBlockStyle(showcaseCardFillColor(colors)),
         pressed && showcaseCodeSnippetLayout.pressed,
       ]}
     >

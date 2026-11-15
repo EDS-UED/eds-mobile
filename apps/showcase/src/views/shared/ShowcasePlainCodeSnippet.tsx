@@ -3,6 +3,7 @@ import { HighlightedNativeSnippet } from '@/views/shared/HighlightedNativeSnippe
 type ShowcasePlainCodeSnippetProps = {
   snippet: string;
   accessibilityLabel?: string;
+  surface?: 'standalone' | 'embedded';
 };
 
 /** Detail code block — RN/TS syntax colors via showcaseDocColors. */

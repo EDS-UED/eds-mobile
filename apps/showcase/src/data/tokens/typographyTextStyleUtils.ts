@@ -1,6 +1,6 @@
 import type { TextStyle } from 'react-native';
 
-import { edsFontFamily } from '@/lib/edsFontFamily';
+import { edsFontStyle } from '@/lib/edsFontFamily';
 import { edsTypographyRole, type TypographyRole } from '@/views/shared/resolveEdsTheme';
 
 const TEXT_STYLE_PREFIX = 'typography-';
@@ -24,8 +24,9 @@ export function textStyleListLabel(className: string): string {
 export function textStyleSampleStyle(role: TypographyRole): TextStyle {
   const roleStyle = edsTypographyRole(role);
   return {
-    ...roleStyle,
-    fontFamily: edsFontFamily(roleStyle.fontWeight),
+    fontSize: roleStyle.fontSize,
+    lineHeight: roleStyle.lineHeight,
+    ...edsFontStyle(roleStyle.fontWeight),
   };
 }
 

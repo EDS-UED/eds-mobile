@@ -41,14 +41,40 @@
       ]
     },
     {
-      "comment": "玻璃效果（Glass Effect）",
+      "comment": "遮罩深（BlurGlass）",
       "tokens": [
         {
           "name": "eds-blur-glass",
-          "title": "模糊玻璃（Blur Glass）",
+          "title": "遮罩深 · 模糊（BlurGlass）",
           "value": "blur(calc(var(--blur-md) / 2))",
           "usageNotes": [
-            "Web：backdrop-filter / -webkit-backdrop-filter。RN 暂无液态玻璃公共 token，业务用 expo-blur 毛玻璃。"
+            "置顶遮罩上的较强模糊档 · Glass Box `backdrop-filter`（button / sheets / tabbar / mask 深兜底）。",
+            "RN：`EgGlass` 各 `glass-*-box`；Android 强制 · iOS 遮罩浅用不了时，`GlassMaskBackdrop` 改绘 `glass-mask-box`（遮罩深）。",
+            "优先系统侧玻璃能力（iOS 26+ 各 Eg* 原生路径）；不可用时 expo-blur + token 外观。"
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "遮罩浅（ScrollEdgeEffect）",
+      "tokens": [
+        {
+          "name": "eds-scroll-edge-effect",
+          "title": "遮罩浅 · 叠色（ScrollEdgeEffect）",
+          "value": "linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box)",
+          "usageNotes": [
+            "与 `.glass-mask-box` background 一致 · RN `EgScrollEdgeEffect` / `GlassMaskBackdrop` 浅档。",
+            "顶栏 `edge=top` 无朝内容侧虚化淡出带；底栏 soft `spacing-10` · hard `spacing-3` 虚化带 · hard + `EgDivider` module。",
+            "选用：iOS 26+ 系统 Scroll Edge（静止 hidden · 滚入 soft）→ iOS 26 以下本浅档 RN（`GlassMaskBackdrop`）→ Android 强制遮罩深（毛玻璃）；iOS 浅不可用时亦遮罩深兜底。"
+          ]
+        },
+        {
+          "name": "eds-scroll-edge-blur",
+          "title": "遮罩浅 · 模糊（ScrollEdgeEffect）",
+          "value": "blur(var(--blur-sm))",
+          "usageNotes": [
+            "较弱模糊档 · 对标 `--blur-sm`（8px）· RN `EgScrollEdgeEffect` expo-blur。",
+            "Android 背衬模糊须 `GlassBlurScope` + `GlassBlurBackdrop`；无 backdrop 仍渲染浅档叠色，不自动切遮罩深。"
           ]
         }
       ]

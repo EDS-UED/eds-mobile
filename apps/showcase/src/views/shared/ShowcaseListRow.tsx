@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { ShowcaseSansText } from '@/components/ShowcaseSansText';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 
 import { showcaseTheme as theme } from './showcaseTheme';

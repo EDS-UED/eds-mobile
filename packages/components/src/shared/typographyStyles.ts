@@ -5,7 +5,8 @@ import type { ControlSize, TagSize, ToggleSize } from './types.js';
 
 const base = mobileTheme.typography.base;
 
-type TextPreset = Pick<TextStyle, 'fontSize' | 'lineHeight' | 'fontWeight' | 'fontFamily'>;
+type TextPreset = Pick<TextStyle, 'fontSize' | 'lineHeight'> &
+  Partial<Pick<TextStyle, 'fontWeight' | 'fontFamily'>>;
 
 function preset(sizeKey: keyof typeof base, lineKey: keyof typeof base, weightKey: keyof typeof base): TextPreset {
   return {

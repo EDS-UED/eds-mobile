@@ -33,8 +33,8 @@ const row = (name: string, type: string, defaultValue: string, description: stri
   description,
 });
 
-/** 场景 RN 入口（`@eds/mobile-components`）的 props · 与 showcase「定制」参数一致。 */
-const SCENARIO_PROPS: Record<MotionScenario, DocPropRow[]> = {
+/** 场景 RN 入口（`@eds/mobile-components`）的 props · 与动画 Tab「定制」参数一致。 */
+export const SCENARIO_PROPS: Record<MotionScenario, DocPropRow[]> = {
   press: [
     row('EgEdsAnimaPress', '组件', '—', '点按回弹容器，包住任意可点内容'),
     row('pressIntensity', "'xs' | 'sm' | 'md' | 'lg'", "'sm'", '点按强度：按下时缩放幅度'),

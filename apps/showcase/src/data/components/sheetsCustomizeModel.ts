@@ -12,11 +12,11 @@ const DETENT_KEYS: { detent: EgSheetsDetent; key: string }[] = [
 
 const SCROLL_EDGE_EFFECTS: EgNavBarScrollEdgeEffect[] = ['automatic', 'hard', 'soft', 'hidden'];
 
-/** iOS 26+ 系统 scroll edge effect 选项 — EgSheets / EgNavBar 定制共用。 */
+/** scroll edge effect 选项（iOS 26 同名）— EgSheets / EgNavBar 定制共用。 */
 export const SCROLL_EDGE_EFFECT_OPTIONS = [
-  { value: 'soft', label: 'soft · 透明渐变模糊 · 无底线' },
-  { value: 'hard', label: 'hard · 半不透明底 · 有底线' },
-  { value: 'automatic', label: 'automatic · 系统决定' },
+  { value: 'soft', label: 'soft · 渐变淡出 · 无底线' },
+  { value: 'hard', label: 'hard · 渐变更实 · 有底线' },
+  { value: 'automatic', label: 'automatic · 页面 soft / Sheet hard' },
   { value: 'hidden', label: 'hidden · 无效果' },
 ];
 
@@ -67,7 +67,7 @@ export const sheetsCustomizeControls: DocCustomizeControl[] = [
   {
     kind: 'select',
     key: 'scrollEdgeEffect',
-    label: '顶栏背景 · iOS 26+ 滚动时 scroll edge（静止 hidden）',
+    label: '顶栏 scroll edge（滚入栏下显现）',
     options: SCROLL_EDGE_EFFECT_OPTIONS,
   },
   {

@@ -1,6 +1,6 @@
 import {
-  EgTabBar,
   EgTabBarBottomTabsDock,
+  EgTabBarText,
   egTabBarSelectedIndexForActiveRoute,
   shouldUseEgTabBarNativeStack,
 } from '@eds/mobile-components';
@@ -38,7 +38,7 @@ export function ShowcaseEgTabBarShell({
 
   return (
     <EgTabBarBottomTabsDock>
-      <EgTabBar
+      <EgTabBarText
         testID="showcase-app-tab-bar"
         mode={colorTheme}
         items={items}

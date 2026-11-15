@@ -9,7 +9,7 @@ export const showcaseTabsUnstableSettings = {
   initialRouteName: '(components)',
 };
 
-/** Android / iOS 25 及以下 — JS Tabs + EgTabBar（iOS 26 见 NativeTabs 壳）。 */
+/** Android / iOS 25 及以下 — JS Tabs + EgTabBarText（iOS 26 见 NativeTabs 壳）。 */
 export function ShowcaseJsTabsLayout() {
   return (
     <ShowcaseRootProviders>
@@ -29,6 +29,7 @@ export function ShowcaseJsTabsLayout() {
         }}
       >
         <Tabs.Screen name="index" options={{ href: null }} />
+        <Tabs.Screen name="(workflows)" options={{ href: null }} />
         {showcaseNavTabs.map((tab) => (
           <Tabs.Screen key={tab.routeName} name={tab.routeName} options={{ title: tab.label }} />
         ))}

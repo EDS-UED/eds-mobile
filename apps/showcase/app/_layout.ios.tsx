@@ -22,6 +22,7 @@ function ShowcaseIosNativeTabsRoot() {
       mode={colorTheme}
       hidden={hidden}
       minimizeBehavior="onScrollDown"
+      itemPresentation="text"
     />
   );
 }

@@ -6,6 +6,11 @@ import {
   resolveRnDocConfig,
   resolveShowcasePreviewComponent,
 } from '@/data/components';
+import { readDataListRowCount } from '@/data/components/dataListCustomizeModel';
+import {
+  buildTabBarTextDefaultSelectedOptions,
+  readTabBarTextTabCount,
+} from '@/data/components/tabBarTextCustomizeModel';
 import { readTabSegmentCount } from '@/data/components/tabCustomizeModel';
 import {
   buildRnAiPrompt,
@@ -14,40 +19,46 @@ import {
   tierFamilyFromEntry,
 } from '@/data/components/buildRnAiPrompt';
 import { showcaseInfraPreviewDefaults } from '@/data/components/showcaseInfraPreviewDefaults';
+import { egNavBarScrollContentReserve } from '@eds/mobile-components';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
 import { useShowcaseDev } from '@/hooks/useShowcaseDev';
 import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
+import {
+  ComponentDetailActionFooter,
+  COMPONENT_DETAIL_FOOTER_HEIGHT,
+} from '@/views/shared/ComponentDetailActionFooter';
 import { CustomizePanel } from '@/views/shared/CustomizePanel';
-import { CopyAiPromptFooter, COPY_AI_PROMPT_FOOTER_HEIGHT } from '@/views/shared/CopyAiPromptFooter';
+import { CustomizeSlotCardStack } from '@/views/shared/CustomizeSlotCardStack';
 import { DocContentSheet } from '@/views/shared/DocContentSheet';
 import { DocSection } from '@/views/shared/DocSection';
 import { InspectSheet } from '@/views/shared/InspectSheet';
 import { PropsDocTable } from '@/views/shared/PropsDocTable';
 import { ShowcaseInspectTarget } from '@/views/shared/ShowcaseInspectTarget';
-import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import {
+  showcaseDetailScreenBackgroundColor,
+  showcaseTheme as theme,
+} from '@/views/shared/showcaseTheme';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { UsageSnippetBlock } from '@/views/shared/UsageSnippetBlock';
-import {
-  ComponentDetailDocActions,
-  type ComponentDetailDocPanel,
-} from '@/views/components/ComponentDetailDocActions';
+import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
 import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
-
-const STACK_HEADER_BAR = Platform.select({ ios: 44, android: 56, default: 44 }) as number;
+import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 
 function createComponentDetailStyles(colors: ShowcaseColorMap) {
   return StyleSheet.create({
     screen: {
       flex: 1,
-      backgroundColor: colors.page as string,
+      backgroundColor: showcaseDetailScreenBackgroundColor(colors),
     },
     root: {
       flex: 1,
+      backgroundColor: showcaseDetailScreenBackgroundColor(colors),
     },
     scrollContent: {
       paddingBottom: theme.layout.scrollBottom,
@@ -58,17 +69,18 @@ function createComponentDetailStyles(colors: ShowcaseColorMap) {
     scrollInspect: {
       paddingBottom: 160,
     },
-    previewStage: {
-      width: '100%',
-      alignSelf: 'stretch',
-      backgroundColor: colors['material-card-shallow'] as string,
-      paddingHorizontal: theme.layout.cardPaddingHorizontal,
-      paddingBottom: theme.layout.cardPaddingVertical,
-    },
     canvas: {
       ...catalogPreviewCanvasStyle,
       minHeight: 160,
       justifyContent: 'center',
+    },
+    canvasFullBleed: {
+      padding: 0,
+      gap: 0,
+      alignSelf: 'stretch',
+      width: '100%',
+      alignItems: 'stretch',
+      justifyContent: 'flex-start',
     },
     missing: {
       fontSize: 14,
@@ -81,17 +93,27 @@ function createComponentDetailStyles(colors: ShowcaseColorMap) {
 export function ComponentDetailView() {
   const styles = useThemedStyles(createComponentDetailStyles);
   const insets = useSafeAreaInsets();
-  const previewTopInset = insets.top + STACK_HEADER_BAR + theme.layout.cardPaddingVertical;
-  const scrollBottomInset =
-    COPY_AI_PROMPT_FOOTER_HEIGHT +
-    Math.max(insets.bottom, edsSpacing('spacing-3')) +
-    edsSpacing('spacing-4');
   const { slug: slugParam } = useLocalSearchParams<{ slug: string }>();
   const slug = slugParam ?? '';
   const entry = findShowcaseCatalogEntry(slug);
   const exportName = entry?.exportName ?? slug;
   const doc = resolveRnDocConfig(slug, exportName);
   const displayName = doc?.componentTag ?? exportName;
+  const {
+    onScroll,
+    scrollEventThrottle,
+    stackScreenOptions,
+    nativeStackNav,
+    rnNavBar,
+    rnScrollPaddingTop,
+  } = useShowcaseStackNav(displayName);
+  const previewTopInset =
+    (nativeStackNav ? egNavBarScrollContentReserve(insets.top) : rnScrollPaddingTop) +
+    theme.layout.cardPaddingVertical;
+  const scrollBottomInset =
+    COMPONENT_DETAIL_FOOTER_HEIGHT +
+    Math.max(insets.bottom, edsSpacing('spacing-3')) +
+    edsSpacing('spacing-4');
 
   const { mode, setMode, clearPinned } = useShowcaseDev();
   const { colorTheme } = useShowcaseThemeContext();
@@ -100,6 +122,9 @@ export function ComponentDetailView() {
   const [customize, setCustomize] = useState<Record<string, unknown>>(
     () => doc?.customizeDefaults ?? {},
   );
+  const applyCustomizeChange = (next: Record<string, unknown>) => {
+    setCustomize((prev) => ({ ...prev, ...next }));
+  };
   const [measuredLayout, setMeasuredLayout] = useState<string[]>([]);
   const [docPanel, setDocPanel] = useState<ComponentDetailDocPanel | null>(null);
 
@@ -122,11 +147,35 @@ export function ComponentDetailView() {
     if (!entry) {
       return slug;
     }
-    if (entry.exportName === 'EgTab' || entry.exportName === 'EgSegmentedControl') {
+    if (
+      entry.exportName === 'EgTab' ||
+      entry.exportName === 'EgTabBlock' ||
+      entry.exportName === 'EgSegmentedControl'
+    ) {
       return `${entry.slug}-${readTabSegmentCount(customize)}-${String(customize.size ?? 'md')}`;
+    }
+    if (entry.exportName === 'EgDataList') {
+      return `${entry.slug}-${readDataListRowCount(customize)}-${String(customize.graphicEnabled)}-${String(customize.graphicType)}-${String(customize.widgetEnabled)}-${String(customize.interactive)}`;
+    }
+    if (entry.exportName === 'EgTabBarText') {
+      return `${entry.slug}-${readTabBarTextTabCount(customize)}-${String(customize.defaultSelectedIndex ?? '0')}`;
     }
     return entry.slug;
   }, [customize, entry, slug]);
+
+  const customizeControls = useMemo(() => {
+    const controls = doc?.customizeControls ?? [];
+    if (exportName !== 'EgTabBarText') {
+      return controls;
+    }
+    const count = readTabBarTextTabCount(customize);
+    return controls.map((control) => {
+      if (control.kind === 'select' && control.key === 'defaultSelectedIndex') {
+        return { ...control, options: buildTabBarTextDefaultSelectedOptions(count) };
+      }
+      return control;
+    });
+  }, [customize, doc?.customizeControls, exportName]);
 
   const usageCode = useMemo(() => {
     if (doc?.buildUsageSnippet) {
@@ -163,52 +212,78 @@ export function ComponentDetailView() {
 
   return (
     <View style={styles.screen}>
-      <ScrollView
-        style={styles.root}
-        keyboardShouldPersistTaps="handled"
-        contentInsetAdjustmentBehavior="never"
-        contentContainerStyle={[
-          mode === 'inspect' ? styles.scrollInspect : styles.scrollWithFixedFooter,
-          { paddingBottom: scrollBottomInset },
-        ]}
-      >
-        <View style={[styles.previewStage, { paddingTop: previewTopInset }]}>
-          <View style={styles.canvas}>
-            <ShowcaseInspectTarget
-              inspect={{
-                label: exportName,
-                styleLines,
-                motionLines: ['preset: —', 'scene: —'],
-              }}
-              onMeasuredLayout={setMeasuredLayout}
-            >
-              {PreviewComponent && entry ? (
-                <PreviewComponent key={previewRemountKey} {...previewProps} />
-              ) : PreviewComponent ? (
-                <PreviewComponent testID={slug} {...customize} />
-              ) : (
-                <Text style={styles.missing}>No export registered for {exportName}</Text>
-              )}
-            </ShowcaseInspectTarget>
-          </View>
-        </View>
+      <Stack.Screen options={stackScreenOptions} />
+      {rnNavBar}
+      <ShowcaseNavBlurBackdrop>
+        <ScrollView
+          style={styles.root}
+          nestedScrollEnabled
+          keyboardShouldPersistTaps="handled"
+          contentInsetAdjustmentBehavior="never"
+          onScroll={onScroll}
+          scrollEventThrottle={scrollEventThrottle}
+          contentContainerStyle={[
+            mode === 'inspect' ? styles.scrollInspect : styles.scrollWithFixedFooter,
+            { paddingTop: previewTopInset, paddingBottom: scrollBottomInset },
+          ]}
+        >
+          <DocSection title="预览" previewScreenFrame>
+            <View style={[styles.canvas, styles.canvasFullBleed]}>
+              <ShowcaseInspectTarget
+                inspect={{
+                  label: exportName,
+                  styleLines,
+                  motionLines: ['preset: —', 'scene: —'],
+                }}
+                onMeasuredLayout={setMeasuredLayout}
+              >
+                {PreviewComponent && entry ? (
+                  <PreviewComponent key={previewRemountKey} {...previewProps} />
+                ) : PreviewComponent ? (
+                  <PreviewComponent testID={slug} {...customize} />
+                ) : (
+                  <Text style={styles.missing}>No export registered for {exportName}</Text>
+                )}
+              </ShowcaseInspectTarget>
+            </View>
+          </DocSection>
 
-        <ComponentDetailDocActions onOpen={setDocPanel} />
+          <DocSection title="定制" egItemGroupFrame>
+            {doc?.customizeLayout === 'menu-sections' ? (
+              <MenuSectionsCustomizePanel state={customize} onChange={applyCustomizeChange} />
+            ) : (
+              <CustomizePanel
+                controls={customizeControls}
+                state={customize}
+                onChange={applyCustomizeChange}
+              />
+            )}
+          </DocSection>
 
-        <DocSection title="定制">
-          {doc?.customizeLayout === 'menu-sections' ? (
-            <MenuSectionsCustomizePanel state={customize} onChange={setCustomize} />
-          ) : (
-            <CustomizePanel
-              controls={doc?.customizeControls ?? []}
-              state={customize}
-              onChange={setCustomize}
-            />
-          )}
-        </DocSection>
-      </ScrollView>
+          {doc?.customizeSlotCards?.length ? (
+            <DocSection title="插槽" slotStack>
+              <CustomizeSlotCardStack
+                cardControls={doc.customizeSlotCards}
+                state={customize}
+                onChange={applyCustomizeChange}
+              />
+            </DocSection>
+          ) : null}
 
-      <CopyAiPromptFooter prompt={aiPrompt} />
+          {doc?.customizeSlotControls?.length ? (
+            <DocSection title="插槽" egItemGroupFrame>
+              <CustomizePanel
+                sectionDividers
+                controls={doc.customizeSlotControls}
+                state={customize}
+                onChange={applyCustomizeChange}
+              />
+            </DocSection>
+          ) : null}
+        </ScrollView>
+      </ShowcaseNavBlurBackdrop>
+
+      <ComponentDetailActionFooter copyPrompt={aiPrompt} onOpen={setDocPanel} />
 
       <DocContentSheet
         visible={docPanel != null}
@@ -227,7 +302,6 @@ export function ComponentDetailView() {
       </DocContentSheet>
 
       <InspectSheet />
-      <Stack.Title>{displayName}</Stack.Title>
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button
           onPress={() => {

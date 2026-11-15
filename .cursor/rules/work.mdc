@@ -211,7 +211,7 @@ Figma `--corner-smoothing`（60%）在 RN 上 **禁止** 裸写 `borderRadius: t
 - **已声明**的原生增强：仅在该组件 / 场景入口内叠加；**不得**改 token 语义或 Eg* 对外契约；原生不可用 → 仍呈现 RN + token 外观（见 §6.1），**不得空白**。
 - **已声明 · Android 平滑圆角**：`SmoothCornerView`（`packages/components/android` · Expo 模块 `EdsSmoothCorner`）— Android 13+ Outline path 裁成 Figma 60% squircle；用于 `EgGlass` 裁切层与 `EgSheets` 卡片。iOS 仍 `borderCurve: 'continuous'`；Android ≤12 / Expo Go / 未重编 dev client → 普通圆角。
 - **已声明 · iOS 26+ page / page-shot NavBar 原生**：`createEgEdsAnimaPageNavigator` → native-stack（系统 `UINavigationBar` 样式 / 交互 + 系统 push / pop 转场与侧滑）；`EgEdsAnimaPageShot` 弹层内页面栈 → react-native-screens `ScreenStack`（同上），栏项为 EDS 玻璃钮（返回 / 关闭）；page-shot 展开 / 收回仍为 EDS spring。Android · iOS ≤25 → EDS page spring + RN `EgNavBar`。
-- **已声明 · iOS 26+ `glass-mask-box` 原生背景**：`GlassMaskScrollEdgeScope` 区内 `EgGlass box="glass-mask-box"` 不绘 RN 层，背景由同区 `GlassMaskScrollEdgeHost`（react-native-screens 系统栏 scroll edge effect，无标题 / 栏项）承载；栏布局 / 文本 / 边距仍为 EDS RN（如 `EgSheets` 顶栏）。系统栏不可改高且原生栈裁切自身边界 → 原生栈恒贴宿主顶，EDS 栏下边距补齐到实测系统栏高（EgSheets 内嵌栏 64pt；UIKit 真 sheet `pageSheet` 内为 70pt，因 EgSheets 为 RN 卡片非系统 sheet 容器，定调保持 64），不得下移原生栈（会露白色硬边）；RN 栈仍「上下边距 + 内容」定高。区外与 Android · iOS ≤25 → RN mask。
+- **Scroll Edge Effect · RN 栈（非原生增强）**：`EgScrollEdgeEffect`（`glass-mask-box` 材质）按 iOS 26 `scrollEdgeEffectStyle` 同名四档绘制 — 单层模糊（scale `blur-sm` → `nativeBlurIntensity`，与 token 构建同换算）+ 单层不透明度渐变 — `soft` 淡出至透明、无分割线；`hard` 更不透明 + 分割线；`automatic` 页面 soft / Sheet hard；`hidden` 不绘。`EgNavBar`（RN 栏）与 `EgSheets` 顶栏一律走此路径，双端一致；仅 iOS 26+ 页面栈系统 `UINavigationBar`（上条 page 声明）自带系统 scroll edge。
 
 ### 6.1 EDSGlassView 顶层原则
 
@@ -346,4 +346,5 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 - 2026-11-11：§6 Motion — 声明页面切换两类：`page`（普通左右）/ `page-shot`（弹层页面、卡片等，触发元素不同动效一致）；二者可互相嵌套；业务页面切换默认 `edsPageScreenOptions`（`@react-navigation/stack`）。
 - 2026-11-11：§6 Motion — 场景动效业务入口统一 `EgEdsAnima{场景}`（Press / Slide / LayoutContent / Page / PageShot）；删 `MotionPressable`、`EgMotionLayoutContent`、`edsPage*ScreenOptions` / interpolator；menu / sheets 沿用 `EgMenu` / `EgSheets`。
 - 2026-11-11：§6.0 — 用户声明 iOS 26+ page / page-shot NavBar 原生（native-stack / RNS `ScreenStack` · 系统栏与转场）；其余平台 EDS page spring + `EgNavBar`；业务入口 `createEgEdsAnimaPageNavigator` + `EgEdsAnimaPage`。
+- 2026-11-15：§6.0 — 撤销 iOS 26+ `glass-mask-box` 原生背景声明（删 `GlassMaskScrollEdgeScope` / `Host`）；Scroll Edge Effect 改 RN 栈 `EgScrollEdgeEffect`（soft / hard / automatic / hidden）；`EgSheets` 顶栏完全 RN（RN `Modal` 宿主）。
 - 2026-11-09：§6.1 — 玻璃平台分流定调：iOS 26+ 完全原生（材质 + 交互）；Android 与 iOS ≤25 一律毛玻璃兜底；移除 Android 平台增强（react-native-android-liquid-glass）。

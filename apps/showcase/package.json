@@ -11,7 +11,8 @@
     "android": "expo run:android",
     "typecheck": "tsc --noEmit",
     "verify:color-tokens": "node scripts/verify-color-token-catalog.mjs",
-    "verify:tokens": "node scripts/verify-token-catalog.mjs"
+    "verify:tokens": "node scripts/verify-token-catalog.mjs",
+    "verify:infra-coverage": "node scripts/verify-showcase-infra-coverage.mjs"
   },
   "dependencies": {
     "@eds/mobile-animations": "workspace:*",

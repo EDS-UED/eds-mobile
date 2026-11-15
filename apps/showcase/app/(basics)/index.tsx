@@ -1,0 +1,1 @@
+export { BasicsHomeView as default } from '@/views/basics/BasicsHomeView';

@@ -1,0 +1,1 @@
+export { MobileGesturesView as default } from '@/views/basics/MobileGesturesView';

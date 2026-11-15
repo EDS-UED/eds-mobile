@@ -48,9 +48,8 @@ export type EgSheetsProps = {
   /** 遮罩点击 / 下拉 / 系统返回可收起；关闭按钮不受影响。 */
   dismissible?: boolean;
   /**
-   * iOS 26+ 顶栏背景（`glass-mask-box` 原生 scroll edge effect）滚动时的样式；默认 `soft`。
-   * 静止（内容未滚入栏下）恒为 `hidden`。
-   * Android · iOS ≤25 不生效（RN mask）。
+   * 顶栏 scroll edge 样式；默认 `soft`。iOS 26+ 系统 Scroll Edge · iOS 26 以下遮罩浅 · Android 遮罩深。
+   * 静止（内容未滚入栏下）不显现；`automatic` 按 Sheet 解析为 `hard`。
    */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;
   mode?: ThemeMode;

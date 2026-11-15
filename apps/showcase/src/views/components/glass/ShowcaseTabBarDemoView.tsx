@@ -55,7 +55,7 @@ export function ShowcaseTabBarDemoView() {
       {DEMO_ROWS.map((row) => (
         <View
           key={row}
-          style={[styles.row, { backgroundColor: colors['material-card-shallow'] as string }]}
+          style={[styles.row, { backgroundColor: colors['box-page'] as string }]}
         >
           <Text style={{ color: colors['text-base-primary'] as string }}>{row}</Text>
         </View>

@@ -20,4 +20,6 @@ export type EgTabBarItemProps = {
   style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
   selectionAccent?: EgTabBarSelectionAccent;
+  /** `text` · 无 icon，Body Small Heavy 文案。 */
+  presentation?: 'icon' | 'text';
 };

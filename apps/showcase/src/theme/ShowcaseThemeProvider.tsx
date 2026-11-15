@@ -17,14 +17,18 @@ const ShowcaseThemeContext = createContext<ShowcaseThemeContextValue | null>(nul
 export function ShowcaseThemeProvider({ children }: PropsWithChildren) {
   const colorTheme = resolveColorTheme(useColorScheme());
 
-  const value = useMemo(
-    () => ({
+  const value = useMemo(() => {
+    const semantic = mobileTheme.colors[colorTheme];
+    return {
       colorTheme,
-      colors: mobileTheme.colors[colorTheme] as ShowcaseColorMap,
+      /** `--box-page-card` 别名 — 全站页面底与预览 `colors.page` 一致。 */
+      colors: {
+        ...semantic,
+        page: semantic['box-page-card'] as string,
+      } as ShowcaseColorMap,
       docColors: showcaseDocColors[colorTheme],
-    }),
-    [colorTheme],
-  );
+    };
+  }, [colorTheme]);
 
   return <ShowcaseThemeContext.Provider value={value}>{children}</ShowcaseThemeContext.Provider>;
 }

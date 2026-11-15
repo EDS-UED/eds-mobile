@@ -26,19 +26,14 @@ export function edsFontFamily(
   return face;
 }
 
+/** 与 @eds/mobile-components `edsFontStyle` 一致。 */
 export function edsFontStyle(
   weight: TextStyle['fontWeight'] = DEFAULT_WEIGHT,
   role: 'sans' | 'mono' = 'sans',
 ): Pick<TextStyle, 'fontFamily' | 'fontWeight'> {
-  // Bundled faces encode weight in PostScript name — fontWeight on iOS/Android breaks rendering.
+  const fontFamily = edsFontFamily(weight, role);
   if (Platform.OS === 'web') {
-    return {
-      fontFamily: edsFontFamily(weight, role),
-      fontWeight: weight,
-    };
+    return { fontFamily, fontWeight: weight };
   }
-
-  return {
-    fontFamily: edsFontFamily(weight, role),
-  };
+  return { fontFamily };
 }

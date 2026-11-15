@@ -2,7 +2,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 
-import { showcaseShallowBlockSurface, showcaseTheme as theme } from './showcaseTheme';
+import { showcaseCardChromeStyle, showcaseTheme as theme } from './showcaseTheme';
 
 type ShowcaseSearchBarProps = {
   value: string;
@@ -25,13 +25,7 @@ export function ShowcaseSearchBar({
         accessibilityLabel={accessibilityLabel}
         placeholder={placeholder}
         placeholderTextColor={colors['text-base-tertiary'] as string}
-        style={[
-          styles.input,
-          {
-            backgroundColor: colors['material-card-shallow'] as string,
-            color: colors['text-base-primary'] as string,
-          },
-        ]}
+        style={[styles.input, showcaseCardChromeStyle(colors), { color: colors['text-base-primary'] as string }]}
         value={value}
         onChangeText={onChangeText}
         autoCapitalize="none"
@@ -49,7 +43,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    ...theme.blockRadius,
     paddingHorizontal: 12,
     fontSize: 16,
   },

@@ -1,52 +1,29 @@
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Text, View, type ViewStyle } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 
-import { showcaseShallowBlockSurface, showcaseTheme as theme } from './showcaseTheme';
+import {
+  showcaseDocSectionCardStyle,
+  showcaseDocSectionLayout,
+  showcaseDocSectionTitleStyle,
+} from './showcaseDocSectionLayout';
 
 type ShowcaseListGroupProps = {
   label?: string;
   children: React.ReactNode;
   style?: ViewStyle;
+  /** @deprecated 与 `DocSection` 标题已统一，传参忽略。 */
+  labelVariant?: 'section' | 'token';
 };
 
+/** 列表页 — 标题 + 单卡（与 `DocSection` 同构，见 `showcaseDocSectionLayout`）。 */
 export function ShowcaseListGroup({ label, children, style }: ShowcaseListGroupProps) {
   const colors = useShowcaseColors();
 
   return (
-    <View style={[styles.wrap, style]}>
-      {label ? (
-        <Text style={[styles.label, { color: colors['text-base-secondary'] as string }]}>
-          {label}
-        </Text>
-      ) : null}
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: colors['material-card-shallow'] as string,
-            borderColor: colors['stroke-divider-shallow'] as string,
-          },
-        ]}
-      >
-        {children}
-      </View>
+    <View style={[showcaseDocSectionLayout.block, style]}>
+      {label ? <Text style={showcaseDocSectionTitleStyle(colors)}>{label}</Text> : null}
+      <View style={showcaseDocSectionCardStyle(colors)}>{children}</View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  wrap: {
-    gap: 8,
-    paddingHorizontal: theme.layout.pageInset,
-  },
-  label: {
-    paddingHorizontal: 0,
-    ...theme.font.sectionLabel,
-  },
-  card: {
-    ...theme.blockRadius,
-    borderWidth: StyleSheet.hairlineWidth,
-    overflow: 'hidden',
-  },
-});

@@ -5,7 +5,6 @@ import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { showcaseTheme as theme } from './showcaseTheme';
 
 type ShowcasePageIntroProps = {
-  /** Omit when the screen uses native Stack.Title. */
   title?: string;
   lead: string;
   meta?: string;

@@ -16,6 +16,12 @@ export const showcaseCodeSnippetLayout = StyleSheet.create({
     paddingVertical: theme.layout.cardPaddingVertical,
     width: '100%',
   },
+  /** DocSection 卡内代码 — 无二次圆角/底色，内边距由 DocSection 承担。 */
+  embeddedBlock: {
+    alignItems: 'flex-start',
+    alignSelf: 'stretch',
+    width: '100%',
+  },
   lines: {
     alignSelf: 'stretch',
     gap: theme.spacing['spacing-2'] as number,

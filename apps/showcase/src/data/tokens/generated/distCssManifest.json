@@ -207,7 +207,9 @@
       "eds-shadow-box-subtle": "0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset, 0 var(--depth-sm) var(--blur-sm) 0 var(--effect-vulvar-subtle)",
       "eds-shadow-box-shallow": "0 var(--depth-md) var(--blur-md) 0 var(--effect-inner-light) inset, 0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep)",
       "eds-shadow-box-deep": "0 var(--depth-xs) var(--blur-xs) 0 var(--effect-inner-light) inset, 0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep)",
-      "eds-blur-glass": "blur(calc(var(--blur-md) / 2))"
+      "eds-blur-glass": "blur(calc(var(--blur-md) / 2))",
+      "eds-scroll-edge-effect": "linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box)",
+      "eds-scroll-edge-blur": "blur(var(--blur-sm))"
     },
     "motion": {
       "motion-0": "0ms",
@@ -1709,6 +1711,18 @@
         "startLine": 34,
         "endLine": 34,
         "snippet": "  --eds-blur-glass: blur(calc(var(--blur-md) / 2));"
+      },
+      "eds-scroll-edge-effect": {
+        "file": "base.css",
+        "startLine": 46,
+        "endLine": 46,
+        "snippet": "  --eds-scroll-edge-effect: linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box);"
+      },
+      "eds-scroll-edge-blur": {
+        "file": "base.css",
+        "startLine": 53,
+        "endLine": 53,
+        "snippet": "  --eds-scroll-edge-blur: blur(var(--blur-sm));"
       }
     },
     "motion": {

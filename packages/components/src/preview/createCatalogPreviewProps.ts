@@ -217,6 +217,23 @@ export function createCatalogPreviewProps(
           { id: '3', label: 'Label' },
         ],
       };
+    case 'tab-block':
+      return {
+        ...base,
+        selectedId: '1',
+        items: [
+          { id: '1', label: 'Label' },
+          { id: '2', label: 'Label', count: 12 },
+          { id: '3', label: 'Label' },
+        ],
+      };
+    case 'tab-bar-text':
+      return {
+        ...base,
+        tabCount: 3,
+        defaultSelectedIndex: 0,
+        disabled: false,
+      };
     case 'tab-segmented-control':
       return {
         ...base,

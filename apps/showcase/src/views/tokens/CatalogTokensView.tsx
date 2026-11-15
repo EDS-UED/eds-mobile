@@ -4,8 +4,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { TokenGroup } from '@/data/tokens/tokenCatalogTypes';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
+import { ShowcaseListGroup } from '@/views/shared/ShowcaseListGroup';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { TokenBaseTile } from '@/views/tokens/TokenBaseTile';
+import { TokenCatalogListGroup } from '@/views/tokens/TokenCatalogListGroup';
 import { TokenListRow } from '@/views/tokens/TokenListRow';
 import { TokenSegmentScrollLayout } from '@/views/tokens/TokenSegmentScrollLayout';
 
@@ -33,19 +35,24 @@ function TokenGroupBlock({
   group: TokenGroup;
   variant?: 'tiles' | 'rows';
 }) {
-  return (
-    <View style={styles.group}>
-      <Text style={[styles.groupTitle, { color: colors['text-base-tertiary'] as string }]}>{group.comment}</Text>
-      <View style={variant === 'tiles' ? styles.baseList : styles.list}>
-        {group.tokens.map((entry) =>
-          variant === 'tiles' ? (
+  if (variant === 'tiles') {
+    return (
+      <ShowcaseListGroup label={group.comment} labelVariant="token">
+        <View style={styles.tileStack}>
+          {group.tokens.map((entry) => (
             <TokenBaseTile key={entry.name} categoryId={categoryId} entry={entry} colors={colors} />
-          ) : (
-            <TokenListRow key={entry.name} categoryId={categoryId} entry={entry} colors={colors} />
-          ),
-        )}
-      </View>
-    </View>
+          ))}
+        </View>
+      </ShowcaseListGroup>
+    );
+  }
+
+  return (
+    <TokenCatalogListGroup title={group.comment}>
+      {group.tokens.map((entry) => (
+        <TokenListRow key={entry.name} categoryId={categoryId} entry={entry} colors={colors} />
+      ))}
+    </TokenCatalogListGroup>
   );
 }
 
@@ -82,18 +89,10 @@ export function CatalogTokensView({ categoryId, title, sections }: CatalogTokens
 const styles = StyleSheet.create({
   groupList: {
     gap: theme.layout.tokenBlockGap,
-    paddingHorizontal: theme.layout.pageInset,
   },
-  group: {
-    gap: theme.layout.tokenItemGap,
-  },
-  groupTitle: {
-    ...theme.font.tokenGroupTitle,
-  },
-  list: {
-    gap: theme.layout.tokenSemanticRowGap,
-  },
-  baseList: {
+  tileStack: {
     gap: theme.spacing['spacing-3'] as number,
+    padding: theme.layout.cardPaddingVertical,
+    paddingHorizontal: theme.layout.cardPaddingHorizontal,
   },
 });

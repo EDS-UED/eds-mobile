@@ -286,7 +286,7 @@ export function EgEdsAnimaPage({
           }}
           background="visible"
           mode={mode}
-          forceRnImplementation
+          chromeContext="overlay"
         />
       ),
     } as unknown as NativeStackNavigationOptions;

@@ -5,14 +5,10 @@ import { resolveTokenListPrimaryLabel } from '@/data/tokens/tokenListDisplayName
 import type { DocPropRow } from '@/data/components';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { TokenDetailCodeSnippet } from '@/views/shared/TokenDetailCodeSnippet';
-import { CustomizePanel } from '@/views/shared/CustomizePanel';
-import { PropsDocTable } from '@/views/shared/PropsDocTable';
+import { PropsDocCardList } from '@/views/shared/PropsDocCardList';
+import { resolveTokenPreviewDestination } from '@/data/tokens/tokenPreviewDestination';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
-import { ColorTokenSwatch } from '@/views/tokens/ColorTokenSwatch';
 import { TokenDetailRootView } from '@/views/tokens/TokenDetailRootView';
-
-/** Color detail hero swatch — fixed preview size (px). */
-const COLOR_DETAIL_SWATCH_PX = 192;
 
 function colorTokenPropRows(entry: {
   name: string;
@@ -68,10 +64,10 @@ export function ColorTokenDetailView() {
   return (
     <TokenDetailRootView
       title={title}
-      preview={<ColorTokenSwatch value={entry.value} size={COLOR_DETAIL_SWATCH_PX} />}
-      customize={<CustomizePanel controls={[]} state={{}} onChange={() => {}} />}
+      layoutMode="reference"
+      previewDestination={resolveTokenPreviewDestination('color', catalogEntry)}
       usageContent={<TokenDetailCodeSnippet categoryId="color" entry={catalogEntry} />}
-      propsContent={<PropsDocTable rows={colorTokenPropRows(entry)} />}
+      propsContent={<PropsDocCardList rows={colorTokenPropRows(entry)} />}
     />
   );
 }

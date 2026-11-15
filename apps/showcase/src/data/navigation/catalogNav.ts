@@ -4,7 +4,7 @@ export const showcaseTabNav = [
   { id: 'animations', label: '动画' },
   { id: 'components', label: '组件' },
   { id: 'patterns', label: '数据' },
-  { id: 'workflows', label: '业务流' },
+  { id: 'basics', label: '基础' },
 ] as const;
 
 export type ShowcaseTabId = (typeof showcaseTabNav)[number]['id'];

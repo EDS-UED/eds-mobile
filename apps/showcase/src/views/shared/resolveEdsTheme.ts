@@ -100,8 +100,7 @@ export function edsTokenFont(
 }
 
 /**
- * Card / list row primary label — `--size-body-medium` (17) + `--weight-semibold` (600).
- * Native：只用 bundled `EDSText-SemiBold` 单 face；混排中文会系统 fallback，视觉字重与纯英文不一致。
+ * Card / list row primary label — 17 / 600 · `EDSText-SemiBold`（iOS 混排请用 `ShowcaseSansText`）。
  */
 export function edsListRowTitleStyle(): Pick<TextStyle, 'fontSize' | 'lineHeight' | 'fontFamily' | 'fontWeight'> {
   const base = mobileTheme.typography.base;

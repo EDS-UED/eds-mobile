@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { liquidGlassArchitecture } from '@/data/tokens/liquidGlassArchitecture';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
+import { showcaseRnHiddenStackHeaderOptions } from '@/navigation/showcaseEgNavBarDefaults';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { LiquidGlassStackTree } from '@/views/tokens/LiquidGlassStackTree';
 
@@ -13,7 +14,7 @@ export function LiquidGlassTokensView() {
 
   return (
     <>
-      <Stack.Screen options={{ headerTitle: '' }} />
+      <Stack.Screen options={showcaseRnHiddenStackHeaderOptions} />
       <ScrollView
         style={screenStyles.scrollRoot}
         contentContainerStyle={styles.content}

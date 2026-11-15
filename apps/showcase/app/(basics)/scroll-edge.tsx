@@ -1,0 +1,1 @@
+export { ScrollEdgeEffectBasicsView as default } from '@/views/basics/ScrollEdgeEffectBasicsView';

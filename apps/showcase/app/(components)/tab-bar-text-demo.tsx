@@ -1,0 +1,1 @@
+export { ShowcaseEgTabBarTextDemoView as default } from '@/views/components/ShowcaseEgTabBarTextDemoView';

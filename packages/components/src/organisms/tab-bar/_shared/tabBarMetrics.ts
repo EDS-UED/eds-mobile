@@ -52,6 +52,23 @@ export function egTabBarPillTrackHeight(): number {
   return tabBarTrackIntrinsicHeight();
 }
 
+/**
+ * iOS 26+ 系统 Tab 无 icon 时文案光学上移（pt）— `tabBarItemTitlePositionAdjustment.vertical`；
+ * 根级 `NativeTabs.titlePositionAdjustment` 不会写入 appearance，须在每条 Trigger 透传。
+ */
+export const TAB_BAR_TEXT_NATIVE_TITLE_OFFSET_Y = -10;
+
+/** 本体 Tab 项内容高度（icon 槽 + gap + bar 字号行高 + 项内边距）— EgTabBarText 沿用，仅去掉 icon。 */
+export function tabBarItemIconLayoutHeight(): number {
+  const lineHeight = mobileTheme.typography.base['line-height-bar'] as number;
+  return (
+    TAB_BAR_ITEM_PADDING_VERTICAL * 2 +
+    TAB_BAR_ICON_SLOT +
+    TAB_BAR_ITEM_GAP +
+    lineHeight
+  );
+}
+
 /** EgTabBar shell 布局总高（上 + pill track + 下；不含宿主 safe area）。 */
 export function egTabBarShellLayoutHeight(): number {
   return egTabBarScrollContentReserve();

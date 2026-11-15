@@ -32,6 +32,8 @@ export type EgTabBarNativeLayoutProps = {
   /** 未传 `tintColor` 时 — Cregis 用 `decor`。默认 `brand`。 */
   selectionAccent?: EgTabBarSelectionAccent;
   minimizeBehavior?: 'automatic' | 'onScrollDown' | 'never';
+  /** `text` — EgTabBarText 纯文案（忽略 icon · body-medium-heavy）；iOS 26 系统 Tab 项文案位置由系统布局决定。默认 `icon`。 */
+  itemPresentation?: 'icon' | 'text';
 };
 
 export type EgTabBarNativeViewProps = {

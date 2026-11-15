@@ -21,6 +21,8 @@ export type DocCustomizeBooleanControl = {
   kind: 'boolean';
   key: string;
   label: string;
+  /** `category` — typography-body-medium-heavy（插槽卡顶行标题）· 默认 `field`。 */
+  labelVariant?: 'field' | 'category';
   row?: number;
   visibleWhen?: (state: Record<string, unknown>) => boolean;
   /** 勾选为 true 时，将对应 key 置为 false（如角标 / 红点互斥）。 */

@@ -3,6 +3,15 @@ import {
   formatAvatarPaletteName,
 } from '@eds/mobile-components';
 
+import {
+  defaultBlurGlassCustomizeState,
+  defaultScrollEdgeCustomizeState,
+  blurGlassCustomizeControls,
+  scrollEdgeCustomizeControls,
+  resolveScrollEdgeStyle,
+} from '@/data/tokens/glassEffectCustomizeModel';
+import { SHOWCASE_SCROLL_EDGE_EG_SLUG } from '@/data/components/showcaseInfraCatalog';
+
 import type { DocCustomizeControl, DocPropRow } from './types.js';
 import { buildRnSelfClosingSnippet } from './buildRnUsageSnippet.js';
 import {
@@ -19,7 +28,19 @@ import {
   sheetsCustomizeDefaults,
 } from './sheetsCustomizeModel.js';
 import {
+  dataListComponentCustomizeControls,
+  dataListCustomizeDefaults,
+  dataListSlotCustomizeControls,
+  readDataListRowCount,
+} from './dataListCustomizeModel.js';
+import {
+  itemComponentCustomizeControls,
+  itemCustomizeDefaults,
+  itemSlotCustomizeControls,
+} from './itemCustomizeModel.js';
+import {
   buildEgSegmentedControlPreviewSegments,
+  buildEgTabBlockPreviewItems,
   buildEgTabPreviewItems,
   readTabSegmentCount,
   segmentedControlCustomizeControls,
@@ -28,6 +49,13 @@ import {
   tabSlideCustomizeControls,
   tabSlideCustomizeDefaults,
 } from './tabCustomizeModel.js';
+import {
+  buildTabBarTextDefaultSelectedOptions,
+  readTabBarTextTabCount,
+  stripTabBarTextCustomizeMeta,
+  tabBarTextCustomizeControls,
+  tabBarTextCustomizeDefaults,
+} from './tabBarTextCustomizeModel.js';
 import {
   BUTTON_OPTION_LABEL_STYLES,
   BUTTON_SHOWCASE_SIZES,
@@ -51,6 +79,10 @@ export type RnDocConfig = {
   importCode: string;
   customizeDefaults: Record<string, unknown>;
   customizeControls: DocCustomizeControl[];
+  /** 插槽定制（如 EgDataList）· 独立「插槽」卡片。 */
+  customizeSlotControls?: DocCustomizeControl[];
+  /** 插槽 — 多张子卡片（遗留）· 优先 `customizeSlotControls` 单卡 + 小类标题。 */
+  customizeSlotCards?: DocCustomizeControl[][];
   /** Menu — 分组切换 + 添加分组，而非一次展示全部组。 */
   customizeLayout?: 'menu-sections';
   propRows: DocPropRow[];
@@ -183,7 +215,7 @@ import { EgSheets } from '@eds/mobile-components';`,
       { name: 'onBack', type: '() => void', defaultValue: 'undefined', description: '左侧返回点击回调' },
       { name: 'showRight', type: 'boolean', defaultValue: 'true', description: '显示右侧关闭 · 按钮由 EDS 锁定（eds-close，点击收起），业务侧禁止修改 / 替换' },
       { name: 'dismissible', type: 'boolean', defaultValue: 'true', description: '遮罩点击 / 下拉 / 系统返回可收起' },
-      { name: 'scrollEdgeEffect', type: "'automatic' | 'hard' | 'soft' | 'hidden'", defaultValue: "'soft'", description: 'iOS 26+ 顶栏背景（glass-mask-box 原生 scroll edge）· 静止恒 hidden，内容滚入栏下后用此样式 · hard 半不透明 + 底线 · soft 透明渐变模糊 · hidden 无 · automatic 系统决定（Sheets 内为 hard）；Android / iOS ≤25 不生效' },
+      { name: 'scrollEdgeEffect', type: "'automatic' | 'hard' | 'soft' | 'hidden'", defaultValue: "'soft'", description: '顶栏 scroll edge · 静止不显现，内容滚入栏下后用此样式 · iOS 26+ 系统 Scroll Edge · iOS 26 以下遮罩浅 EgScrollEdgeEffect · Android 遮罩深 glass-mask-box · hidden 无 · automatic 按 Sheet 解析为 hard' },
       { name: 'children', type: 'ReactNode', defaultValue: 'undefined', description: '内容插槽 · 顶栏下方滚动区；最高档可滚动，自适应档按其高度定档' },
       { name: 'actions', type: 'ReactNode', defaultValue: 'undefined', description: '底部 action 插槽 · 始终贴当前档位底边；缺省一个 EgBrandButton「确认」（点击收起），传入即替换，按钮数量 / 样式 / 组合由业务自定义' },
       { name: 'showActions', type: 'boolean', defaultValue: 'true', description: '显示底部 action 插槽' },
@@ -192,6 +224,123 @@ import { EgSheets } from '@eds/mobile-components';`,
     ],
     propQueryKeys: Object.keys(sheetsCustomizeDefaults),
     buildUsageSnippet: buildSheetsUsageSnippet,
+  };
+}
+
+function itemBodyDoc(): RnDocConfig {
+  return {
+    componentTag: 'EgItem',
+    previewSlug: 'item-body',
+    importCode: `import { EgItem, EgItemGroup, EgSymbol } from '@eds/mobile-components';`,
+    customizeDefaults: { ...itemCustomizeDefaults },
+    customizeControls: itemComponentCustomizeControls,
+    customizeSlotControls: itemSlotCustomizeControls,
+    propRows: [
+      { name: 'label', type: 'string', defaultValue: '—', description: '主文案 · typography-body-medium' },
+      { name: 'labelHeavy', type: 'boolean', defaultValue: 'false', description: '主文案 · typography-body-medium-heavy' },
+      { name: 'value', type: 'string', defaultValue: 'undefined', description: '右侧附属说明 · typography-body-small' },
+      { name: 'icon', type: 'ReactNode', defaultValue: 'undefined', description: '左侧图形（symbol-sm 槽）' },
+      {
+        name: 'trailingEnabled',
+        type: 'boolean',
+        defaultValue: 'true',
+        description: '右侧挂件总开关',
+      },
+      {
+        name: 'trailingDisplay',
+        type: "'icon' | 'menu' | 'switch' | 'custom'",
+        defaultValue: "'icon'",
+        description:
+          '显示 — icon：`eds-arrow-right-mini-ios`；menu：`eds-arrow-integrated-sort-mini` + `EgMenu`；switch：`EgSwitch`；custom：`trailing` 插槽',
+      },
+      { name: 'showChevron', type: 'boolean', defaultValue: 'true', description: '`icon` — 无 value 时右箭头；有 value 时与附属说明同排' },
+      { name: 'menuItems', type: 'EgMenuItem[]', defaultValue: 'undefined', description: '`menu` — 选项' },
+      { name: 'selectedMenuId', type: 'string', defaultValue: 'undefined', description: '`menu` — 当前选中' },
+      { name: 'onMenuSelect', type: '(id, item) => void', defaultValue: 'undefined', description: '`menu` — 选中回调' },
+      { name: 'switchValue', type: 'boolean', defaultValue: 'undefined', description: '`switch` — 受控' },
+      { name: 'defaultSwitchValue', type: 'boolean', defaultValue: 'false', description: '`switch` — 非受控默认' },
+      { name: 'onSwitchValueChange', type: '(value) => void', defaultValue: 'undefined', description: '`switch` — 切换回调' },
+      { name: 'trailing', type: 'ReactNode', defaultValue: 'undefined', description: '`custom` — 右侧自定义插槽' },
+      { name: 'showDivider', type: 'boolean', defaultValue: 'true', description: 'module 分割线 · 缩进对齐文案' },
+      { name: 'onPress', type: '() => void', defaultValue: 'undefined', description: '`icon` 点按 · event-tap + 缩放 xs' },
+      { name: 'pressIntensity', type: "'xs' | 'sm' | 'md'", defaultValue: "'xs'", description: '点按缩放' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: Object.keys(itemCustomizeDefaults),
+    buildUsageSnippet: (state) => {
+      const trailing = state.widgetEnabled !== false;
+      const valueAttr =
+        trailing && state.accessoryDetailEnabled === true ? `\n  value="默认"` : '';
+      const trailingDisplay = String(state.trailingDisplay ?? 'icon');
+      const displayAttr = trailing ? `\n  trailingDisplay="${trailingDisplay}"` : '';
+      const trailingOffAttr = trailing ? '' : '\n  trailingEnabled={false}';
+      const iconName = state.iconName === 'none' ? '' : String(state.iconName ?? 'eds-pentagram');
+      const iconBlock = iconName
+        ? `\n  icon={<EgSymbol name="${iconName}" size="md" />}`
+        : '';
+      const menuBlock =
+        trailing && trailingDisplay === 'menu'
+          ? `\n  menuItems={[…]}\n  selectedMenuId="…"\n  onMenuSelect={…}`
+          : '';
+      const switchBlock =
+        trailing && trailingDisplay === 'switch'
+          ? `\n  switchValue={…}\n  onSwitchValueChange={…}`
+          : '';
+      const customBlock = trailing && trailingDisplay === 'custom' ? `\n  trailing={<… />}` : '';
+      const pressBlock = trailing && trailingDisplay === 'icon' ? '\n  onPress={…}' : '';
+      return `<EgItemGroup>\n  <EgItem\n    label="${String(state.label ?? 'Label')}"${valueAttr}${trailingOffAttr}${displayAttr}${iconBlock}${menuBlock}${switchBlock}${customBlock}${pressBlock}\n  />\n</EgItemGroup>`;
+    },
+  };
+}
+
+function dataListBodyDoc(): RnDocConfig {
+  return {
+    componentTag: 'EgDataList',
+    previewSlug: 'data-list-body',
+    importCode: `// 父级 Scene 须有 spacing-5 水平 padding；列表区 DL-bleed
+import { EgDataList, EgDataListRow } from '@eds/mobile-components';`,
+    customizeDefaults: { ...dataListCustomizeDefaults },
+    customizeControls: dataListComponentCustomizeControls,
+    customizeSlotControls: dataListSlotCustomizeControls,
+    propRows: [
+      { name: 'children', type: 'EgDataListRow[]', defaultValue: '—', description: '数据行 · 行壳（外 spacing-2 / 内 spacing-3）+ 内容插槽 children' },
+      { name: 'sceneContentInset', type: 'number', defaultValue: '20', description: 'Scene 水平 inset · 默认 spacing-5' },
+      { name: 'rowGap', type: 'number', defaultValue: '4', description: '行间距 · spacing-1（EG_DATA_LIST_ROW_GAP）' },
+      {
+        name: 'layout',
+        type: 'EgDataListRowLayout',
+        defaultValue: 'getEgDataListRowLayout()',
+        description:
+          '行几何 · pad spacing-3 · margin spacing-2 · 图形↔文本 spacing-3（12px）· 副文本最多 2 行（EG_DATA_LIST_SUB_TEXT_MAX_LINES）· 圆角 radius-md · 行高=上下 pad+插槽（无固定高度）',
+      },
+      { name: 'axis', type: "'row' | 'column'", defaultValue: "'row'", description: 'EgDataListRow 主轴' },
+      { name: 'onPress', type: '() => void', defaultValue: 'undefined', description: 'Tap · 触发点按底与缩放' },
+      { name: 'onLongPress', type: '() => void', defaultValue: 'undefined', description: 'Long Press · 同上（滑动/拖拽不触发）' },
+      { name: 'forceTouchEnabled', type: 'boolean', defaultValue: 'false', description: '压感 / 3D Touch · 默认关' },
+      { name: 'onForcePress', type: '() => void', defaultValue: 'undefined', description: 'forceTouchEnabled 时短按深触' },
+      { name: 'interactive', type: 'boolean', defaultValue: 'true', description: '点按底 + 缩放' },
+      { name: 'pressIntensity', type: "'xs' | 'sm' | 'md' | 'lg'", defaultValue: "'xs'", description: '点按缩放档位' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: [
+      'graphicEnabled',
+      'graphicSize',
+      'graphicType',
+      'iconSymbolSize',
+      'primaryWeight',
+      'subBoldSegment',
+      'descriptionEnabled',
+      'widgetEnabled',
+      'widgetType',
+      'rowCount',
+      'interactive',
+      'pressIntensity',
+      'forceTouchEnabled',
+    ],
+    buildUsageSnippet: (state) => {
+      const rows = readDataListRowCount(state);
+      return `<EgDataList>\n${Array.from({ length: rows }, (_, i) => `  <EgDataListRow accessibilityLabel="Row ${i + 1}" onPress={…}>…</EgDataListRow>`).join('\n')}\n</EgDataList>`;
+    },
   };
 }
 
@@ -799,6 +948,47 @@ import { EgTabBar } from '@eds/mobile-components';`,
   };
 }
 
+function tabBarTextDoc(): RnDocConfig {
+  const defaults = { ...tabBarTextCustomizeDefaults };
+  const tabCount = readTabBarTextTabCount(defaults);
+  const tabIndexOptions = buildTabBarTextDefaultSelectedOptions(tabCount);
+  return {
+    componentTag: 'EgTabBarText',
+    previewSlug: 'tab-bar-text',
+    importCode: `import { EgTabBarText } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: tabBarTextCustomizeControls.map((control) => {
+      if (control.kind === 'select' && control.key === 'defaultSelectedIndex') {
+        return { ...control, options: tabIndexOptions };
+      }
+      return control;
+    }),
+    propRows: [
+      { name: 'tabCount', type: 'number', defaultValue: '3', description: '未传 items 时生成 Tab 数（1–6）' },
+      { name: 'items', type: 'EgTabBarItemData[]', defaultValue: 'undefined', description: '覆盖默认 Label × n' },
+      { name: 'defaultSelectedIndex', type: 'number', defaultValue: '0', description: '非受控默认选中' },
+      { name: 'selectedIndex', type: 'number', defaultValue: 'undefined', description: '受控选中索引' },
+      { name: 'onSelectedIndexChange', type: '(index: number) => void', defaultValue: 'undefined', description: '选中变化' },
+      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['tabCount', 'defaultSelectedIndex', 'disabled'],
+    buildUsageSnippet: (state) => {
+      const count = readTabBarTextTabCount(state);
+      const index = Math.min(count - 1, Math.max(0, Number(state.defaultSelectedIndex ?? 0)));
+      return buildRnSelfClosingSnippet(
+        'EgTabBarText',
+        {
+          ...stripTabBarTextCustomizeMeta(state),
+          tabCount: count,
+          defaultSelectedIndex: index,
+        },
+        { defaults: { ...defaults, tabCount: String(count), defaultSelectedIndex: String(index) } },
+      );
+    },
+  };
+}
+
 function egTabDoc(): RnDocConfig {
   const defaults = { ...tabSlideCustomizeDefaults };
   const previewItems = buildEgTabPreviewItems(readTabSegmentCount(defaults));
@@ -828,6 +1018,43 @@ function egTabDoc(): RnDocConfig {
         },
         {
           defaults: { defaultSelectedId: '1', items: previewItems },
+          omitKeys: ['segmentCount'],
+        },
+      );
+    },
+  };
+}
+
+function egTabBlockDoc(): RnDocConfig {
+  const defaults = { ...tabSlideCustomizeDefaults };
+  const previewItems = buildEgTabBlockPreviewItems(readTabSegmentCount(defaults));
+  return {
+    componentTag: 'EgTabBlock',
+    previewSlug: 'tab-block',
+    importCode: `import { EgTabBlock } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: tabSlideCustomizeControls,
+    propRows: [
+      { name: 'items', type: 'EgTabBlockItem[]', defaultValue: '3 × Label', description: '胶囊项（id · label · count?）' },
+      { name: 'selectedId', type: 'string', defaultValue: "'1'", description: '选中 id' },
+      { name: 'onSelect', type: '(id: string, index: number) => void', defaultValue: 'undefined', description: '选中变化' },
+      { name: 'children', type: 'ReactNode', defaultValue: 'undefined', description: '正文 · layout-content' },
+      { name: 'contentSwipeToSwitch', type: 'boolean', defaultValue: 'true', description: '正文左右滑切分段' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['segmentCount'],
+    buildUsageSnippet: (state) => {
+      const count = readTabSegmentCount(state);
+      const items = buildEgTabBlockPreviewItems(count);
+      return buildRnSelfClosingSnippet(
+        'EgTabBlock',
+        {
+          ...stripTabSlideCustomizeMeta(state),
+          selectedId: '1',
+          items,
+        },
+        {
+          defaults: { selectedId: '1', items: previewItems },
           omitKeys: ['segmentCount'],
         },
       );
@@ -1074,52 +1301,104 @@ function inputDoc(componentTag: string, previewSlug: string): RnDocConfig {
   };
 }
 
-const GLASS_BOX_TYPE_OPTIONS = [
-  { value: 'glass-button-box', label: 'Button' },
-  { value: 'glass-flotation-box', label: 'Flotation' },
-  { value: 'glass-sheets-box', label: 'Sheets' },
-  { value: 'glass-tabbar-box', label: 'TabBar' },
-  { value: 'glass-mask-box', label: 'Mask' },
-] as const;
-
 function egGlassShowcaseDoc(): RnDocConfig {
   const defaultBox = 'glass-button-box';
+  const customizeDefaults = defaultBlurGlassCustomizeState(defaultBox);
   return {
     componentTag: 'EgGlass',
     previewSlug: 'glass-eg',
-    importCode: `import { EgGlass, GlassBlurScope } from '@eds/mobile-components';`,
-    customizeDefaults: { box: defaultBox, mode: 'light' },
-    customizeControls: [
-      {
-        kind: 'select',
-        key: 'box',
-        label: 'Type',
-        options: [...GLASS_BOX_TYPE_OPTIONS],
-      },
-      {
-        kind: 'select',
-        key: 'mode',
-        label: '主题',
-        options: [
-          { value: 'light', label: 'Light' },
-          { value: 'dark', label: 'Dark' },
-        ],
-      },
-    ],
+    importCode: `import { EgGlass } from '@eds/mobile-components';`,
+    customizeDefaults,
+    customizeControls: blurGlassCustomizeControls,
     propRows: [
       {
         name: 'box',
         type: 'GlassBoxClassName',
         defaultValue: JSON.stringify(defaultBox),
-        description: 'Effect Glass Box 场景（Type）',
+        description: 'Effect Glass Box class（button / sheets / tabbar …）',
       },
-      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '外观' },
+      { name: 'style', type: 'StyleProp<ViewStyle>', defaultValue: '—', description: '布局尺寸；材质由 box + mode 解析' },
+      {
+        name: 'glass-mask-box · 选用顺序',
+        type: '—',
+        defaultValue: '—',
+        description:
+          '① iOS 26+ → 系统 Scroll Edge（静止 hidden · 滚入栏下 soft）② iOS 26 以下 → 遮罩浅 `EgScrollEdgeEffect`（RN 栈默认 · `GlassMaskBackdrop`）③ Android → 遮罩深（强制毛玻璃）',
+      },
+      {
+        name: 'glass-mask-box · 兜底逻辑',
+        type: '—',
+        defaultValue: '—',
+        description:
+          'iOS 26 以下遮罩浅用不了（expo-blur / expo-linear-gradient 原生模块未链接）时，`GlassMaskBackdrop` 自动改绘 `EgGlass box="glass-mask-box"`（遮罩深 · BlurGlass · eds-blur-glass）',
+      },
     ],
     propQueryKeys: ['mode', 'box'],
     buildUsageSnippet: (state) =>
-      buildRnSelfClosingSnippet('EgGlass', state, {
-        defaults: { box: defaultBox, mode: 'light' },
-      }),
+      buildRnSelfClosingSnippet(
+        'EgGlass',
+        { box: state.box, mode: state.mode },
+        {
+          defaults: { box: defaultBox, mode: 'light' },
+        },
+      ),
+  };
+}
+
+function egScrollEdgeShowcaseDoc(): RnDocConfig {
+  const customizeDefaults = defaultScrollEdgeCustomizeState();
+  return {
+    componentTag: 'EgScrollEdgeEffect',
+    previewSlug: SHOWCASE_SCROLL_EDGE_EG_SLUG,
+    importCode: `import { EgNavBar, EgScrollEdgeEffect, useEgNavBarScroll } from '@eds/mobile-components';`,
+    customizeDefaults,
+    customizeControls: scrollEdgeCustomizeControls,
+    propRows: [
+      {
+        name: 'effect',
+        type: "'automatic' | 'soft' | 'hard' | 'hidden'",
+        defaultValue: "'automatic'",
+        description:
+          'iOS 26 scrollEdgeEffectStyle 同名 · glass-mask-box · 顶栏无内容侧虚化带 · soft 底栏淡出无分割线 · hard 更不透明 + 分割线',
+      },
+      { name: 'edge', type: "'top' | 'bottom'", defaultValue: "'top'", description: '滚动边缘位置' },
+      {
+        name: 'container',
+        type: "'page' | 'sheet'",
+        defaultValue: "'page'",
+        description: 'automatic 解析：page → soft · sheet → hard',
+      },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '外观' },
+      {
+        name: 'scrollEdgeEffect（EgNavBar）',
+        type: 'EgNavBarScrollEdgeEffect',
+        defaultValue: 'undefined',
+        description: '顶栏内置顶部边缘 — 页面 / Sheet 缺省滚入栏下 soft（iOS 26 以下遮罩浅 · Android 遮罩深）',
+      },
+    ],
+    propQueryKeys: [
+      'mode',
+      'container',
+      'topEdgeStyle',
+      'topEdgeHidden',
+      'bottomEdgeStyle',
+      'bottomEdgeHidden',
+    ],
+    buildUsageSnippet: (state) => {
+      const top = resolveScrollEdgeStyle(state, 'top');
+      const bottom = resolveScrollEdgeStyle(state, 'bottom');
+      const sheet = state.container === 'sheet';
+      return `const { scrollOffset, onScroll, scrollEventThrottle } = useEgNavBarScroll();
+
+<EgNavBar${sheet ? ' chromeContext="overlay"' : ''} title="${String(state.title ?? '标题')}" scrollEdgeEffect="${top}" scrollOffset={scrollOffset} mode="${String(state.mode ?? 'light')}" />
+
+<EgScrollEdgeEffect edge="bottom" effect="${bottom}"${sheet ? ' container="sheet"' : ''} mode="${String(state.mode ?? 'light')}" />
+
+<ScrollView onScroll={onScroll} scrollEventThrottle={scrollEventThrottle}>
+  {/* content */}
+</ScrollView>`;
+    },
   };
 }
 
@@ -1200,11 +1479,15 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   'dropdown-body': menuBodyDoc(),
   'dropdown-trigger': menuTriggerSceneDoc(),
   'sheets-body': sheetsBodyDoc(),
+  'data-list-body': dataListBodyDoc(),
+  'item-body': itemBodyDoc(),
   'tab-bar-body': tabBarBaseDoc(),
   'tab-bar-base': tabBarBaseDoc(),
   'tab-bar-cregis': cregisTabBarDoc(),
+  'tab-bar-text': tabBarTextDoc(),
   'tab-bar-item': tabBarItemDoc(),
   'tab-tabs': egTabDoc(),
+  'tab-block': egTabBlockDoc(),
   'tab-segmented-control': egSegmentedControlDoc(),
   'toggle-body': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
   'toggle-switch': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
@@ -1446,13 +1729,14 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
         name: 'background',
         type: "'auto' | 'visible' | 'hidden'",
         defaultValue: "'auto'",
-        description: 'glass-mask-box 背景，贯穿状态栏；auto = 内容滚入栏下才显现',
+        description:
+          'RN ScrollEdgeEffect 背景（与底栏同栈，不叠 BlurGlass）；auto = 内容滚入栏下才显现',
       },
       {
         name: 'scrollEdgeEffect',
         type: "'automatic' | 'hard' | 'soft' | 'hidden'",
         defaultValue: 'undefined',
-        description: 'iOS 26+ 系统栏 scroll edge · hard 半不透明 + 底线 · soft 透明渐变模糊 · hidden 无 · automatic 系统决定；缺省按 background 映射（auto→静止 hidden · 滚入栏下 soft（useEgNavBarScroll 驱动）；传 automatic 交系统决定· visible→hard · hidden→hidden）。egNavBarNativeStackOptions 同名入参；expo-router 页另传 scrollEdgeActive',
+        description: 'iOS 26+ 系统栏 scroll edge · soft 透明渐变模糊（页面顶栏缺省）· hard 更不透明 + 底线（Sheet overlay）· hidden 无 · automatic 交系统；缺省按 background 映射（auto→静止 hidden · 滚入栏下 soft · visible→soft · hidden→hidden · useEgNavBarScroll 驱动）。egNavBarNativeStackOptions 同名；expo-router 另传 scrollEdgeActive',
       },
       {
         name: 'scrollOffset',
@@ -1499,6 +1783,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
   'input-combo-textarea-input': minimalDoc('EgComboTextareaInput', 'input-combo-textarea-input'),
   divider: dividerDoc(),
   'glass-eg': egGlassShowcaseDoc(),
+  'glass-scroll-edge': egScrollEdgeShowcaseDoc(),
   'avatar-body': avatarBodyDoc(),
   'symbol-body': symbolBodyDoc(),
   'avatar-preset-0': avatarPreset0Doc(),

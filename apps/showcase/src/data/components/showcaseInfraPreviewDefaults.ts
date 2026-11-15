@@ -1,13 +1,18 @@
-import type { GlassBoxClassName } from '@eds/mobile-components';
-
-const SLUG_GLASS_BOX: Record<string, GlassBoxClassName> = {
-  'glass-eg': 'glass-button-box',
-};
+import {
+  defaultBlurGlassCustomizeState,
+  defaultScrollEdgeCustomizeState,
+} from '@/data/tokens/glassEffectCustomizeModel';
+import {
+  SHOWCASE_GLASS_EG_SLUG,
+  SHOWCASE_SCROLL_EDGE_EG_SLUG,
+} from '@/data/components/showcaseInfraCatalog';
 
 export function showcaseInfraPreviewDefaults(slug: string): Record<string, unknown> | undefined {
-  const box = SLUG_GLASS_BOX[slug];
-  if (!box) {
-    return undefined;
+  if (slug === SHOWCASE_GLASS_EG_SLUG) {
+    return defaultBlurGlassCustomizeState();
   }
-  return { box };
+  if (slug === SHOWCASE_SCROLL_EDGE_EG_SLUG) {
+    return defaultScrollEdgeCustomizeState();
+  }
+  return undefined;
 }

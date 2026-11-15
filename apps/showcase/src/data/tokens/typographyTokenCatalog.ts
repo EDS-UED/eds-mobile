@@ -30,18 +30,49 @@ function flattenBaseGroups(filter?: (group: TypographyBaseGroup) => boolean): To
     }));
 }
 
+type TextStyleSpecEntry = (typeof textStylesSpec.styles)[number];
+
+function buildTextStyleTokenEntry(style: TextStyleSpecEntry): TokenEntry {
+  return {
+    name: style.className,
+    layer: 'semantic',
+    cssVar: `.${style.className}`,
+    detailLines: distClassDetailLines('typography', style.className),
+  };
+}
+
+/** TextStyle 列表 — 五张卡（Display~Title · Body · Detail · Footnote · Bar），与 Figma 梯队一致。 */
+const TEXT_STYLE_LIST_CARD_CLASS_NAMES: readonly (readonly string[])[] = [
+  ['typography-display', 'typography-headline', 'typography-title'],
+  [
+    'typography-body-large',
+    'typography-body-large-strong',
+    'typography-body-large-heavy',
+    'typography-body-medium',
+    'typography-body-medium-strong',
+    'typography-body-medium-heavy',
+    'typography-body-small',
+    'typography-body-small-strong',
+    'typography-body-small-heavy',
+  ],
+  ['typography-detail', 'typography-detail-strong'],
+  ['typography-footnote', 'typography-footnote-strong'],
+  ['typography-bar'],
+];
+
 export function getTypographyTextStyleGroups(): TokenGroup[] {
-  return [
-    {
-      comment: 'Text Styles',
-      tokens: textStylesSpec.styles.map((style) => ({
-        name: style.className,
-        layer: 'semantic',
-        cssVar: `.${style.className}`,
-        detailLines: distClassDetailLines('typography', style.className),
-      })),
-    },
-  ];
+  const styleByClass = new Map(textStylesSpec.styles.map((style) => [style.className, style]));
+
+  return TEXT_STYLE_LIST_CARD_CLASS_NAMES.map((classNames, index) => ({
+    comment: `text-style-list-card-${index + 1}`,
+    tokens: classNames.map((className) => {
+      const style = styleByClass.get(className);
+      if (!style) {
+        throw new Error(`Missing text style in spec: ${className}`);
+      }
+      return buildTextStyleTokenEntry(style);
+    }),
+  }));
 }
 
 export function getTypographyFamilyGroups(): TokenGroup[] {

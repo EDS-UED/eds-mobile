@@ -1,12 +1,12 @@
 import {
   Pressable,
   StyleSheet,
-  Text,
   View,
   type ViewProps,
 } from 'react-native';
 
 import { EgSymbol } from '../../../atoms/_shared/symbol/EgSymbol.js';
+import { EdsSansText } from '../../../shared/EdsSansText.js';
 import { resolveColor } from '../../../shared/resolveColor.js';
 import { getThemeColors, mobileTheme } from '../../../theme/index.js';
 import { renderTabBarItemSymbol } from '../_shared/renderTabBarItemSymbol.js';
@@ -16,9 +16,10 @@ import {
   TAB_BAR_ITEM_GAP,
   TAB_BAR_ITEM_PADDING_VERTICAL,
   TAB_BAR_PILL_RADIUS,
+  tabBarItemIconLayoutHeight,
 } from '../_shared/tabBarMetrics.js';
 import { egTabBarSelectionLabelToken } from '../_shared/tabBarSelectionAccent.js';
-import { tabBarLabelTypography } from '../_shared/tabBarTypography.js';
+import { tabBarLabelTypography, tabBarTextLabelTypography } from '../_shared/tabBarTypography.js';
 import type { EgTabBarItemProps } from './EgTabBarItem.types.js';
 
 export function EgTabBarItem(
@@ -39,7 +40,9 @@ export function EgTabBarItem(
     style,
     accessibilityLabel,
     selectionAccent = 'brand',
+    presentation = 'icon',
   } = props;
+  const textOnly = presentation === 'text';
 
   const colors = getThemeColors(mode);
   const showItemSelectionBg = selected && !embedded;
@@ -69,15 +72,28 @@ export function EgTabBarItem(
         })
       : defaultIcon);
 
-  const content = (
+  const content = textOnly ? (
+    <EdsSansText
+      weight="600"
+      style={[
+        tabBarTextLabelTypography(),
+        styles.textOnlyLabel,
+        { color: labelColor },
+      ]}
+      numberOfLines={1}
+    >
+      {label}
+    </EdsSansText>
+  ) : (
     <>
       <View style={styles.iconSlot}>{tabIcon}</View>
-      <Text
+      <EdsSansText
+        weight={selected ? '600' : '500'}
         style={[tabBarLabelTypography(selected), { color: labelColor }]}
         numberOfLines={1}
       >
         {label}
-      </Text>
+      </EdsSansText>
     </>
   );
 
@@ -98,8 +114,11 @@ export function EgTabBarItem(
             disabled={disabled}
             onPress={onPress}
             style={({ pressed }) =>
-              StyleSheet.flatten([styles.item, pressed && !disabled ? styles.itemPressed : undefined]) ??
-              styles.item
+              StyleSheet.flatten([
+                styles.item,
+                textOnly ? styles.itemTextOnly : undefined,
+                pressed && !disabled ? styles.itemPressed : undefined,
+              ]) ?? styles.item
             }
           >
             {content}
@@ -110,7 +129,7 @@ export function EgTabBarItem(
 
     return (
       <View {...hostProps} pointerEvents="none">
-        <View style={styles.item}>{content}</View>
+        <View style={[styles.item, textOnly ? styles.itemTextOnly : undefined]}>{content}</View>
       </View>
     );
   }
@@ -127,6 +146,7 @@ export function EgTabBarItem(
         style={({ pressed }) =>
           StyleSheet.flatten([
             styles.item,
+            textOnly ? styles.itemTextOnly : undefined,
             showItemSelectionBg
               ? { backgroundColor: resolveColor(colors, 'event-focus') }
               : undefined,
@@ -164,5 +184,13 @@ const styles = StyleSheet.create({
     height: TAB_BAR_ICON_SLOT,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  itemTextOnly: {
+    gap: 0,
+    minHeight: tabBarItemIconLayoutHeight(),
+  },
+  textOnlyLabel: {
+    width: '100%',
+    textAlign: 'center',
   },
 });

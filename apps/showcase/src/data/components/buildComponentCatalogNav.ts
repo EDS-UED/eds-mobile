@@ -5,7 +5,7 @@ import {
   isShowcaseEntryImplemented,
   type ShowcaseCatalogEntry,
 } from './showcaseCatalog.js';
-import { SHOWCASE_GLASS_EG_SLUG } from './showcaseInfraCatalog.js';
+import { SHOWCASE_SCROLL_EDGE_EG_SLUG } from './showcaseInfraCatalog.js';
 import { familyBodyPreviewSlug } from './familyBodyPreviewSlug.js';
 
 export type AtomGalleryFamily = 'icon' | 'crypto' | 'avatar';
@@ -37,6 +37,7 @@ export const FAMILY_LABELS: Record<string, string> = {
   crypto: 'Crypto 币种',
   icon: 'Icon 图标',
   glass: 'Glass 玻璃',
+  'scroll-edge': 'Scroll Edge 滚动缘',
   button: 'Button 按钮',
   input: 'Input 输入',
   tag: 'Tag 标签',
@@ -50,6 +51,8 @@ export const FAMILY_LABELS: Record<string, string> = {
   popovers: 'Popovers 浮层',
   menu: 'Menu 菜单',
   sheets: 'Sheets 底部浮层',
+  'data-list': 'Data List 数据列表',
+  item: 'Item 设置行',
   index: 'Index 索引',
   symbol: 'Symbol 图标',
 };
@@ -59,6 +62,9 @@ const GALLERY_FAMILIES: Record<string, AtomGalleryFamily> = {
   crypto: 'crypto',
   avatar: 'avatar',
 };
+
+/** 仅在「数据」Tab 展示 — 不出现在 Components tier 族列表。 */
+const SHOWCASE_COMPONENTS_NAV_EXCLUDED_FAMILIES = new Set(['data-list', 'item']);
 
 export type ComponentFamilyNav = {
   tier: CatalogTier;
@@ -113,6 +119,10 @@ const SHOWCASE_NAV_PROMOTE_BY_SLUG: Record<
     family: 'segmented-control',
     directory: 'packages/components/src/molecules/tab/segmented-control-base',
   },
+  [SHOWCASE_SCROLL_EDGE_EG_SLUG]: {
+    family: 'scroll-edge',
+    directory: 'packages/components/src/atoms/glass',
+  },
 };
 
 function showcaseNavTier(entry: ShowcaseCatalogEntry): CatalogTier {
@@ -147,9 +157,12 @@ export function buildComponentCatalogNav(): ComponentTierNav[] {
   const byTier = new Map<CatalogTier, Map<string, FigmaComponentEntry[]>>();
 
   for (const entry of getShowcaseComponentCatalog()) {
+    const family = showcaseNavFamily(entry);
+    if (SHOWCASE_COMPONENTS_NAV_EXCLUDED_FAMILIES.has(family)) {
+      continue;
+    }
     const tier = showcaseNavTier(entry);
     const families = byTier.get(tier) ?? new Map<string, FigmaComponentEntry[]>();
-    const family = showcaseNavFamily(entry);
     const list = families.get(family) ?? [];
     list.push(entry);
     families.set(family, list);
@@ -171,7 +184,7 @@ export function buildComponentCatalogNav(): ComponentTierNav[] {
           implementedCount: sorted.filter(isShowcaseEntryImplemented).length,
           bodySlug: resolveBodySlug(family),
           galleryFamily: GALLERY_FAMILIES[family],
-          showcaseInfra: family === 'glass',
+          showcaseInfra: family === 'glass' || family === 'scroll-edge',
         } satisfies ComponentFamilyNav;
       })
       .sort((a, b) => a.label.localeCompare(b.label, 'zh-CN'));
@@ -200,6 +213,7 @@ const FAMILY_EG_EXPORT_OVERRIDES: Record<string, string> = {
   menu: 'EgMenu',
   tab: 'EgTab',
   'segmented-control': 'EgSegmentedControl',
+  'scroll-edge': 'EgScrollEdgeEffect',
 };
 
 /** 族级组件名 — `Eg` + PascalCase(family)，Tier / 族页标题与列表统一。 */
@@ -221,7 +235,10 @@ export function familyTierRowTitle(family: string): string {
 
 export function familyTierRowHint(nav: ComponentFamilyNav): string {
   if (nav.family === 'glass') {
-    return '容器玻璃材质';
+    return 'BlurGlass · Effect Glass Box';
+  }
+  if (nav.family === 'scroll-edge') {
+    return '滚动缘叠层 · glass-mask-box · iOS 26 scrollEdgeEffectStyle 同名';
   }
   if (nav.family === 'symbol') {
     return 'Icon/Crypto 运行时 API · EgIcon* / EgCrypto* 均委托于此';
@@ -232,12 +249,15 @@ export function familyTierRowHint(nav: ComponentFamilyNav): string {
   if (nav.family === 'sheets') {
     return '底部浮层 · 悬浮档 ↔ 大尺寸贴边 · 顶部 EgNavBar';
   }
+  if (nav.family === 'item') {
+    return '个人中心 / 设置分组行 · value · chevron · 分割线';
+  }
   return `${nav.directory} · 已实现 ${nav.implementedCount}/${nav.entries.length}`;
 }
 
 export function familyTierPressHref(nav: ComponentFamilyNav): string {
-  if (nav.family === 'glass') {
-    return `/(components)/detail/${SHOWCASE_GLASS_EG_SLUG}`;
+  if (nav.family === 'glass' || nav.family === 'scroll-edge') {
+    return `/(components)/family/${nav.tier}/${nav.family}`;
   }
   if (nav.family === 'symbol' && nav.entries.length === 1) {
     return `/(components)/detail/${nav.entries[0]!.slug}`;

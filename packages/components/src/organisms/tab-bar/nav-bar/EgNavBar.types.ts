@@ -1,4 +1,5 @@
 import type { ViewStyle } from 'react-native';
+import type { EgScrollEdgeEffectStyle } from '../../../atoms/glass/EgScrollEdgeEffect.js';
 import type { EgButtonGlassIconCount } from '../../../molecules/button/button-glass/EgButtonGlass.types.js';
 import type { ControlSize } from '../../../shared/types.js';
 import type { ThemeMode } from '../../../theme/index.js';
@@ -10,10 +11,11 @@ import type { ThemeMode } from '../../../theme/index.js';
 export type EgNavBarBackground = 'auto' | 'visible' | 'hidden';
 
 /**
- * iOS 26+ 系统 scroll edge effect（`glass-mask-box` 原生背景）：
- * `hard` 半不透明底 + 底线 · `soft` 透明渐变模糊 · `hidden` 无 · `automatic` 系统决定（Sheets 内为 hard）。
+ * 顶栏 scroll edge 样式（iOS 26 `scrollEdgeEffectStyle` 同名）：
+ * `soft` 轻模糊 + 渐变淡出至透明 · `hard` 轻模糊 + 渐变更不透明 + 底线 · `hidden` 无 · `automatic` 页面 soft / Sheet hard。
+ * iOS 26+ 系统栏由 UIKit 绘制；RN 栏由 `GlassMaskBackdrop`（iOS 26 以下 / Android 遮罩浅）绘制。
  */
-export type EgNavBarScrollEdgeEffect = 'automatic' | 'hard' | 'soft' | 'hidden';
+export type EgNavBarScrollEdgeEffect = EgScrollEdgeEffectStyle;
 
 /**
  * - `center`：居中标题 · Body Medium Strong（页面栏）。
@@ -41,7 +43,7 @@ export type EgNavBarScrollOffset = { value: number };
 
 /**
  * - `stack`（默认）：iOS 26+ 由系统 `UINavigationBar` 承载（`egNavBarNativeStackOptions`），本组件不绘制。
- * - `overlay`：Modal / Sheet 等无 Stack 场景 — iOS 26+ 本组件绘制液态玻璃顶栏（`GlassView` + scroll edge 透明度）。
+ * - `overlay`：Modal / Sheet 等无 Stack 场景 — RN 栏，缺省滚入 soft（iOS 26 以下遮罩浅 · Android 遮罩深）。
  */
 export type EgNavBarChromeContext = 'stack' | 'overlay';
 
@@ -77,9 +79,12 @@ export type EgNavBarProps = {
    * 不触发布局。EgSheets 浮动 → 贴边使用。
    */
   edgeShift?: EgNavBarScrollOffset;
-  /** 背景（`glass-mask-box`），贯穿状态栏区。默认 `auto`。 */
+  /** 背景显隐（scroll edge），贯穿状态栏区。默认 `auto`。 */
   background?: EgNavBarBackground;
-  /** iOS 26+ 系统栏 scroll edge 样式；缺省按 `background` 映射（auto→静止 hidden · 滚入栏下 soft · visible→hard · hidden→hidden）。 */
+  /**
+   * scroll edge 样式；缺省按 `background` 映射（iOS 26+ / 页面：auto→静止 hidden · 滚入栏下 soft · visible→soft · hidden→hidden）。
+   * 系统栏与 RN 栏同义；缺省滚入为 soft（页面 / Sheet 同）；显式 `automatic` 在 Sheet 下解析为 hard。
+   */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;
   /** `background="auto"` — 列表滚动偏移（`useEgNavBarScroll().scrollOffset`）。 */
   scrollOffset?: EgNavBarScrollOffset;
@@ -100,8 +105,8 @@ export type EgNavBarProps = {
    */
   slotTransition?: EgNavBarSlotTransition;
   /**
-   * Tab 根页等无 Stack 系统栏时 — iOS 26+ 仍绘制 RN 栏（`glass-mask-box`）。
-   * `chromeContext="overlay"` 时 iOS 26+ 默认即 RN 栏，无需本项。
+   * 已废弃于 iOS 26+ `stack` — 系统栏不可再强制 RN；请用 `egNavBarNativeStackOptions`。
+   * 仅作兼容入参（无效果）；Modal / Sheet 等用 `chromeContext="overlay"`。
    */
   forceRnImplementation?: boolean;
   style?: ViewStyle;

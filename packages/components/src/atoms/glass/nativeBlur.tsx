@@ -1,5 +1,5 @@
 import type { ComponentRef, ComponentType, ReactNode, RefObject } from 'react';
-import { Platform, View, type ViewStyle } from 'react-native';
+import { Platform, View, type ViewProps, type ViewStyle } from 'react-native';
 
 type BlurHostView = ComponentRef<typeof View>;
 
@@ -15,11 +15,8 @@ type BlurViewProps = {
   blurReductionFactor?: number;
 };
 
-type BlurTargetViewProps = {
+type BlurTargetViewProps = ViewProps & {
   ref?: RefObject<BlurHostView | null>;
-  style?: ViewStyle;
-  children?: ReactNode;
-  collapsable?: boolean;
 };
 
 let BlurViewComponent: ComponentType<BlurViewProps> | null | undefined;
@@ -37,6 +34,22 @@ export function getNativeBlurView(): ComponentType<BlurViewProps> | null {
   }
 
   return BlurViewComponent;
+}
+
+let expoBlurNativeLinked: boolean | undefined;
+
+/** expo-blur 原生模块已链接（JS 包存在但 dev client 未编入时为 false）。 */
+export function isExpoBlurNativeLinked(): boolean {
+  if (expoBlurNativeLinked !== undefined) {
+    return expoBlurNativeLinked;
+  }
+  try {
+    const expo = require('expo') as { requireOptionalNativeModule: (name: string) => unknown };
+    expoBlurNativeLinked = expo.requireOptionalNativeModule('ExpoBlur') != null;
+  } catch {
+    expoBlurNativeLinked = false;
+  }
+  return expoBlurNativeLinked;
 }
 
 export function getBlurTargetView(): ComponentType<BlurTargetViewProps> | null {
@@ -58,6 +71,11 @@ export function getBlurTargetView(): ComponentType<BlurTargetViewProps> | null {
 export function resolveAndroidBlurMethod(): NativeBlurMethod {
   if (Platform.OS !== 'android') {
     return 'none';
+  }
+  const api =
+    typeof Platform.Version === 'number' ? Platform.Version : Number.parseInt(String(Platform.Version), 10);
+  if (!Number.isNaN(api) && api >= 31) {
+    return 'dimezisBlurViewSdk31Plus';
   }
   return 'dimezisBlurView';
 }

@@ -37,4 +37,6 @@ export type EgTabBarProps = {
   pressScale?: boolean;
   /** 拖动时胶囊跟手；关闭后只在松手位置弹簧滑入。默认 `true`。 */
   followDrag?: boolean;
+  /** TabBar-Item 展示 · `text` 无 icon（EgTabBarText 默认）。 */
+  itemPresentation?: 'icon' | 'text';
 };

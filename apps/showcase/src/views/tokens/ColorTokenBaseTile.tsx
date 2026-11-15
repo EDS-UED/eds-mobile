@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useCallback, useMemo } from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { EdsRecipeAnima } from '@eds/mobile-animations';
 import mobileTheme from '@eds/mobile-tokens/theme';
@@ -9,7 +9,8 @@ import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { parseHexColor } from '@/data/tokens/colorFormats';
 import type { ColorTokenEntry } from '@/data/tokens/colorTokenCatalog';
 import { resolveTokenListPrimaryLabel } from '@/data/tokens/tokenListDisplayName';
-import { edsFontFamily } from '@/lib/edsFontFamily';
+import { ShowcaseSansText } from '@/components/ShowcaseSansText';
+import { edsFontStyle } from '@/lib/edsFontFamily';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 
 type ColorTokenBaseTileProps = {
@@ -77,9 +78,9 @@ export function ColorTokenBaseTile({ entry, colors }: ColorTokenBaseTileProps) {
       onPressOut={handlePressOut}
       style={[styles.tile, tileStyle, animatedStyle]}
     >
-      <Text style={[styles.name, { color: labelColor }]}>
+      <ShowcaseSansText weight="600" style={[styles.name, { color: labelColor }]}>
         {resolveTokenListPrimaryLabel('color', entry)}
-      </Text>
+      </ShowcaseSansText>
     </AnimatedPressable>
   );
 }
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   },
   name: {
     ...theme.font.tokenName,
-    fontFamily: edsFontFamily('600'),
+    ...edsFontStyle('600'),
     fontWeight: '600',
   },
 });

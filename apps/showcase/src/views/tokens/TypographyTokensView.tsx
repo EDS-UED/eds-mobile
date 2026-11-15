@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import {
   getTypographyFamilyGroups,
@@ -9,6 +9,7 @@ import {
 import type { TokenGroup } from '@/data/tokens/tokenCatalogTypes';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { TokenCatalogListGroup } from '@/views/tokens/TokenCatalogListGroup';
 import { TokenListRow } from '@/views/tokens/TokenListRow';
 import { TokenSegmentScrollLayout } from '@/views/tokens/TokenSegmentScrollLayout';
 import { TypographyTextStyleRow } from '@/views/tokens/TypographyTextStyleRow';
@@ -49,22 +50,18 @@ export function TypographyTokensView({ title }: TypographyTokensViewProps) {
     >
       <View style={styles.groupList}>
         {groups.map((group) => (
-          <View key={group.comment} style={styles.group}>
-            {segmentIndex !== 0 ? (
-              <Text style={[styles.groupTitle, { color: colors['text-base-tertiary'] as string }]}>
-                {group.comment}
-              </Text>
-            ) : null}
-            <View style={mode === 'textStyle' ? styles.textStyleList : styles.tokenList}>
-              {group.tokens.map((entry) =>
-                mode === 'textStyle' ? (
-                  <TypographyTextStyleRow key={entry.name} className={entry.name} colors={colors} />
-                ) : (
-                  <TokenListRow key={entry.name} categoryId="typography" entry={entry} colors={colors} />
-                ),
-              )}
-            </View>
-          </View>
+          <TokenCatalogListGroup
+            key={group.comment}
+            title={segmentIndex === 0 ? undefined : group.comment}
+          >
+            {group.tokens.map((entry) =>
+              mode === 'textStyle' ? (
+                <TypographyTextStyleRow key={entry.name} className={entry.name} colors={colors} />
+              ) : (
+                <TokenListRow key={entry.name} categoryId="typography" entry={entry} colors={colors} />
+              ),
+            )}
+          </TokenCatalogListGroup>
         ))}
       </View>
     </TokenSegmentScrollLayout>
@@ -73,19 +70,6 @@ export function TypographyTokensView({ title }: TypographyTokensViewProps) {
 
 const styles = StyleSheet.create({
   groupList: {
-    gap: theme.layout.tokenBlockGap,
-    paddingHorizontal: theme.layout.pageInset,
-  },
-  group: {
-    gap: theme.layout.tokenItemGap,
-  },
-  groupTitle: {
-    ...theme.font.tokenGroupTitle,
-  },
-  textStyleList: {
-    gap: theme.spacing['spacing-5'] as number,
-  },
-  tokenList: {
-    gap: theme.layout.tokenSemanticRowGap,
+    gap: theme.layout.docSectionCardGap,
   },
 });

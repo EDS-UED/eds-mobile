@@ -1,8 +1,9 @@
-import { Pressable, StyleSheet, Text, View, type TextStyle } from 'react-native';
+import { Pressable, StyleSheet, View, type TextStyle } from 'react-native';
 
+import { ShowcaseSansText } from '@/components/ShowcaseSansText';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 
-import { showcaseShallowBlockSurface, showcaseTheme as theme } from './showcaseTheme';
+import { showcaseCardChromeStyle, showcaseTheme as theme } from './showcaseTheme';
 
 type ShowcaseCardRowProps = {
   title: string;
@@ -38,14 +39,24 @@ export function ShowcaseCardRow({
       onPress={disabled ? undefined : onPress}
       style={[
         isPlain ? styles.plainRow : styles.card,
-        !isPlain ? showcaseShallowBlockSurface(colors['material-card-shallow'] as string) : undefined,
+        !isPlain ? showcaseCardChromeStyle(colors) : undefined,
         { opacity: disabled ? inactiveOpacity : 1 },
       ]}
     >
       <View style={styles.copy}>
-        <Text style={[titleStyle, { color: colors['text-base-primary'] as string }]}>{title}</Text>
+        <ShowcaseSansText
+          weight="600"
+          style={[titleStyle, { color: colors['text-base-primary'] as string }]}
+        >
+          {title}
+        </ShowcaseSansText>
         {hint ? (
-          <Text style={[styles.hint, { color: colors['text-base-secondary'] as string }]}>{hint}</Text>
+          <ShowcaseSansText
+            weight="400"
+            style={[styles.hint, { color: colors['text-base-secondary'] as string }]}
+          >
+            {hint}
+          </ShowcaseSansText>
         ) : null}
       </View>
     </Pressable>
@@ -61,7 +72,8 @@ const styles = StyleSheet.create({
   },
   plainRow: {
     justifyContent: 'center',
-    paddingVertical: theme.layout.titleHintGap,
+    minHeight: 52,
+    paddingVertical: theme.layout.cardPaddingVertical,
   },
   copy: {
     gap: theme.layout.titleHintGap,

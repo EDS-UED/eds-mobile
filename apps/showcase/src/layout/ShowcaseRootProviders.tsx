@@ -19,6 +19,10 @@ export function ShowcaseRootProviders({ children }: PropsWithChildren) {
     }
   }, [fontError, fontsLoaded]);
 
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>

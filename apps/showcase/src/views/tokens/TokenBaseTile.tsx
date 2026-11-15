@@ -49,7 +49,7 @@ export function TokenBaseTile({ categoryId, entry, colors }: TokenBaseTileProps)
       style={[
         styles.tile,
         {
-          backgroundColor: colors['material-card-shallow'] as string,
+          backgroundColor: colors['box-page'] as string,
           borderColor: colors['stroke-divider-shallow'] as string,
         },
         animatedStyle,

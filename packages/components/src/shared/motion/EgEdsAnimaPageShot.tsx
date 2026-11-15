@@ -524,7 +524,7 @@ function PageShotLayer({
       topInset={insets.top}
       manageStatusBar={false}
       mode={mode}
-      forceRnImplementation
+      chromeContext="overlay"
     />
   );
 
@@ -706,7 +706,7 @@ function PageShotNativeStack({
       titleColor: options.headerTitleStyle.color,
       titleFontFamily: options.headerTitleStyle.fontFamily,
       titleFontSize: options.headerTitleStyle.fontSize,
-      titleFontWeight: options.headerTitleStyle.fontWeight,
+      titleFontWeight: '600',
       backgroundColor: 'transparent',
       translucent: true,
       hideShadow: true,

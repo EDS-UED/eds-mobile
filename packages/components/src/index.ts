@@ -323,10 +323,47 @@ export type {
 } from './molecules/dropdown/menu';
 export { EgSheets } from './organisms/sheets';
 export type { EgSheetsDetent, EgSheetsProps } from './organisms/sheets';
+export {
+  EgDataList,
+  EgDataListRow,
+  EG_DATA_LIST_GRAPHIC_TEXT_GAP,
+  EG_DATA_LIST_SUB_TEXT_MAX_LINES,
+  EG_DATA_LIST_ROW_GAP,
+  EG_DATA_LIST_ROW_MARGIN_H,
+  EG_DATA_LIST_ROW_PAD_H,
+  EG_DATA_LIST_ROW_PAD_V,
+  EG_DATA_LIST_ROW_RADIUS,
+  EG_DATA_LIST_SCENE_CONTENT_INSET,
+  getEgDataListRowLayout,
+} from './organisms/data-list';
+export type { EgDataListProps, EgDataListRowProps, EgDataListRowLayout } from './organisms/data-list';
+export {
+  EgItem,
+  EgItemGroup,
+  EG_ITEM_GROUP_INSET,
+  EG_ITEM_GROUP_RADIUS,
+  EG_ITEM_ICON_GAP,
+  EG_ITEM_ICON_SLOT,
+  EG_ITEM_MIN_HEIGHT,
+  EG_ITEM_PAD_H,
+  EG_ITEM_PAD_V,
+  EG_ITEM_TAP_RADIUS,
+  EG_ITEM_TRAILING_GAP,
+  getEgItemDividerInset,
+} from './organisms/item';
+export type { EgItemGroupProps, EgItemProps } from './organisms/item';
+export {
+  EgTabBarText,
+  buildEgTabBarTextItems,
+  EG_TAB_BAR_TEXT_MAX_TABS,
+} from './organisms/tab-bar/tab-bar-text';
+export type { EgTabBarTextProps } from './organisms/tab-bar/tab-bar-text';
 export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';
 export type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';
 export {
   EgGlass,
+  EgScrollEdgeEffect,
+  resolveEgScrollEdgeEffect,
   GlassSurface,
   GlassInteraction,
   GlassContainer,
@@ -346,6 +383,10 @@ export {
 } from './atoms/glass/index.js';
 export type {
   EgGlassProps,
+  EgScrollEdgeEffectProps,
+  EgScrollEdgeEffectStyle,
+  EgScrollEdgeEffectEdge,
+  EgScrollEdgeEffectContainer,
   GlassVariant,
   GlassShape,
   GlassSurfaceProps,
@@ -395,4 +436,6 @@ export { EgEdsAnimaLayoutContent } from './shared/motion/EgEdsAnimaLayoutContent
 export type { EgEdsAnimaLayoutContentProps } from './shared/motion/EgEdsAnimaLayoutContent.js';
 export { useMotionPressScale } from './shared/useMotionPressScale.js';
 export type { MotionPressRecipe, UseMotionPressScaleOptions } from './shared/useMotionPressScale.js';
+export { EdsSansText } from './shared/EdsSansText.js';
+export type { EdsSansTextProps } from './shared/EdsSansText.js';
 export * from './theme';

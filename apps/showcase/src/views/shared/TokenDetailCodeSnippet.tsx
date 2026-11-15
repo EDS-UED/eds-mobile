@@ -22,12 +22,16 @@ export function TokenDetailCodeSnippet({ categoryId, entry }: TokenDetailCodeSni
 
   if (platform === 'web') {
     const css = resolveTokenDetailSnippet(categoryId, entry);
-    return css ? <HighlightedCssSnippet snippet={css} /> : null;
+    return css ? <HighlightedCssSnippet snippet={css} surface="embedded" /> : null;
   }
 
   const nativePlatform = platform === 'android' ? 'android' : 'ios';
   const snippet = resolveTokenDetailNativeSnippet(categoryId, entry, nativePlatform, mode, colors);
   return snippet ? (
-    <ShowcasePlainCodeSnippet snippet={snippet} accessibilityLabel="复制 React Native 代码" />
+    <ShowcasePlainCodeSnippet
+      snippet={snippet}
+      accessibilityLabel="复制 React Native 代码"
+      surface="embedded"
+    />
   ) : null;
 }

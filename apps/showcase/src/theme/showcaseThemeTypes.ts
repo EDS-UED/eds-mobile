@@ -1,6 +1,9 @@
-import type mobileTheme from '@eds/mobile-tokens/theme';
-
-/** Resolved semantic color map — same keys for light / dark (maps to dist color semantic.css). */
-export type ShowcaseColorMap = (typeof mobileTheme.colors)['light'];
+/** Resolved semantic color map + Showcase `page`（`--box-page-card` 别名）。 */
+export type ShowcaseColorMap = Record<string, string> & {
+  page: string;
+  'box-page': string;
+  'box-page-card': string;
+  'material-card-shallow': string;
+};
 
 export type ShowcaseColorTheme = 'light' | 'dark';

@@ -1,66 +1,19 @@
-import { useEffect } from 'react';
-import { Pressable, type ViewStyle } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { EdsRecipeAnima } from '@eds/mobile-animations';
-import type { EgCommonProps, ToggleSize } from '../../../shared/types.js';
-import type { ThemeMode } from '../../../theme/index.js';
-import { switchThumbStyle, switchTrackStyle } from '../_shared/toggleStyles.js';
+import { resolveEgSwitchRenderStack } from './_shared/resolveEgSwitchStack.js';
+import { EgSwitchNative } from './EgSwitchNative.js';
+import { EgSwitchRn } from './EgSwitchRn.js';
+import type { EgSwitchProps } from './EgSwitch.types.js';
 
-export type EgSwitchProps = EgCommonProps & {
-  size?: ToggleSize;
-  value?: boolean;
-  defaultValue?: boolean;
-  disabled?: boolean;
-  onValueChange?: (value: boolean) => void;
-  style?: ViewStyle;
-  mode?: ThemeMode;
-};
+export type { EgSwitchProps } from './EgSwitch.types.js';
+export {
+  resolveEgSwitchRenderStack,
+  shouldUseEgSwitchNativeStack,
+  type EgSwitchRenderStack,
+} from './_shared/resolveEgSwitchStack.js';
 
-const controlMotion = EdsRecipeAnima('slide');
-
-export function EgSwitch({
-  size = 'md',
-  value,
-  defaultValue = false,
-  disabled = false,
-  onValueChange,
-  testID,
-  mode = 'light',
-  style,
-  accessibilityLabel = 'Switch',
-}: EgSwitchProps) {
-  const on = value ?? defaultValue;
-  const offset = useSharedValue(on ? 1 : 0);
-
-  useEffect(() => {
-    offset.value = withSpring(on ? 1 : 0, controlMotion.springConfig);
-  }, [on, offset]);
-
-  const thumbAnimated = useAnimatedStyle(
-    () => ({
-      alignSelf: offset.value > 0.5 ? ('flex-end' as const) : ('flex-start' as const),
-    }),
-    [offset],
-  );
-
-  const toggle = () => {
-    if (disabled) return;
-    const next = !on;
-    offset.value = withSpring(next ? 1 : 0, controlMotion.springConfig);
-    onValueChange?.(next);
-  };
-
-  return (
-    <Pressable
-      testID={testID ?? 'toggle-switch'}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityRole="switch"
-      accessibilityState={{ checked: on, disabled }}
-      disabled={disabled}
-      onPress={toggle}
-      style={[switchTrackStyle(mode, size, on, disabled), style]}
-    >
-      <Animated.View style={[switchThumbStyle(mode, size), thumbAnimated]} />
-    </Pressable>
-  );
+/** Toggle Switch — iOS 26+ 系统开关 · 其余 EDS 自绘轨道。 */
+export function EgSwitch(props: EgSwitchProps) {
+  if (!props.forceRnImplementation && resolveEgSwitchRenderStack() === 'native') {
+    return <EgSwitchNative {...props} />;
+  }
+  return <EgSwitchRn {...props} />;
 }

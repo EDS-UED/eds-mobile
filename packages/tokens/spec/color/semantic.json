@@ -349,12 +349,12 @@
     },
     {
       "name": "effect-overlay-shallow",
-      "light": "color(var(--eds-overlay) / 0.2)",
-      "dark": "color(var(--eds-overlay) / 0.2)"
+      "light": "color(var(--eds-overlay) / 0.7)",
+      "dark": "color(var(--eds-overlay) / 0.7)"
     },
     {
       "name": "effect-overlay-deep",
-      "light": "color(var(--eds-overlay) / 0.88)",
+      "light": "color(var(--eds-overlay) / 0.92)",
       "dark": "color(var(--eds-overlay) / 0.88)"
     },
     {

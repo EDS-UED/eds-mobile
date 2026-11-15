@@ -15,7 +15,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { EgGlass } from '../../../atoms/glass/EgGlass.js';
+import { GlassMaskBackdrop } from '../../../atoms/glass/GlassMaskBackdrop.js';
+import type { EgScrollEdgeEffectStyle } from '../../../atoms/glass/EgScrollEdgeEffect.js';
 import { egButtonGlassIconMinSize } from '../../../molecules/button/button-glass/_shared/resolveEgButtonGlassShellStyle.js';
 import { EgNavBarActionView } from './EgNavBarActionView.js';
 import { egNavBarSlotMotion } from './egNavBarSlotMotion.js';
@@ -155,7 +156,17 @@ function EgNavBarLayoutSlot({
   );
 }
 
-/** RN 顶栏 · 背景 `glass-mask-box`（Android / iOS ≤25 · 以及 iOS 26+ overlay 如 EgSheets）。 */
+/** RN 顶栏 ScrollEdge 样式解析 — 页面 / Sheet 缺省均 soft；绘制走 `GlassMaskBackdrop`。 */
+function resolveRnScrollEdgeStyle(
+  background: NonNullable<EgNavBarProps['background']>,
+  scrollEdgeEffect: EgNavBarProps['scrollEdgeEffect'],
+): EgScrollEdgeEffectStyle {
+  if (scrollEdgeEffect) return scrollEdgeEffect;
+  if (background === 'hidden') return 'hidden';
+  return 'soft';
+}
+
+/** RN 顶栏 · `GlassMaskBackdrop`（遮罩浅/深）；iOS 26+ `GlassMaskScrollEdgeScope` 走系统 Scroll Edge。 */
 export function EgNavBarRn(props: EgNavBarProps) {
   const {
     title,
@@ -172,6 +183,8 @@ export function EgNavBarRn(props: EgNavBarProps) {
     showRight = true,
     background = 'auto',
     scrollOffset,
+    scrollEdgeEffect,
+    chromeContext = 'stack',
     edgeShift,
     contentUnder = false,
     topInset,
@@ -186,7 +199,6 @@ export function EgNavBarRn(props: EgNavBarProps) {
   const insets = useSafeAreaInsets();
   const statusZone = topInset ?? insets.top;
   const colors = getThemeColors(mode);
-
   const [leftWidth, setLeftWidth] = useState(0);
   const [rightWidth, setRightWidth] = useState(0);
   const leftVisible = showLeft;
@@ -258,7 +270,13 @@ export function EgNavBarRn(props: EgNavBarProps) {
       ) : null}
 
       <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, backgroundStyle]}>
-        <EgGlass box="glass-mask-box" mode={mode} style={styles.backgroundFill} />
+        <GlassMaskBackdrop
+          effect={resolveRnScrollEdgeStyle(background, scrollEdgeEffect)}
+          edge="top"
+          container={chromeContext === 'overlay' ? 'sheet' : 'page'}
+          mode={mode}
+          style={styles.backgroundFill}
+        />
       </Animated.View>
 
       <View
@@ -358,7 +376,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   backgroundFill: {
-    flex: 1,
+    ...StyleSheet.absoluteFill,
   },
   row: {
     flexDirection: 'row',

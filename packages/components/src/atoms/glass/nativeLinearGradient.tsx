@@ -12,6 +12,21 @@ export type NativeLinearGradientProps = {
 };
 
 let LinearGradientComponent: ComponentType<NativeLinearGradientProps> | null | undefined;
+let linearGradientNativeLinked: boolean | undefined;
+
+/** expo-linear-gradient 原生模块已链接。 */
+export function isExpoLinearGradientNativeLinked(): boolean {
+  if (linearGradientNativeLinked !== undefined) {
+    return linearGradientNativeLinked;
+  }
+  try {
+    const expo = require('expo') as { requireOptionalNativeModule: (name: string) => unknown };
+    linearGradientNativeLinked = expo.requireOptionalNativeModule('ExpoLinearGradient') != null;
+  } catch {
+    linearGradientNativeLinked = false;
+  }
+  return linearGradientNativeLinked;
+}
 
 export function getNativeLinearGradient(): ComponentType<NativeLinearGradientProps> | null {
   if (LinearGradientComponent !== undefined) {

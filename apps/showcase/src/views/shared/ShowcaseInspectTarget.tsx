@@ -1,6 +1,14 @@
 import type { PropsWithChildren } from 'react';
 import { useMemo, useRef } from 'react';
-import { LayoutChangeEvent, Pressable, type PressableProps, StyleSheet } from 'react-native';
+import {
+  LayoutChangeEvent,
+  Pressable,
+  StyleSheet,
+  View,
+  type PressableProps,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 import { useShowcaseDev } from '@/hooks/useShowcaseDev';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import type { ShowcaseInspectSelection } from '@/hooks/showcaseDevTypes';
@@ -67,13 +75,22 @@ export function ShowcaseInspectTarget({
     onPress?.(event);
   };
 
+  const flattenedStyle: StyleProp<ViewStyle> = [
+    typeof style === 'function' ? undefined : style,
+    inspectEnabled ? styles.inspectable : null,
+  ];
+
+  /** 非 Inspect 且无业务 onPress — 勿包 Pressable，避免挡住预览内嵌 ScrollView。 */
+  if (!inspectEnabled && onPress == null) {
+    return (
+      <View {...rest} onLayout={handleLayout} style={flattenedStyle}>
+        {children}
+      </View>
+    );
+  }
+
   return (
-    <Pressable
-      {...rest}
-      onPress={handlePress}
-      onLayout={handleLayout}
-      style={[typeof style === 'function' ? undefined : style, inspectEnabled && styles.inspectable]}
-    >
+    <Pressable {...rest} onPress={handlePress} onLayout={handleLayout} style={flattenedStyle}>
       {children}
     </Pressable>
   );

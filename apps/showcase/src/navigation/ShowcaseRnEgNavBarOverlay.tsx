@@ -12,7 +12,7 @@ type ShowcaseRnEgNavBarOverlayProps = {
 
 /**
  * RN 栈页顶栏 — 与 `ShowcaseNavBarDemoView` 同构：`headerShown: false` + 浮层 `EgNavBar`
- *（滚入栏下 `hard` 带底线 · 非 Stack `header`、非整屏 `GlassBlurBackdrop` 当导航底）。
+ *（RN 栏缺省 scroll edge `hard` · module 底线 · 非 Stack `header`）。
  * 仅 iOS ≤25 / Android；iOS 26+ 系统栏仍走 EgNavBar 缺省（hidden → soft）。
  */
 export function ShowcaseRnEgNavBarOverlay({
@@ -31,7 +31,6 @@ export function ShowcaseRnEgNavBarOverlay({
       showRight={false}
       showTitle={showTitle}
       background="auto"
-      scrollEdgeEffect="hard"
       scrollOffset={scrollOffset}
       left={
         showLeft && onBack

@@ -43,7 +43,7 @@ export type EgNavBarScrollOffset = { value: number };
 
 /**
  * - `stack`（默认）：iOS 26+ 由系统 `UINavigationBar` 承载（`egNavBarNativeStackOptions`），本组件不绘制。
- * - `overlay`：Modal / Sheet 等无 Stack 场景 — RN 栏，缺省滚入 soft（iOS 26 以下遮罩浅 · Android 遮罩深）。
+ * - `overlay`：Modal / Sheet 等无 Stack 场景 — RN 栏（缺省 scroll edge `hard` · module 底线）。
  */
 export type EgNavBarChromeContext = 'stack' | 'overlay';
 
@@ -82,8 +82,8 @@ export type EgNavBarProps = {
   /** 背景显隐（scroll edge），贯穿状态栏区。默认 `auto`。 */
   background?: EgNavBarBackground;
   /**
-   * scroll edge 样式；缺省按 `background` 映射（iOS 26+ / 页面：auto→静止 hidden · 滚入栏下 soft · visible→soft · hidden→hidden）。
-   * 系统栏与 RN 栏同义；缺省滚入为 soft（页面 / Sheet 同）；显式 `automatic` 在 Sheet 下解析为 hard。
+   * scroll edge 样式 — **RN 栏**缺省：`auto`/`visible` → `hard`（与 Showcase RN 浮层一致）；`hidden` → `hidden`。
+   * **iOS 26+ 系统栏**缺省：`auto` → 静止 `hidden`、滚入 `soft`（`useEgNavBarScroll` / `egNavBarNativeStackOptions`）。
    */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;
   /** `background="auto"` — 列表滚动偏移（`useEgNavBarScroll().scrollOffset`）。 */

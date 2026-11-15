@@ -110,15 +110,18 @@ export function EgTabBlock(props: EgTabBlockProps & Pick<ViewProps, 'style'>) {
     parentContentInset = EG_TAB_BLOCK_SCENE_CONTENT_INSET,
     testID,
     style,
-    accessibilityLabel = 'Tab block',
+    accessibilityLabel = 'EgTabBlock',
     children,
     contentKey: contentKeyProp,
     onContentSwitchStart,
+    swipeToSwitch: swipeToSwitchProp,
     contentSwipeToSwitch: contentSwipeToSwitchProp,
   } = props;
 
-  const contentSwipeToSwitch =
-    contentSwipeToSwitchProp ?? (children != null ? true : false);
+  const swipeToSwitch =
+    swipeToSwitchProp ??
+    contentSwipeToSwitchProp ??
+    true;
 
   const colors = getThemeColors(mode);
   const pageBg = colors['box-page'] as string;
@@ -243,10 +246,16 @@ export function EgTabBlock(props: EgTabBlockProps & Pick<ViewProps, 'style'>) {
     [items, onSelect, scrollSelectedTabIntoView, selectedId],
   );
 
+  const activeSegmentId = items[selectedIndex]?.id ?? selectedId;
+
   const segmentSwipeGesture = useEgHorizontalSegmentSwipe(
     segmentIds,
-    selectedId,
+    activeSegmentId,
     onContentSwipeSelect,
+    {
+      enabled: swipeToSwitch && items.length > 1,
+      isSegmentEnabled: (index) => !items[index]?.disabled,
+    },
   );
 
   useEffect(() => {
@@ -268,7 +277,7 @@ export function EgTabBlock(props: EgTabBlockProps & Pick<ViewProps, 'style'>) {
 
   if (items.length === 0) {
     return (
-      <View testID={testID ?? 'tab-block'} style={style} accessibilityLabel={accessibilityLabel} />
+      <View testID={testID ?? 'eg-tab-block'} style={style} accessibilityLabel={accessibilityLabel} />
     );
   }
 
@@ -283,22 +292,12 @@ export function EgTabBlock(props: EgTabBlockProps & Pick<ViewProps, 'style'>) {
       </EgEdsAnimaLayoutContent>
     ) : null;
 
-  const bodyWrapped =
-    body != null && contentSwipeToSwitch ? (
-      <GestureDetector gesture={segmentSwipeGesture}>
-        <View collapsable={false} style={styles.bodyGestureHost}>
-          {body}
-        </View>
-      </GestureDetector>
-    ) : (
-      body
-    );
-
-  return (
+  const shell = (
     <View
-      testID={testID ?? 'tab-block'}
+      testID={testID ?? 'eg-tab-block'}
       accessibilityLabel={accessibilityLabel}
       style={[styles.shell, style]}
+      collapsable={false}
     >
     <View
       accessibilityRole="tablist"
@@ -372,9 +371,15 @@ export function EgTabBlock(props: EgTabBlockProps & Pick<ViewProps, 'style'>) {
         />
       ) : null}
     </View>
-    {bodyWrapped}
+    {body}
     </View>
   );
+
+  if (swipeToSwitch && items.length > 1) {
+    return <GestureDetector gesture={segmentSwipeGesture}>{shell}</GestureDetector>;
+  }
+
+  return shell;
 }
 
 const styles = StyleSheet.create({
@@ -385,11 +390,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexGrow: 1,
     marginTop: EG_TAB_BLOCK_BODY_GAP,
-  },
-  bodyGestureHost: {
-    alignSelf: 'stretch',
-    width: '100%',
-    flexGrow: 1,
   },
   row: { flexDirection: 'row', alignItems: 'center', position: 'relative' },
   cell: { zIndex: 1, alignSelf: 'flex-start' },

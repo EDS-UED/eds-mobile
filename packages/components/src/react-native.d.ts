@@ -79,7 +79,9 @@ declare module 'react-native' {
     accessibilityState?: Record<string, boolean | undefined>;
     disabled?: boolean;
     delayLongPress?: number;
+    unstable_pressDelay?: number;
     onPress?: () => void;
+    onLongPress?: () => void;
     onPressIn?: () => void;
     onPressOut?: () => void;
     children?: ReactNode | ((state: PressableState) => ReactNode);

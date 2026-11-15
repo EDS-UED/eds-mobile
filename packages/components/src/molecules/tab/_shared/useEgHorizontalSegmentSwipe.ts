@@ -2,45 +2,62 @@ import { useCallback, useMemo } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
 import { scheduleOnRN } from 'react-native-worklets';
 
-const SWIPE_COMMIT_DISTANCE = 48;
-const SWIPE_ACTIVE_OFFSET_X = 20;
-/** 纵向先于横向阈值判失败 — 外层 ScrollView 才能接管上下滚动。 */
-const SWIPE_FAIL_OFFSET_Y = 12;
+import {
+  adjacentEnabledSegmentIndex,
+  EG_HORIZONTAL_SEGMENT_SWIPE_ACTIVE_OFFSET_X,
+  EG_HORIZONTAL_SEGMENT_SWIPE_FAIL_OFFSET_Y,
+  resolveHorizontalSegmentSwipeStep,
+} from './egHorizontalSegmentSwipeCommit.js';
 
-/** 正文区域左右滑切分段 · 与 `EgTabBlock` / `EgTab` 配合（不跟手拖指示器）。 */
+/** 左右滑切分段 · Swipe / Fling · `EgTabBlock` / `EgTab` 正文与整区。 */
 export function useEgHorizontalSegmentSwipe<T extends string>(
   segments: readonly T[],
   selectedId: T,
   onSelect: (id: T) => void,
+  options?: { enabled?: boolean; isSegmentEnabled?: (index: number) => boolean },
 ) {
   const selectedIndex = segments.indexOf(selectedId);
+  const enabled = options?.enabled ?? segments.length > 1;
+  const isSegmentEnabled = options?.isSegmentEnabled;
 
   const commitSwipe = useCallback(
-    (translationX: number) => {
+    (translationX: number, velocityX: number) => {
       if (selectedIndex < 0) {
         return;
       }
-      if (translationX <= -SWIPE_COMMIT_DISTANCE && selectedIndex < segments.length - 1) {
-        onSelect(segments[selectedIndex + 1]!);
+      const step = resolveHorizontalSegmentSwipeStep(translationX, velocityX);
+      if (step === 0) {
         return;
       }
-      if (translationX >= SWIPE_COMMIT_DISTANCE && selectedIndex > 0) {
-        onSelect(segments[selectedIndex - 1]!);
+      const canSelect = isSegmentEnabled ?? (() => true);
+      const targetIndex = adjacentEnabledSegmentIndex(
+        segments.length,
+        selectedIndex,
+        step,
+        canSelect,
+      );
+      if (targetIndex == null) {
+        return;
       }
+      onSelect(segments[targetIndex]!);
     },
-    [onSelect, segments, selectedIndex],
+    [isSegmentEnabled, onSelect, segments, selectedIndex],
   );
 
   return useMemo(
     () =>
       Gesture.Pan()
-        .activeOffsetX([-SWIPE_ACTIVE_OFFSET_X, SWIPE_ACTIVE_OFFSET_X])
-        .failOffsetY([-SWIPE_FAIL_OFFSET_Y, SWIPE_FAIL_OFFSET_Y])
+        .enabled(enabled)
+        .activeOffsetX([
+          -EG_HORIZONTAL_SEGMENT_SWIPE_ACTIVE_OFFSET_X,
+          EG_HORIZONTAL_SEGMENT_SWIPE_ACTIVE_OFFSET_X,
+        ])
+        .failOffsetY([-EG_HORIZONTAL_SEGMENT_SWIPE_FAIL_OFFSET_Y, EG_HORIZONTAL_SEGMENT_SWIPE_FAIL_OFFSET_Y])
         .cancelsTouchesInView(false)
         .onEnd((event) => {
           'worklet';
-          scheduleOnRN(commitSwipe, event.translationX);
+          scheduleOnRN(commitSwipe, event.translationX, event.velocityX);
         }),
-    [commitSwipe],
+    [commitSwipe, enabled],
   );
 }

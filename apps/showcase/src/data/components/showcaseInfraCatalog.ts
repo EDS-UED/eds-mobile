@@ -96,7 +96,7 @@ export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
     kind: 'component',
   },
   {
-    figmaName: 'Tab Block',
+    figmaName: 'EgTabBlock',
     showcaseLabel: '胶囊横滚 · 计数红点 · 正文 layout-content',
     exportName: 'EgTabBlock',
     tier: 'molecules',

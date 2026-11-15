@@ -29,8 +29,9 @@ export type EgTabBlockProps = {
   /** 正文切换动效开始时（如 ScrollView `scrollTo({ y: 0 })`）。 */
   onContentSwitchStart?: () => void;
   /**
-   * 正文区左右滑切分段 · 默认在传入 `children` 时为 true。
-   * 与 `useEgHorizontalSegmentSwipe` 行为一致。
+   * 整区（胶囊条 + 正文）左右 Swipe / Fling 切分段 · 默认 `true`。
    */
+  swipeToSwitch?: boolean;
+  /** 与 `swipeToSwitch` 同义 · 仅传 `children` 时曾默认 true。 */
   contentSwipeToSwitch?: boolean;
 };

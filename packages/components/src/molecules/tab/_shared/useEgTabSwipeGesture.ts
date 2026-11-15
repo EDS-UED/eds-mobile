@@ -6,9 +6,8 @@ import { scheduleOnRN } from 'react-native-worklets';
 import { triggerGlassPressHaptic } from '../../../atoms/glass/glassPressHaptic.js';
 import { followSlideIndicatorX, type SlideTrackSegmentLayout } from '../../../shared/slideTrackIndicator.js';
 import { hitTestTabBarIndex } from '../../../organisms/tab-bar/_shared/tabBarHitTest.js';
+import { resolveHorizontalSegmentSwipeStep } from './egHorizontalSegmentSwipeCommit.js';
 import type { EgTabItem } from '../tab/EgTab.types.js';
-
-const SWIPE_COMMIT_DISTANCE = 48;
 
 type SharedNumber = ReturnType<typeof useSharedValue<number>>;
 type LayoutsShared = ReturnType<typeof useSharedValue<SlideTrackSegmentLayout[]>>;
@@ -52,12 +51,12 @@ export function useEgTabSwipeGesture({
   selectIndex,
 }: UseEgTabSwipeGestureOptions) {
   const finalizePan = useCallback(
-    (translationX: number, pointerX: number) => {
+    (translationX: number, velocityX: number, pointerX: number) => {
       const layouts = layoutsShared.value;
       let index = hitTestTabBarIndex(pointerX, layouts);
-      if (Math.abs(translationX) >= SWIPE_COMMIT_DISTANCE) {
-        const direction = translationX < 0 ? 1 : -1;
-        index = adjacentEnabledIndex(items, selectedIndex, direction);
+      const step = resolveHorizontalSegmentSwipeStep(translationX, velocityX);
+      if (step !== 0) {
+        index = adjacentEnabledIndex(items, selectedIndex, step);
       }
       if (index < 0 || index >= items.length || items[index]?.disabled) {
         snapToIndex(selectedIndex, true);
@@ -83,7 +82,7 @@ export function useEgTabSwipeGesture({
       })
       .onEnd((event) => {
         'worklet';
-        scheduleOnRN(finalizePan, event.translationX, event.x);
+        scheduleOnRN(finalizePan, event.translationX, event.velocityX, event.x);
       });
   }, [
     disabled,

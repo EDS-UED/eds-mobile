@@ -18,7 +18,7 @@ export type EgTabProps = {
   selectedId?: string;
   defaultSelectedId?: string;
   onSelect?: (id: string, index: number) => void;
-  /** 水平滑动（含全宽区域）切换 Tab；默认 true。 */
+  /** 左右 Swipe / Fling（含 Tab 条 + 正文）切换分段；默认 true。 */
   swipeToSwitch?: boolean;
   mode?: ThemeMode;
   testID?: string;

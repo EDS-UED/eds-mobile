@@ -1,13 +1,15 @@
 import type { ReactNode } from 'react';
-import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { Pressable as GesturePressable } from 'react-native-gesture-handler';
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { triggerGlassPressHaptic } from '../../atoms/glass/glassPressHaptic.js';
 import type { MotionPressIntensity } from '../../shared/themeScalars.js';
 import { useMotionPressScale } from '../../shared/useMotionPressScale.js';
 
-const AnimatedGesturePressable = Animated.createAnimatedComponent(GesturePressable);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+/** 按下态延迟 — 期间父级 Scroll 接管（Swipe）则不进入按下态；快速点按松手时仍补一次反馈。 */
+const ROW_PRESS_IN_DELAY_MS = 130;
 
 type EgDataListRowPressableProps = {
   children: ReactNode | ((state: { pressed: boolean }) => ReactNode);
@@ -32,7 +34,9 @@ function resolveStyle(
 }
 
 /**
- * 列表行点按 — RNGH Pressable：父级 Scroll 滑动 / 轻扫时不触发按压高亮与缩放（与 RN 原生 Pressable 区分）。
+ * 列表行点按 — RN Pressable（走 ScrollView 响应者链）：
+ * - 轻扫 / 滑动 Swipe：按下态延迟 {@link ROW_PRESS_IN_DELAY_MS}，父级 Scroll 接管即取消，不出高亮与缩放；
+ * - 快速滑动 Fling 惯性中点停：ScrollView 捕获触摸，行不触发 press / 高亮。
  * 仅 Tap / Long Press（及可选 Force）走 `pressing` 反馈。
  */
 export function EgDataListRowPressable({
@@ -74,7 +78,7 @@ export function EgDataListRowPressable({
     forceTouchEnabled && onForcePress ? 320 : onLongPress ? 500 : undefined;
 
   return (
-    <AnimatedGesturePressable
+    <AnimatedPressable
       testID={testID}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
@@ -82,11 +86,12 @@ export function EgDataListRowPressable({
       onPress={onPress}
       onLongPress={longPressHandler}
       delayLongPress={longPressHandler ? longPressDelay : undefined}
+      unstable_pressDelay={ROW_PRESS_IN_DELAY_MS}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       style={[resolveStyle(style, pressing), animatedStyle]}
     >
       {typeof children === 'function' ? children({ pressed: pressing }) : children}
-    </AnimatedGesturePressable>
+    </AnimatedPressable>
   );
 }

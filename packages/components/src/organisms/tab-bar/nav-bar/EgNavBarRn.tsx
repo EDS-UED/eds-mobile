@@ -156,14 +156,14 @@ function EgNavBarLayoutSlot({
   );
 }
 
-/** RN 顶栏 ScrollEdge 样式解析 — 页面 / Sheet 缺省均 soft；绘制走 `GlassMaskBackdrop`。 */
+/** RN 顶栏 ScrollEdge 样式解析 — 与 Showcase RN 浮层一致：滚入 `hard`（module 底线）；`hidden` 常隐。 */
 function resolveRnScrollEdgeStyle(
   background: NonNullable<EgNavBarProps['background']>,
   scrollEdgeEffect: EgNavBarProps['scrollEdgeEffect'],
 ): EgScrollEdgeEffectStyle {
   if (scrollEdgeEffect) return scrollEdgeEffect;
   if (background === 'hidden') return 'hidden';
-  return 'soft';
+  return 'hard';
 }
 
 /** RN 顶栏 · `GlassMaskBackdrop`（遮罩浅/深）；iOS 26+ `GlassMaskScrollEdgeScope` 走系统 Scroll Edge。 */

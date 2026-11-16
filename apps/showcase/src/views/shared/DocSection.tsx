@@ -8,8 +8,8 @@ import {
   showcaseDocSectionTitleStyle,
 } from './showcaseDocSectionLayout';
 import {
-  showcasePageCardSurface,
   showcaseCardChromeStyle,
+  showcasePreviewScreenChromeStyle,
   showcaseTheme as theme,
 } from './showcaseTheme';
 
@@ -35,11 +35,10 @@ export function DocSection({
   cardPadding = 'default',
 }: DocSectionProps) {
   const colors = useShowcaseColors();
-  const chrome =
-    previewScreenFrame || (!slotStack && !egItemGroupFrame)
-      ? previewScreenFrame
-        ? showcasePageCardSurface(colors['box-page'] as string)
-        : showcaseCardChromeStyle(colors)
+  const chrome = previewScreenFrame
+    ? showcasePreviewScreenChromeStyle(colors)
+    : !slotStack && !egItemGroupFrame
+      ? showcaseCardChromeStyle(colors)
       : null;
   const paddingOff = cardPadding === 'none' || previewScreenFrame || slotStack || egItemGroupFrame;
 

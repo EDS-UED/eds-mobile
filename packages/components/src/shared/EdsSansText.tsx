@@ -35,7 +35,22 @@ export function EdsSansText({ style, weight, children, ...rest }: EdsSansTextPro
   const resolvedWeight = resolveWeight(flat, weight);
   const containerStyle = containerStyleFrom(flat);
 
-  if (Platform.OS !== 'ios' || children == null || typeof children !== 'string') {
+  if (children == null) {
+    return (
+      <Text style={[containerStyle, edsFontStyle(resolvedWeight)]} {...rest} />
+    );
+  }
+
+  /** 嵌套 `<Text>` / 多 `EdsSansText` 混排字重 — 容器不挂 `fontFamily`，避免盖住子节点 face。 */
+  if (typeof children !== 'string') {
+    return (
+      <Text style={containerStyle} {...rest}>
+        {children}
+      </Text>
+    );
+  }
+
+  if (Platform.OS !== 'ios') {
     return (
       <Text style={[containerStyle, edsFontStyle(resolvedWeight)]} {...rest}>
         {children}

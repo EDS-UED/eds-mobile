@@ -1,11 +1,10 @@
-import { egNavBarScrollContentReserve } from '@eds/mobile-components';
 import { Stack, router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
+import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 
 import {
   defaultMotionScenarioCustomizeState,
@@ -24,22 +23,20 @@ import { DocSection } from '@/views/shared/DocSection';
 import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
 import { PropsDocCardList } from '@/views/shared/PropsDocCardList';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
-import { showcaseDetailScreenBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseComponentPreviewCanvas';
+import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
+import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { MotionScenarioPreview } from '@/views/animations/MotionScenarioPreview';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 
-function createStyles(colors: ShowcaseColorMap) {
+function createStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
+  const pageBg = showcasePageBackgroundColor(colors);
   return StyleSheet.create({
-    screen: {
+    scrollRoot: {
       flex: 1,
-      backgroundColor: showcaseDetailScreenBackgroundColor(colors),
+      ...(nativeStackNav ? null : { backgroundColor: pageBg }),
     },
-    canvas: {
-      minHeight: 160,
-      width: '100%',
-      alignItems: 'stretch',
-      justifyContent: 'flex-start',
-    },
+    previewContent: showcaseComponentPreviewContentStyle,
     missing: {
       padding: theme.layout.pageInset,
       color: colors['text-base-secondary'] as string,
@@ -53,7 +50,6 @@ type MotionScenarioDetailViewProps = {
 };
 
 export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailViewProps) {
-  const styles = useThemedStyles(createStyles);
   const colors = useShowcaseColors();
   const insets = useSafeAreaInsets();
   const demo = findMotionScenarioDemo(scenarioId);
@@ -79,35 +75,36 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
     rnNavBar,
     rnScrollPaddingTop,
   } = useShowcaseStackNav(navTitle);
-  const previewTopInset =
-    (nativeStackNav ? egNavBarScrollContentReserve(insets.top) : rnScrollPaddingTop) +
-    theme.layout.cardPaddingVertical;
+  const styles = useThemedStyles((c) => createStyles(c, nativeStackNav));
+  const scrollBottom =
+    Math.max(insets.bottom, edsSpacing('spacing-3')) + edsSpacing('spacing-8');
 
   if (!demo || !scenario) {
     return (
-      <View style={styles.screen}>
+      <ShowcaseStackScreen>
         <Text style={styles.missing}>未找到场景 {scenarioId}</Text>
-      </View>
+      </ShowcaseStackScreen>
     );
   }
 
   return (
-    <View style={styles.screen}>
+    <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
         <ScrollView
+          style={styles.scrollRoot}
           keyboardShouldPersistTaps="handled"
           contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
-          contentContainerStyle={{
-            paddingTop: previewTopInset,
-            paddingBottom: Math.max(insets.bottom, edsSpacing('spacing-3')) + edsSpacing('spacing-8'),
-          }}
+          contentContainerStyle={[
+            showcaseNavScrollContentStyle(nativeStackNav, rnScrollPaddingTop),
+            { paddingBottom: scrollBottom },
+          ]}
         >
           <DocSection title="预览" previewScreenFrame>
-            <View style={styles.canvas}>
+            <View style={styles.previewContent}>
               <MotionScenarioPreview scenario={scenario} colors={colors} customize={customize} />
             </View>
           </DocSection>
@@ -151,6 +148,6 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
         </ScrollView>
       </ShowcaseNavBlurBackdrop>
 
-    </View>
+    </ShowcaseStackScreen>
   );
 }

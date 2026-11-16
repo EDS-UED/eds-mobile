@@ -100,7 +100,7 @@ function effectNativeSnippet(
         'const { scrollOffset, onScroll, scrollEventThrottle } = useEgNavBarScroll();',
         '',
         '// 参数真源：Effect glass-mask-box · 滚动缘用 EgScrollEdgeEffect（非 EgGlass 盒）',
-        '<EgNavBar title="标题" scrollEdgeEffect="hard" scrollOffset={scrollOffset} mode={mode} />',
+        '<EgNavBar title="标题" scrollOffset={scrollOffset} mode={mode} />',
         '',
         '<EgScrollEdgeEffect edge="bottom" effect="soft" mode={mode} />',
         '',

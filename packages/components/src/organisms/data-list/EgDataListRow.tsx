@@ -1,5 +1,6 @@
-import { StyleSheet, View, type ViewStyle } from 'react-native';
+import { Platform, StyleSheet, View, type ViewStyle } from 'react-native';
 
+import { SmoothCornerView } from '../../shared/smoothCorner/SmoothCornerView.js';
 import { getThemeColors } from '../../theme/index.js';
 import { EgDataListRowPressable } from './egDataListRowPressable.js';
 import { getEgDataListRowLayout } from './egDataListMetrics.js';
@@ -39,7 +40,8 @@ export function EgDataListRow({
     paddingHorizontal: layout.padH,
     borderRadius: layout.borderRadius,
     borderCurve: 'continuous',
-    overflow: 'visible',
+    // Android RN 点按底须裁切圆角；iOS 保持 visible 以与其它 organism 一致。
+    overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
     flexGrow: 0,
     flexShrink: 0,
   };
@@ -51,29 +53,33 @@ export function EgDataListRow({
     paddingVertical: layout.slack,
   };
 
-  const rowInner = (pressed: boolean) => (
-    <View
-      style={StyleSheet.flatten([
-        rowShell,
-        interactive
-          ? {
-              backgroundColor: pressed
-                ? (colors['event-tap'] as string)
-                : (colors['material-hide'] as string),
-            }
-          : { backgroundColor: 'transparent' },
-        contentStyle,
-      ])}
+  const rowSurfaceStyle = (pressed: boolean): ViewStyle =>
+    StyleSheet.flatten([
+      rowShell,
+      interactive
+        ? {
+            backgroundColor: pressed
+              ? (colors['event-tap'] as string)
+              : (colors['material-hide'] as string),
+          }
+        : { backgroundColor: 'transparent' },
+      contentStyle,
+    ]) as ViewStyle;
+
+  const rowSurface = (pressed: boolean) => (
+    <SmoothCornerView
+      radius={layout.borderRadius}
+      style={rowSurfaceStyle(pressed)}
       accessibilityLabel={interactive ? undefined : accessibilityLabel}
     >
       {children}
-    </View>
+    </SmoothCornerView>
   );
 
   if (!interactive) {
     return (
       <View style={outerWrap}>
-        {rowInner(false)}
+        {rowSurface(false)}
       </View>
     );
   }
@@ -95,7 +101,7 @@ export function EgDataListRow({
         },
       ]}
     >
-      {({ pressed }) => rowInner(pressed)}
+      {({ pressed }) => rowSurface(pressed)}
     </EgDataListRowPressable>
   );
 }

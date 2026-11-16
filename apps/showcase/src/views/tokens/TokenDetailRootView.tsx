@@ -1,4 +1,3 @@
-import { egNavBarScrollContentReserve } from '@eds/mobile-components';
 import { Stack, router } from 'expo-router';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
@@ -6,6 +5,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
+import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 
 import type { TokenPreviewDestination } from '@/data/tokens/tokenPreviewDestination';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
@@ -19,28 +19,22 @@ import {
 import { DocContentSheet } from '@/views/shared/DocContentSheet';
 import { DocSection } from '@/views/shared/DocSection';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
-import { showcaseDetailScreenBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseComponentPreviewCanvas';
+import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
+import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 
-function createTokenDetailStyles(colors: ShowcaseColorMap) {
+function createTokenDetailStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
+  const pageBg = showcasePageBackgroundColor(colors);
   return StyleSheet.create({
-    screen: {
+    scrollRoot: {
       flex: 1,
-      backgroundColor: showcaseDetailScreenBackgroundColor(colors),
-    },
-    root: {
-      flex: 1,
+      ...(nativeStackNav ? null : { backgroundColor: pageBg }),
     },
     referenceContent: {
       gap: 0,
     },
-    canvas: {
-      minHeight: 160,
-      width: '100%',
-      alignItems: 'stretch',
-      justifyContent: 'flex-start',
-      padding: 0,
-    },
+    previewContent: showcaseComponentPreviewContentStyle,
   });
 }
 
@@ -52,7 +46,6 @@ export type TokenDetailRootViewProps = {
   customize?: ReactNode;
   usageContent: ReactNode;
   propsContent: ReactNode;
-  previewMinHeight?: number;
   /** 令牌 reference 页 — 跳转渲染该效果的组件 / 动画场景。 */
   previewDestination?: TokenPreviewDestination;
 };
@@ -64,11 +57,9 @@ export function TokenDetailRootView({
   customize,
   usageContent,
   propsContent,
-  previewMinHeight = 160,
   previewDestination,
 }: TokenDetailRootViewProps) {
   const referenceOnly = layoutMode === 'reference';
-  const styles = useThemedStyles(createTokenDetailStyles);
   const insets = useSafeAreaInsets();
   const {
     onScroll,
@@ -78,9 +69,7 @@ export function TokenDetailRootView({
     rnNavBar,
     rnScrollPaddingTop,
   } = useShowcaseStackNav(title);
-  const previewTopInset =
-    (nativeStackNav ? egNavBarScrollContentReserve(insets.top) : rnScrollPaddingTop) +
-    theme.layout.cardPaddingVertical;
+  const styles = useThemedStyles((c) => createTokenDetailStyles(c, nativeStackNav));
   const scrollBottomInset =
     COMPONENT_DETAIL_FOOTER_HEIGHT +
     Math.max(insets.bottom, edsSpacing('spacing-3')) +
@@ -91,20 +80,20 @@ export function TokenDetailRootView({
     docPanel === 'usage' ? 'USAGE' : docPanel === 'props' ? 'PROPS / API' : '';
 
   return (
-    <View style={styles.screen}>
+    <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
         <ScrollView
-          style={styles.root}
+          style={styles.scrollRoot}
           keyboardShouldPersistTaps="handled"
-          contentInsetAdjustmentBehavior="never"
+          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
-          contentContainerStyle={{
-            paddingTop: previewTopInset,
-            paddingBottom: scrollBottomInset,
-          }}
+          contentContainerStyle={[
+            showcaseNavScrollContentStyle(nativeStackNav, rnScrollPaddingTop),
+            { paddingBottom: scrollBottomInset },
+          ]}
         >
           {referenceOnly ? (
             <View style={styles.referenceContent}>
@@ -125,7 +114,7 @@ export function TokenDetailRootView({
           ) : (
             <>
               <DocSection title="预览" previewScreenFrame>
-                <View style={[styles.canvas, { minHeight: previewMinHeight }]}>{preview}</View>
+                <View style={styles.previewContent}>{preview}</View>
               </DocSection>
 
               <DocSection title="定制" egItemGroupFrame>
@@ -147,6 +136,6 @@ export function TokenDetailRootView({
         {docPanel === 'props' ? propsContent : null}
       </DocContentSheet>
 
-    </View>
+    </ShowcaseStackScreen>
   );
 }

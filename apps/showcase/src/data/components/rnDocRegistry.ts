@@ -31,6 +31,7 @@ import {
   dataListComponentCustomizeControls,
   dataListCustomizeDefaults,
   dataListSlotCustomizeControls,
+  isDataListRowCountBusiness,
   readDataListRowCount,
 } from './dataListCustomizeModel.js';
 import {
@@ -298,7 +299,7 @@ function dataListBodyDoc(): RnDocConfig {
     componentTag: 'EgDataList',
     previewSlug: 'data-list-body',
     importCode: `// 父级 Scene 须有 spacing-5 水平 padding；列表区 DL-bleed
-import { EgDataList, EgDataListRow } from '@eds/mobile-components';`,
+import { EgDataList, EgDataListReddot, EgDataListRow } from '@eds/mobile-components';`,
     customizeDefaults: { ...dataListCustomizeDefaults },
     customizeControls: dataListComponentCustomizeControls,
     customizeSlotControls: dataListSlotCustomizeControls,
@@ -331,13 +332,25 @@ import { EgDataList, EgDataListRow } from '@eds/mobile-components';`,
       'subBoldSegment',
       'descriptionEnabled',
       'widgetEnabled',
-      'widgetType',
+      'widgetShowTime',
+      'widgetShowTag',
+      'widgetShowCustom',
+      'widgetShowRedDot',
       'rowCount',
       'interactive',
       'pressIntensity',
       'forceTouchEnabled',
     ],
     buildUsageSnippet: (state) => {
+      if (isDataListRowCountBusiness(state)) {
+        return `<EgDataList>
+  {items.map((item) => (
+    <EgDataListRow key={item.id} accessibilityLabel={item.label} onPress={…}>
+      …
+    </EgDataListRow>
+  ))}
+</EgDataList>`;
+      }
       const rows = readDataListRowCount(state);
       return `<EgDataList>\n${Array.from({ length: rows }, (_, i) => `  <EgDataListRow accessibilityLabel="Row ${i + 1}" onPress={…}>…</EgDataListRow>`).join('\n')}\n</EgDataList>`;
     },

@@ -38,8 +38,3 @@ export function useShowcaseStackScreenOptions() {
     [colorTheme, colors],
   );
 }
-
-/** 组件 Live 详情 — 透明内容区；顶栏仍走 EgNavBar 方案。 */
-export const showcaseComponentDetailScreenOptions = {
-  contentStyle: { backgroundColor: 'transparent' },
-};

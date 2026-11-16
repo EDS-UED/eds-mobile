@@ -594,7 +594,13 @@ export { EgSheets } from './organisms/sheets';
 export type { EgSheetsDetent, EgSheetsProps } from './organisms/sheets';
 export {
   EgDataList,
+  EgDataListPrimaryText,
+  EgDataListReddot,
   EgDataListRow,
+  EgDataListSubText,
+  egDataListPrimaryTextStyle,
+  egDataListSubTextStyle,
+  egDataListSubTextSegmentAStyle,
   EG_DATA_LIST_GRAPHIC_TEXT_GAP,
   EG_DATA_LIST_SUB_TEXT_MAX_LINES,
   EG_DATA_LIST_ROW_GAP,
@@ -605,7 +611,15 @@ export {
   EG_DATA_LIST_SCENE_CONTENT_INSET,
   getEgDataListRowLayout,
 } from './organisms/data-list';
-export type { EgDataListProps, EgDataListRowProps, EgDataListRowLayout } from './organisms/data-list';
+export type {
+  EgDataListPrimaryTextProps,
+  EgDataListPrimaryWeight,
+  EgDataListProps,
+  EgDataListReddotProps,
+  EgDataListRowProps,
+  EgDataListRowLayout,
+  EgDataListSubTextProps,
+} from './organisms/data-list';
 export {
   EgItem,
   EgItemGroup,

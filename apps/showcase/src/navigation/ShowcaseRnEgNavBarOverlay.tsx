@@ -1,4 +1,4 @@
-import { EgNavBar, type ThemeMode } from '@eds/mobile-components';
+import { EgNavBar, type EgNavBarAction, type ThemeMode } from '@eds/mobile-components';
 import type { SharedValue } from 'react-native-reanimated';
 
 type ShowcaseRnEgNavBarOverlayProps = {
@@ -7,13 +7,15 @@ type ShowcaseRnEgNavBarOverlayProps = {
   scrollOffset: SharedValue<number>;
   showTitle?: boolean;
   showLeft?: boolean;
+  showRight?: boolean;
+  right?: EgNavBarAction;
   onBack?: () => void;
 };
 
 /**
  * RN 栈页顶栏 — 与 `ShowcaseNavBarDemoView` 同构：`headerShown: false` + 浮层 `EgNavBar`
- *（RN 栏缺省 scroll edge `hard` · module 底线 · 非 Stack `header`）。
- * 仅 iOS ≤25 / Android；iOS 26+ 系统栏仍走 EgNavBar 缺省（hidden → soft）。
+ *（RN 栏页面栈 scroll edge 缺省 `soft` · 非 Stack `header`）。
+ * 仅 iOS ≤25 / Android；iOS 26+ 系统栏 `useEgNavBarScroll`（静止 hidden · 滚入 soft）。
  */
 export function ShowcaseRnEgNavBarOverlay({
   title,
@@ -21,6 +23,8 @@ export function ShowcaseRnEgNavBarOverlay({
   scrollOffset,
   showTitle = true,
   showLeft = false,
+  showRight = false,
+  right,
   onBack,
 }: ShowcaseRnEgNavBarOverlayProps) {
   return (
@@ -28,7 +32,7 @@ export function ShowcaseRnEgNavBarOverlay({
       title={title}
       mode={mode}
       showLeft={showLeft}
-      showRight={false}
+      showRight={showRight}
       showTitle={showTitle}
       background="auto"
       scrollOffset={scrollOffset}
@@ -42,6 +46,7 @@ export function ShowcaseRnEgNavBarOverlay({
             }
           : undefined
       }
+      right={right}
     />
   );
 }

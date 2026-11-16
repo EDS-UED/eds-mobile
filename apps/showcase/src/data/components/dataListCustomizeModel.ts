@@ -1,11 +1,11 @@
 import type { EgSymbolSize } from '@eds/mobile-components';
+import type { EgDataListPrimaryWeight } from '@eds/mobile-components';
 
 import type { DocCustomizeControl } from './types.js';
 
 export type DataListGraphicSize = 'sm' | 'md' | 'lg';
 export type DataListGraphicType = 'crypto' | 'avatar' | 'icon' | 'custom';
-export type DataListPrimaryWeight = 'normal' | 'medium' | 'heavy';
-export type DataListWidgetType = 'time' | 'tag' | 'custom' | 'redDot';
+export type DataListPrimaryWeight = EgDataListPrimaryWeight;
 
 export const DATA_LIST_GRAPHIC_SIZES = [
   { value: 'sm', label: 'SM · avatar-lg' },
@@ -33,18 +33,26 @@ export const DATA_LIST_PRIMARY_WEIGHTS = [
   { value: 'heavy', label: '粗 · typography-body-medium-heavy（默认）' },
 ] as const;
 
-export const DATA_LIST_WIDGET_TYPES = [
-  { value: 'time', label: '时间 · 与主文本同行' },
-  { value: 'tag', label: 'Tag · 与主文本同行' },
-  { value: 'custom', label: '自定义 · 与主文本同行' },
-  { value: 'redDot', label: '红点 · 与副文本同行' },
-] as const;
-
 export const DATA_LIST_PRESS_INTENSITIES = [
   { value: 'xs', label: 'XS' },
   { value: 'sm', label: 'SM' },
   { value: 'md', label: 'MD' },
 ] as const;
+
+/** Showcase「业务侧自定义」— 预览固定 3 行示意；业务用 `children` 自配条数。 */
+export const DATA_LIST_ROW_COUNT_BUSINESS = 'business' as const;
+
+export type DataListRowCountOption = '1' | '2' | typeof DATA_LIST_ROW_COUNT_BUSINESS;
+
+/** 业务侧自定义时预览演示行数（非 API 约束）。 */
+export const DATA_LIST_ROW_COUNT_BUSINESS_PREVIEW_ROWS = 3;
+
+export type DataListWidgetFlags = {
+  showTime: boolean;
+  showTag: boolean;
+  showCustom: boolean;
+  showRedDot: boolean;
+};
 
 const graphicOn = (state: Record<string, unknown>) => state.graphicEnabled !== false;
 const iconGraphic = (state: Record<string, unknown>) =>
@@ -52,7 +60,7 @@ const iconGraphic = (state: Record<string, unknown>) =>
 const widgetOn = (state: Record<string, unknown>) => state.widgetEnabled === true;
 
 export const dataListCustomizeDefaults = {
-  rowCount: '3',
+  rowCount: '1' as DataListRowCountOption,
   graphicEnabled: true,
   graphicSize: 'md' as DataListGraphicSize,
   graphicType: 'crypto' as DataListGraphicType,
@@ -61,7 +69,10 @@ export const dataListCustomizeDefaults = {
   subBoldSegment: false,
   descriptionEnabled: false,
   widgetEnabled: false,
-  widgetType: 'time' as DataListWidgetType,
+  widgetShowTime: true,
+  widgetShowTag: false,
+  widgetShowCustom: false,
+  widgetShowRedDot: false,
   interactive: true,
   pressIntensity: 'xs',
   forceTouchEnabled: false,
@@ -75,9 +86,7 @@ export const dataListComponentCustomizeControls: DocCustomizeControl[] = [
     options: [
       { value: '1', label: '1' },
       { value: '2', label: '2' },
-      { value: '3', label: '3' },
-      { value: '4', label: '4' },
-      { value: '5', label: '5' },
+      { value: DATA_LIST_ROW_COUNT_BUSINESS, label: '业务侧自定义' },
     ],
   },
   {
@@ -140,10 +149,27 @@ export const dataListSlotCustomizeControls: DocCustomizeControl[] = [
   { kind: 'heading', key: 'widgetHeading', label: '挂件' },
   { kind: 'boolean', key: 'widgetEnabled', label: '挂件插槽' },
   {
-    kind: 'select',
-    key: 'widgetType',
-    label: '挂件类型',
-    options: [...DATA_LIST_WIDGET_TYPES],
+    kind: 'boolean',
+    key: 'widgetShowTime',
+    label: '时间 · 主文本同行',
+    visibleWhen: widgetOn,
+  },
+  {
+    kind: 'boolean',
+    key: 'widgetShowTag',
+    label: 'Tag · 主文本同行',
+    visibleWhen: widgetOn,
+  },
+  {
+    kind: 'boolean',
+    key: 'widgetShowCustom',
+    label: '自定义 · 主文本同行',
+    visibleWhen: widgetOn,
+  },
+  {
+    kind: 'boolean',
+    key: 'widgetShowRedDot',
+    label: '红点 · 副文本同行（可与上三项同开）',
     visibleWhen: widgetOn,
   },
 ];
@@ -153,10 +179,21 @@ export const dataListCustomizeControls: DocCustomizeControl[] = [
   ...dataListSlotCustomizeControls,
 ];
 
+export function readDataListRowCountOption(state: Record<string, unknown>): DataListRowCountOption {
+  const raw = String(state.rowCount ?? '1');
+  if (raw === DATA_LIST_ROW_COUNT_BUSINESS) return DATA_LIST_ROW_COUNT_BUSINESS;
+  if (raw === '2') return '2';
+  return '1';
+}
+
 export function readDataListRowCount(state: Record<string, unknown>): number {
-  const parsed = Number.parseInt(String(state.rowCount ?? '3'), 10);
-  if (!Number.isFinite(parsed)) return 3;
-  return Math.min(5, Math.max(1, parsed));
+  const option = readDataListRowCountOption(state);
+  if (option === DATA_LIST_ROW_COUNT_BUSINESS) return DATA_LIST_ROW_COUNT_BUSINESS_PREVIEW_ROWS;
+  return option === '2' ? 2 : 1;
+}
+
+export function isDataListRowCountBusiness(state: Record<string, unknown>): boolean {
+  return readDataListRowCountOption(state) === DATA_LIST_ROW_COUNT_BUSINESS;
 }
 
 export function readDataListGraphicSize(state: Record<string, unknown>): DataListGraphicSize {
@@ -177,10 +214,44 @@ export function readDataListPrimaryWeight(state: Record<string, unknown>): DataL
   return 'heavy';
 }
 
-export function readDataListWidgetType(state: Record<string, unknown>): DataListWidgetType {
-  const value = state.widgetType;
-  if (value === 'tag' || value === 'custom' || value === 'redDot') return value;
-  return 'time';
+export function readDataListSubBoldSegment(state: Record<string, unknown>): boolean {
+  const value = state.subBoldSegment;
+  return value === true || value === 'true' || value === 1 || value === '1';
+}
+
+/** 挂件可同时展示 · 红点与主行挂件不互斥。 */
+export function readDataListWidgetFlags(state: Record<string, unknown>): DataListWidgetFlags {
+  const enabled = state.widgetEnabled === true;
+  if (!enabled) {
+    return { showTime: false, showTag: false, showCustom: false, showRedDot: false };
+  }
+
+  const legacyType = state.widgetType;
+  const legacyRedDotOnly = legacyType === 'redDot';
+  const legacyPrimary =
+    legacyType === 'tag' ? 'tag' : legacyType === 'custom' ? 'custom' : legacyType === 'time' ? 'time' : null;
+
+  const hasNewKeys =
+    'widgetShowTime' in state ||
+    'widgetShowTag' in state ||
+    'widgetShowCustom' in state ||
+    'widgetShowRedDot' in state;
+
+  if (!hasNewKeys && legacyType != null) {
+    return {
+      showTime: legacyPrimary === 'time',
+      showTag: legacyPrimary === 'tag',
+      showCustom: legacyPrimary === 'custom',
+      showRedDot: legacyRedDotOnly,
+    };
+  }
+
+  return {
+    showTime: state.widgetShowTime !== false,
+    showTag: state.widgetShowTag === true,
+    showCustom: state.widgetShowCustom === true,
+    showRedDot: state.widgetShowRedDot === true,
+  };
 }
 
 /** 图形插槽边长 · avatar-lg / avatar-xl / avatar-3xl。 */

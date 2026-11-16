@@ -1,4 +1,3 @@
-import { catalogPreviewCanvasStyle } from '@eds/mobile-components/catalog';
 import {
   applyMenuTriggerPreviewProps,
   findShowcaseCatalogEntry,
@@ -6,7 +5,6 @@ import {
   resolveRnDocConfig,
   resolveShowcasePreviewComponent,
 } from '@/data/components';
-import { readDataListRowCount } from '@/data/components/dataListCustomizeModel';
 import {
   buildTabBarTextDefaultSelectedOptions,
   readTabBarTextTabCount,
@@ -19,12 +17,13 @@ import {
   tierFamilyFromEntry,
 } from '@/data/components/buildRnAiPrompt';
 import { showcaseInfraPreviewDefaults } from '@/data/components/showcaseInfraPreviewDefaults';
-import { egNavBarScrollContentReserve } from '@eds/mobile-components';
+import type { EgNavBarAction } from '@eds/mobile-components';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
+import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import { useShowcaseDev } from '@/hooks/useShowcaseDev';
 import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
@@ -40,25 +39,22 @@ import { DocSection } from '@/views/shared/DocSection';
 import { InspectSheet } from '@/views/shared/InspectSheet';
 import { PropsDocTable } from '@/views/shared/PropsDocTable';
 import { ShowcaseInspectTarget } from '@/views/shared/ShowcaseInspectTarget';
-import {
-  showcaseDetailScreenBackgroundColor,
-  showcaseTheme as theme,
-} from '@/views/shared/showcaseTheme';
+import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
+import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { UsageSnippetBlock } from '@/views/shared/UsageSnippetBlock';
 import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
 import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseComponentPreviewCanvas';
 
-function createComponentDetailStyles(colors: ShowcaseColorMap) {
+function createComponentDetailStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
+  const pageBg = showcasePageBackgroundColor(colors);
   return StyleSheet.create({
-    screen: {
+  /** iOS 26+ 系统 scroll edge — 勿在 ScrollView 外包带底色 View（`contentStyle` 已设色）。 */
+    scrollRoot: {
       flex: 1,
-      backgroundColor: showcaseDetailScreenBackgroundColor(colors),
-    },
-    root: {
-      flex: 1,
-      backgroundColor: showcaseDetailScreenBackgroundColor(colors),
+      ...(nativeStackNav ? null : { backgroundColor: pageBg }),
     },
     scrollContent: {
       paddingBottom: theme.layout.scrollBottom,
@@ -69,19 +65,7 @@ function createComponentDetailStyles(colors: ShowcaseColorMap) {
     scrollInspect: {
       paddingBottom: 160,
     },
-    canvas: {
-      ...catalogPreviewCanvasStyle,
-      minHeight: 160,
-      justifyContent: 'center',
-    },
-    canvasFullBleed: {
-      padding: 0,
-      gap: 0,
-      alignSelf: 'stretch',
-      width: '100%',
-      alignItems: 'stretch',
-      justifyContent: 'flex-start',
-    },
+    previewContent: showcaseComponentPreviewContentStyle,
     missing: {
       fontSize: 14,
       color: colors['text-base-secondary'] as string,
@@ -91,7 +75,6 @@ function createComponentDetailStyles(colors: ShowcaseColorMap) {
 }
 
 export function ComponentDetailView() {
-  const styles = useThemedStyles(createComponentDetailStyles);
   const insets = useSafeAreaInsets();
   const { slug: slugParam } = useLocalSearchParams<{ slug: string }>();
   const slug = slugParam ?? '';
@@ -99,6 +82,27 @@ export function ComponentDetailView() {
   const exportName = entry?.exportName ?? slug;
   const doc = resolveRnDocConfig(slug, exportName);
   const displayName = doc?.componentTag ?? exportName;
+  const { mode, setMode, clearPinned } = useShowcaseDev();
+
+  const onToggleInspectMode = useCallback(() => {
+    if (mode === 'inspect') {
+      clearPinned();
+      setMode('preview');
+      return;
+    }
+    setMode('inspect');
+  }, [clearPinned, mode, setMode]);
+
+  const inspectNavAction = useMemo<EgNavBarAction>(
+    () => ({
+      kind: 'text',
+      label: mode === 'inspect' ? 'Preview' : 'Inspect',
+      accessibilityLabel: mode === 'inspect' ? '返回预览模式' : 'Inspect 模式',
+      onPress: onToggleInspectMode,
+    }),
+    [mode, onToggleInspectMode],
+  );
+
   const {
     onScroll,
     scrollEventThrottle,
@@ -106,16 +110,13 @@ export function ComponentDetailView() {
     nativeStackNav,
     rnNavBar,
     rnScrollPaddingTop,
-  } = useShowcaseStackNav(displayName);
-  const previewTopInset =
-    (nativeStackNav ? egNavBarScrollContentReserve(insets.top) : rnScrollPaddingTop) +
-    theme.layout.cardPaddingVertical;
+  } = useShowcaseStackNav(displayName, { showRight: true, right: inspectNavAction });
+  const styles = useThemedStyles((c) => createComponentDetailStyles(c, nativeStackNav));
   const scrollBottomInset =
     COMPONENT_DETAIL_FOOTER_HEIGHT +
     Math.max(insets.bottom, edsSpacing('spacing-3')) +
     edsSpacing('spacing-4');
 
-  const { mode, setMode, clearPinned } = useShowcaseDev();
   const { colorTheme } = useShowcaseThemeContext();
   const PreviewComponent = resolveShowcasePreviewComponent(exportName);
 
@@ -155,7 +156,7 @@ export function ComponentDetailView() {
       return `${entry.slug}-${readTabSegmentCount(customize)}-${String(customize.size ?? 'md')}`;
     }
     if (entry.exportName === 'EgDataList') {
-      return `${entry.slug}-${readDataListRowCount(customize)}-${String(customize.graphicEnabled)}-${String(customize.graphicType)}-${String(customize.widgetEnabled)}-${String(customize.interactive)}`;
+      return `${entry.slug}-${String(customize.rowCount ?? '1')}-${String(customize.graphicEnabled)}-${String(customize.graphicType)}-${String(customize.primaryWeight)}-${String(customize.subBoldSegment)}-${String(customize.widgetEnabled)}-${String(customize.widgetShowTime)}-${String(customize.widgetShowTag)}-${String(customize.widgetShowCustom)}-${String(customize.widgetShowRedDot)}-${String(customize.interactive)}`;
     }
     if (entry.exportName === 'EgTabBarText') {
       return `${entry.slug}-${readTabBarTextTabCount(customize)}-${String(customize.defaultSelectedIndex ?? '0')}`;
@@ -211,24 +212,28 @@ export function ComponentDetailView() {
     docPanel === 'usage' ? 'USAGE' : docPanel === 'props' ? 'PROPS / API' : '';
 
   return (
-    <View style={styles.screen}>
+    <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
         <ScrollView
-          style={styles.root}
+          style={styles.scrollRoot}
           nestedScrollEnabled
           keyboardShouldPersistTaps="handled"
-          contentInsetAdjustmentBehavior="never"
+          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
           contentContainerStyle={[
-            mode === 'inspect' ? styles.scrollInspect : styles.scrollWithFixedFooter,
-            { paddingTop: previewTopInset, paddingBottom: scrollBottomInset },
+            showcaseNavScrollContentStyle(
+              nativeStackNav,
+              rnScrollPaddingTop,
+              mode === 'inspect' ? styles.scrollInspect : styles.scrollWithFixedFooter,
+            ),
+            { paddingBottom: scrollBottomInset },
           ]}
         >
           <DocSection title="预览" previewScreenFrame>
-            <View style={[styles.canvas, styles.canvasFullBleed]}>
+            <View style={styles.previewContent}>
               <ShowcaseInspectTarget
                 inspect={{
                   label: exportName,
@@ -302,20 +307,6 @@ export function ComponentDetailView() {
       </DocContentSheet>
 
       <InspectSheet />
-      <Stack.Toolbar placement="right">
-        <Stack.Toolbar.Button
-          onPress={() => {
-            if (mode === 'inspect') {
-              clearPinned();
-              setMode('preview');
-              return;
-            }
-            setMode('inspect');
-          }}
-        >
-          {mode === 'inspect' ? 'Preview' : 'Inspect'}
-        </Stack.Toolbar.Button>
-      </Stack.Toolbar>
-    </View>
+    </ShowcaseStackScreen>
   );
 }

@@ -16,7 +16,10 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GlassMaskBackdrop } from '../../../atoms/glass/GlassMaskBackdrop.js';
-import type { EgScrollEdgeEffectStyle } from '../../../atoms/glass/EgScrollEdgeEffect.js';
+import {
+  resolveEgScrollEdgeEffect,
+  type EgScrollEdgeEffectStyle,
+} from '../../../atoms/glass/EgScrollEdgeEffect.js';
 import { egButtonGlassIconMinSize } from '../../../molecules/button/button-glass/_shared/resolveEgButtonGlassShellStyle.js';
 import { EgNavBarActionView } from './EgNavBarActionView.js';
 import { egNavBarSlotMotion } from './egNavBarSlotMotion.js';
@@ -156,14 +159,18 @@ function EgNavBarLayoutSlot({
   );
 }
 
-/** RN 顶栏 ScrollEdge 样式解析 — 与 Showcase RN 浮层一致：滚入 `hard`（module 底线）；`hidden` 常隐。 */
+/** RN 顶栏 ScrollEdge — 与 iOS 26+ 系统栏同名：页面 `soft` · Sheet overlay `hard`；`hidden` 常隐。 */
 function resolveRnScrollEdgeStyle(
   background: NonNullable<EgNavBarProps['background']>,
   scrollEdgeEffect: EgNavBarProps['scrollEdgeEffect'],
+  chromeContext: NonNullable<EgNavBarProps['chromeContext']>,
 ): EgScrollEdgeEffectStyle {
-  if (scrollEdgeEffect) return scrollEdgeEffect;
+  const container = chromeContext === 'overlay' ? 'sheet' : 'page';
+  if (scrollEdgeEffect) {
+    return resolveEgScrollEdgeEffect(scrollEdgeEffect, container);
+  }
   if (background === 'hidden') return 'hidden';
-  return 'hard';
+  return resolveEgScrollEdgeEffect('automatic', container);
 }
 
 /** RN 顶栏 · `GlassMaskBackdrop`（遮罩浅/深）；iOS 26+ `GlassMaskScrollEdgeScope` 走系统 Scroll Edge。 */
@@ -271,7 +278,7 @@ export function EgNavBarRn(props: EgNavBarProps) {
 
       <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, backgroundStyle]}>
         <GlassMaskBackdrop
-          effect={resolveRnScrollEdgeStyle(background, scrollEdgeEffect)}
+          effect={resolveRnScrollEdgeStyle(background, scrollEdgeEffect, chromeContext)}
           edge="top"
           container={chromeContext === 'overlay' ? 'sheet' : 'page'}
           mode={mode}

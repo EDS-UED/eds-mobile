@@ -155,5 +155,19 @@ export function showcasePageBackgroundColor(colors: ShowcaseColorMap): string {
   return colors['box-page-card'] ?? colors.page ?? '';
 }
 
+/** 详情「预览」卡片铺色 · `box-page`；与滚动底（`box-page-card`）同色时 → `material-card-shallow`。 */
+export function showcasePreviewScreenFillColor(colors: ShowcaseColorMap): string {
+  const surface = (colors['box-page'] as string | undefined) ?? '';
+  const scroll = showcasePageBackgroundColor(colors);
+  if (surface && scroll && surface === scroll) {
+    return (colors['material-card-shallow'] as string | undefined) ?? surface;
+  }
+  return surface;
+}
+
+export function showcasePreviewScreenChromeStyle(colors: ShowcaseColorMap): ViewStyle {
+  return showcasePageCardSurface(showcasePreviewScreenFillColor(colors));
+}
+
 /** @deprecated 与 {@link showcasePageBackgroundColor} 相同 */
 export const showcaseDetailScreenBackgroundColor = showcasePageBackgroundColor;

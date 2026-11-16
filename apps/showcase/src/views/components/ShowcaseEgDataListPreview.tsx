@@ -5,14 +5,16 @@ import {
   EgColorTag,
   EgCryptoBtc,
   EgDataList,
+  EgDataListPrimaryText,
+  EgDataListReddot,
   EgDataListRow,
+  EgDataListSubText,
   EgSymbol,
-  EgSystemTag,
   getEgDataListRowLayout,
 } from '@eds/mobile-components';
 import type { EgSymbolSize } from '@eds/mobile-components';
 import mobileTheme from '@eds/mobile-tokens/theme';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { ShowcaseSansText } from '@/components/ShowcaseSansText';
@@ -23,8 +25,9 @@ import {
   readDataListGraphicType,
   readDataListPrimaryWeight,
   readDataListRowCount,
-  readDataListWidgetType,
-  type DataListPrimaryWeight,
+  readDataListSubBoldSegment,
+  readDataListWidgetFlags,
+  type DataListWidgetFlags,
 } from '@/data/components/dataListCustomizeModel';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
@@ -33,13 +36,6 @@ import { edsTokenFont } from '@/views/shared/resolveEdsTheme';
 type ShowcaseEgDataListPreviewProps = Record<string, unknown>;
 
 type DataListPressIntensity = 'xs' | 'sm' | 'md' | 'lg';
-
-function primaryTypography(weight: DataListPrimaryWeight) {
-  const role =
-    weight === 'normal' ? 'body-medium' : weight === 'medium' ? 'body-medium-strong' : 'body-medium-heavy';
-  const tokenWeight = weight === 'normal' ? '400' : weight === 'medium' ? '500' : '600';
-  return edsTokenFont(role, tokenWeight);
-}
 
 function DataListGraphicSlot({
   graphicEnabled,
@@ -118,54 +114,44 @@ function DataListGraphicSlot({
   );
 }
 
-function DataListPrimaryRowWidget({
-  widgetEnabled,
-  widgetType,
+function DataListPrimaryRowWidgets({
+  flags,
   mode,
   colors,
 }: {
-  widgetEnabled: boolean;
-  widgetType: ReturnType<typeof readDataListWidgetType>;
+  flags: DataListWidgetFlags;
   mode: 'light' | 'dark';
   colors: ShowcaseColorMap;
 }) {
-  if (!widgetEnabled || widgetType === 'redDot') return null;
-
   const secondaryStyle = [
     edsTokenFont('body-small', '400'),
     { color: colors['text-base-secondary'] as string },
   ];
 
-  if (widgetType === 'time') {
-    return <ShowcaseSansText style={secondaryStyle}>14:20</ShowcaseSansText>;
+  const nodes: React.ReactNode[] = [];
+  if (flags.showTime) {
+    nodes.push(
+      <ShowcaseSansText key="time" style={secondaryStyle}>
+        14:20
+      </ShowcaseSansText>,
+    );
   }
-  if (widgetType === 'tag') {
-    return <EgColorTag size="sm" label="标签" mode={mode} />;
+  if (flags.showTag) {
+    nodes.push(<EgColorTag key="tag" size="sm" label="标签" mode={mode} />);
   }
-  return (
-    <ShowcaseSansText style={secondaryStyle}>详情</ShowcaseSansText>
-  );
-}
+  if (flags.showCustom) {
+    nodes.push(
+      <ShowcaseSansText key="custom" style={secondaryStyle}>
+        详情
+      </ShowcaseSansText>,
+    );
+  }
+  if (nodes.length === 0) return null;
 
-function DataListSubRowWidget({
-  widgetEnabled,
-  widgetType,
-  mode,
-}: {
-  widgetEnabled: boolean;
-  widgetType: ReturnType<typeof readDataListWidgetType>;
-  mode: 'light' | 'dark';
-}) {
-  if (!widgetEnabled || widgetType !== 'redDot') return null;
   return (
-    <EgSystemTag
-      size="sm"
-      status="danger"
-      systemType="subtle"
-      mode={mode}
-      accessibilityLabel="红点"
-      label="●"
-    />
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: mobileTheme.spacing['spacing-2'] as number }}>
+      {nodes}
+    </View>
   );
 }
 
@@ -193,28 +179,18 @@ function DataListDemoRow({
   const graphicType = readDataListGraphicType(state);
   const iconSymbolSize = (state.iconSymbolSize as EgSymbolSize | undefined) ?? 'md';
   const primaryWeight = readDataListPrimaryWeight(state);
-  const subBoldSegment = state.subBoldSegment === true;
+  const subBoldSegment = readDataListSubBoldSegment(state);
   const descriptionEnabled = state.descriptionEnabled === true;
-  const widgetEnabled = state.widgetEnabled === true;
-  const widgetType = readDataListWidgetType(state);
+  const widgetFlags = readDataListWidgetFlags(state);
 
   const onPress = interactive ? () => undefined : undefined;
   const onLongPress = interactive ? () => undefined : undefined;
   const onForcePress = forceTouchEnabled && interactive ? () => undefined : undefined;
 
-  const primaryStyle = [
-    primaryTypography(primaryWeight),
-    { color: colors['text-base-primary'] as string, flexShrink: 1 },
-  ];
-  const subNormalStyle = [
+  const descriptionStyle = [
     edsTokenFont('body-small', '400'),
     { color: colors['text-base-secondary'] as string },
   ];
-  const subStrongStyle = [
-    edsTokenFont('body-small-strong', '500'),
-    { color: colors['text-base-secondary'] as string },
-  ];
-  const descriptionStyle = subNormalStyle;
 
   const primaryLabel = index === 0 ? '1.28 BTC' : `列表项 ${index + 1}`;
   const subSegmentA = '待确认';
@@ -245,32 +221,29 @@ function DataListDemoRow({
       />
       <View style={{ flex: 1, minWidth: 0, gap: layout.titleSubGap }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing['spacing-2'] as number }}>
-          <ShowcaseSansText style={[primaryStyle, { flex: 1, minWidth: 0 }]} numberOfLines={1}>
-            {primaryLabel}
-          </ShowcaseSansText>
-          <DataListPrimaryRowWidget
-            widgetEnabled={widgetEnabled}
-            widgetType={widgetType}
+          <EgDataListPrimaryText
+            weight={primaryWeight}
             mode={mode}
-            colors={colors}
-          />
+            numberOfLines={1}
+            style={{ flex: 1, minWidth: 0 }}
+          >
+            {primaryLabel}
+          </EgDataListPrimaryText>
+          <DataListPrimaryRowWidgets flags={widgetFlags} mode={mode} colors={colors} />
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: spacing['spacing-2'] as number }}>
-          <ShowcaseSansText
-            style={[subNormalStyle, { flex: 1, minWidth: 0 }]}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing['spacing-2'] as number }}>
+          <EgDataListSubText
+            mode={mode}
+            segmentA={subSegmentA}
+            segmentB={subSegmentB}
+            boldSegmentA={subBoldSegment}
+            style={{ flex: 1, minWidth: 0 }}
             numberOfLines={EG_DATA_LIST_SUB_TEXT_MAX_LINES}
             ellipsizeMode="tail"
-          >
-            {subBoldSegment ? (
-              <>
-                <ShowcaseSansText style={subStrongStyle}>{subSegmentA}</ShowcaseSansText>
-                {subSegmentB}
-              </>
-            ) : (
-              `${subSegmentA}${subSegmentB}`
-            )}
-          </ShowcaseSansText>
-          <DataListSubRowWidget widgetEnabled={widgetEnabled} widgetType={widgetType} mode={mode} />
+          />
+          {widgetFlags.showRedDot ? (
+            <EgDataListReddot mode={mode} accessibilityLabel="未读" />
+          ) : null}
         </View>
         {descriptionEnabled ? (
           <ShowcaseSansText style={descriptionStyle}>2026-03-12 14:20</ShowcaseSansText>
@@ -290,38 +263,13 @@ export function ShowcaseEgDataListPreview(props: ShowcaseEgDataListPreviewProps)
   const forceTouchEnabled = props.forceTouchEnabled === true;
   const testID = props.testID as string | undefined;
 
-  const slotState = useMemo(
-    () => ({
-      graphicEnabled: props.graphicEnabled,
-      graphicSize: props.graphicSize,
-      graphicType: props.graphicType,
-      iconSymbolSize: props.iconSymbolSize,
-      primaryWeight: props.primaryWeight,
-      subBoldSegment: props.subBoldSegment,
-      descriptionEnabled: props.descriptionEnabled,
-      widgetEnabled: props.widgetEnabled,
-      widgetType: props.widgetType,
-    }),
-    [
-      props.descriptionEnabled,
-      props.graphicEnabled,
-      props.graphicSize,
-      props.graphicType,
-      props.iconSymbolSize,
-      props.primaryWeight,
-      props.subBoldSegment,
-      props.widgetEnabled,
-      props.widgetType,
-    ],
-  );
-
   const rows = useMemo(
     () =>
       Array.from({ length: rowCount }, (_, index) => (
         <DataListDemoRow
           key={index}
           index={index}
-          state={slotState}
+          state={props}
           interactive={interactive}
           pressIntensity={pressIntensity}
           forceTouchEnabled={forceTouchEnabled}
@@ -329,20 +277,14 @@ export function ShowcaseEgDataListPreview(props: ShowcaseEgDataListPreviewProps)
           colors={colors}
         />
       )),
-    [colors, forceTouchEnabled, interactive, mode, pressIntensity, rowCount, slotState],
+    [colors, forceTouchEnabled, interactive, mode, pressIntensity, props, rowCount],
   );
 
   return (
     <View
-      style={[
-        styles.scene,
-        { paddingHorizontal: EG_DATA_LIST_SCENE_CONTENT_INSET, backgroundColor: colors.page as string },
-      ]}
+      style={[styles.scene, { paddingHorizontal: EG_DATA_LIST_SCENE_CONTENT_INSET }]}
       testID={testID}
     >
-      <ShowcaseSansText style={[styles.hint, { color: colors['text-base-tertiary'] as string }]}>
-        外层 Scene · spacing-5 · DL-bleed · 行间距 spacing-1 · 图形↔文本 spacing-3 · 副文本最多 2 行（溢出 …）· 文本行距 spacing-05
-      </ShowcaseSansText>
       <EgDataList mode={mode}>{rows}</EgDataList>
     </View>
   );
@@ -353,9 +295,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     width: '100%',
     paddingVertical: mobileTheme.spacing['spacing-4'] as number,
-  },
-  hint: {
-    ...edsTokenFont('footnote', '400'),
-    marginBottom: mobileTheme.spacing['spacing-3'] as number,
+    overflow: 'visible',
   },
 });

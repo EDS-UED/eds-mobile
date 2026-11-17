@@ -22,7 +22,12 @@
     "sync:list": "node scripts/sync-local-consumers.mjs --list",
     "sync:tokens": "pnpm --filter @eds/mobile-tokens sync:figma",
     "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "eas:init": "pnpm --filter @eds/mobile-showcase exec eas init",
+    "eas:build:ios": "pnpm --filter @eds/mobile-showcase exec eas build -p ios --profile preview",
+    "eas:build:ios:simulator": "pnpm --filter @eds/mobile-showcase exec eas build -p ios --profile simulator",
+    "eas:build:android": "pnpm --filter @eds/mobile-showcase exec eas build -p android --profile preview",
+    "preview:update": "pnpm build:mobile && pnpm --filter @eds/mobile-showcase preview:update"
   },
   "engines": {
     "node": ">=20",

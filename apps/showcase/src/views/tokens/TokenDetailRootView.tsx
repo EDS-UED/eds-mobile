@@ -13,7 +13,7 @@ import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
 import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
 import {
   ComponentDetailActionFooter,
-  COMPONENT_DETAIL_FOOTER_HEIGHT,
+  componentDetailFooterScrollPadding,
 } from '@/views/shared/ComponentDetailActionFooter';
 import { DocContentSheet } from '@/views/shared/DocContentSheet';
 import { DocSection } from '@/views/shared/DocSection';
@@ -67,10 +67,7 @@ export function TokenDetailRootView({
     rnScrollPaddingTop,
   } = useShowcaseStackNav(title);
   const styles = useThemedStyles((c) => createTokenDetailStyles(c, nativeStackNav));
-  const scrollBottomInset =
-    COMPONENT_DETAIL_FOOTER_HEIGHT +
-    Math.max(insets.bottom, edsSpacing('spacing-3')) +
-    edsSpacing('spacing-4');
+  const scrollBottomInset = componentDetailFooterScrollPadding(insets.bottom);
   const [docPanel, setDocPanel] = useState<ComponentDetailDocPanel | null>(null);
 
   const docSheetTitle =
@@ -89,6 +86,7 @@ export function TokenDetailRootView({
           scrollEventThrottle={scrollEventThrottle}
           withTabBarInset={false}
           docSectionStack
+          bottomInsetReplacesPagePadding
           bottomInsetExtra={scrollBottomInset}
           style={styles.scrollRoot}
         >

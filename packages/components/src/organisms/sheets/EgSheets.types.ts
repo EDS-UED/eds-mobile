@@ -48,14 +48,19 @@ export type EgSheetsProps = {
   /** 遮罩点击 / 下拉 / 系统返回可收起；关闭按钮不受影响。 */
   dismissible?: boolean;
   /**
-   * 顶栏 scroll edge 样式；默认 `soft`。iOS 26+ 系统 Scroll Edge · iOS 26 以下遮罩浅 · Android 遮罩深。
-   * 静止（内容未滚入栏下）不显现；`automatic` 按 Sheet 解析为 `hard`。
+   * 顶部拖拽指示条（iOS Sheet grabber）；默认 `false`。
+   * 叠在卡片顶缘，不改变 NavBar 顶边距与 `contentTopInset`。
+   */
+  showDragIndicator?: boolean;
+  /**
+   * 内容滚入顶栏下时的 scroll edge 样式；默认 `soft`。静止一律 `hidden`。
+   * iOS 26+ 系统 Scroll Edge · iOS 26 以下遮罩浅 · Android 遮罩深；`automatic` 按 Sheet 解析为 `hard`。
    */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;
   mode?: ThemeMode;
   /** 内容插槽 ScrollView 的 contentContainerStyle（默认左右 / 底部 spacing-5）。 */
   contentStyle?: StyleProp<ViewStyle>;
-  /** 内容插槽 · 渲染于顶栏下方的滚动区；最高档可滚动，`adaptive` 档按其高度定档。 */
+  /** 内容插槽 · 渲染于顶栏下方的滚动区；最高档可滚动（滚到顶后下拉可拖档位），`adaptive` 档按其高度定档。 */
   children?: ReactNode;
   /**
    * 底部 action 插槽 · 始终贴当前档位可视底边。

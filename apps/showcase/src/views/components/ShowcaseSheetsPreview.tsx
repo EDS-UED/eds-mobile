@@ -44,7 +44,7 @@ const SheetsSlotPlaceholder = memo(function SheetsSlotPlaceholder({ mode }: { mo
   );
 });
 
-/** 长文本 · 测最高档滚动与长按拖拽。 */
+/** 长文本 · 测最高档滚动与滚顶下拉拖档位。 */
 const SheetsLongContent = memo(function SheetsLongContent({ mode }: { mode: ThemeMode }) {
   const colors = getThemeColors(mode);
   return (
@@ -99,6 +99,7 @@ export function ShowcaseSheetsPreview(props: ShowcaseSheetsPreviewProps) {
         initialDetent={sheetProps.initialDetent}
         dismissible={sheetProps.dismissible}
         scrollEdgeEffect={sheetProps.scrollEdgeEffect}
+        showDragIndicator={sheetProps.showDragIndicator}
         showActions={sheetProps.showActions}
       >
         <SheetsContent kind={sheetProps.content} mode={mode} />

@@ -12,7 +12,13 @@
     "typecheck": "tsc --noEmit",
     "verify:color-tokens": "node scripts/verify-color-token-catalog.mjs",
     "verify:tokens": "node scripts/verify-token-catalog.mjs",
-    "verify:infra-coverage": "node scripts/verify-showcase-infra-coverage.mjs"
+    "verify:infra-coverage": "node scripts/verify-showcase-infra-coverage.mjs",
+    "eas:init": "npx eas-cli@latest init",
+    "eas:build": "npx eas-cli@latest build",
+    "eas:update:configure": "npx eas-cli@latest update:configure",
+    "preview:update": "npx eas-cli@latest update --channel preview --auto",
+    "eas-build-pre-install": "node ../../scripts/eas-build-pre-install.mjs",
+    "eas-build-post-install": "node ../../scripts/eas-build-post-install.mjs"
   },
   "dependencies": {
     "@eds/mobile-animations": "workspace:*",
@@ -36,6 +42,7 @@
     "expo-linking": "~58.0.14",
     "expo-router": "~58.0.27",
     "expo-status-bar": "~58.0.4",
+    "expo-updates": "~58.0.22",
     "react": "19.3.0",
     "react-native": "0.88.0",
     "react-native-gesture-handler": "~3.3.0",

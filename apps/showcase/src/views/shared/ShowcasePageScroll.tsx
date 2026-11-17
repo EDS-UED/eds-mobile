@@ -19,8 +19,10 @@ export type ShowcasePageScrollProps = {
   nativeStackNav: boolean;
   rnScrollPaddingTop: number;
   children: ReactNode;
-  /** 在 `EgPage` 底距（spacing-10 · 40px）之上追加 · 如固定 Footer。 */
+  /** 在 `EgPage` 底距（spacing-10 · 40px）之上追加；`bottomInsetReplacesPagePadding` 时忽略默认底距。 */
   bottomInsetExtra?: number;
+  /** 详情固定底栏 — `paddingBottom` 仅取 `bottomInsetExtra`（不叠 spacing-10）。 */
+  bottomInsetReplacesPagePadding?: boolean;
   /** 默认随路由叠 Tab 条占位。 */
   withTabBarInset?: boolean;
   /** 区块间距 · 默认 spacing-4。 */
@@ -48,6 +50,7 @@ export function ShowcasePageScroll({
   rnScrollPaddingTop,
   children,
   bottomInsetExtra = 0,
+  bottomInsetReplacesPagePadding = false,
   withTabBarInset = true,
   sectionGap = true,
   docSectionStack = false,
@@ -95,7 +98,9 @@ export function ShowcasePageScroll({
       contentContainerStyle={[
         sectionStackGap,
         {
-          paddingBottom: EG_PAGE_CONTENT_PADDING_BOTTOM + tabExtra + bottomInsetExtra,
+          paddingBottom: bottomInsetReplacesPagePadding
+            ? bottomInsetExtra
+            : EG_PAGE_CONTENT_PADDING_BOTTOM + tabExtra + bottomInsetExtra,
         },
         contentContainerStyle,
       ]}

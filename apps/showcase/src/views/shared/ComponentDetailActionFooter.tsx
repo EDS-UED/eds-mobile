@@ -15,8 +15,21 @@ import { copyShowcaseText } from '@/views/shared/showcaseCopyText';
 
 import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
 
-/** 固定底栏高度（不含 safe area）— 与 ScrollView paddingBottom 对齐。 */
-export const COMPONENT_DETAIL_FOOTER_HEIGHT = 72;
+/**
+ * 固定底栏主体高度（不含 root `paddingBottom` safe area）— 顶 padding + 按钮行。
+ * 与 `componentDetailFooterScrollPadding` 配套，ScrollView 勿再叠 EgPage spacing-10。
+ */
+export const COMPONENT_DETAIL_FOOTER_HEIGHT =
+  theme.layout.cardPaddingVertical +
+  theme.layout.cardPaddingVertical * 2 +
+  (theme.font.customizeFieldTitle.lineHeight ?? 20);
+
+/** ScrollView 底距 — 与绝对定位底栏同高，避免内容被遮挡。 */
+export function componentDetailFooterScrollPadding(safeAreaBottom: number): number {
+  return (
+    COMPONENT_DETAIL_FOOTER_HEIGHT + Math.max(safeAreaBottom, edsSpacing('spacing-3'))
+  );
+}
 
 /** @deprecated 使用 {@link COMPONENT_DETAIL_FOOTER_HEIGHT} */
 export const COPY_AI_PROMPT_FOOTER_HEIGHT = COMPONENT_DETAIL_FOOTER_HEIGHT;

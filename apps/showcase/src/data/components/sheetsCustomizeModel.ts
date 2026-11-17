@@ -35,6 +35,7 @@ export const sheetsCustomizeDefaults: Record<string, unknown> = {
   detentAdaptive: false,
   initialDetent: 'medium',
   dismissible: true,
+  showDragIndicator: false,
   scrollEdgeEffect: 'soft',
   content: 'slot',
   showActions: true,
@@ -64,6 +65,7 @@ export const sheetsCustomizeControls: DocCustomizeControl[] = [
     ],
   },
   { kind: 'boolean', key: 'dismissible', label: '遮罩 / 下拉收起' },
+  { kind: 'boolean', key: 'showDragIndicator', label: '拖拽指示条' },
   {
     kind: 'select',
     key: 'scrollEdgeEffect',
@@ -90,6 +92,7 @@ export type SheetsPreviewProps = {
   detents: EgSheetsDetent[];
   initialDetent: EgSheetsDetent;
   dismissible: boolean;
+  showDragIndicator: boolean;
   scrollEdgeEffect: EgNavBarScrollEdgeEffect;
   content: SheetsContentKind;
   showActions: boolean;
@@ -108,6 +111,7 @@ export function buildSheetsPropsFromCustomize(state: Record<string, unknown>): S
     detents,
     initialDetent: detents.includes(initialRaw) ? initialRaw : detents[0]!,
     dismissible: Boolean(merged.dismissible),
+    showDragIndicator: Boolean(merged.showDragIndicator),
     scrollEdgeEffect: parseScrollEdgeEffect(merged.scrollEdgeEffect) ?? 'soft',
     content: merged.content === 'long' ? 'long' : 'slot',
     showActions: Boolean(merged.showActions),
@@ -132,6 +136,7 @@ export function buildSheetsUsageSnippet(state: Record<string, unknown>): string 
         showLeft: false,
         showRight: true,
         dismissible: true,
+        showDragIndicator: false,
         scrollEdgeEffect: 'soft',
       },
     },

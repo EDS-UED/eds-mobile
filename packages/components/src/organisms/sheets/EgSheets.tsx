@@ -46,11 +46,18 @@ import { SmoothCornerView } from '../../shared/smoothCorner/SmoothCornerView.js'
 import { EgBrandButton } from '../../molecules/button/brand-button/EgBrandButton.js';
 import { EgNavBar } from '../tab-bar/nav-bar/EgNavBar.js';
 import type { EgNavBarAction } from '../tab-bar/nav-bar/EgNavBar.types.js';
-import {
-  egNavBarContentHeight,
-  egNavBarScrollContentReserve,
-} from '../tab-bar/nav-bar/egNavBarMetrics.js';
+import { getEgNavBarChromeFade } from '../tab-bar/nav-bar/egNavBarChromeFade.js';
 import { useEgNavBarScroll } from '../tab-bar/nav-bar/useEgNavBarScroll.js';
+import type { EgNavBarScrollEdgeEffect } from '../tab-bar/nav-bar/EgNavBar.types.js';
+import {
+  egSheetsChromeHeight,
+  egSheetsNavBarContentHeight,
+  SHEETS_CHROME_PADDING,
+  SHEETS_CHROME_PADDING_BOTTOM,
+  SHEETS_GRABBER_BAR_HEIGHT,
+  SHEETS_GRABBER_BAR_WIDTH,
+  SHEETS_GRABBER_PADDING_TOP,
+} from './egSheetsChromeMetrics.js';
 import type { EgSheetsDetent, EgSheetsProps } from './EgSheets.types.js';
 
 const DETENT_ORDER: readonly EgSheetsDetent[] = ['small', 'medium', 'adaptive', 'large'];
@@ -63,30 +70,26 @@ const DISMISS_VELOCITY = 800;
 const RUBBER_BAND = 0.25;
 /** 纵向位移超过该值才激活拖拽，点按顶栏按钮不会误触发档位吸附。 */
 const DRAG_ACTIVATION_PX = 8;
-/** 可滚动档：内容区长按该时长后由滚动转为拖拽容器（iOS 长按手势同档）。 */
-const CONTENT_LONG_PRESS_MS = 350;
 /** 与最高档的距离在该值内视为已到最高档（内容区可滚动）。 */
 const TOP_DETENT_EPSILON_PX = 2;
+/** 内容区滚动到顶后，下拉超过该距离即转 Sheet 档位拖拽（同顶栏 pan）。 */
+const SCROLL_TOP_PULL_HANDOFF_PX = DRAG_ACTIVATION_PX;
 /** 超过最高档的橡皮筋余量（裁切层 / 面板固定高度预留）。 */
 const RUBBER_HEADROOM_PX = 160;
 /** Reduce Motion · sheets → fade（与 motion-duration-fade 同档）。 */
 const REDUCED_MOTION_FADE_MS = 180;
-/** EgSheets 顶栏 · 上 / 左 / 右 spacing-4，按钮距卡片边恒定。 */
-const SHEETS_CHROME_PADDING = mobileTheme.spacing['spacing-4'] as number;
-/** EgSheets 顶栏 · 下 spacing-2（RN 栈；iOS 26+ 原生 scroll edge 时补齐到系统栏高）。 */
-const SHEETS_CHROME_PADDING_BOTTOM = mobileTheme.spacing['spacing-2'] as number;
 /** 内容插槽 / 底部 action · 距卡片左右边 spacing-5（恒定，不随档位变化）。 */
 const SHEETS_CONTENT_PADDING = mobileTheme.spacing['spacing-5'] as number;
-/** iOS 26+ 原生 scroll edge 顶栏下，内容区上内边距额外补偿 spacing-1。 */
-const SHEETS_NATIVE_EDGE_CONTENT_OFFSET = mobileTheme.spacing['spacing-1'] as number;
 /** iOS 26+ 原生栈未回传栏高时，内容区最迟在该时长后显现。 */
 const NATIVE_EDGE_REVEAL_TIMEOUT_MS = 600;
-/** 顶栏高度 = 上边距 + 内容 + 下边距（以 onLayout 实测为准；此为首帧测量前的初值）。 */
-const CHROME_HEIGHT_SEED = egNavBarScrollContentReserve(
-  0,
-  SHEETS_CHROME_PADDING,
-  SHEETS_CHROME_PADDING_BOTTOM,
-);
+
+function resolveSheetsScrollEdgeEffect(
+  active: boolean,
+  scrollable: boolean,
+  whenActive: EgNavBarScrollEdgeEffect,
+): EgNavBarScrollEdgeEffect {
+  return scrollable && active ? whenActive : 'hidden';
+}
 function normalizeDetents(detents: readonly EgSheetsDetent[] | undefined): EgSheetsDetent[] {
   const picked = DETENT_ORDER.filter((detent) => (detents ?? DEFAULT_DETENTS).includes(detent));
   return picked.length > 0 ? picked : [...DEFAULT_DETENTS];
@@ -96,8 +99,8 @@ function normalizeDetents(detents: readonly EgSheetsDetent[] | undefined): EgShe
  * Sheets · EdsSemanticAnima('sheets') — iOS 27 Sheet：
  * 自底部滑入 → 部分档悬浮卡片（四周 inset · 四角圆角）→ large 档贴边（顶边距系统条 motion-offset-sheets-top）；
  * 卡片 `EgGlass` · `glass-sheets-box`；背后遮罩小中 `effect-sheets-background`、大档 `material-base-tertiary`；
- * 顶部 EgNavBar 悬浮于内容之上，`background="auto"`（内容滚入栏下才显现背景）。
- * 小 / 中档内容区不滚动、整张可拖拽；最高档内容区滚动，顶栏拖拽或长按内容区拖拽。
+ * 顶部 EgNavBar 悬浮于内容之上（边距 + 内容定高；可选拖拽指示条），`background="auto"`（内容滚入栏下才显现背景与 scroll edge）。
+ * 小 / 中档内容区不滚动、整张可拖拽；最高档内容区滚动，顶栏拖拽或滚到顶后下拉拖档位。
  * 顶栏：左侧返回（默认隐藏）；右侧默认关闭，可由 `rightAction` 覆盖（如文本 `EgButtonGlass`）。
  * 顶栏按钮 / 内容插槽 / action 距卡片边恒定，不随档位变化。
  */
@@ -115,6 +118,7 @@ export function EgSheets({
   showRight = true,
   rightAction: rightActionProp,
   dismissible = true,
+  showDragIndicator = false,
   scrollEdgeEffect = 'soft',
   mode = 'light',
   contentStyle,
@@ -151,9 +155,8 @@ export function EgSheets({
     },
     [actionsHeightSV],
   );
-  const [chromeHeight, setChromeHeight] = useState(CHROME_HEIGHT_SEED);
-  /** iOS 26+ 系统 scroll edge 实测高度；>0 时顶栏下边距补齐到该高度（系统栏不可改高）。 */
-  const [nativeEdgeHeight, setNativeEdgeHeight] = useState(0);
+  const chromeHeight = egSheetsChromeHeight();
+  const navBarContentHeight = egSheetsNavBarContentHeight();
   /**
    * iOS 26+ · RNS 在原生栈挂载时会把首个 ScrollView 的 `never` 改成 `automatic`
    * （外层为 TabsScreen 时），系统栏显隐随之增减内容 inset，打开时内容上下跳动。
@@ -164,20 +167,10 @@ export function EgSheets({
     () => !isIos26OrLater(),
   );
   const [contentRevealed, setContentRevealed] = useState(() => !isIos26OrLater());
-  const onNativeEdgeHeight = useCallback((height: number) => {
-    setNativeEdgeHeight((prev) => (prev === height ? prev : height));
+  const onNativeEdgeHeight = useCallback((_height: number) => {
     setNativeScrollInsetLocked(true);
   }, []);
-  const chromePaddingBottom =
-    nativeEdgeHeight > 0
-      ? Math.max(0, nativeEdgeHeight - egNavBarContentHeight(SHEETS_CHROME_PADDING, 0))
-      : SHEETS_CHROME_PADDING_BOTTOM;
-  const onChromeLayout = useCallback((event: LayoutChangeEvent) => {
-    const height = Math.round(event.nativeEvent.layout.height);
-    setChromeHeight((prev) => (prev === height ? prev : height));
-  }, []);
-  const contentTopInset =
-    chromeHeight + (nativeEdgeHeight > 0 ? SHEETS_NATIVE_EDGE_CONTENT_OFFSET : 0);
+  const contentTopInset = chromeHeight;
   const resolveAdaptiveHeight = useCallback(
     (contentHeight: number) => {
       const scrollPadBottom = mobileTheme.spacing['spacing-5'] as number;
@@ -248,7 +241,7 @@ export function EgSheets({
       navScroll.scrollOffset.value = 0;
     }
   }, [contentScrollEnabled, navScroll.scrollOffset]);
-  /** 可滚动档长按内容区拖拽容器期间暂停滚动。 */
+  /** 滚顶下拉拖 Sheet 期间暂停 ScrollView，避免与档位拖拽抢手势。 */
   const [contentDragLocked, setContentDragLocked] = useState(false);
   const scrollRef = useRef<{ scrollTo: (options: { y: number; animated?: boolean }) => void } | null>(
     null,
@@ -274,6 +267,8 @@ export function EgSheets({
   const closing = useSharedValue(0);
   /** 拖拽进行中冻结滚动态：避免跨档时重建内容区手势而中断当前拖拽。 */
   const dragging = useSharedValue(false);
+  /** 内容区滚顶下拉转 Sheet 拖拽 · 按下时 Y，供 manualActivation 判方向。 */
+  const contentTouchStartY = useSharedValue(0);
 
   const onRootLayout = useCallback((event: LayoutChangeEvent) => {
     const next = Math.round(event.nativeEvent.layout.height);
@@ -456,20 +451,45 @@ export function EgSheets({
     }
   }, [animateOut, dismissible]);
 
-  const beginLongPressDrag = useCallback(() => {
-    triggerGlassPressHaptic();
+  const beginContentSheetDrag = useCallback(() => {
     setContentDragLocked(true);
   }, []);
 
-  const endLongPressDrag = useCallback(() => {
+  const endContentSheetDrag = useCallback(() => {
     setContentDragLocked(false);
   }, []);
 
   const buildPan = useCallback(
-    (longPress: boolean) => {
+    (scrollTopHandoff: boolean) => {
       const pan = Gesture.Pan();
-      if (longPress) {
-        pan.activateAfterLongPress(CONTENT_LONG_PRESS_MS);
+      if (scrollTopHandoff) {
+        pan.manualActivation(true);
+        pan.onTouchesDown((event) => {
+          'worklet';
+          const touch = event.allTouches[0];
+          contentTouchStartY.value = touch?.y ?? 0;
+        });
+        pan.onTouchesMove((event, state) => {
+          'worklet';
+          if (closing.value) {
+            state.fail();
+            return;
+          }
+          if (navScroll.scrollOffset.value > TOP_DETENT_EPSILON_PX) {
+            state.fail();
+            return;
+          }
+          const touch = event.allTouches[0];
+          if (!touch) {
+            return;
+          }
+          const dy = touch.y - contentTouchStartY.value;
+          if (dy > SCROLL_TOP_PULL_HANDOFF_PX) {
+            state.activate();
+          } else if (dy < -SCROLL_TOP_PULL_HANDOFF_PX) {
+            state.fail();
+          }
+        });
       } else {
         pan.activeOffsetY([-DRAG_ACTIVATION_PX, DRAG_ACTIVATION_PX]);
       }
@@ -478,15 +498,15 @@ export function EgSheets({
           'worklet';
           dragging.value = true;
           dragStartVisible.value = sheetHeight.value - offsetY.value;
-          if (longPress) {
-            scheduleOnRN(beginLongPressDrag);
+          if (scrollTopHandoff) {
+            scheduleOnRN(beginContentSheetDrag);
           }
         })
         .onFinalize(() => {
           'worklet';
           dragging.value = false;
-          if (longPress) {
-            scheduleOnRN(endLongPressDrag);
+          if (scrollTopHandoff) {
+            scheduleOnRN(endContentSheetDrag);
           }
         })
         .onUpdate((event) => {
@@ -545,14 +565,14 @@ export function EgSheets({
         });
     },
     [
-      beginLongPressDrag,
+      beginContentSheetDrag,
       closing,
       currentIndex,
       detentHeights,
       dismissible,
       dragStartVisible,
       dragging,
-      endLongPressDrag,
+      endContentSheetDrag,
       exitDimFrom,
       exitDistance,
       exitFrom,
@@ -560,6 +580,8 @@ export function EgSheets({
       markClosing,
       maxHeight,
       minHeight,
+      contentTouchStartY,
+      navScroll.scrollOffset,
       offsetY,
       onDetentSettled,
       sheetHeight,
@@ -598,6 +620,44 @@ export function EgSheets({
   /** 最高档且插槽内容超出视口才滚动；未溢出时内容区与小 / 中档一样直接拖拽容器。 */
   const contentScrollable =
     contentScrollEnabled && measuredContentHeight > viewportHeight + TOP_DETENT_EPSILON_PX;
+  /** 拖拽条叠色 — 静止 material-base-quaternary · 滚动 material-base-tertiary（EdsSemanticAnima fade）。 */
+  const grabberMaterialRest = colors['material-base-quaternary'] as string;
+  const grabberMaterialScroll = colors['material-base-tertiary'] as string;
+  const grabberMaterialFade = useMemo(() => getEgNavBarChromeFade(), []);
+  const grabberMaterialProgress = useSharedValue(0);
+  useAnimatedReaction(
+    () => {
+      'worklet';
+      if (!contentScrollable) {
+        return 0;
+      }
+      return navScroll.scrollOffset.value > 0 ? 1 : 0;
+    },
+    (next, prev) => {
+      'worklet';
+      if (next === prev) {
+        return;
+      }
+      grabberMaterialProgress.value = withTiming(next, grabberMaterialFade);
+    },
+    [contentScrollable, grabberMaterialFade, grabberMaterialProgress, navScroll.scrollOffset],
+  );
+  useEffect(() => {
+    if (contentScrollable) {
+      return;
+    }
+    grabberMaterialProgress.value = withTiming(0, grabberMaterialFade);
+  }, [contentScrollable, grabberMaterialFade, grabberMaterialProgress]);
+  const grabberMaterialRestStyle = useAnimatedStyle(() => ({
+    opacity: 1 - grabberMaterialProgress.value,
+  }));
+  const grabberMaterialScrollStyle = useAnimatedStyle(() => ({
+    opacity: grabberMaterialProgress.value,
+  }));
+  const resolvedScrollEdgeEffect = useMemo(
+    () => resolveSheetsScrollEdgeEffect(scrollEdgeActive, contentScrollable, scrollEdgeEffect),
+    [contentScrollable, scrollEdgeActive, scrollEdgeEffect],
+  );
   const contentPan = useMemo(
     () => buildPan(contentScrollable),
     [buildPan, contentScrollable],
@@ -833,11 +893,48 @@ export function EgSheets({
           <GlassBlurScope>
             <GlassMaskScrollEdgeScope>
             <View style={[styles.sheetBody, { height: viewportHeight }]}>
+              {showDragIndicator ? (
+                <View style={styles.grabberOverlay} pointerEvents="none">
+                  <View
+                    style={[
+                      styles.grabberBar,
+                      {
+                        width: SHEETS_GRABBER_BAR_WIDTH,
+                        height: SHEETS_GRABBER_BAR_HEIGHT,
+                      },
+                    ]}
+                  >
+                    <EgGlass
+                      box="glass-mask-box"
+                      mode={mode}
+                      forceBackdropBlur
+                      style={StyleSheet.absoluteFill}
+                      testID="eg-sheets-grabber-glass"
+                    />
+                    <Animated.View
+                      pointerEvents="none"
+                      style={[
+                        StyleSheet.absoluteFill,
+                        { backgroundColor: grabberMaterialRest },
+                        grabberMaterialRestStyle,
+                      ]}
+                    />
+                    <Animated.View
+                      pointerEvents="none"
+                      style={[
+                        StyleSheet.absoluteFill,
+                        { backgroundColor: grabberMaterialScroll },
+                        grabberMaterialScrollStyle,
+                      ]}
+                    />
+                  </View>
+                </View>
+              ) : null}
               <GlassBlurBackdrop style={styles.sheetBlurBackdrop}>
                 <Animated.View style={[styles.scroll, contentFrameStyle]}>
                   <GlassMaskScrollEdgeHost
                     mode={mode}
-                    edgeEffect={scrollEdgeEffect}
+                    edgeEffect={resolvedScrollEdgeEffect}
                     active={contentScrollable && scrollEdgeActive}
                     onEdgeHeightChange={onNativeEdgeHeight}
                   >
@@ -846,30 +943,31 @@ export function EgSheets({
                 </Animated.View>
               </GlassBlurBackdrop>
               <GestureDetector gesture={chromePan}>
-                <View style={styles.sheetChrome} onLayout={onChromeLayout}>
-                  <EgNavBar
-                    chromeContext="overlay"
-                    mode={mode}
-                    title={title}
-                    showTitle={showTitle}
-                    titleAlign="leading"
-                    leadingTitleInset={mobileTheme.spacing['spacing-1'] as number}
-                    leadingTitleGap={mobileTheme.spacing['spacing-3'] as number}
-                    contentPaddingHorizontal={SHEETS_CHROME_PADDING + sheetsFrameTokens.inset}
-                    edgeShift={chromeEdgeShift}
-                    contentPaddingTop={SHEETS_CHROME_PADDING}
-                    contentPaddingBottom={chromePaddingBottom}
-                    left={backAction}
-                    right={rightAction}
-                    showLeft={showLeft}
-                    showRight={showRight}
-                    slotTransition="layout"
-                    background="auto"
-                    scrollOffset={navScroll.scrollOffset}
-                    topInset={0}
-                    manageStatusBar={false}
-                    style={styles.navBar}
-                  />
+                <View style={[styles.sheetChrome, { height: navBarContentHeight }]}>
+                    <EgNavBar
+                      chromeContext="overlay"
+                      mode={mode}
+                      title={title}
+                      showTitle={showTitle}
+                      titleAlign="leading"
+                      leadingTitleInset={mobileTheme.spacing['spacing-1'] as number}
+                      leadingTitleGap={mobileTheme.spacing['spacing-3'] as number}
+                      contentPaddingHorizontal={SHEETS_CHROME_PADDING + sheetsFrameTokens.inset}
+                      edgeShift={chromeEdgeShift}
+                      contentPaddingTop={SHEETS_CHROME_PADDING}
+                      contentPaddingBottom={SHEETS_CHROME_PADDING_BOTTOM}
+                      left={backAction}
+                      right={rightAction}
+                      showLeft={showLeft}
+                      showRight={showRight}
+                      slotTransition="layout"
+                      background="auto"
+                      scrollEdgeEffect={resolvedScrollEdgeEffect}
+                      scrollOffset={navScroll.scrollOffset}
+                      topInset={0}
+                      manageStatusBar={false}
+                      style={styles.navBar}
+                    />
                 </View>
               </GestureDetector>
             </View>
@@ -994,6 +1092,19 @@ const styles = StyleSheet.create({
   },
   navBar: {
     position: 'relative',
+  },
+  grabberOverlay: {
+    position: 'absolute',
+    top: SHEETS_GRABBER_PADDING_TOP,
+    left: 0,
+    right: 0,
+    zIndex: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  grabberBar: {
+    overflow: 'hidden',
+    borderRadius: mobileTheme.spacing['radius-full'] as number,
   },
   scroll: {
     flex: 1,

@@ -254,21 +254,22 @@ export function familyTierRowTitle(family: string): string {
 }
 
 const FAMILY_TIER_ROW_HINT_OVERRIDES: Record<string, string> = {
-  avatar: '头像色盘',
-  button: '触发操作',
-  divider: '分割页面层级',
-  feedback: '即时提醒',
+  avatar: '头像',
+  button: '按钮',
+  divider: '分割线',
+  feedback: '提醒',
   glass: '容器材质',
-  input: '输入源',
+  input: '输入',
   popovers: '浮层',
-  'scroll-edge': '滚动源叠层',
+  'scroll-edge': '遮罩',
   'segmented-control': '分段控制器',
   symbol: '图形解析器、含Icon与Crypto',
   menu: '触发与下拉',
   'nav-bar': '导航栏',
   sheets: '悬浮层',
   'tab-bar': '标签栏',
-  tab: '标签页',
+  tab: '标签切换',
+  tag: '标签',
   toggle: '开关',
 };
 
@@ -281,10 +282,10 @@ export function familyTierRowHint(nav: ComponentFamilyNav): string {
     return '个人中心 / 设置分组行 · value · chevron · 分割线';
   }
   if (nav.family === 'page') {
-    return 'motion-page · createEgPageNavigator + egPageScreenOptions + EgPage';
+    return '常规页面';
   }
   if (nav.family === 'page-shot') {
-    return 'motion-page-shot · EgPageShotTrigger 展开整页';
+    return '弹窗页面';
   }
   return nav.label;
 }

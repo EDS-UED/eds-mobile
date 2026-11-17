@@ -45,6 +45,11 @@ export type EgGlassProps = {
   testID?: string;
   /** `glass-mask-box` 底部分割线 — scroll edge `hard` 时由宿主传入 `true`。 */
   maskModuleDivider?: boolean;
+  /**
+   * iOS 26+ 处于 `GlassMaskScrollEdgeScope` 时默认不绘 RN `glass-mask-box`。
+   * 设为 `true` 仍绘制 `eds-blur-glass`（如 EgSheets 拖拽条）。
+   */
+  forceBackdropBlur?: boolean;
 };
 
 /**
@@ -75,6 +80,7 @@ export function EgGlass({
   children,
   testID,
   maskModuleDivider = false,
+  forceBackdropBlur = false,
 }: EgGlassProps) {
   const composition = useMemo(() => resolveGlassBoxComposition(box, mode), [box, mode]);
   const colors = getThemeColors(mode);
@@ -109,7 +115,7 @@ export function EgGlass({
     ...rnGlassBoxOuterShadowHostStyle(outerShadows),
   };
 
-  if (maskBox && nativeMaskEdge) {
+  if (maskBox && nativeMaskEdge && !forceBackdropBlur) {
     return (
       <View style={StyleSheet.flatten([styles.shadowHost, style])} testID={testID}>
         {children}

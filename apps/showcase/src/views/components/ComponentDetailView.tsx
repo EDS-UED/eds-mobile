@@ -31,7 +31,7 @@ import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import {
   ComponentDetailActionFooter,
-  COMPONENT_DETAIL_FOOTER_HEIGHT,
+  componentDetailFooterScrollPadding,
 } from '@/views/shared/ComponentDetailActionFooter';
 import { CustomizePanel } from '@/views/shared/CustomizePanel';
 import { CustomizeSlotCardStack } from '@/views/shared/CustomizeSlotCardStack';
@@ -43,7 +43,6 @@ import { PropsDocTable } from '@/views/shared/PropsDocTable';
 import { ShowcaseInspectTarget } from '@/views/shared/ShowcaseInspectTarget';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
-import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { UsageSnippetBlock } from '@/views/shared/UsageSnippetBlock';
 import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
 import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
@@ -109,10 +108,7 @@ export function ComponentDetailView() {
   } = useShowcaseStackNav(displayName, { showRight: true, right: inspectNavAction });
   const styles = useThemedStyles((c) => createComponentDetailStyles(c, nativeStackNav));
   const scrollBottomInset =
-    COMPONENT_DETAIL_FOOTER_HEIGHT +
-    Math.max(insets.bottom, edsSpacing('spacing-3')) +
-    edsSpacing('spacing-4') +
-    (mode === 'inspect' ? 160 : 0);
+    componentDetailFooterScrollPadding(insets.bottom) + (mode === 'inspect' ? 160 : 0);
 
   const { colorTheme } = useShowcaseThemeContext();
   const PreviewComponent = resolveShowcasePreviewComponent(exportName);
@@ -224,6 +220,7 @@ export function ComponentDetailView() {
           scrollEventThrottle={scrollEventThrottle}
           withTabBarInset={false}
           docSectionStack
+          bottomInsetReplacesPagePadding
           bottomInsetExtra={scrollBottomInset}
           style={styles.scrollRoot}
         >

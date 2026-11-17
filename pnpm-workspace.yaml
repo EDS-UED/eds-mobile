@@ -2,6 +2,9 @@ packages:
   - "packages/*"
   - "apps/*"
 
+# EAS Build · 与根 .npmrc shamefully-hoist 一致，避免 isolated 安装导致 native 链断裂。
+nodeLinker: hoisted
+
 pnpm:
   overrides:
     react: "19.3.0"

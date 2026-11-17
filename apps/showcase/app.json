@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "EDS Mobile",
-    "slug": "eds-mobile-showcase",
+    "slug": "eds-ued",
     "version": "0.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
@@ -19,7 +19,11 @@
         "backgroundColor": "#00000000"
       }
     },
-    "scheme": "eds-mobile-showcase",
+    "scheme": "eds-ued",
+    "runtimeVersion": "exposdk:58.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/3169730a-d20a-4883-9bc2-244e1145e4e4"
+    },
     "plugins": [
       [
         "expo-font",
@@ -38,6 +42,17 @@
       ],
       "expo-router",
       "expo-status-bar"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "3169730a-d20a-4883-9bc2-244e1145e4e4"
+      }
+    },
+    "owner": "theyangsongs-team"
   }
 }

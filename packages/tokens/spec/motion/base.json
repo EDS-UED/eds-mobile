@@ -80,12 +80,37 @@
       ]
     },
     {
+      "comment": "Ratio · Menu 按住拖拽拉伸（橡皮筋）",
+      "tokenList": [
+        {
+          "name": "motion-ratio-menu-stretch-x",
+          "value": "0.08",
+          "comment": "左右拖拽加宽上限 = 面板宽 × 0.08（朝手指方向展开，对侧边缘不动）"
+        },
+        {
+          "name": "motion-ratio-menu-stretch-y",
+          "value": "0.06",
+          "comment": "上下拖拽变高上限 = 面板高 × 0.06"
+        },
+        {
+          "name": "motion-ratio-menu-stretch-resistance",
+          "value": "0.55",
+          "comment": "橡皮筋阻尼系数（iOS rubber band）：stretch = limit × (1 − 1 / (d × c / limit + 1))"
+        }
+      ]
+    },
+    {
       "comment": "Offset · Layout Deform / Content",
       "tokenList": [
         {
           "name": "motion-offset-layout-deform-y",
           "value": "var(--spacing-2-5)",
           "comment": "10px · 内容 crossfade 向下 nudge"
+        },
+        {
+          "name": "motion-offset-menu-content-y",
+          "value": "var(--spacing-4)",
+          "comment": "16px · Menu 展开时每行内容自下方上移（spring.menu-content-wave）的起始偏移"
         },
         {
           "name": "motion-offset-sheets-inset",
@@ -197,6 +222,20 @@
       "reanimated": { "damping": 33, "stiffness": 420, "mass": 1 },
       "comment": "Recipe menu-dismiss · 缩回触发器 · 尾段放缓让水滴与触发器交叉融合（触发器并入时鼓起回弹）"
     },
+    "menu-stretch-release": {
+      "response": 0.42,
+      "dampingFraction": 0.5,
+      "blendDuration": 0.10,
+      "reanimated": { "damping": 15, "stiffness": 224, "mass": 1 },
+      "comment": "Menu 按住拖拽松手 · 拉伸宽高弹回原尺寸 · 欠阻尼果冻回弹（略回缩过头再回正）"
+    },
+    "menu-content-wave": {
+      "response": 0.32,
+      "dampingFraction": 0.5,
+      "blendDuration": 0.10,
+      "reanimated": { "damping": 20, "stiffness": 385, "mass": 1 },
+      "comment": "Menu 展开 · 单行自 offset-menu-content-y 上移 · 欠阻尼约 16% 过冲（冲过落点再回落）· 逐行错峰（menu-content-in-stagger）自上而下叠出波浪"
+    },
     "sheets-present": {
       "response": 0.42,
       "dampingFraction": 0.82,
@@ -264,6 +303,16 @@
       "durationRef": "motion-1",
       "easing": [0.42, 0, 0.58, 1],
       "comment": "正文 mid-swap · var(--motion-delay-layout-deform-content-swap) → motion-1"
+    },
+    "menu-content-in": {
+      "duration": 120,
+      "easing": [0.25, 0.1, 0.25, 1],
+      "comment": "Menu 展开 · 单行内容淡入 · 120ms（行在 spring.menu-content-wave 上冲前已变实）"
+    },
+    "menu-content-in-stagger": {
+      "duration": 30,
+      "easing": [0, 0, 1, 1],
+      "comment": "Menu 展开 · 内容自上而下逐行起步间隔（与 spring.menu-content-wave 过冲叠出波浪）"
     },
     "sheets-dismiss": {
       "duration": 800,

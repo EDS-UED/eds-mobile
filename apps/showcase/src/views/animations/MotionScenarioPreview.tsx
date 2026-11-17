@@ -1,10 +1,11 @@
-import { EgMenu, EgEdsAnimaPress } from '@eds/mobile-components';
+import { EgMenu, EgEdsAnimaPress, type EgMenuProps } from '@eds/mobile-components';
 import { PageShotDemo, SlideSelectionDemo } from '@eds/mobile-components/preview/motion';
 import { LayoutContentTabDemo } from '@eds/mobile-components/preview/layout-content';
 import mobileTheme from '@eds/mobile-tokens/theme';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { findShowcaseCatalogEntry, mergeCatalogPreviewProps } from '@/data/components';
 import type { MotionScenarioId } from '@/data/animations/motionScenarioCustomize';
 import {
   pageDirectionOf,
@@ -20,6 +21,7 @@ type MotionScenarioPreviewProps = {
   scenario: MotionScenarioId;
   colors: ShowcaseColorMap;
   customize: MotionScenarioCustomizeState;
+  menuCustomize: Record<string, unknown>;
 };
 
 function PressPreview({
@@ -58,7 +60,25 @@ function PressPreview({
   );
 }
 
-export function MotionScenarioPreview({ scenario, colors, customize }: MotionScenarioPreviewProps) {
+const MENU_PREVIEW_ENTRY = findShowcaseCatalogEntry('menu-body');
+
+function MenuPreview({ menuCustomize }: { menuCustomize: Record<string, unknown> }) {
+  const props = useMemo(
+    () =>
+      MENU_PREVIEW_ENTRY
+        ? mergeCatalogPreviewProps(MENU_PREVIEW_ENTRY, menuCustomize, 'light')
+        : { mode: 'light', ...menuCustomize },
+    [menuCustomize],
+  );
+  return <EgMenu {...(props as EgMenuProps)} />;
+}
+
+export function MotionScenarioPreview({
+  scenario,
+  colors,
+  customize,
+  menuCustomize,
+}: MotionScenarioPreviewProps) {
   switch (scenario) {
     case 'slide':
       return (
@@ -94,7 +114,7 @@ export function MotionScenarioPreview({ scenario, colors, customize }: MotionSce
     case 'menu':
       return (
         <View style={styles.previewBlock}>
-          <EgMenu mode="light" align="center" forceRnImplementation />
+          <MenuPreview menuCustomize={menuCustomize} />
         </View>
       );
     case 'layout-content':

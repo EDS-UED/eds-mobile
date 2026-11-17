@@ -30,7 +30,7 @@ import { resolveGlassBoxPreviewComposition } from '@/views/tokens/glassBoxPrevie
 
 const GLASS_BOX_CLASS_NAMES = new Set<string>([
   'glass-button-box',
-  'glass-flotation-box',
+  'glass-menu-box',
   'glass-sheets-box',
   'glass-tabbar-box',
   'glass-tabbar-bg',

@@ -31,7 +31,7 @@
     },
     "glassBox": {
       "cssPrefix": "eds-glass-box-liquid",
-      "title": "Glass Box — Flotation / Popup（Figma Glass 层）",
+      "title": "Glass Box — Menu / Popup（Figma Glass 层）",
       "figma": {
         "lightAngle": 0,
         "lightIntensity": 20,

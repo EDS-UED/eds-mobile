@@ -15,7 +15,7 @@
 import { getSvgPath } from 'figma-squircle';
 
 const OPT_OUT_ATTR = 'data-no-corner-smoothing';
-const EFFECT_LAYER_PATTERN = /^effect-(flotation|popup)-box__/;
+const EFFECT_LAYER_PATTERN = /^effect-(menu|popup)-box__/;
 const SKIP_TAGS = new Set([
   'SVG',
   'PATH',
@@ -97,7 +97,7 @@ function parseRadii(style) {
 function isEffectBoxRoot(element) {
   return (
     element.classList.contains('glass-button-box') ||
-    element.classList.contains('glass-flotation-box') ||
+    element.classList.contains('glass-menu-box') ||
     element.classList.contains('glass-sheets-box') ||
     element.classList.contains('glass-tabbar-box') ||
     element.classList.contains('glass-mask-box')

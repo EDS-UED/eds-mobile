@@ -2,7 +2,7 @@
   "$description": "Effect System semantic classes — Glass Box 场景（Figma Glass Box 组件集）。CSS class 与 mobileTheme.glass.boxes 一一对应；RN 消费 resolveGlassBoxComposition（组合层 fill + overlayGradient + shadows + backdropBlur）。",
   "scenarioKeys": {
     "button": "glass-button-box",
-    "flotation": "glass-flotation-box",
+    "menu": "glass-menu-box",
     "sheets": "glass-sheets-box",
     "tabBar": "glass-tabbar-box",
     "tabBarBg": "glass-tabbar-bg",
@@ -33,8 +33,8 @@
           }
         },
         {
-          "title": "浮层容器（Flotation Box）",
-          "className": "glass-flotation-box",
+          "title": "菜单容器（Menu Box）",
+          "className": "glass-menu-box",
           "properties": {
             "border-radius": "var(--radius-xl)",
             "border": "var(--stroke-xs) solid var(--stroke-base-quaternary)",

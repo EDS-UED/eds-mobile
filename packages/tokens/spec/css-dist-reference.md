@@ -660,7 +660,7 @@ Mobile 语义层：`--tag-mobileColor-*` = `color(var(--eds-tag-mobileColor-*) /
 | Class | 组合要点 |
 |-------|----------|
 | `.glass-button-box` | overlay subtle→shallow + `effect-box` + outer subtle shadow + blur |
-| `.glass-flotation-box` | overlay subtle→shallow + shallow shadow |
+| `.glass-menu-box` | overlay subtle→shallow + shallow shadow |
 | `.glass-tabbar-box` | overlay subtle→shallow + deep shadow |
 | `.glass-tabbar-bg` | overlay subtle→deep（70%） |
 | `.glass-mask-box` | overlay subtle→shallow + blur；底边 RN `EgDivider` module |

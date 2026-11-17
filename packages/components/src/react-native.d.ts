@@ -267,6 +267,8 @@ declare module 'react-native-reanimated' {
       x2: number,
       y2: number,
     ) => (value: number) => number;
+    bezierFn: (x1: number, y1: number, x2: number, y2: number) => (value: number) => number;
+    linear: (value: number) => number;
   };
   export type SharedValue<T> = { value: T };
   export const useSharedValue: <T>(initial: T) => SharedValue<T>;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
   Modal,
   Pressable,
@@ -11,11 +11,14 @@ import {
 } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
+  Easing,
+  useAnimatedReaction,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
   withSpring,
   withTiming,
+  type SharedValue,
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -28,13 +31,18 @@ import { edsFontStyle } from '../../../shared/fontFamily.js';
 import { fieldTypography } from '../../../shared/typographyStyles.js';
 import { getThemeColors, mobileTheme } from '../../../theme/index.js';
 import {
+  MENU_CONTENT_START,
   menuContainerStyle,
   menuContentOpacity,
+  menuContentRevealTotalMs,
+  menuContentRowStyle,
   menuInSpringConfig,
   menuOriginScale,
   menuOutSpringConfig,
   menuShadowOpacity,
   menuShellRadius,
+  menuStretchAllowance,
+  menuStretchStyle,
   menuTriggerLift,
   menuTriggerStyle,
 } from '../../../shared/motion/menuMotion.js';
@@ -65,7 +73,10 @@ import {
   type EgMenuAnchorRect,
 } from './_shared/resolveEgMenuPanelFrame.js';
 import type { EgMenuItem, EgMenuProps, EgMenuSection } from './EgMenu.types.js';
-import { useEgMenuTrackInteraction } from './_shared/useEgMenuTrackInteraction.js';
+import {
+  useEgMenuTrackInteraction,
+  type EgMenuStretchState,
+} from './_shared/useEgMenuTrackInteraction.js';
 
 /** Reduce Motion · menu → fade（与 motion-duration-fade 同档）。 */
 const REDUCED_MOTION_FADE_MS = 180;
@@ -78,6 +89,33 @@ type MeasurableNode = {
   measureInWindow: (callback: (x: number, y: number, width: number, height: number) => void) => void;
 };
 
+/** 逐行显出的行数：分组标题与条目各占一行（分隔线随其后一行）。 */
+function countEgMenuRevealRows(sections: EgMenuSection[]) {
+  return sections.reduce(
+    (count, section) => count + (section.title ? 1 : 0) + section.items.length,
+    0,
+  );
+}
+
+type EgMenuRevealClock = {
+  elapsedMs: SharedValue<number>;
+  reduceMotion: boolean;
+};
+
+function EgMenuRevealRow({
+  index,
+  clock,
+  children,
+}: {
+  index: number;
+  clock: EgMenuRevealClock;
+  children: ReactNode;
+}) {
+  const { elapsedMs, reduceMotion } = clock;
+  const style = useAnimatedStyle(() => menuContentRowStyle(elapsedMs.value, index, reduceMotion));
+  return <Animated.View style={style}>{children}</Animated.View>;
+}
+
 type EgMenuPanelProps = {
   sections: EgMenuSection[];
   selectedId?: string;
@@ -86,8 +124,12 @@ type EgMenuPanelProps = {
   onSlidePick?: (item: EgMenuItem) => void;
   menuWidth: number;
   maxScrollHeight: number;
-  /** 内容层动画样式（menu 动效内容后半程显出）。 */
+  /** 内容层动画样式（收回时整体隐去）。 */
   contentAnimatedStyle?: Record<string, unknown>;
+  /** 展开时内容逐行显出时钟。 */
+  revealClock: EgMenuRevealClock;
+  /** 按住拖拽拉伸状态（Reduce Motion 时不传）。 */
+  stretch?: EgMenuStretchState;
   /** 变化即重测滑选命中区（窗口坐标受展开 transform 影响，须在落定后测）。 */
   measureToken?: number;
 };
@@ -101,6 +143,8 @@ function EgMenuPanel({
   menuWidth,
   maxScrollHeight,
   contentAnimatedStyle,
+  revealClock,
+  stretch,
   measureToken,
 }: EgMenuPanelProps) {
   const colors = getThemeColors(mode);
@@ -236,6 +280,7 @@ function EgMenuPanel({
     onSlideItem: handleSlideItem,
     onTapItem: handleTapItem,
     onTrackActiveChange: setTrackActive,
+    stretch,
   });
 
   const emphasisItemId = hoverItemId ?? selectedId;
@@ -321,6 +366,15 @@ function EgMenuPanel({
     ],
   );
 
+  const sectionRevealStart = useMemo(() => {
+    let next = 0;
+    return sections.map((section) => {
+      const start = next;
+      next += (section.title ? 1 : 0) + section.items.length;
+      return start;
+    });
+  }, [sections]);
+
   const menuScroll = (
     <ScrollView
       style={styles.scroll}
@@ -344,27 +398,37 @@ function EgMenuPanel({
           collapsable={false}
           onLayout={scheduleRebuildHitRects}
         >
-          {sections.map((section, sectionIndex) => (
+          {sections.map((section, sectionIndex) => {
+            const revealStart = sectionRevealStart[sectionIndex] ?? 0;
+            const itemRevealStart = revealStart + (section.title ? 1 : 0);
+            return (
             <View key={section.title ?? `section-${sectionIndex}`}>
               {sectionIndex > 0 ? (
-                <>
+                <EgMenuRevealRow index={revealStart} clock={revealClock}>
                   <View style={{ height: sectionGap }} />
                   <View style={{ paddingHorizontal: dividerInset }}>
                     <EgDivider variant="module" mode={mode} orientation="horizontal" />
                   </View>
                   <View style={{ height: sectionGap }} />
-                </>
+                </EgMenuRevealRow>
               ) : null}
               <View style={styles.section}>
                 {section.title ? (
-                  <View style={styles.sectionTitleWrap} onLayout={scheduleRebuildHitRects}>
-                    <Text style={styles.sectionTitle}>{section.title}</Text>
-                  </View>
+                  <EgMenuRevealRow index={revealStart} clock={revealClock}>
+                    <View style={styles.sectionTitleWrap} onLayout={scheduleRebuildHitRects}>
+                      <Text style={styles.sectionTitle}>{section.title}</Text>
+                    </View>
+                  </EgMenuRevealRow>
                 ) : null}
                 {section.items.map((item, itemIndex) => {
                   const selected = item.id === selectedId;
                   const emphasized = item.id === emphasisItemId;
                   return (
+                    <EgMenuRevealRow
+                      key={item.id}
+                      index={itemRevealStart + itemIndex}
+                      clock={revealClock}
+                    >
                     <View
                       key={item.id}
                       ref={(node) => {
@@ -406,11 +470,13 @@ function EgMenuPanel({
                         {item.label}
                       </Text>
                     </View>
+                    </EgMenuRevealRow>
                   );
                 })}
               </View>
             </View>
-          ))}
+            );
+          })}
         </View>
       </GestureDetector>
     </ScrollView>
@@ -420,7 +486,7 @@ function EgMenuPanel({
     <View style={[styles.glass, styles.glassHost]}>
       {/* 玻璃须在内容之下：iOS BlurView 会模糊其背后的一切；内容留在布局流中撑开面板高度。 */}
       <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-        <EgGlass box="glass-flotation-box" mode={mode} style={StyleSheet.absoluteFill} />
+        <EgGlass box="glass-menu-box" mode={mode} style={StyleSheet.absoluteFill} />
       </View>
       <Animated.View style={contentAnimatedStyle}>{menuScroll}</Animated.View>
     </View>
@@ -459,6 +525,13 @@ export function EgMenuAnchored(props: EgMenuProps) {
   const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
   const progress = useSharedValue(0);
   const closing = useSharedValue(false);
+  const revealElapsedMs = useSharedValue(0);
+  const stretchAmountX = useSharedValue(0);
+  const stretchAmountY = useSharedValue(0);
+  const stretchDirX = useSharedValue(1);
+  const stretchDirY = useSharedValue(1);
+  const revealRowCount = countEgMenuRevealRows(sections);
+  const revealTotalMs = menuContentRevealTotalMs(revealRowCount);
   const maxScrollHeight = resolveEgMenuMaxScrollHeight(menuMaxHeight);
   const [measureToken, setMeasureToken] = useState(0);
   const mountedRef = useRef(false);
@@ -599,7 +672,7 @@ export function EgMenuAnchored(props: EgMenuProps) {
   );
 
   const glassComposition = useMemo(
-    () => resolveGlassBoxComposition('glass-flotation-box', mode),
+    () => resolveGlassBoxComposition('glass-menu-box', mode),
     [mode],
   );
   const panelRadius = glassComposition.borderRadius ?? (mobileTheme.spacing['radius-lg'] as number);
@@ -616,6 +689,81 @@ export function EgMenuAnchored(props: EgMenuProps) {
   const shadowAnimatedStyle = useAnimatedStyle(() => ({
     opacity: menuShadowOpacity(progress.value, reduceMotion, closing.value),
   }));
+
+  /** 0 展开未到内容段 · 1 展开已到内容段 · 2 收回中。展开越过 `MENU_CONTENT_START` 时起逐行显出时钟。 */
+  useAnimatedReaction(
+    () => (closing.value ? 2 : progress.value >= MENU_CONTENT_START ? 1 : 0),
+    (phase, previous) => {
+      if (phase === 0) {
+        revealElapsedMs.value = 0;
+      } else if (phase === 1 && previous === 0) {
+        revealElapsedMs.value = withTiming(
+          revealTotalMs,
+          { duration: revealTotalMs, easing: Easing.linear },
+          (finished?: boolean) => {
+            'worklet';
+            if (finished) {
+              scheduleOnRN(bumpMeasureToken);
+            }
+          },
+        );
+      }
+    },
+    [bumpMeasureToken, revealTotalMs],
+  );
+
+  const stretch = useMemo<EgMenuStretchState | undefined>(() => {
+    if (reduceMotion) {
+      return undefined;
+    }
+    const top = frame?.top ?? 0;
+    const allowance = menuStretchAllowance(
+      anchor ? anchor.x + anchor.width / 2 : (frame?.left ?? 0) + menuWidth / 2,
+      anchor ? anchor.y + anchor.height / 2 : top + panelHeight / 2,
+      windowWidth,
+      windowHeight,
+    );
+    return {
+      amountX: stretchAmountX,
+      amountY: stretchAmountY,
+      dirX: stretchDirX,
+      dirY: stretchDirY,
+      width: menuWidth,
+      height: panelHeight,
+      centerY: top + panelHeight / 2,
+      allowX: allowance.x,
+      allowY: allowance.y,
+    };
+  }, [
+    anchor,
+    frame?.left,
+    frame?.top,
+    menuWidth,
+    panelHeight,
+    reduceMotion,
+    windowHeight,
+    windowWidth,
+    stretchAmountX,
+    stretchAmountY,
+    stretchDirX,
+    stretchDirY,
+  ]);
+
+  const stretchAnimatedStyle = useAnimatedStyle(() =>
+    menuStretchStyle(
+      stretchAmountX.value,
+      stretchAmountY.value,
+      stretchDirX.value,
+      stretchDirY.value,
+      menuWidth,
+      panelHeight,
+    ),
+  );
+
+  const revealClock = useMemo<EgMenuRevealClock>(
+    () => ({ elapsedMs: revealElapsedMs, reduceMotion }),
+    [reduceMotion, revealElapsedMs],
+  );
 
   const contentAnimatedStyle = useAnimatedStyle(() => ({
     opacity: menuContentOpacity(progress.value, reduceMotion, closing.value),
@@ -688,6 +836,7 @@ export function EgMenuAnchored(props: EgMenuProps) {
                 }
               }}
             >
+              <Animated.View style={stretchAnimatedStyle}>
               <Animated.View
                 pointerEvents="none"
                 style={[
@@ -708,7 +857,10 @@ export function EgMenuAnchored(props: EgMenuProps) {
                   onPick={(item) => pick(item, true)}
                   onSlidePick={slidePick}
                   contentAnimatedStyle={contentAnimatedStyle}
+                  revealClock={revealClock}
+                  stretch={stretch}
                 />
+              </Animated.View>
               </Animated.View>
             </Animated.View>
           ) : null}

@@ -201,7 +201,7 @@ export const menuCustomizeDefaults: Record<string, unknown> = {
   align: 'start',
   menuWidth: 268,
   menuMaxHeight: 580,
-  forceRnImplementation: true,
+  forceRnImplementation: false,
   ...groupDefaults(1),
   ...groupDefaults(2),
   ...groupDefaults(3),

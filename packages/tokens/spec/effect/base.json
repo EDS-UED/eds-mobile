@@ -23,7 +23,7 @@
             "0 var(--depth-lg) var(--blur-lg) 0 var(--effect-vulvar-deep)"
           ],
           "usageNotes": [
-            "中等阴影 — Flotation Box：内光 depth-md / blur-md + 外 vulvar-deep。"
+            "中等阴影 — Menu Box：内光 depth-md / blur-md + 外 vulvar-deep。"
           ]
         },
         {

@@ -10,7 +10,7 @@ import type { DocCustomizeControl } from '@/data/components';
 /** Effect Glass Box 场景 — BlurGlass 预览。 */
 export const GLASS_BLUR_BOX_OPTIONS: { value: GlassBoxClassName; label: string }[] = [
   { value: 'glass-button-box', label: 'Button Box' },
-  { value: 'glass-flotation-box', label: 'Flotation Box' },
+  { value: 'glass-menu-box', label: 'Menu Box' },
   { value: 'glass-sheets-box', label: 'Sheets Box' },
   { value: 'glass-tabbar-box', label: 'TabBar Box' },
   { value: 'glass-tabbar-bg', label: 'TabBar BG' },

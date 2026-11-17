@@ -677,7 +677,7 @@ Effect 色：`--effect-box`、`--effect-sheets-background`、`--effect-overlay-{
 | Class | 组合要点 |
 |-------|----------|
 | `.glass-button-box` | `radius-xl` + `stroke-xs` / `stroke-base-quaternary` + overlay subtle→shallow + `effect-box` + `eds-shadow-box-subtle` + `eds-blur-glass` |
-| `.glass-flotation-box` | overlay subtle→shallow + `eds-shadow-box-shallow` |
+| `.glass-menu-box` | overlay subtle→shallow + `eds-shadow-box-shallow` |
 | `.glass-tabbar-box` | overlay subtle→shallow + `eds-shadow-box-deep` |
 | `.glass-tabbar-bg` | overlay subtle→deep（70%） |
 | `.glass-mask-box` | 无圆角/描边；overlay subtle→shallow + blur；底部分割 RN 用 `EgDivider` module（非 box-shadow） |

@@ -14,6 +14,8 @@ import {
   type MotionScenarioId,
 } from '@/data/animations/motionScenarioCustomize';
 import { findMotionScenarioDemo } from '@/data/animations/motionScenarioNav';
+import { menuCustomizeDefaults } from '@/data/components/menuCustomizeModel';
+import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
 import { SCENARIO_PROPS } from '@/data/tokens/motionTokenPropRows';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
@@ -58,6 +60,10 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
   const [customize, setCustomize] = useState<MotionScenarioCustomizeState>(() =>
     defaultMotionScenarioCustomizeState(),
   );
+
+  const [menuCustomize, setMenuCustomize] = useState<Record<string, unknown>>(() => ({
+    ...menuCustomizeDefaults,
+  }));
 
   const controls = useMemo(
     () => (scenario ? motionScenarioCustomizeControls(scenario) : []),
@@ -105,33 +111,45 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
         >
           <DocSection title="预览" previewScreenFrame>
             <View style={styles.previewContent}>
-              <MotionScenarioPreview scenario={scenario} colors={colors} customize={customize} />
+              <MotionScenarioPreview
+                scenario={scenario}
+                colors={colors}
+                customize={customize}
+                menuCustomize={menuCustomize}
+              />
             </View>
           </DocSection>
 
           <DocSection title="定制" egItemGroupFrame>
-            <CustomizePanel
-              controls={controls}
-              state={customize}
-              onChange={(next) =>
-                setCustomize((prev) => ({
-                  ...prev,
-                  pressIntensity:
-                    (next.pressIntensity as MotionScenarioCustomizeState['pressIntensity']) ??
-                    prev.pressIntensity,
-                  pressScaleDirection:
-                    (next.pressScaleDirection as MotionScenarioCustomizeState['pressScaleDirection']) ??
-                    prev.pressScaleDirection,
-                  slidePressScale:
-                    typeof next.slidePressScale === 'boolean' ? next.slidePressScale : prev.slidePressScale,
-                  slideFollowDrag:
-                    typeof next.slideFollowDrag === 'boolean' ? next.slideFollowDrag : prev.slideFollowDrag,
-                  ...mergePageDirection(prev, next),
-                  pageDragDismiss:
-                    typeof next.pageDragDismiss === 'boolean' ? next.pageDragDismiss : prev.pageDragDismiss,
-                }))
-              }
-            />
+            {scenario === 'menu' ? (
+              <MenuSectionsCustomizePanel
+                state={menuCustomize}
+                onChange={(next) => setMenuCustomize((prev) => ({ ...prev, ...next }))}
+              />
+            ) : (
+              <CustomizePanel
+                controls={controls}
+                state={customize}
+                onChange={(next) =>
+                  setCustomize((prev) => ({
+                    ...prev,
+                    pressIntensity:
+                      (next.pressIntensity as MotionScenarioCustomizeState['pressIntensity']) ??
+                      prev.pressIntensity,
+                    pressScaleDirection:
+                      (next.pressScaleDirection as MotionScenarioCustomizeState['pressScaleDirection']) ??
+                      prev.pressScaleDirection,
+                    slidePressScale:
+                      typeof next.slidePressScale === 'boolean' ? next.slidePressScale : prev.slidePressScale,
+                    slideFollowDrag:
+                      typeof next.slideFollowDrag === 'boolean' ? next.slideFollowDrag : prev.slideFollowDrag,
+                    ...mergePageDirection(prev, next),
+                    pageDragDismiss:
+                      typeof next.pageDragDismiss === 'boolean' ? next.pageDragDismiss : prev.pageDragDismiss,
+                  }))
+                }
+              />
+            )}
           </DocSection>
 
           <DocSection title="组件 API" cardPadding="none">

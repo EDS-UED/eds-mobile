@@ -44,7 +44,7 @@ const SheetsSlotPlaceholder = memo(function SheetsSlotPlaceholder({ mode }: { mo
   );
 });
 
-/** 长文本 · 测最高档滚动与滚顶下拉拖档位。 */
+/** 长文本 · 测最高档滚动与长按拖拽。 */
 const SheetsLongContent = memo(function SheetsLongContent({ mode }: { mode: ThemeMode }) {
   const colors = getThemeColors(mode);
   return (

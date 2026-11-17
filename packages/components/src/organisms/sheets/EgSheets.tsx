@@ -51,6 +51,7 @@ import { useEgNavBarScroll } from '../tab-bar/nav-bar/useEgNavBarScroll.js';
 import type { EgNavBarScrollEdgeEffect } from '../tab-bar/nav-bar/EgNavBar.types.js';
 import {
   egSheetsChromeHeight,
+  egSheetsContentTopInset,
   egSheetsNavBarContentHeight,
   SHEETS_CHROME_PADDING,
   SHEETS_CHROME_PADDING_BOTTOM,
@@ -72,8 +73,8 @@ const RUBBER_BAND = 0.25;
 const DRAG_ACTIVATION_PX = 8;
 /** 与最高档的距离在该值内视为已到最高档（内容区可滚动）。 */
 const TOP_DETENT_EPSILON_PX = 2;
-/** 内容区滚动到顶后，下拉超过该距离即转 Sheet 档位拖拽（同顶栏 pan）。 */
-const SCROLL_TOP_PULL_HANDOFF_PX = DRAG_ACTIVATION_PX;
+/** 可滚动档：内容区长按该时长后由滚动转为拖拽容器（iOS 长按手势同档）。 */
+const CONTENT_LONG_PRESS_MS = 350;
 /** 超过最高档的橡皮筋余量（裁切层 / 面板固定高度预留）。 */
 const RUBBER_HEADROOM_PX = 160;
 /** Reduce Motion · sheets → fade（与 motion-duration-fade 同档）。 */
@@ -100,7 +101,7 @@ function normalizeDetents(detents: readonly EgSheetsDetent[] | undefined): EgShe
  * 自底部滑入 → 部分档悬浮卡片（四周 inset · 四角圆角）→ large 档贴边（顶边距系统条 motion-offset-sheets-top）；
  * 卡片 `EgGlass` · `glass-sheets-box`；背后遮罩小中 `effect-sheets-background`、大档 `material-base-tertiary`；
  * 顶部 EgNavBar 悬浮于内容之上（边距 + 内容定高；可选拖拽指示条），`background="auto"`（内容滚入栏下才显现背景与 scroll edge）。
- * 小 / 中档内容区不滚动、整张可拖拽；最高档内容区滚动，顶栏拖拽或滚到顶后下拉拖档位。
+ * 小 / 中档内容区不滚动、整张可拖拽；最高档内容区滚动，顶栏拖拽或长按内容区拖拽。
  * 顶栏：左侧返回（默认隐藏）；右侧默认关闭，可由 `rightAction` 覆盖（如文本 `EgButtonGlass`）。
  * 顶栏按钮 / 内容插槽 / action 距卡片边恒定，不随档位变化。
  */
@@ -170,7 +171,7 @@ export function EgSheets({
   const onNativeEdgeHeight = useCallback((_height: number) => {
     setNativeScrollInsetLocked(true);
   }, []);
-  const contentTopInset = chromeHeight;
+  const contentTopInset = egSheetsContentTopInset();
   const resolveAdaptiveHeight = useCallback(
     (contentHeight: number) => {
       const scrollPadBottom = mobileTheme.spacing['spacing-5'] as number;
@@ -241,7 +242,7 @@ export function EgSheets({
       navScroll.scrollOffset.value = 0;
     }
   }, [contentScrollEnabled, navScroll.scrollOffset]);
-  /** 滚顶下拉拖 Sheet 期间暂停 ScrollView，避免与档位拖拽抢手势。 */
+  /** 可滚动档长按内容区拖拽容器期间暂停滚动。 */
   const [contentDragLocked, setContentDragLocked] = useState(false);
   const scrollRef = useRef<{ scrollTo: (options: { y: number; animated?: boolean }) => void } | null>(
     null,
@@ -267,8 +268,6 @@ export function EgSheets({
   const closing = useSharedValue(0);
   /** 拖拽进行中冻结滚动态：避免跨档时重建内容区手势而中断当前拖拽。 */
   const dragging = useSharedValue(false);
-  /** 内容区滚顶下拉转 Sheet 拖拽 · 按下时 Y，供 manualActivation 判方向。 */
-  const contentTouchStartY = useSharedValue(0);
 
   const onRootLayout = useCallback((event: LayoutChangeEvent) => {
     const next = Math.round(event.nativeEvent.layout.height);
@@ -451,45 +450,20 @@ export function EgSheets({
     }
   }, [animateOut, dismissible]);
 
-  const beginContentSheetDrag = useCallback(() => {
+  const beginLongPressDrag = useCallback(() => {
+    triggerGlassPressHaptic();
     setContentDragLocked(true);
   }, []);
 
-  const endContentSheetDrag = useCallback(() => {
+  const endLongPressDrag = useCallback(() => {
     setContentDragLocked(false);
   }, []);
 
   const buildPan = useCallback(
-    (scrollTopHandoff: boolean) => {
+    (longPress: boolean) => {
       const pan = Gesture.Pan();
-      if (scrollTopHandoff) {
-        pan.manualActivation(true);
-        pan.onTouchesDown((event) => {
-          'worklet';
-          const touch = event.allTouches[0];
-          contentTouchStartY.value = touch?.y ?? 0;
-        });
-        pan.onTouchesMove((event, state) => {
-          'worklet';
-          if (closing.value) {
-            state.fail();
-            return;
-          }
-          if (navScroll.scrollOffset.value > TOP_DETENT_EPSILON_PX) {
-            state.fail();
-            return;
-          }
-          const touch = event.allTouches[0];
-          if (!touch) {
-            return;
-          }
-          const dy = touch.y - contentTouchStartY.value;
-          if (dy > SCROLL_TOP_PULL_HANDOFF_PX) {
-            state.activate();
-          } else if (dy < -SCROLL_TOP_PULL_HANDOFF_PX) {
-            state.fail();
-          }
-        });
+      if (longPress) {
+        pan.activateAfterLongPress(CONTENT_LONG_PRESS_MS);
       } else {
         pan.activeOffsetY([-DRAG_ACTIVATION_PX, DRAG_ACTIVATION_PX]);
       }
@@ -498,15 +472,15 @@ export function EgSheets({
           'worklet';
           dragging.value = true;
           dragStartVisible.value = sheetHeight.value - offsetY.value;
-          if (scrollTopHandoff) {
-            scheduleOnRN(beginContentSheetDrag);
+          if (longPress) {
+            scheduleOnRN(beginLongPressDrag);
           }
         })
         .onFinalize(() => {
           'worklet';
           dragging.value = false;
-          if (scrollTopHandoff) {
-            scheduleOnRN(endContentSheetDrag);
+          if (longPress) {
+            scheduleOnRN(endLongPressDrag);
           }
         })
         .onUpdate((event) => {
@@ -565,14 +539,14 @@ export function EgSheets({
         });
     },
     [
-      beginContentSheetDrag,
+      beginLongPressDrag,
       closing,
       currentIndex,
       detentHeights,
       dismissible,
       dragStartVisible,
       dragging,
-      endContentSheetDrag,
+      endLongPressDrag,
       exitDimFrom,
       exitDistance,
       exitFrom,
@@ -580,8 +554,6 @@ export function EgSheets({
       markClosing,
       maxHeight,
       minHeight,
-      contentTouchStartY,
-      navScroll.scrollOffset,
       offsetY,
       onDetentSettled,
       sheetHeight,
@@ -654,9 +626,14 @@ export function EgSheets({
   const grabberMaterialScrollStyle = useAnimatedStyle(() => ({
     opacity: grabberMaterialProgress.value,
   }));
-  const resolvedScrollEdgeEffect = useMemo(
+  const resolvedContentScrollEdgeEffect = useMemo(
     () => resolveSheetsScrollEdgeEffect(scrollEdgeActive, contentScrollable, scrollEdgeEffect),
     [contentScrollable, scrollEdgeActive, scrollEdgeEffect],
+  );
+  /** RN 顶栏滚入须 `hard` 才绘 module 底线；内容 scroll edge 仍走 `scrollEdgeEffect`。 */
+  const resolvedNavScrollEdgeEffect = useMemo(
+    () => resolveSheetsScrollEdgeEffect(scrollEdgeActive, contentScrollable, 'hard'),
+    [contentScrollable, scrollEdgeActive],
   );
   const contentPan = useMemo(
     () => buildPan(contentScrollable),
@@ -934,7 +911,7 @@ export function EgSheets({
                 <Animated.View style={[styles.scroll, contentFrameStyle]}>
                   <GlassMaskScrollEdgeHost
                     mode={mode}
-                    edgeEffect={resolvedScrollEdgeEffect}
+                    edgeEffect={resolvedContentScrollEdgeEffect}
                     active={contentScrollable && scrollEdgeActive}
                     onEdgeHeightChange={onNativeEdgeHeight}
                   >
@@ -962,7 +939,7 @@ export function EgSheets({
                       showRight={showRight}
                       slotTransition="layout"
                       background="auto"
-                      scrollEdgeEffect={resolvedScrollEdgeEffect}
+                      scrollEdgeEffect={resolvedNavScrollEdgeEffect}
                       scrollOffset={navScroll.scrollOffset}
                       topInset={0}
                       manageStatusBar={false}

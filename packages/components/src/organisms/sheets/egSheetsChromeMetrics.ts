@@ -20,3 +20,10 @@ export function egSheetsNavBarContentHeight(): number {
 export function egSheetsChromeHeight(_showDragIndicator?: boolean): number {
   return egSheetsNavBarContentHeight();
 }
+
+/** 插槽正文顶留白 · chrome 底 + spacing-1（68+4=72px）。 */
+const SHEETS_CONTENT_GAP_BELOW_CHROME = mobileTheme.spacing['spacing-1'] as number;
+
+export function egSheetsContentTopInset(): number {
+  return egSheetsChromeHeight() + SHEETS_CONTENT_GAP_BELOW_CHROME;
+}

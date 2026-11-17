@@ -60,7 +60,7 @@ export type EgSheetsProps = {
   mode?: ThemeMode;
   /** 内容插槽 ScrollView 的 contentContainerStyle（默认左右 / 底部 spacing-5）。 */
   contentStyle?: StyleProp<ViewStyle>;
-  /** 内容插槽 · 渲染于顶栏下方的滚动区；最高档可滚动（滚到顶后下拉可拖档位），`adaptive` 档按其高度定档。 */
+  /** 内容插槽 · 渲染于顶栏下方的滚动区；最高档可滚动，`adaptive` 档按其高度定档。 */
   children?: ReactNode;
   /**
    * 底部 action 插槽 · 始终贴当前档位可视底边。

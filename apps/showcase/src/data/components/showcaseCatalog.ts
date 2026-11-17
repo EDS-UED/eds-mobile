@@ -11,7 +11,7 @@ import {
 } from './showcaseInfraCatalog.js';
 
 /** Showcase 不展示 — catalog 仍保留 Figma 对齐项。 */
-const SHOWCASE_EXCLUDED_CATALOG_SLUGS = new Set(['tab-base-tab']);
+const SHOWCASE_EXCLUDED_CATALOG_SLUGS = new Set(['tab-base-tab', 'mode', 'index-title']);
 
 export type ShowcaseCatalogEntry = FigmaComponentEntry | ShowcaseInfraEntry;
 

@@ -1,11 +1,10 @@
 import { Stack, router } from 'expo-router';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 
 import type { TokenPreviewDestination } from '@/data/tokens/tokenPreviewDestination';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
@@ -23,6 +22,7 @@ import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseCom
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 function createTokenDetailStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
   const pageBg = showcasePageBackgroundColor(colors);
@@ -30,9 +30,6 @@ function createTokenDetailStyles(colors: ShowcaseColorMap, nativeStackNav: boole
     scrollRoot: {
       flex: 1,
       ...(nativeStackNav ? null : { backgroundColor: pageBg }),
-    },
-    referenceContent: {
-      gap: 0,
     },
     previewContent: showcaseComponentPreviewContentStyle,
   });
@@ -84,19 +81,19 @@ export function TokenDetailRootView({
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={styles.scrollRoot}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
           keyboardShouldPersistTaps="handled"
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
-          contentContainerStyle={[
-            showcaseNavScrollContentStyle(nativeStackNav, rnScrollPaddingTop),
-            { paddingBottom: scrollBottomInset },
-          ]}
+          withTabBarInset={false}
+          docSectionStack
+          bottomInsetExtra={scrollBottomInset}
+          style={styles.scrollRoot}
         >
           {referenceOnly ? (
-            <View style={styles.referenceContent}>
+            <>
               {previewDestination ? (
                 <DocSection title="预览" cardPadding="none">
                   <DocSectionLinkRow
@@ -110,7 +107,7 @@ export function TokenDetailRootView({
               <DocSection title="PROPS / API" cardPadding="none">
                 {propsContent}
               </DocSection>
-            </View>
+            </>
           ) : (
             <>
               <DocSection title="预览" previewScreenFrame>
@@ -122,7 +119,7 @@ export function TokenDetailRootView({
               </DocSection>
             </>
           )}
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
 
       {referenceOnly ? null : <ComponentDetailActionFooter onOpen={setDocPanel} />}

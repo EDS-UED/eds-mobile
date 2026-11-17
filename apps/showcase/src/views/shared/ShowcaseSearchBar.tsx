@@ -38,7 +38,6 @@ export function ShowcaseSearchBar({
 
 const styles = StyleSheet.create({
   wrap: {
-    paddingHorizontal: theme.layout.pageInset,
     paddingBottom: 12,
   },
   input: {

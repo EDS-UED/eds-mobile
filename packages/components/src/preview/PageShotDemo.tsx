@@ -4,7 +4,12 @@ import Animated from 'react-native-reanimated';
 
 import { EgButtonGlass } from '../molecules/button/button-glass/EgButtonGlass.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
-import { EgEdsAnimaPageShot, EgEdsAnimaPageShotTrigger, type EgEdsAnimaPageShotRootApi } from '../shared/motion/EgEdsAnimaPageShot.js';
+import type { EgEdsAnimaPageShotRootApi } from '../shared/motion/EgEdsAnimaPageShot.js';
+import { EgPageShot, EgPageShotTrigger } from '../templates/page-shot/EgPageShot.js';
+import {
+  EG_PAGE_CONTENT_PADDING_HORIZONTAL,
+  EG_PAGE_CONTENT_PADDING_TOP,
+} from '../templates/_shared/egPageContentLayout.js';
 import { getThemeColors, mobileTheme, type ThemeMode } from '../theme/index.js';
 import { PageStackDemoPage } from './PageStack.js';
 
@@ -180,7 +185,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
   }, []);
 
   return (
-    <EgEdsAnimaPageShot
+    <EgPageShot
       mode={mode}
       background={(shot) => (shot.id === 'card' ? colors['box-flotation'] : colors.page) as string}
       title={(shot, pageKey) => pageKey ?? (shot.id === 'card' ? undefined : shotTitle(shot.id))}
@@ -193,6 +198,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
             title={shotTitle(api.source.id)}
             backLabel="关闭"
             topInset={api.scrollTopInset}
+            contentInsetAdjustmentBehavior={api.contentInsetAdjustmentBehavior}
             showHeader={false}
             rows={SHOT_ROWS}
             onBack={api.close}
@@ -206,6 +212,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
           title={api.pageKey}
           backLabel="‹ 返回"
           topInset={api.scrollTopInset}
+          contentInsetAdjustmentBehavior={api.contentInsetAdjustmentBehavior}
           showHeader={false}
           rows={api.canPush ? [`${api.pageKey} · 下一层`] : []}
           onBack={api.back}
@@ -215,7 +222,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
     >
       <View style={styles.root}>
         <GroupTitle mode={mode}>卡片</GroupTitle>
-        <EgEdsAnimaPageShotTrigger id="card" radius={CARD_RADIUS} stretch>
+        <EgPageShotTrigger id="card" radius={CARD_RADIUS} stretch>
           <View
             onLayout={onCardLayout}
             style={[
@@ -232,7 +239,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
               </ScaledPage>
             ) : null}
           </View>
-        </EgEdsAnimaPageShotTrigger>
+        </EgPageShotTrigger>
 
         {TRIGGER_GROUPS.map((group) => (
           <View key={group.kind} style={styles.group}>
@@ -241,7 +248,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
               {TRIGGER_SLOTS.map(({ slot, label }) => {
                 const id = `${group.kind}-${slot}`;
                 return (
-                  <EgEdsAnimaPageShotTrigger
+                  <EgPageShotTrigger
                     key={id}
                     id={id}
                     radius={
@@ -254,7 +261,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
                     morph
                   >
                     <TriggerFace mode={mode} kind={group.kind} slot={slot} label={`${group.title}${label}`} />
-                  </EgEdsAnimaPageShotTrigger>
+                  </EgPageShotTrigger>
                 );
               })}
             </View>
@@ -264,7 +271,7 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
         <View style={styles.group}>
           <GroupTitle mode={mode}>数据列</GroupTitle>
           {DATA_ROWS.map((row) => (
-            <EgEdsAnimaPageShotTrigger key={row.id} id={row.id} radius={ROW_RADIUS} morph stretch>
+            <EgPageShotTrigger key={row.id} id={row.id} radius={ROW_RADIUS} morph stretch>
               <View style={[styles.row, { backgroundColor: colors['box-page-card'] as string }]}>
                 <Text style={[styles.rowLabel, { color: colors['text-base-primary'] as string }]}>
                   {row.label}
@@ -273,11 +280,11 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
                   {row.value} ›
                 </Text>
               </View>
-            </EgEdsAnimaPageShotTrigger>
+            </EgPageShotTrigger>
           ))}
         </View>
       </View>
-    </EgEdsAnimaPageShot>
+    </EgPageShot>
   );
 }
 
@@ -346,8 +353,8 @@ const styles = StyleSheet.create({
     ...edsFontStyle('700'),
   },
   body: {
-    paddingHorizontal: spacing['spacing-5'] ?? 20,
-    paddingTop: spacing['spacing-5'] ?? 20,
+    paddingHorizontal: EG_PAGE_CONTENT_PADDING_HORIZONTAL,
+    paddingTop: EG_PAGE_CONTENT_PADDING_TOP,
     gap: spacing['spacing-3'] ?? 12,
   },
   bodyTitle: {

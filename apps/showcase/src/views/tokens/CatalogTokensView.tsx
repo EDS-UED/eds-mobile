@@ -70,7 +70,7 @@ export function CatalogTokensView({ categoryId, title, sections }: CatalogTokens
       onSegmentIndexChange={setSegmentIndex}
     >
       {section ? (
-        <View style={styles.groupList}>
+        <View>
           {section.groups.map((group) => (
             <TokenGroupBlock
               key={`${section.title}-${group.comment}`}
@@ -87,9 +87,6 @@ export function CatalogTokensView({ categoryId, title, sections }: CatalogTokens
 }
 
 const styles = StyleSheet.create({
-  groupList: {
-    gap: theme.layout.tokenBlockGap,
-  },
   tileStack: {
     gap: theme.spacing['spacing-3'] as number,
     padding: theme.layout.cardPaddingVertical,

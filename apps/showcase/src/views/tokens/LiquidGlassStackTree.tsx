@@ -114,7 +114,6 @@ export function LiquidGlassStackTree({ conceptTitle, trunk, stacks, platformSpli
 const styles = StyleSheet.create({
   tree: {
     alignItems: 'center',
-    paddingHorizontal: theme.layout.pageInset,
   },
   conceptTitle: {
     textAlign: 'center',

@@ -39,6 +39,15 @@
       "notes": "同壳 Tab / Detail 正文 crossfade · RN 双时长见 base.timings"
     },
     {
+      "id": "fade",
+      "label": "Fade",
+      "timingRef": "fade-opacity",
+      "cssRecipe": "motion-recipe-fade",
+      "semanticClass": "motion-fade",
+      "interruptible": true,
+      "notes": "纯 opacity crossfade · 文案 / Segment · RN EgEdsAnimaFade"
+    },
+    {
       "id": "menu",
       "label": "Menu",
       "springRef": "menu-in",
@@ -225,6 +234,10 @@
         },
         {
           "name": "motion-recipe-menu",
+          "name": "motion-recipe-fade",
+          "value": "opacity var(--motion-duration-fade) var(--motion-easing-standard)"
+        },
+        {
           "value": "transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate)"
         },
         {

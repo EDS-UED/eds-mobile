@@ -1,0 +1,15 @@
+# iOS 26+ — 动效 menu 页：Customize 开关应可点按（无空闲浮层挡触摸）。
+appId: host.exp.Exponent
+---
+- openLink: exp://127.0.0.1:8080/--/(animations)/scenario/menu
+- extendedWaitUntil:
+    visible: "定制"
+    timeout: 45000
+- tapOn: "强制 RN 浮层"
+- scrollUntilVisible:
+    element: "Preview"
+    direction: DOWN
+- tapOn:
+    text: "Inspect"
+    optional: true
+- assertVisible: "定制"

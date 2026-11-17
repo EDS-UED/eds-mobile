@@ -34,7 +34,7 @@ export function ColorTokensView({ title }: ColorTokensViewProps) {
       segmentIndex={segmentIndex}
       onSegmentIndexChange={setSegmentIndex}
     >
-      <View style={styles.groupList}>
+      <View>
         {segmentIndex === 0 ? (
           <View style={styles.baseList}>
             {baseEntries.map((entry) => (
@@ -56,12 +56,8 @@ export function ColorTokensView({ title }: ColorTokensViewProps) {
 }
 
 const styles = StyleSheet.create({
-  groupList: {
-    gap: theme.layout.docSectionCardGap,
-  },
   /** Base — 每项自铺色圆角块，无分组卡片（§4.3 特例）。 */
   baseList: {
     gap: theme.layout.cardGap,
-    paddingHorizontal: theme.layout.pageInset,
   },
 });

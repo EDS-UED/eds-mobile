@@ -7,36 +7,49 @@ import {
 import { useMemo } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { showcaseRnHiddenStackHeaderOptions } from '@/navigation/showcaseEgNavBarDefaults';
 import { ShowcaseRnEgNavBarOverlay } from '@/navigation/ShowcaseRnEgNavBarOverlay';
+import { showcasePageBackgroundColor } from '@/views/shared/showcaseTheme';
 import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 
 /**
- * Tab index — 内容区 display 大标题；栏标题滚动后出现。RN 为浮层 `EgNavBar`（同 NavBar Demo）。
+ * Tab 首页 — 内容区 display 大标题；iOS 26+ 系统栏，其余浮层 `EgNavBar`。
  */
 export function useShowcaseTabHomeNav(title: string) {
+  const colors = useShowcaseColors();
   const { colorTheme } = useShowcaseThemeContext();
   const native = shouldUseEgNavBarNativeStack();
   const insets = useSafeAreaInsets();
-  const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll();
+  const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll({
+    nativeScrollEdge: !native,
+  });
 
-  const stackScreenOptions = useMemo(() => {
-    if (native) {
+  const stackScreenOptions = useMemo(
+    () => {
+      if (native) {
+        return {
+          ...egNavBarNativeStackOptions({
+            title,
+            showLeft: false,
+            showRight: false,
+            showTitle: scrollEdgeActive,
+            background: 'auto',
+            scrollEdgeActive,
+            deferScrollEdgeToScrollHandler: false,
+            mode: colorTheme,
+          }),
+          contentStyle: { backgroundColor: showcasePageBackgroundColor(colors) },
+        };
+      }
+
       return {
-        ...egNavBarNativeStackOptions({
-          title,
-          showLeft: false,
-          showRight: false,
-          showTitle: scrollEdgeActive,
-          background: 'auto',
-          scrollEdgeActive,
-          mode: colorTheme,
-        }),
+        ...showcaseRnHiddenStackHeaderOptions,
+        contentStyle: { backgroundColor: showcasePageBackgroundColor(colors) },
       };
-    }
-
-    return showcaseRnHiddenStackHeaderOptions;
-  }, [colorTheme, native, scrollEdgeActive, title]);
+    },
+    [colorTheme, colors, native, scrollEdgeActive, title],
+  );
 
   const rnNavBar = useMemo(
     () =>
@@ -45,6 +58,7 @@ export function useShowcaseTabHomeNav(title: string) {
           title={title}
           mode={colorTheme}
           scrollOffset={scrollOffset}
+          showLeft={false}
           showTitle={scrollEdgeActive}
         />
       ),
@@ -56,7 +70,7 @@ export function useShowcaseTabHomeNav(title: string) {
   return {
     onScroll,
     scrollEventThrottle,
-    stackScreenOptions,
+    stackScreenOptions: stackScreenOptions as never,
     nativeStackNav: native,
     rnNavBar,
     rnScrollPaddingTop,

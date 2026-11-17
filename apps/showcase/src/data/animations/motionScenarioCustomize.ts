@@ -11,6 +11,7 @@ export type MotionScenarioId =
   | 'press'
   | 'slide'
   | 'layout-content'
+  | 'fade'
   | 'menu'
   | 'sheets'
   | 'page'

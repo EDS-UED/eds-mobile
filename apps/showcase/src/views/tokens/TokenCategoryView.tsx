@@ -37,7 +37,7 @@ export function TokenCategoryView() {
   }
 
   if (category.id === 'liquid-glass') {
-    return <LiquidGlassTokensView />;
+    return <LiquidGlassTokensView title={category.label} />;
   }
 
   if (!config) {

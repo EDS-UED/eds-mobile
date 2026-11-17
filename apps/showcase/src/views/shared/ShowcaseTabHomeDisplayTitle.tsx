@@ -3,6 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { edsFontStyle } from '@/lib/edsFontFamily';
 import { edsTypographyRole } from '@/views/shared/resolveEdsTheme';
+import { showcasePageHeadingInsetLeft } from '@/views/shared/showcaseDocSectionLayout';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 
 type ShowcaseTabHomeDisplayTitleProps = {
@@ -27,6 +28,6 @@ const styles = StyleSheet.create({
   title: {
     ...edsTypographyRole('display'),
     ...edsFontStyle('700'),
-    paddingHorizontal: theme.layout.pageInset,
+    paddingLeft: showcasePageHeadingInsetLeft,
   },
 });

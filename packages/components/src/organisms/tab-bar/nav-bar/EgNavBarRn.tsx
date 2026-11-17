@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import Animated, {
+  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -25,14 +26,14 @@ import { EgNavBarActionView } from './EgNavBarActionView.js';
 import { egNavBarSlotMotion } from './egNavBarSlotMotion.js';
 import { presetBodyMediumStrong, presetTitle } from '../../../shared/typographyStyles.js';
 import { getThemeColors, mobileTheme } from '../../../theme/index.js';
+import { getEgNavBarChromeFade } from './egNavBarChromeFade.js';
 import {
-  EG_NAV_BAR_FADE_DURATION,
   EG_NAV_BAR_PADDING_BOTTOM,
   EG_NAV_BAR_PADDING_HORIZONTAL,
   EG_NAV_BAR_PADDING_TOP,
-  EG_NAV_BAR_SCROLL_EDGE_DISTANCE,
   EG_NAV_BAR_TITLE_GAP,
 } from './egNavBarMetrics.js';
+import { EG_NAV_BAR_CHROME_UNDER_PX } from './egNavBarScrollChrome.js';
 import type { EgNavBarAction, EgNavBarProps } from './EgNavBar.types.js';
 
 const DEFAULT_LEFT: EgNavBarAction = {
@@ -44,7 +45,7 @@ const DEFAULT_LEFT: EgNavBarAction = {
 function useFade(visible: boolean) {
   const opacity = useSharedValue(visible ? 1 : 0);
   useEffect(() => {
-    opacity.value = withTiming(visible ? 1 : 0, { duration: EG_NAV_BAR_FADE_DURATION });
+    opacity.value = withTiming(visible ? 1 : 0, getEgNavBarChromeFade());
   }, [opacity, visible]);
   return useAnimatedStyle(() => ({ opacity: opacity.value }));
 }
@@ -159,18 +160,33 @@ function EgNavBarLayoutSlot({
   );
 }
 
-/** RN 顶栏 ScrollEdge — 与 iOS 26+ 系统栏同名：页面 `soft` · Sheet overlay `hard`；`hidden` 常隐。 */
+/**
+ * RN 顶栏 ScrollEdge — 显式 `scrollEdgeEffect` 尊重业务；未传时由 `background` / 宿主决定：
+ * - `hidden` → 不绘
+ * - `auto` 滚入栏下 → `hard`（module 底线）· 静止 `hidden`
+ * - Sheet `overlay` · `visible` → `hard`
+ */
 function resolveRnScrollEdgeStyle(
   background: NonNullable<EgNavBarProps['background']>,
   scrollEdgeEffect: EgNavBarProps['scrollEdgeEffect'],
   chromeContext: NonNullable<EgNavBarProps['chromeContext']>,
+  contentUnderNav: boolean,
 ): EgScrollEdgeEffectStyle {
   const container = chromeContext === 'overlay' ? 'sheet' : 'page';
   if (scrollEdgeEffect) {
     return resolveEgScrollEdgeEffect(scrollEdgeEffect, container);
   }
   if (background === 'hidden') return 'hidden';
-  return resolveEgScrollEdgeEffect('automatic', container);
+  if (chromeContext === 'overlay') {
+    return resolveEgScrollEdgeEffect('hard', container);
+  }
+  if (background === 'visible') {
+    return 'hard';
+  }
+  if (background === 'auto') {
+    return contentUnderNav ? 'hard' : 'hidden';
+  }
+  return 'hard';
 }
 
 /** RN 顶栏 · `GlassMaskBackdrop`（遮罩浅/深）；iOS 26+ `GlassMaskScrollEdgeScope` 走系统 Scroll Edge。 */
@@ -200,6 +216,7 @@ export function EgNavBarRn(props: EgNavBarProps) {
     testID,
     style,
     slotTransition = 'fade',
+    forceRnImplementation = false,
   } = props;
   const layoutTransition = slotTransition === 'layout';
 
@@ -219,16 +236,51 @@ export function EgNavBarRn(props: EgNavBarProps) {
   const sideWidth = leading ? 0 : Math.max(leftVisible ? leftWidth : 0, rightVisible ? rightWidth : 0);
 
   const scrollDriven = background === 'auto' && scrollOffset != null;
+  const chromeFade = useMemo(() => getEgNavBarChromeFade(), []);
   const manualTarget = background === 'visible' ? 1 : background === 'hidden' ? 0 : contentUnder ? 1 : 0;
   const manualFade = useSharedValue(manualTarget);
+  const scrollChromeFade = useSharedValue(0);
+
   useEffect(() => {
-    manualFade.value = withTiming(manualTarget, { duration: EG_NAV_BAR_FADE_DURATION });
-  }, [manualFade, manualTarget]);
+    manualFade.value = withTiming(manualTarget, chromeFade);
+  }, [chromeFade, manualFade, manualTarget]);
+
+  /** 滚入栏下切换 — EdsSemanticAnima('fade') · `getEgNavBarChromeFade()`，非手势 scrub。 */
+  useAnimatedReaction(
+    () =>
+      scrollDriven && scrollOffset
+        ? scrollOffset.value > EG_NAV_BAR_CHROME_UNDER_PX
+          ? 1
+          : 0
+        : -1,
+    (next, prev) => {
+      if (next < 0) return;
+      if (next === prev) return;
+      scrollChromeFade.value = withTiming(next, chromeFade);
+    },
+    [chromeFade, scrollDriven, scrollOffset],
+  );
+
+  useEffect(() => {
+    if (background !== 'auto' || scrollDriven) return;
+    scrollChromeFade.value = withTiming(contentUnder ? 1 : 0, chromeFade);
+  }, [background, chromeFade, contentUnder, scrollChromeFade, scrollDriven]);
+
+  /** `scrollDriven` — 常驻 `hard`（含 module 底线），显隐仅 opacity fade。 */
+  const resolvedUnderNav =
+    background === 'visible' ||
+    (background === 'auto' && (scrollDriven || (!scrollDriven && contentUnder)));
+
+  const backdropEffect = resolveRnScrollEdgeStyle(
+    background,
+    scrollEdgeEffect,
+    chromeContext,
+    resolvedUnderNav,
+  );
 
   const backgroundStyle = useAnimatedStyle(() => {
     if (scrollDriven && scrollOffset) {
-      const progress = scrollOffset.value / EG_NAV_BAR_SCROLL_EDGE_DISTANCE;
-      return { opacity: progress < 0 ? 0 : progress > 1 ? 1 : progress };
+      return { opacity: scrollChromeFade.value };
     }
     return { opacity: manualFade.value };
   }, [scrollDriven, scrollOffset]);
@@ -276,15 +328,22 @@ export function EgNavBarRn(props: EgNavBarProps) {
         />
       ) : null}
 
-      <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, backgroundStyle]}>
-        <GlassMaskBackdrop
-          effect={resolveRnScrollEdgeStyle(background, scrollEdgeEffect, chromeContext)}
-          edge="top"
-          container={chromeContext === 'overlay' ? 'sheet' : 'page'}
-          mode={mode}
-          style={styles.backgroundFill}
-        />
-      </Animated.View>
+      {backdropEffect !== 'hidden' ? (
+        <Animated.View
+          pointerEvents="none"
+          style={[StyleSheet.absoluteFill, backgroundStyle]}
+          accessibilityElementsHidden
+        >
+          <GlassMaskBackdrop
+            effect={backdropEffect}
+            edge="top"
+            container={chromeContext === 'overlay' ? 'sheet' : 'page'}
+            mode={mode}
+            style={styles.backgroundFill}
+            testID={forceRnImplementation ? 'eg-nav-bar-rn-chrome' : undefined}
+          />
+        </Animated.View>
+      ) : null}
 
       <View
         style={[

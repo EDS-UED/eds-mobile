@@ -12,11 +12,17 @@ import type { GlassVariant } from '../atoms/glass/types.js';
 const VARIANTS: GlassVariant[] = ['regular', 'prominent', 'clear'];
 const BACKDROP_HEIGHT = 2200;
 
+type ScrollOffsetEvent = {
+  nativeEvent: { contentOffset: { x: number; y: number } };
+};
+
 type LiquidGlassDemoProps = {
   mode?: ThemeMode;
   style?: ViewStyle;
   /** Showcase 等可在滚动区顶部插入内容（避免外层 Fragment 破坏 stack flex）。 */
   prepend?: ReactNode;
+  onScroll?: (event: ScrollOffsetEvent) => void;
+  scrollEventThrottle?: number;
 };
 
 type BlobSpec = {
@@ -121,7 +127,13 @@ function VariantCard({
   );
 }
 
-export function LiquidGlassDemo({ mode = 'light', style, prepend }: LiquidGlassDemoProps) {
+export function LiquidGlassDemo({
+  mode = 'light',
+  style,
+  prepend,
+  onScroll,
+  scrollEventThrottle,
+}: LiquidGlassDemoProps) {
   const colors = getThemeColors(mode);
   const [pressCount, setPressCount] = useState(0);
   const radiusFull = mobileTheme.spacing['radius-full'] as number;
@@ -132,6 +144,8 @@ export function LiquidGlassDemo({ mode = 'light', style, prepend }: LiquidGlassD
         style={[styles.scroll, style]}
         contentContainerStyle={styles.scrollContent}
         nestedScrollEnabled
+        onScroll={onScroll}
+        scrollEventThrottle={scrollEventThrottle}
       >
         <GlassBlurBackdrop style={styles.backdropHost}>
           <DemoBackdrop mode={mode} />

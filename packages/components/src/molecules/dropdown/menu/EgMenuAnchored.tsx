@@ -63,7 +63,10 @@ import {
   egMenuSectionTitleColorToken,
   egMenuSectionTitlePaddingTopPx,
   egMenuSectionTitlePaddingBottomPx,
-  egMenuItemSelectedBackgroundColorToken,
+  egMenuItemPressBackgroundColorToken,
+  egMenuItemSelectionIconDisplayPx,
+  egMenuItemSelectionIconFillTone,
+  egMenuItemSelectionIconName,
   resolveEgMenuMaxScrollHeight,
 } from './_shared/egMenuLayoutDefaults.js';
 import { normalizeEgMenuSections } from './_shared/egMenuModel.js';
@@ -121,7 +124,6 @@ type EgMenuPanelProps = {
   selectedId?: string;
   mode: NonNullable<EgMenuProps['mode']>;
   onPick: (item: EgMenuItem) => void;
-  onSlidePick?: (item: EgMenuItem) => void;
   menuWidth: number;
   maxScrollHeight: number;
   /** 内容层动画样式（收回时整体隐去）。 */
@@ -130,6 +132,7 @@ type EgMenuPanelProps = {
   revealClock: EgMenuRevealClock;
   /** 按住拖拽拉伸状态（Reduce Motion 时不传）。 */
   stretch?: EgMenuStretchState;
+  menuPanelBounds?: { left: number; top: number; width: number; height: number };
   /** 变化即重测滑选命中区（窗口坐标受展开 transform 影响，须在落定后测）。 */
   measureToken?: number;
 };
@@ -139,12 +142,12 @@ function EgMenuPanel({
   selectedId,
   mode,
   onPick,
-  onSlidePick,
   menuWidth,
   maxScrollHeight,
   contentAnimatedStyle,
   revealClock,
   stretch,
+  menuPanelBounds,
   measureToken,
 }: EgMenuPanelProps) {
   const colors = getThemeColors(mode);
@@ -159,7 +162,7 @@ function EgMenuPanel({
   const sectionTitlePadStart = egMenuSectionTitlePaddingStartPx();
   const sectionTitlePadTop = egMenuSectionTitlePaddingTopPx();
   const sectionTitlePadBottom = egMenuSectionTitlePaddingBottomPx();
-  const itemSelectedBgToken = egMenuItemSelectedBackgroundColorToken();
+  const itemPressBgToken = egMenuItemPressBackgroundColorToken();
   const typoBase = mobileTheme.typography.base;
   const sectionGap = egMenuSectionGapPx();
   const itemRadius = mobileTheme.spacing['radius-lg'] as number;
@@ -263,27 +266,19 @@ function EgMenuPanel({
     [itemById, onPick],
   );
 
-  const handleSlideItem = useCallback(
-    (itemId: string) => {
-      const item = itemById.get(itemId);
-      if (item) {
-        onSlidePick?.(item);
-      }
-    },
-    [itemById, onSlidePick],
-  );
-
   const { gesture, hoverItemId } = useEgMenuTrackInteraction({
     disabled: false,
     layoutsShared,
     isItemDisabled,
-    onSlideItem: handleSlideItem,
     onTapItem: handleTapItem,
     onTrackActiveChange: setTrackActive,
     stretch,
+    menuPanelBounds,
   });
 
-  const emphasisItemId = hoverItemId ?? selectedId;
+  const selectionIconName = egMenuItemSelectionIconName();
+  const selectionIconPx = egMenuItemSelectionIconDisplayPx();
+  const selectionIconFillTone = egMenuItemSelectionIconFillTone();
 
   const styles = useMemo(
     () =>
@@ -316,15 +311,22 @@ function EgMenuPanel({
         },
         row: {
           flexDirection: 'row',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           paddingLeft: itemPadStart,
           paddingRight: itemPadEnd,
           paddingVertical: itemPadV,
           borderRadius: itemRadius,
           borderCurve: 'continuous',
         },
-        rowSelected: {
-          backgroundColor: colors[itemSelectedBgToken] as string,
+        rowPressed: {
+          backgroundColor: colors[itemPressBgToken] as string,
+        },
+        trailingSelection: {
+          width: selectionIconPx,
+          height: selectionIconPx,
+          marginLeft: itemIconLabelGap,
+          alignItems: 'center',
+          justifyContent: 'center',
         },
         iconSlot: {
           width: mobileTheme.spacing['symbol-sm'] as number,
@@ -352,6 +354,7 @@ function EgMenuPanel({
       itemPadV,
       itemRowGap,
       itemIconLabelGap,
+      selectionIconPx,
       itemRadius,
       menuWidth,
       containerPadH,
@@ -361,7 +364,7 @@ function EgMenuPanel({
       sectionTitlePadTop,
       sectionTitlePadBottom,
       sectionTitleColorToken,
-      itemSelectedBgToken,
+      itemPressBgToken,
       typoBase,
     ],
   );
@@ -422,54 +425,63 @@ function EgMenuPanel({
                 ) : null}
                 {section.items.map((item, itemIndex) => {
                   const selected = item.id === selectedId;
-                  const emphasized = item.id === emphasisItemId;
+                  const rowHover = item.id === hoverItemId;
                   return (
                     <EgMenuRevealRow
                       key={item.id}
                       index={itemRevealStart + itemIndex}
                       clock={revealClock}
                     >
-                    <View
-                      key={item.id}
-                      ref={(node) => {
-                        if (node) {
-                          rowRefs.current.set(item.id, node as unknown as MenuRowMeasurable);
-                        } else {
-                          rowRefs.current.delete(item.id);
-                        }
-                      }}
-                      accessibilityRole="menuitem"
-                      accessibilityState={{ selected, disabled: item.disabled }}
-                      style={[
-                        styles.row,
-                        emphasized ? styles.rowSelected : null,
-                        itemIndex > 0 ? { marginTop: itemRowGap } : null,
-                        item.disabled ? styles.labelDisabled : null,
-                      ]}
-                      onLayout={scheduleRebuildHitRects}
-                    >
-                      <View style={styles.iconSlot}>
-                        {item.icon ? (
-                          <EgSymbol
-                            name={item.icon}
-                            size="sm"
-                            mode={mode}
-                            strokeColorToken={
-                              item.destructive ? 'text-danger-primary' : 'text-base-primary'
-                            }
-                          />
-                        ) : null}
-                      </View>
-                      <Text
+                      <View
+                        ref={(node) => {
+                          if (node) {
+                            rowRefs.current.set(item.id, node as unknown as MenuRowMeasurable);
+                          } else {
+                            rowRefs.current.delete(item.id);
+                          }
+                        }}
+                        accessibilityRole="menuitem"
+                        accessibilityState={{ selected, disabled: item.disabled }}
                         style={[
-                          styles.label,
-                          item.destructive ? styles.labelDestructive : null,
+                          styles.row,
+                          rowHover ? styles.rowPressed : null,
+                          itemIndex > 0 ? { marginTop: itemRowGap } : null,
                           item.disabled ? styles.labelDisabled : null,
                         ]}
+                        onLayout={scheduleRebuildHitRects}
                       >
-                        {item.label}
-                      </Text>
-                    </View>
+                        {item.icon ? (
+                          <View style={styles.iconSlot}>
+                            <EgSymbol
+                              name={item.icon}
+                              size="sm"
+                              mode={mode}
+                              strokeColorToken={
+                                item.destructive ? 'text-danger-primary' : 'text-base-primary'
+                              }
+                            />
+                          </View>
+                        ) : null}
+                        <Text
+                          style={[
+                            styles.label,
+                            item.destructive ? styles.labelDestructive : null,
+                            item.disabled ? styles.labelDisabled : null,
+                          ]}
+                        >
+                          {item.label}
+                        </Text>
+                        {selected ? (
+                          <View style={styles.trailingSelection}>
+                            <EgSymbol
+                              name={selectionIconName}
+                              displayPx={selectionIconPx}
+                              fillTone={selectionIconFillTone}
+                              mode={mode}
+                            />
+                          </View>
+                        ) : null}
+                      </View>
                     </EgMenuRevealRow>
                   );
                 })}
@@ -641,10 +653,6 @@ export function EgMenuAnchored(props: EgMenuProps) {
     }
   };
 
-  const slidePick = (item: EgMenuItem) => {
-    pick(item, false);
-  };
-
   const frame =
     anchor != null
       ? resolveEgMenuPanelFrame({
@@ -717,6 +725,7 @@ export function EgMenuAnchored(props: EgMenuProps) {
       return undefined;
     }
     const top = frame?.top ?? 0;
+    const left = frame?.left ?? 0;
     const allowance = menuStretchAllowance(
       anchor ? anchor.x + anchor.width / 2 : (frame?.left ?? 0) + menuWidth / 2,
       anchor ? anchor.y + anchor.height / 2 : top + panelHeight / 2,
@@ -731,6 +740,8 @@ export function EgMenuAnchored(props: EgMenuProps) {
       width: menuWidth,
       height: panelHeight,
       centerY: top + panelHeight / 2,
+      left,
+      top,
       allowX: allowance.x,
       allowY: allowance.y,
     };
@@ -813,59 +824,70 @@ export function EgMenuAnchored(props: EgMenuProps) {
         <Animated.View style={triggerAnimatedStyle}>{anchorBody}</Animated.View>
       </View>
 
-      <Modal visible={mounted} transparent animationType="none" onRequestClose={closeMenu}>
-        <View style={shellStyles.modalRoot} pointerEvents={open ? 'box-none' : 'none'}>
-          <Pressable style={shellStyles.dismissLayer} onPress={closeMenu} accessibilityLabel="关闭菜单" />
-          {frame ? (
-            <Animated.View
-              style={[
-                shellStyles.floater,
-                {
-                  top: frame.top,
-                  left: frame.left,
-                  transformOrigin,
-                },
-                panelAnimatedStyle,
-              ]}
-              onLayout={(event: LayoutChangeEvent) => {
-                const { height } = event.nativeEvent.layout;
-                setPanelHeight((prev) => (prev === height ? prev : height));
-                if (presentPendingRef.current) {
-                  presentPendingRef.current = false;
-                  requestAnimationFrame(() => requestAnimationFrame(startPresent));
-                }
-              }}
-            >
-              <Animated.View style={stretchAnimatedStyle}>
+      {mounted ? (
+        <Modal visible transparent animationType="none" onRequestClose={closeMenu}>
+          <View style={shellStyles.modalRoot} pointerEvents={open ? 'box-none' : 'none'}>
+            <Pressable style={shellStyles.dismissLayer} onPress={closeMenu} accessibilityLabel="关闭菜单" />
+            {frame ? (
               <Animated.View
-                pointerEvents="none"
                 style={[
-                  shellStyles.shadow,
-                  { borderRadius: panelRadius },
-                  shellShadowStyle,
-                  shadowAnimatedStyle,
+                  shellStyles.floater,
+                  {
+                    top: frame.top,
+                    left: frame.left,
+                    transformOrigin,
+                  },
+                  panelAnimatedStyle,
                 ]}
-              />
-              <Animated.View style={[shellStyles.shell, shellAnimatedStyle]}>
-                <EgMenuPanel
-                  measureToken={measureToken}
-                  sections={sections}
-                  selectedId={selectedId}
-                  mode={mode}
-                  menuWidth={menuWidth}
-                  maxScrollHeight={maxScrollHeight}
-                  onPick={(item) => pick(item, true)}
-                  onSlidePick={slidePick}
-                  contentAnimatedStyle={contentAnimatedStyle}
-                  revealClock={revealClock}
-                  stretch={stretch}
-                />
+                onLayout={(event: LayoutChangeEvent) => {
+                  const { height } = event.nativeEvent.layout;
+                  setPanelHeight((prev) => (prev === height ? prev : height));
+                  if (presentPendingRef.current) {
+                    presentPendingRef.current = false;
+                    requestAnimationFrame(() => requestAnimationFrame(startPresent));
+                  }
+                }}
+              >
+                <Animated.View style={stretchAnimatedStyle}>
+                  <Animated.View
+                    pointerEvents="none"
+                    style={[
+                      shellStyles.shadow,
+                      { borderRadius: panelRadius },
+                      shellShadowStyle,
+                      shadowAnimatedStyle,
+                    ]}
+                  />
+                  <Animated.View style={[shellStyles.shell, shellAnimatedStyle]}>
+                    <EgMenuPanel
+                      measureToken={measureToken}
+                      sections={sections}
+                      selectedId={selectedId}
+                      mode={mode}
+                      menuWidth={menuWidth}
+                      maxScrollHeight={maxScrollHeight}
+                      onPick={(item) => pick(item, true)}
+                      contentAnimatedStyle={contentAnimatedStyle}
+                      revealClock={revealClock}
+                      stretch={stretch}
+                      menuPanelBounds={
+                        frame
+                          ? {
+                              left: frame.left,
+                              top: frame.top,
+                              width: menuWidth,
+                              height: panelHeight,
+                            }
+                          : undefined
+                      }
+                    />
+                  </Animated.View>
+                </Animated.View>
               </Animated.View>
-              </Animated.View>
-            </Animated.View>
-          ) : null}
-        </View>
-      </Modal>
+            ) : null}
+          </View>
+        </Modal>
+      ) : null}
     </>
   );
 }

@@ -216,6 +216,8 @@ export const previewComponentLoaders: Record<string, PreviewLoader> = {
   EgTabBlock: () => require('../molecules/tab/tab-block/EgTabBlock.js').EgTabBlock,
   EgDataList: () => require('../organisms/data-list/EgDataList.js').EgDataList,
   EgTabBarText: () => require('../organisms/tab-bar/tab-bar-text/EgTabBarText.js').EgTabBarText,
+  EgPage: () => require('../templates/page/EgPage.js').EgPage,
+  EgPageShot: () => require('../templates/page-shot/EgPageShot.js').EgPageShot,
 };
 
 const cache = new Map<string, ComponentType<Record<string, unknown>> | null>();

@@ -1,58 +1,40 @@
 import type { MotionScenarioId } from '@/data/animations/motionScenarioCustomize';
+import { formatEdsSemanticAnimaCall } from '@/data/tokens/motionNativeDisplay';
 
 export type { MotionScenarioId };
 
 export type MotionScenarioDemo = {
   id: MotionScenarioId;
+  /** Motion 语义主入口 — 与 Tokens · Motion 列表一致：`EdsSemanticAnima('…')`。 */
   label: string;
+  /** 中文场景说明 — 首页副标题。 */
   lead: string;
   /** 对应 Motion 语义令牌主入口 — RN 片段在 Tokens 页。 */
   primaryTokenName: string;
 };
 
+function motionScenarioDemo(
+  id: MotionScenarioId,
+  lead: string,
+  primaryTokenName: string,
+): MotionScenarioDemo {
+  return {
+    id,
+    label: formatEdsSemanticAnimaCall(id),
+    lead,
+    primaryTokenName,
+  };
+}
+
 export const motionScenarioDemos: MotionScenarioDemo[] = [
-  {
-    id: 'press',
-    label: 'Press',
-    lead: 'EgEdsAnimaPress · 点按回弹',
-    primaryTokenName: 'motion-press',
-  },
-  {
-    id: 'slide',
-    label: 'Slide',
-    lead: 'EgEdsAnimaSlide · 分段滑选',
-    primaryTokenName: 'motion-slide',
-  },
-  {
-    id: 'layout-content',
-    label: 'Layout content',
-    lead: 'EgEdsAnimaLayoutContent · 正文切换',
-    primaryTokenName: 'motion-layout-content',
-  },
-  {
-    id: 'menu',
-    label: 'Menu',
-    lead: 'EgMenu · 浮层展开',
-    primaryTokenName: 'motion-menu',
-  },
-  {
-    id: 'sheets',
-    label: 'Sheets',
-    lead: 'EgSheets · 底部浮层',
-    primaryTokenName: 'motion-sheets',
-  },
-  {
-    id: 'page',
-    label: 'Page',
-    lead: 'EgEdsAnimaPage · 页面切换',
-    primaryTokenName: 'motion-page',
-  },
-  {
-    id: 'page-shot',
-    label: 'Page shot',
-    lead: 'EgEdsAnimaPageShot · 弹层整页',
-    primaryTokenName: 'motion-page-shot',
-  },
+  motionScenarioDemo('press', '点按回弹', 'motion-press'),
+  motionScenarioDemo('slide', '分段滑选', 'motion-slide'),
+  motionScenarioDemo('layout-content', '正文切换', 'motion-layout-content'),
+  motionScenarioDemo('fade', '淡入淡出', 'motion-fade'),
+  motionScenarioDemo('menu', '浮层展开', 'motion-menu'),
+  motionScenarioDemo('sheets', '底部浮层', 'motion-sheets'),
+  motionScenarioDemo('page', '页面切换', 'motion-page'),
+  motionScenarioDemo('page-shot', '弹层整页', 'motion-page-shot'),
 ];
 
 export function findMotionScenarioDemo(id: string): MotionScenarioDemo | undefined {
@@ -63,6 +45,7 @@ const TOKEN_ALIASES: Record<string, string> = {
   press: 'motion-press',
   slide: 'motion-slide',
   'layout-content': 'motion-layout-content',
+  fade: 'motion-fade',
   menu: 'motion-menu',
   'menu-dismiss': 'motion-menu',
   sheets: 'motion-sheets',

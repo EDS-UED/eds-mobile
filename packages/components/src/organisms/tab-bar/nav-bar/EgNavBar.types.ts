@@ -82,7 +82,7 @@ export type EgNavBarProps = {
   /** 背景显隐（scroll edge），贯穿状态栏区。默认 `auto`。 */
   background?: EgNavBarBackground;
   /**
-   * scroll edge 样式 — **RN 栏**缺省：`auto`/`visible` → `hard`（与 Showcase RN 浮层一致）；`hidden` → `hidden`。
+   * scroll edge 样式 — **RN 栏**缺省：未传时 `auto`/`visible` / Sheet `overlay` → `hard`（滚入栏下含 module 底线）；`hidden` → `hidden`；显式 `soft` 无底线。
    * **iOS 26+ 系统栏**缺省：`auto` → 静止 `hidden`、滚入 `soft`（`useEgNavBarScroll` / `egNavBarNativeStackOptions`）。
    */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;
@@ -105,8 +105,8 @@ export type EgNavBarProps = {
    */
   slotTransition?: EgNavBarSlotTransition;
   /**
-   * 已废弃于 iOS 26+ `stack` — 系统栏不可再强制 RN；请用 `egNavBarNativeStackOptions`。
-   * 仅作兼容入参（无效果）；Modal / Sheet 等用 `chromeContext="overlay"`。
+   * iOS 26+ `stack` 默认系统栏 — 设 `true` 强制 RN 栏（`scrollOffset` / `GlassMaskBackdrop` 全链路）。
+   * 须配 `headerShown: false` 与列表 `onScroll={useEgNavBarScroll().onScroll}`。Modal 等可用 `chromeContext="overlay"`。
    */
   forceRnImplementation?: boolean;
   style?: ViewStyle;

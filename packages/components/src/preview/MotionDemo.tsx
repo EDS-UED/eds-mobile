@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+
+type ScrollOffsetEvent = {
+  nativeEvent: { contentOffset: { x: number; y: number } };
+};
 import { SlideSelectionDemo } from './SlideSelectionDemo.js';
 import { EgEdsAnimaPress } from '../shared/motion/EgEdsAnimaPress.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
@@ -9,6 +13,8 @@ import { getThemeColors, type ThemeMode } from '../theme/index.js';
 type MotionDemoProps = {
   mode?: ThemeMode;
   style?: ViewStyle;
+  onScroll?: (event: ScrollOffsetEvent) => void;
+  scrollEventThrottle?: number;
 };
 
 const SEMANTIC_SECTIONS = [
@@ -146,7 +152,12 @@ function SlideDemo({ mode }: { mode: ThemeMode }) {
   );
 }
 
-export function MotionDemo({ mode = 'light', style }: MotionDemoProps) {
+export function MotionDemo({
+  mode = 'light',
+  style,
+  onScroll,
+  scrollEventThrottle = 16,
+}: MotionDemoProps) {
   const colors = getThemeColors(mode);
 
   return (
@@ -154,6 +165,8 @@ export function MotionDemo({ mode = 'light', style }: MotionDemoProps) {
       style={[styles.scroll, style, { backgroundColor: colors.page as string }]}
       contentContainerStyle={styles.scrollContent}
       nestedScrollEnabled
+      onScroll={onScroll}
+      scrollEventThrottle={scrollEventThrottle}
     >
       <Text style={[styles.title, { color: colors['text-base-primary'] as string }]}>
         Motion Demo
@@ -268,6 +281,7 @@ const styles = StyleSheet.create({
 });
 
 export { SlideSelectionDemo } from './SlideSelectionDemo.js';
+export { FadeTabDemo } from './FadeTabDemo.js';
 export { PageShotDemo } from './PageShotDemo.js';
 export { PageStackDemoPage } from './PageStack.js';
 export { EgEdsAnimaOverlayModal } from '../shared/motion/overlayModal.js';

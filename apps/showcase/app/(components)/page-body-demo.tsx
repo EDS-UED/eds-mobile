@@ -1,0 +1,1 @@
+export { ShowcaseEgPageDemoView as default } from '@/views/components/ShowcaseEgPageDemoView';

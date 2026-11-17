@@ -1,14 +1,16 @@
 import type { ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { useEgNavBarScroll } from '../organisms/tab-bar/nav-bar/useEgNavBarScroll.js';
+import { EgPage } from '../templates/page/EgPage.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
 import { getThemeColors, mobileTheme, type ThemeMode } from '../theme/index.js';
 
+type ScrollOffsetEvent = {
+  nativeEvent: { contentOffset: { x: number; y: number } };
+};
+
 /**
- * 演示页内容 · 可继续推入的行。
- * `showHeader`（默认 true）自绘返回 + 大标题；false 时顶栏交给 NavBar（系统栏 / EgNavBar）：
- * `topInset` > 0 按栏底留白（RN 栏），否则滚动区由系统自动避让（系统栏）。
+ * 演示页内容 · 可继续推入的行（滚动区由 `EgPage` 包边距）。
  */
 export function PageStackDemoPage({
   mode,
@@ -20,6 +22,9 @@ export function PageStackDemoPage({
   onPush,
   footer,
   showHeader = true,
+  onScroll: onScrollProp,
+  scrollEventThrottle: scrollThrottleProp,
+  contentInsetAdjustmentBehavior = topInset > 0 ? 'never' : 'automatic',
 }: {
   mode: ThemeMode;
   title: string;
@@ -30,9 +35,11 @@ export function PageStackDemoPage({
   onPush: (title: string) => void;
   footer?: ReactNode;
   showHeader?: boolean;
+  onScroll?: (event: ScrollOffsetEvent) => void;
+  scrollEventThrottle?: number;
+  contentInsetAdjustmentBehavior?: 'automatic' | 'never';
 }) {
   const colors = getThemeColors(mode);
-  const { onScroll, scrollEventThrottle } = useEgNavBarScroll();
   const primary = colors['text-base-primary'] as string;
   const secondary = colors['text-base-secondary'] as string;
   const list = (
@@ -58,43 +65,33 @@ export function PageStackDemoPage({
   );
   if (!showHeader) {
     return (
-      <ScrollView
-        style={styles.fill}
-        contentInsetAdjustmentBehavior={topInset > 0 ? 'never' : 'automatic'}
-        onScroll={onScroll}
-        scrollEventThrottle={scrollEventThrottle}
-        contentContainerStyle={[styles.scrollContent, topInset > 0 ? { paddingTop: topInset + (spacing['spacing-4'] ?? 16) } : null]}
+      <EgPage
+        mode={mode}
+        topInset={topInset}
+        scrollTopInset={topInset > 0 ? topInset : undefined}
+        contentInsetAdjustmentBehavior={contentInsetAdjustmentBehavior}
+        onScroll={onScrollProp}
+        scrollEventThrottle={scrollThrottleProp}
+        nativeScrollEdge={onScrollProp == null}
       >
         {list}
-      </ScrollView>
+      </EgPage>
     );
   }
   return (
-    <View style={[styles.page, { paddingTop: topInset }]}>
+    <EgPage mode={mode} contentInsetAdjustmentBehavior="automatic">
       <Pressable accessibilityRole="button" onPress={onBack} style={styles.backHit}>
         <Text style={[styles.back, { color: colors.brand as string }]}>{backLabel}</Text>
       </Pressable>
       <Text style={[styles.largeTitle, { color: primary }]}>{title}</Text>
       {list}
-    </View>
+    </EgPage>
   );
 }
 
 const spacing = mobileTheme.spacing as Record<string, number>;
 
 const styles = StyleSheet.create({
-  fill: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: spacing['spacing-5'] ?? 20,
-    paddingTop: spacing['spacing-4'] ?? 16,
-    paddingBottom: spacing['spacing-8'] ?? 32,
-  },
-  page: {
-    flex: 1,
-    paddingHorizontal: spacing['spacing-5'] ?? 20,
-  },
   backHit: {
     alignSelf: 'flex-start',
     paddingVertical: spacing['spacing-2'] ?? 8,

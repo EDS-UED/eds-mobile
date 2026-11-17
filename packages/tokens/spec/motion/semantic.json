@@ -1,6 +1,6 @@
 {
   "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
-  "$description": "EDS Mobile Motion Semantic — press / slide / layout-content（同壳正文 crossfade）/ menu（浮层倒出）/ sheets（Sheet）。",
+  "$description": "EDS Mobile Motion Semantic — press / slide / layout-content / fade（淡入淡出）/ menu（浮层倒出）/ sheets（Sheet）。",
   "groups": [
     {
       "comment": "Press（点按 · EgEdsAnimaPress）",
@@ -88,6 +88,42 @@
       ]
     },
     {
+      "comment": "Fade（纯淡入淡出 · 文案 / Segment）",
+      "styles": [
+        {
+          "title": "淡入淡出 · 文案 / Segment",
+          "className": "motion-fade",
+          "scenarioId": "fade",
+          "recipe": "fade",
+          "properties": {
+            "transition": "var(--motion-recipe-fade)",
+            "opacity": "var(--motion-opacity-visible)"
+          },
+          "stateStyles": [
+            {
+              "hostClass": "motion-fade.is-exiting",
+              "title": "退出 · 旧内容",
+              "properties": {
+                "opacity": "var(--motion-opacity-hidden)"
+              }
+            },
+            {
+              "hostClass": "motion-fade.is-entering",
+              "title": "进入首帧 snap",
+              "properties": {
+                "transition": "none",
+                "opacity": "var(--motion-opacity-hidden)"
+              }
+            }
+          ],
+          "notes": [
+            "EdsSemanticAnima('fade') · mid-swap var(--motion-delay-fade-swap)",
+            "RN · EgEdsAnimaFade + useMotionLayoutContentSwitch"
+          ]
+        }
+      ]
+    },
+    {
       "comment": "Menu（iOS 27 浮层倒出 · Menu / Popover / 浮动 Sheet）",
       "styles": [
         {
@@ -114,7 +150,7 @@
             "Semantic → Recipe(menu) → Base(spring.menu-in · scale-menu-origin · scale-menu-trigger-lift · timing.menu-content-in / menu-content-in-stagger · spring.menu-content-wave · offset-menu-content-y · spring.menu-stretch-release · ratio-menu-stretch-* · haptic.light)",
             "收回 → Recipe(menu-dismiss) · spring.menu-out",
             "RN · 同一 progress：触发器鼓起后隐去（化为水滴）→ 容器 scaleY 领先 scaleX（竖长水滴 · p + 1.5·p·(1−p)²，p = 1 处 C¹ 连续）· 外壳圆角 全圆 → 面板 radius · 不位移，spring 过冲带出 scale 回弹 · 内容随壳显出：自 p = 0.35 起自上而下逐行淡入（timing.menu-content-in）并自 offset-menu-content-y 上移（spring.menu-content-wave · 欠阻尼冲过落点再回落），行间隔 menu-content-in-stagger，逐行错峰的过冲叠出波浪；收回为缩放收起：朝触发器等比缩小、不位移 · 圆角回全圆 · 内容随壳缩小中段隐去 · 外壳保持实体至 p≈0.3，再与鼓起的触发器交叉融合",
-            "RN · 按住拖拽（与滑选同一 Pan）：位移经橡皮筋衰减 → 左右加宽（≤ ratio-menu-stretch-x）/ 上下变高（≤ ratio-menu-stretch-y），朝手指方向展开、对侧边缘不动，逐帧直写 1:1 跟手；可拉伸方向按触发器所在屏幕分区（menuStretchAllowance）：水平三等分 左 → 仅右 · 中 → 左右 · 右 → 仅左，垂直 上半 → 仅下 · 下半 → 仅上；松手 spring.menu-stretch-release 弹回原宽高（欠阻尼果冻回弹）· 仅 transform",
+            "RN · 按住拖拽（与滑选同一 Pan）：手指在面板内仅极小变形；越出边缘后主轴橡皮筋拉伸，次轴按 ratio-menu-stretch-couple 联动略收（scaleX − couple·ΔH/H 等）；松手 spring.menu-stretch-release 果冻回弹 · 仅 transform",
             "RN · EgMenu（RN 栈）浮层 · menuContainerStyle · menuStretchStyle",
             "RN 性能约定 · 逐帧只动 transform / opacity 与无阴影外壳 radius；阴影放固定圆角独立层、外形近到位才淡入；浮层首次布局后下一帧再起 spring；展开落定后重测命中区；分段窗口一律 smoothstep"
           ]
@@ -269,6 +305,9 @@
     "motion-layout-content",
     "motion-layout-content.is-exiting",
     "motion-layout-content.is-entering",
+    "motion-fade",
+    "motion-fade.is-exiting",
+    "motion-fade.is-entering",
     "motion-menu",
     "motion-menu.is-collapsed",
     "motion-sheets",
@@ -288,6 +327,7 @@
       { "from": "motion-press", "toStrategy": "instant", "utilityClass": "motion-none" },
       { "from": "motion-slide", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-layout-content", "toStrategy": "instant", "utilityClass": "motion-none" },
+      { "from": "motion-fade", "toStrategy": "instant", "utilityClass": "motion-none" },
       { "from": "motion-menu", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-sheets", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-page", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },

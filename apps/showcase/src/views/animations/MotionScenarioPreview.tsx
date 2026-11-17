@@ -1,5 +1,9 @@
 import { EgMenu, EgEdsAnimaPress, type EgMenuProps } from '@eds/mobile-components';
-import { PageShotDemo, SlideSelectionDemo } from '@eds/mobile-components/preview/motion';
+import {
+  FadeTabDemo,
+  PageShotDemo,
+  SlideSelectionDemo,
+} from '@eds/mobile-components/preview/motion';
 import { LayoutContentTabDemo } from '@eds/mobile-components/preview/layout-content';
 import mobileTheme from '@eds/mobile-tokens/theme';
 import { useMemo, useState } from 'react';
@@ -123,6 +127,12 @@ export function MotionScenarioPreview({
           <LayoutContentTabDemo mode="light" />
         </View>
       );
+    case 'fade':
+      return (
+        <View style={styles.previewBlock}>
+          <FadeTabDemo mode="light" />
+        </View>
+      );
     case 'press':
       return (
         <PressPreview
@@ -141,7 +151,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     gap: theme.layout.cardGap,
-    paddingVertical: theme.layout.cardPaddingVertical,
   },
   tapButton: {
     minWidth: 200,

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import {
   getTypographyFamilyGroups,
@@ -8,7 +8,6 @@ import {
 } from '@/data/tokens/typographyTokenCatalog';
 import type { TokenGroup } from '@/data/tokens/tokenCatalogTypes';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
-import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { TokenCatalogListGroup } from '@/views/tokens/TokenCatalogListGroup';
 import { TokenListRow } from '@/views/tokens/TokenListRow';
 import { TokenSegmentScrollLayout } from '@/views/tokens/TokenSegmentScrollLayout';
@@ -48,7 +47,7 @@ export function TypographyTokensView({ title }: TypographyTokensViewProps) {
       segmentIndex={segmentIndex}
       onSegmentIndexChange={setSegmentIndex}
     >
-      <View style={styles.groupList}>
+      <View>
         {groups.map((group) => (
           <TokenCatalogListGroup
             key={group.comment}
@@ -67,9 +66,3 @@ export function TypographyTokensView({ title }: TypographyTokensViewProps) {
     </TokenSegmentScrollLayout>
   );
 }
-
-const styles = StyleSheet.create({
-  groupList: {
-    gap: theme.layout.docSectionCardGap,
-  },
-});

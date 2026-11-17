@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 
+import { showcasePageHeadingInsetLeft } from './showcaseDocSectionLayout';
 import { showcaseTheme as theme } from './showcaseTheme';
 
 type ShowcasePageIntroProps = {
@@ -22,16 +23,15 @@ export function ShowcasePageIntro({
   homeLargeTitle = false,
 }: ShowcasePageIntroProps) {
   const colors = useShowcaseColors();
-  const leadColor = subtitle
-    ? (colors['text-base-primary'] as string)
-    : (colors['text-base-secondary'] as string);
+  const leadColor = colors['text-base-secondary'] as string;
 
   return (
     <View
       style={[
         styles.wrap,
+        homeLargeTitle ? { paddingLeft: showcasePageHeadingInsetLeft } : null,
         homeLargeTitle && subtitle && !title
-          ? { paddingTop: theme.layout.navContentGapHome }
+          ? { marginTop: theme.layout.tabHomeTitleSubtitleGap }
           : null,
       ]}
     >
@@ -55,7 +55,6 @@ export function ShowcasePageIntro({
 
 const styles = StyleSheet.create({
   wrap: {
-    paddingHorizontal: theme.layout.pageInset,
     paddingBottom: theme.spacing['spacing-3'] as number,
     gap: theme.layout.pageSubtitleGap,
   },

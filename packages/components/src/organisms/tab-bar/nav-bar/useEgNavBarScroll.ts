@@ -1,9 +1,13 @@
 import { NavigationContext } from '@react-navigation/native';
-import { createContext, useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSharedValue } from 'react-native-reanimated';
 
 import { isIos26OrLater } from '../../../shared/iosVersion.js';
 import type { EgNavBarScrollEdgeEffect } from './EgNavBar.types.js';
+import {
+  EG_NAV_BAR_NATIVE_SCROLL_EDGE_HIDE_MS,
+  patchEgNavBarNativeScrollEdge,
+} from './egNavBarNativeScrollEdge.js';
 
 type ScrollEventLike = { nativeEvent: { contentOffset: { y: number } } };
 
@@ -36,7 +40,8 @@ export function markEgNavBarScrollEdgeFixed(navigation: object, fixed: boolean) 
 export type UseEgNavBarScrollOptions = {
   /**
    * iOS 26+ 驱动所在页系统栏 scroll edge（静止 `hidden` · 滚入栏下 `soft`）：react-navigation native-stack 页自动
-   * `setOptions`；其他路由（expo-router 等）把返回的 `scrollEdgeActive` 传给 `egNavBarNativeStackOptions`。默认 true。
+   * `setOptions`；RN `EgNavBar` 的 `showTitle`、expo-router 等把返回的 `scrollEdgeActive` 传给 `egNavBarNativeStackOptions`。
+   * 默认 true（`EgPage` 内）。Showcase 等已用 `scrollEdgeActive` 写进 `<Stack.Screen options>` 时传 `false`，避免双写。
    * 业务已配 `scrollEdgeEffect`（如 `'automatic'`）时以配置为准，滚动不改写。
    */
   nativeScrollEdge?: boolean;
@@ -52,6 +57,7 @@ export type UseEgNavBarScrollOptions = {
  * 页底色走 navigator `contentStyle` / `cardStyle`。
  */
 export function useEgNavBarScroll({ nativeScrollEdge = true }: UseEgNavBarScrollOptions = {}) {
+  /** 自静止位起「滚入栏下」距离 — 供 RN `EgNavBar` `background="auto"` 驱动透明度。 */
   const scrollOffset = useSharedValue(0);
   const navigation = useContext(NavigationContext);
   const host = useContext(EgNavBarScrollEdgeContext);
@@ -62,34 +68,100 @@ export function useEgNavBarScroll({ nativeScrollEdge = true }: UseEgNavBarScroll
   const restOffset = useRef<number | null>(null);
   const active = useRef(false);
   const atTop = useRef(true);
+  const nativeEdgeHiddenTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const drivesNativeEdge = nativeScrollEdge && isIos26OrLater();
+
+  const applyNativeScrollEdge = useCallback((effect: 'soft' | 'hidden') => {
+    if (setHostEdge) {
+      setHostEdge(effect);
+      return;
+    }
+    if (navigation && !fixedScrollEdgeNavigations.has(navigation)) {
+      navigation.setOptions(patchEgNavBarNativeScrollEdge(effect));
+    }
+  }, [navigation, setHostEdge]);
+
+  const clearNativeEdgeHiddenTimer = useCallback(() => {
+    if (nativeEdgeHiddenTimer.current) {
+      clearTimeout(nativeEdgeHiddenTimer.current);
+      nativeEdgeHiddenTimer.current = null;
+    }
+  }, []);
   useLayoutEffect(() => {
     if (!settled) restOffset.current = null;
   }, [settled]);
 
+  useLayoutEffect(() => {
+    if (!drivesNativeEdge || !navigation || fixedScrollEdgeNavigations.has(navigation) || setHostEdge) {
+      return;
+    }
+    applyNativeScrollEdge('hidden');
+  }, [applyNativeScrollEdge, drivesNativeEdge, navigation, setHostEdge]);
+
+  const resetScrollChrome = useCallback(() => {
+    clearNativeEdgeHiddenTimer();
+    restOffset.current = null;
+    scrollOffset.value = 0;
+    active.current = false;
+    atTop.current = true;
+    setScrollEdgeActive(false);
+    if (drivesNativeEdge) applyNativeScrollEdge('hidden');
+  }, [applyNativeScrollEdge, clearNativeEdgeHiddenTimer, drivesNativeEdge, scrollOffset]);
+
+  useEffect(() => {
+    if (!navigation || typeof navigation.addListener !== 'function') return;
+    const unsubscribe = navigation.addListener('focus', resetScrollChrome);
+    return () => {
+      unsubscribe();
+      clearNativeEdgeHiddenTimer();
+    };
+  }, [clearNativeEdgeHiddenTimer, navigation, resetScrollChrome]);
+
   const onScroll = useCallback(
     (event: ScrollEventLike) => {
       const y = event.nativeEvent.contentOffset.y;
-      scrollOffset.value = y;
-      if (!settled) return;
+      if (!settled) {
+        scrollOffset.value = Math.max(0, y);
+        return;
+      }
       // 系统避让（`automatic`）静止位置为负；`never` 首个事件已是用户拖动，静止即 0。
       if (restOffset.current === null) restOffset.current = Math.min(y, 0);
-      const next = y - restOffset.current > SCROLL_EDGE_ACTIVE_DISTANCE;
-      if (setHostAtTop && atTop.current === next) {
+      const under = Math.max(0, y - restOffset.current);
+      scrollOffset.value = under;
+      const next = under > SCROLL_EDGE_ACTIVE_DISTANCE;
+      if (setHostAtTop && atTop.current !== !next) {
         atTop.current = !next;
         setHostAtTop(!next);
       }
-      if (!drivesNativeEdge) return;
-      if (next === active.current) return;
-      active.current = next;
-      setScrollEdgeActive(next);
-      const effect: EgNavBarScrollEdgeEffect = next ? 'soft' : 'hidden';
-      if (setHostEdge) setHostEdge(effect);
-      else if (navigation && !fixedScrollEdgeNavigations.has(navigation)) {
-        navigation.setOptions({ scrollEdgeEffects: { top: effect } });
+      if (next !== active.current) {
+        active.current = next;
+        setScrollEdgeActive(next);
       }
+      if (!drivesNativeEdge) {
+        return;
+      }
+      if (next) {
+        clearNativeEdgeHiddenTimer();
+        applyNativeScrollEdge('soft');
+        return;
+      }
+      if (nativeEdgeHiddenTimer.current) return;
+      nativeEdgeHiddenTimer.current = setTimeout(() => {
+        nativeEdgeHiddenTimer.current = null;
+        if (active.current) return;
+        applyNativeScrollEdge('hidden');
+      }, EG_NAV_BAR_NATIVE_SCROLL_EDGE_HIDE_MS);
     },
-    [drivesNativeEdge, navigation, scrollOffset, setHostAtTop, setHostEdge, settled],
+    [
+      applyNativeScrollEdge,
+      clearNativeEdgeHiddenTimer,
+      drivesNativeEdge,
+      scrollOffset,
+      setHostAtTop,
+      setHostEdge,
+      settled,
+    ],
   );
+
   return { scrollOffset, onScroll, scrollEventThrottle: 16 as const, scrollEdgeActive };
 }

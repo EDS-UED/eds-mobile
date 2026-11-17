@@ -16,14 +16,15 @@ import {
   resolveRnAiCustomizeState,
   tierFamilyFromEntry,
 } from '@/data/components/buildRnAiPrompt';
+import { buildPageBodyDemoParams } from '@/data/components/pageBodyDemoParams';
 import { showcaseInfraPreviewDefaults } from '@/data/components/showcaseInfraPreviewDefaults';
+import { SHOWCASE_PAGE_BODY_SLUG } from '@/data/components/showcaseInfraCatalog';
 import type { EgNavBarAction } from '@eds/mobile-components';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import { useShowcaseDev } from '@/hooks/useShowcaseDev';
 import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
@@ -36,6 +37,7 @@ import { CustomizePanel } from '@/views/shared/CustomizePanel';
 import { CustomizeSlotCardStack } from '@/views/shared/CustomizeSlotCardStack';
 import { DocContentSheet } from '@/views/shared/DocContentSheet';
 import { DocSection } from '@/views/shared/DocSection';
+import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
 import { InspectSheet } from '@/views/shared/InspectSheet';
 import { PropsDocTable } from '@/views/shared/PropsDocTable';
 import { ShowcaseInspectTarget } from '@/views/shared/ShowcaseInspectTarget';
@@ -46,7 +48,10 @@ import { UsageSnippetBlock } from '@/views/shared/UsageSnippetBlock';
 import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
 import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseComponentPreviewCanvas';
+import { resolveShowcaseComponentAnnotation } from '@/data/components/resolveShowcaseComponentAnnotation';
+import { ShowcaseComponentAnnotation } from '@/views/shared/ShowcaseComponentAnnotation';
 
 function createComponentDetailStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
   const pageBg = showcasePageBackgroundColor(colors);
@@ -55,15 +60,6 @@ function createComponentDetailStyles(colors: ShowcaseColorMap, nativeStackNav: b
     scrollRoot: {
       flex: 1,
       ...(nativeStackNav ? null : { backgroundColor: pageBg }),
-    },
-    scrollContent: {
-      paddingBottom: theme.layout.scrollBottom,
-    },
-    scrollWithFixedFooter: {
-      paddingBottom: 0,
-    },
-    scrollInspect: {
-      paddingBottom: 160,
     },
     previewContent: showcaseComponentPreviewContentStyle,
     missing: {
@@ -115,7 +111,8 @@ export function ComponentDetailView() {
   const scrollBottomInset =
     COMPONENT_DETAIL_FOOTER_HEIGHT +
     Math.max(insets.bottom, edsSpacing('spacing-3')) +
-    edsSpacing('spacing-4');
+    edsSpacing('spacing-4') +
+    (mode === 'inspect' ? 160 : 0);
 
   const { colorTheme } = useShowcaseThemeContext();
   const PreviewComponent = resolveShowcasePreviewComponent(exportName);
@@ -211,47 +208,61 @@ export function ComponentDetailView() {
   const docSheetTitle =
     docPanel === 'usage' ? 'USAGE' : docPanel === 'props' ? 'PROPS / API' : '';
 
+  const isPageBody = slug === SHOWCASE_PAGE_BODY_SLUG;
+
   return (
     <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={styles.scrollRoot}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
           nestedScrollEnabled
           keyboardShouldPersistTaps="handled"
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
-          contentContainerStyle={[
-            showcaseNavScrollContentStyle(
-              nativeStackNav,
-              rnScrollPaddingTop,
-              mode === 'inspect' ? styles.scrollInspect : styles.scrollWithFixedFooter,
-            ),
-            { paddingBottom: scrollBottomInset },
-          ]}
+          withTabBarInset={false}
+          docSectionStack
+          bottomInsetExtra={scrollBottomInset}
+          style={styles.scrollRoot}
         >
-          <DocSection title="预览" previewScreenFrame>
-            <View style={styles.previewContent}>
-              <ShowcaseInspectTarget
-                inspect={{
-                  label: exportName,
-                  styleLines,
-                  motionLines: ['preset: —', 'scene: —'],
-                }}
-                onMeasuredLayout={setMeasuredLayout}
-              >
-                {PreviewComponent && entry ? (
-                  <PreviewComponent key={previewRemountKey} {...previewProps} />
-                ) : PreviewComponent ? (
-                  <PreviewComponent testID={slug} {...customize} />
-                ) : (
-                  <Text style={styles.missing}>No export registered for {exportName}</Text>
-                )}
-              </ShowcaseInspectTarget>
-            </View>
-          </DocSection>
+          {isPageBody ? (
+            <>
+              <DocSection title="预览" cardPadding="none">
+                <DocSectionLinkRow
+                  title="预览"
+                  onPress={() =>
+                    router.push({
+                      pathname: '/(components)/page-body-demo',
+                      params: buildPageBodyDemoParams(customize),
+                    })
+                  }
+                />
+              </DocSection>
+            </>
+          ) : (
+            <DocSection title="预览" previewScreenFrame>
+              <View style={styles.previewContent}>
+                <ShowcaseInspectTarget
+                  inspect={{
+                    label: exportName,
+                    styleLines,
+                    motionLines: ['preset: —', 'scene: —'],
+                  }}
+                  onMeasuredLayout={setMeasuredLayout}
+                >
+                  {PreviewComponent && entry ? (
+                    <PreviewComponent key={previewRemountKey} {...previewProps} />
+                  ) : PreviewComponent ? (
+                    <PreviewComponent testID={slug} {...customize} />
+                  ) : (
+                    <Text style={styles.missing}>No export registered for {exportName}</Text>
+                  )}
+                </ShowcaseInspectTarget>
+              </View>
+            </DocSection>
+          )}
 
           <DocSection title="定制" egItemGroupFrame>
             {doc?.customizeLayout === 'menu-sections' ? (
@@ -285,7 +296,13 @@ export function ComponentDetailView() {
               />
             </DocSection>
           ) : null}
-        </ScrollView>
+
+          <DocSection title="注释">
+            <ShowcaseComponentAnnotation
+              doc={resolveShowcaseComponentAnnotation(entry, exportName)}
+            />
+          </DocSection>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
 
       <ComponentDetailActionFooter copyPrompt={aiPrompt} onOpen={setDocPanel} />

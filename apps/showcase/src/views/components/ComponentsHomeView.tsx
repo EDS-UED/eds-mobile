@@ -1,11 +1,10 @@
 import { router, Stack } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 
 import { componentCatalogNav } from '@/data/components/buildComponentCatalogNav';
 import { COMPONENTS_SHOWCASE_LEAD } from '@/data/components/componentsShowcaseCopy';
 import { tierPageSubtitle } from '@/data/components/tierIntroCopy';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
 import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
@@ -13,6 +12,7 @@ import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 export function ComponentsHomeView() {
   const screenStyles = useShowcaseScreenStyles();
@@ -31,16 +31,13 @@ export function ComponentsHomeView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            screenStyles.scrollContent,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
+          contentPaddingTop={0}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          style={screenStyles.scrollRoot}
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
@@ -56,7 +53,7 @@ export function ComponentsHomeView() {
               />
             ))}
           </View>
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );

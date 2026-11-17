@@ -31,11 +31,11 @@ export const TIER_HOME_TITLES: Record<CatalogTier, string> = {
 };
 
 export const FAMILY_LABELS: Record<string, string> = {
-  text: 'Text 文字',
   divider: 'Divider 分割线',
   avatar: 'Avatar 头像',
   crypto: 'Crypto 币种',
-  icon: 'Icon 图标',
+  /** gallery 旧链 `…/icon` — 与 symbol 同文案 */
+  icon: 'Symbol 图标',
   glass: 'Glass 玻璃',
   'scroll-edge': 'Scroll Edge 滚动缘',
   button: 'Button 按钮',
@@ -54,17 +54,22 @@ export const FAMILY_LABELS: Record<string, string> = {
   'data-list': 'Data List 数据列表',
   item: 'Item 设置行',
   index: 'Index 索引',
+  page: 'Page 页面',
+  'page-shot': 'Page Shot 弹层页',
   symbol: 'Symbol 图标',
 };
 
+/** Avatar 仍可用 gallery 路由；Symbol / Crypto 资产在族页网格展示。 */
 const GALLERY_FAMILIES: Record<string, AtomGalleryFamily> = {
-  icon: 'icon',
-  crypto: 'crypto',
   avatar: 'avatar',
 };
 
 /** 仅在「数据」Tab 展示 — 不出现在 Components tier 族列表。 */
-const SHOWCASE_COMPONENTS_NAV_EXCLUDED_FAMILIES = new Set(['data-list', 'item']);
+const SHOWCASE_COMPONENTS_NAV_EXCLUDED_FAMILIES = new Set(['data-list', 'item', 'text']);
+
+/** Figma catalog `icon` / `crypto` — EgSymbol 资产，并入 symbol 导航。 */
+export const SHOWCASE_NAV_MERGE_ICON_INTO_SYMBOL = true;
+export const SHOWCASE_NAV_MERGE_CRYPTO_INTO_SYMBOL = true;
 
 export type ComponentFamilyNav = {
   tier: CatalogTier;
@@ -123,6 +128,14 @@ const SHOWCASE_NAV_PROMOTE_BY_SLUG: Record<
     family: 'scroll-edge',
     directory: 'packages/components/src/atoms/glass',
   },
+  'page-body': {
+    family: 'page',
+    directory: 'packages/components/src/templates/page',
+  },
+  'page-shot-body': {
+    family: 'page-shot',
+    directory: 'packages/components/src/templates/page-shot',
+  },
 };
 
 function showcaseNavTier(entry: ShowcaseCatalogEntry): CatalogTier {
@@ -130,7 +143,14 @@ function showcaseNavTier(entry: ShowcaseCatalogEntry): CatalogTier {
 }
 
 function showcaseNavFamily(entry: ShowcaseCatalogEntry): string {
-  return SHOWCASE_NAV_PROMOTE_BY_SLUG[entry.slug]?.family ?? entry.family;
+  const family = SHOWCASE_NAV_PROMOTE_BY_SLUG[entry.slug]?.family ?? entry.family;
+  if (SHOWCASE_NAV_MERGE_ICON_INTO_SYMBOL && family === 'icon') {
+    return 'symbol';
+  }
+  if (SHOWCASE_NAV_MERGE_CRYPTO_INTO_SYMBOL && family === 'crypto') {
+    return 'symbol';
+  }
+  return family;
 }
 
 function familyDirectory(tier: CatalogTier, family: string, slug?: string) {
@@ -147,7 +167,7 @@ function resolveBodySlug(family: string): string | undefined {
   if (familyBodyPreviewSlug[bodySlug]) {
     return bodySlug;
   }
-  if (figmaComponentCatalog.some((entry) => entry.slug === bodySlug)) {
+  if (getShowcaseComponentCatalog().some((entry) => entry.slug === bodySlug)) {
     return bodySlug;
   }
   return undefined;
@@ -233,37 +253,42 @@ export function familyTierRowTitle(family: string): string {
   return familyEgComponentName(family);
 }
 
+const FAMILY_TIER_ROW_HINT_OVERRIDES: Record<string, string> = {
+  avatar: '头像色盘',
+  button: '触发操作',
+  divider: '分割页面层级',
+  feedback: '即时提醒',
+  glass: '容器材质',
+  input: '输入源',
+  popovers: '浮层',
+  'scroll-edge': '滚动源叠层',
+  'segmented-control': '分段控制器',
+  symbol: '图形解析器、含Icon与Crypto',
+  menu: '触发与下拉',
+  'nav-bar': '导航栏',
+  sheets: '悬浮层',
+  'tab-bar': '标签栏',
+  tab: '标签页',
+  toggle: '开关',
+};
+
 export function familyTierRowHint(nav: ComponentFamilyNav): string {
-  if (nav.family === 'glass') {
-    return 'BlurGlass · Effect Glass Box';
-  }
-  if (nav.family === 'scroll-edge') {
-    return '滚动缘叠层 · glass-mask-box · iOS 26 scrollEdgeEffectStyle 同名';
-  }
-  if (nav.family === 'symbol') {
-    return 'Icon/Crypto 运行时 API · EgIcon* / EgCrypto* 均委托于此';
-  }
-  if (nav.family === 'menu') {
-    return '页面级 Menu · 触发器插槽 + 分组菜单';
-  }
-  if (nav.family === 'sheets') {
-    return '底部浮层 · 悬浮档 ↔ 大尺寸贴边 · 顶部 EgNavBar';
+  const override = FAMILY_TIER_ROW_HINT_OVERRIDES[nav.family];
+  if (override) {
+    return override;
   }
   if (nav.family === 'item') {
     return '个人中心 / 设置分组行 · value · chevron · 分割线';
   }
-  return `${nav.directory} · 已实现 ${nav.implementedCount}/${nav.entries.length}`;
+  if (nav.family === 'page') {
+    return 'motion-page · createEgPageNavigator + egPageScreenOptions + EgPage';
+  }
+  if (nav.family === 'page-shot') {
+    return 'motion-page-shot · EgPageShotTrigger 展开整页';
+  }
+  return nav.label;
 }
 
-export function familyTierPressHref(nav: ComponentFamilyNav): string {
-  if (nav.family === 'glass' || nav.family === 'scroll-edge') {
-    return `/(components)/family/${nav.tier}/${nav.family}`;
-  }
-  if (nav.family === 'symbol' && nav.entries.length === 1) {
-    return `/(components)/detail/${nav.entries[0]!.slug}`;
-  }
-  if (!nav.bodySlug && !nav.galleryFamily && nav.entries.length === 1) {
-    return `/(components)/detail/${nav.entries[0]!.slug}`;
-  }
+export function familyTierPressHref(nav: ComponentFamilyNav): `/(components)/family/${string}/${string}` {
   return `/(components)/family/${nav.tier}/${nav.family}`;
 }

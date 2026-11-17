@@ -5,21 +5,22 @@ import { useColorScheme } from 'react-native';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 
 export function MotionDemoView() {
   const scheme = useColorScheme();
   const normalizedScheme = scheme === 'light' || scheme === 'dark' ? scheme : undefined;
   const mode = resolveThemeMode(normalizedScheme);
   const title = 'Motion 演示';
-  const { stackScreenOptions, rnNavBar } = useShowcaseStackNav(title);
+  const { stackScreenOptions, rnNavBar, onScroll, scrollEventThrottle } = useShowcaseStackNav(title);
 
   return (
-    <>
+    <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <MotionDemo mode={mode} />
+        <MotionDemo mode={mode} onScroll={onScroll} scrollEventThrottle={scrollEventThrottle} />
       </ShowcaseNavBlurBackdrop>
-    </>
+    </ShowcaseStackScreen>
   );
 }

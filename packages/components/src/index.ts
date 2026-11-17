@@ -375,6 +375,15 @@ export type { EgTabBarTextProps } from './organisms/tab-bar/tab-bar-text';
 export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';
 export type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';
 export {
+  cryptoAssetNames,
+  formatSymbolDisplayName,
+  iconAssetNames,
+  resolveSymbolKind,
+} from './atoms/_shared/symbol/index.js';
+export type { SymbolKind } from './atoms/_shared/symbol/index.js';
+export { preloadAllCryptoChunks } from './atoms/_shared/crypto/cryptoAssetLoader.js';
+export { preloadAllIconChunks } from './atoms/_shared/icon/iconAssetLoader.js';
+export {
   EgGlass,
   EgScrollEdgeEffect,
   resolveEgScrollEdgeEffect,
@@ -446,8 +455,33 @@ export type {
   EgEdsAnimaPageShotSource,
   EgEdsAnimaPageShotTriggerProps,
 } from './shared/motion/EgEdsAnimaPageShot.js';
+export {
+  EgPage,
+  createEgPageNavigator,
+  egPageScreenOptions,
+  shouldUseEgPageNativeStack,
+  EG_PAGE_CONTENT_PADDING_HORIZONTAL,
+  EG_PAGE_CONTENT_PADDING_TOP,
+  EG_PAGE_CONTENT_PADDING_BOTTOM,
+  egPageScrollContentStyle,
+  resolveEgPageScrollPaddingTop,
+  resolveEgPageScrollContentStyle,
+  resolveEgPageContentPaddingTopFromPreset,
+  EG_PAGE_CONTENT_PADDING_TOP_PRESETS,
+} from './templates/page/index.js';
+export type { EgPageProps, EgPageScrollViewHandle, EgPageDirection, EgPageScreenOptions, EgPageContentPaddingTopPreset } from './templates/page/index.js';
+export { EgPageShot, EgPageShotTrigger, EgPageShotContent } from './templates/page-shot/index.js';
+export type {
+  EgPageShotProps,
+  EgPageShotTriggerProps,
+  EgPageShotSource,
+  EgPageShotRootApi,
+  EgPageShotPageApi,
+} from './templates/page-shot/index.js';
 export { EgEdsAnimaLayoutContent } from './shared/motion/EgEdsAnimaLayoutContent.js';
 export type { EgEdsAnimaLayoutContentProps } from './shared/motion/EgEdsAnimaLayoutContent.js';
+export { EgEdsAnimaFade } from './shared/motion/EgEdsAnimaFade.js';
+export type { EgEdsAnimaFadeProps } from './shared/motion/EgEdsAnimaFade.js';
 export { useMotionPressScale } from './shared/useMotionPressScale.js';
 export type { MotionPressRecipe, UseMotionPressScaleOptions } from './shared/useMotionPressScale.js';
 export { EdsSansText } from './shared/EdsSansText.js';

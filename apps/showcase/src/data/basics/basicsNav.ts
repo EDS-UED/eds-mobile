@@ -7,15 +7,8 @@ export type BasicsEntry = {
   href?: `/(basics)/${string}`;
 };
 
-/** 基础 Tab — EDS 工程能力 / 联调 / 几何对照（非 Figma 202 组件项）。 */
+/** 基础 Tab — 工程文档式说明（手势 · 遮罩等；非 Figma 202 组件 Live）。 */
 export const basicsEntries: BasicsEntry[] = [
-  {
-    id: 'parity',
-    label: 'Layout parity',
-    lead: 'RN 与 token 几何对照探针',
-    status: 'preview',
-    href: '/(basics)/parity',
-  },
   {
     id: 'gestures',
     label: '手势',

@@ -58,6 +58,11 @@ import {
   tabBarTextCustomizeDefaults,
 } from './tabBarTextCustomizeModel.js';
 import {
+  pageBodyCustomizeControls,
+  pageBodyCustomizeDefaults,
+  pageBodyCustomizeSummary,
+} from './pageBodyCustomizeModel.js';
+import {
   BUTTON_OPTION_LABEL_STYLES,
   BUTTON_SHOWCASE_SIZES,
   BUTTON_SHOWCASE_TONES,
@@ -225,6 +230,94 @@ import { EgSheets } from '@eds/mobile-components';`,
     ],
     propQueryKeys: Object.keys(sheetsCustomizeDefaults),
     buildUsageSnippet: buildSheetsUsageSnippet,
+  };
+}
+
+function pageBodyDoc(): RnDocConfig {
+  return {
+    componentTag: 'EgPage',
+    previewSlug: 'page-body',
+    importCode: `// EgPage 本体 + motion-page 栈（业务入口，非直接 EgEdsAnimaPage）
+import {
+  createEgPageNavigator,
+  egPageScreenOptions,
+  EgPage,
+} from '@eds/mobile-components';`,
+    customizeDefaults: pageBodyCustomizeDefaults,
+    customizeControls: pageBodyCustomizeControls,
+    propRows: [
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题 · 页面底色 box-page' },
+      { name: 'children', type: 'ReactNode', defaultValue: '—', description: '滚动内容插槽' },
+      {
+        name: 'contentPaddingTop',
+        type: 'number',
+        defaultValue: '12（lg）',
+        description: '顶边距（px）· 导航占位之后；未传默认 lg。Customize 档位 xs–2xl / 自定义',
+      },
+      {
+        name: 'contentPaddingHorizontal',
+        type: 'number',
+        defaultValue: '20（spacing-5）',
+        description: '左右边距 · 未传用 token 默认；`contentContainerStyle` 可覆盖',
+      },
+      {
+        name: 'contentPaddingBottom',
+        type: 'number',
+        defaultValue: '40（spacing-10）',
+        description: '底边距 · 未传用 token 默认；`contentContainerStyle` 可覆盖',
+      },
+      {
+        name: 'scrollTopInset',
+        type: 'number',
+        defaultValue: 'undefined',
+        description: '顶栏占位（不含顶边距）· iOS 26+ automatic 时忽略',
+      },
+      {
+        name: 'contentInsetAdjustmentBehavior',
+        type: "'automatic' | 'never'",
+        defaultValue: "'automatic'",
+        description: 'iOS 26+ 系统栏 automatic；RN 顶栏留白时 never',
+      },
+      { name: 'contentContainerStyle', type: 'StyleProp<ViewStyle>', defaultValue: 'undefined', description: '业务样式最后合并 · 同名字段以业务为准' },
+      { name: 'onScroll', type: 'ScrollView props', defaultValue: 'useEgNavBarScroll()', description: '与顶栏 background="auto" 联动' },
+      { name: 'nativeScrollEdge', type: 'boolean', defaultValue: 'true', description: '是否由滚动驱动系统 scroll edge' },
+    ],
+    propQueryKeys: ['mode', 'contentPaddingTopPreset', 'contentPaddingTopCustom'],
+    buildUsageSnippet: (state) => {
+      const top = pageBodyCustomizeSummary(state ?? pageBodyCustomizeDefaults);
+      return `const Stack = createEgPageNavigator<ParamList>();
+<Stack.Navigator screenOptions={egPageScreenOptions({ mode: 'light' })}>
+  …
+</Stack.Navigator>
+<EgPage mode="light" contentPaddingTop={/* ${top} */}>
+  {/* 默认 左右 20 · 底 40 · 顶边距可 contentPaddingTop 或 contentContainerStyle 覆盖 */}
+</EgPage>`;
+    },
+  };
+}
+
+function pageShotBodyDoc(): RnDocConfig {
+  return {
+    componentTag: 'EgPageShot',
+    previewSlug: 'page-shot-body',
+    importCode: `// motion-page-shot · EgPageShotTrigger 触发 · renderRoot 内可嵌套 EgPage
+import { EgPage, EgPageShot, EgPageShotTrigger } from '@eds/mobile-components';`,
+    customizeDefaults: { mode: 'light' },
+    customizeControls: [],
+    propRows: [
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+      { name: 'renderRoot', type: '(api) => ReactNode', defaultValue: '—', description: '弹层根页 · api.topInset / scrollTopInset / push / close' },
+      { name: 'renderPage', type: '(api) => ReactNode', defaultValue: 'undefined', description: '弹层内 motion-page 子页' },
+      { name: 'title', type: '(source, pageKey) => string', defaultValue: 'undefined', description: 'NavBar 标题' },
+      { name: 'scrollEdgeEffect', type: "'automatic' | 'hard' | 'soft' | 'hidden'", defaultValue: 'undefined', description: '顶栏 scroll edge' },
+      { name: 'children', type: 'ReactNode', defaultValue: '—', description: '下层页面 + EgPageShotTrigger' },
+    ],
+    propQueryKeys: ['mode'],
+    buildUsageSnippet: () => `<EgPageShot mode="light" renderRoot={(api) => (
+  <EgPageShotContent mode="light" api={api}>{/* 或 EgPage + 同上 api 字段 */}</EgPageShotContent>
+)}>
+  <EgPageShotTrigger id="card" radius={20}>{/* 触发元素 */}</EgPageShotTrigger>
+</EgPageShot>`,
   };
 }
 

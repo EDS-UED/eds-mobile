@@ -2,7 +2,23 @@ import { StyleSheet, type TextStyle, type ViewStyle } from 'react-native';
 
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 
+import {
+  EG_ITEM_MIN_HEIGHT,
+  EG_ITEM_PAD_H,
+  EG_ITEM_PAD_V,
+  EG_PAGE_CONTENT_PADDING_HORIZONTAL,
+} from '@eds/mobile-components';
+
 import { showcaseCardChromeStyle, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+
+/** 区块标题左缘距屏幕 · `docSectionTitleInset`；内容已在 `EgPage` 水平 padding 内。 */
+export const docSectionTitlePaddingLeft =
+  theme.layout.docSectionTitleInset - (EG_PAGE_CONTENT_PADDING_HORIZONTAL as number);
+
+/** Tab / Tier 大标题与副文案 — 距屏幕左缘 28px（在 EgPage 水平 padding 内补差）。 */
+export const SHOWCASE_PAGE_HEADING_INSET_FROM_SCREEN = 28;
+export const showcasePageHeadingInsetLeft =
+  SHOWCASE_PAGE_HEADING_INSET_FROM_SCREEN - (EG_PAGE_CONTENT_PADDING_HORIZONTAL as number);
 
 /**
  * Showcase 全局 — **区块标题 + 单张浅底圆角卡**（Tokens 列表分组 · 详情 USAGE/PROPS 同构）。
@@ -14,22 +30,22 @@ export const showcaseDocSectionLayout = StyleSheet.create({
   /** 与 `DocSection` 标题一致 — 左 `docSectionTitleInset` · body-small-heavy。 */
   title: {
     ...theme.font.docSectionTitle,
-    paddingLeft: theme.layout.docSectionTitleInset,
+    paddingLeft: docSectionTitlePaddingLeft,
     marginBottom: theme.layout.docSectionTitleCardGap,
   },
-  /** 卡片外壳 — 仅圆角/裁切；叠 {@link showcaseCardChromeStyle} 铺色。 */
+  /** 卡片外壳 — 水平边距由 `EgPage` / `ShowcasePageScroll` 承担。 */
   cardShell: {
-    marginHorizontal: theme.layout.pageInset,
     overflow: 'hidden',
     ...theme.blockRadius,
   },
+  /** 族页 inset 空态 — 与定制 `EgItem` / `ShowcaseCardRow` inset 同 metrics。 */
   insetRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.layout.tokenItemGap,
-    minHeight: 52,
-    paddingHorizontal: theme.layout.cardPaddingHorizontal,
-    paddingVertical: theme.spacing['spacing-3'] as number,
+    minHeight: EG_ITEM_MIN_HEIGHT,
+    paddingHorizontal: EG_ITEM_PAD_H,
+    paddingVertical: EG_ITEM_PAD_V,
   },
   insetRowCopy: {
     flex: 1,
@@ -64,3 +80,8 @@ export function showcaseDocSectionTitleStyle(colors: ShowcaseColorMap): TextStyl
     { color: showcaseDocSectionTitleColor(colors) },
   ];
 }
+
+/** 多 `DocSection` / `ShowcaseSectionCard` 并列 — 与族页、详情页滚动内容 `gap` 一致。 */
+export const showcaseDocPageSectionsContainerStyle: ViewStyle = {
+  gap: theme.layout.docSectionCardGap,
+};

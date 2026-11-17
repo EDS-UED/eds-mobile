@@ -1,8 +1,7 @@
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 
 import { motionCatalogEntries } from '@/data/animations/animationNav';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
@@ -12,16 +11,13 @@ import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
 import { ShowcasePlainCodeSnippet } from '@/views/shared/ShowcasePlainCodeSnippet';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 function createMotionDetailStyles(colors: ShowcaseColorMap) {
   return StyleSheet.create({
     root: {
       flex: 1,
       backgroundColor: colors.page as string,
-    },
-    content: {
-      paddingBottom: 24,
-      paddingTop: theme.layout.navContentGapInner,
     },
     missing: {
       padding: theme.layout.pageInset,
@@ -72,16 +68,14 @@ export function MotionCatalogDetailView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={styles.root}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            styles.content,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          withTabBarInset={false}
+          docSectionStack
+          style={styles.root}
         >
           <DocSection title="令牌参数" cardPadding="none">
             <DocSectionLinkRow
@@ -98,7 +92,7 @@ export function MotionCatalogDetailView() {
           <DocSection title="Base refs">
             <ShowcasePlainCodeSnippet snippet={baseLines.join('\n')} surface="embedded" />
           </DocSection>
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </View>
   );

@@ -1,10 +1,9 @@
 import { Stack, router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 
 import {
   defaultMotionScenarioCustomizeState,
@@ -30,6 +29,7 @@ import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { MotionScenarioPreview } from '@/views/animations/MotionScenarioPreview';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 function createStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
   const pageBg = showcasePageBackgroundColor(colors);
@@ -82,8 +82,7 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
     rnScrollPaddingTop,
   } = useShowcaseStackNav(navTitle);
   const styles = useThemedStyles((c) => createStyles(c, nativeStackNav));
-  const scrollBottom =
-    Math.max(insets.bottom, edsSpacing('spacing-3')) + edsSpacing('spacing-8');
+  const scrollBottomExtra = Math.max(insets.bottom, edsSpacing('spacing-3'));
 
   if (!demo || !scenario) {
     return (
@@ -98,16 +97,16 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={styles.scrollRoot}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
           keyboardShouldPersistTaps="handled"
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
-          contentContainerStyle={[
-            showcaseNavScrollContentStyle(nativeStackNav, rnScrollPaddingTop),
-            { paddingBottom: scrollBottom },
-          ]}
+          withTabBarInset={false}
+          docSectionStack
+          bottomInsetExtra={scrollBottomExtra}
+          style={styles.scrollRoot}
         >
           <DocSection title="预览" previewScreenFrame>
             <View style={styles.previewContent}>
@@ -163,7 +162,7 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
               onPress={() => router.push(`/(tokens)/motion/${demo.primaryTokenName}`)}
             />
           </DocSection>
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
 
     </ShowcaseStackScreen>

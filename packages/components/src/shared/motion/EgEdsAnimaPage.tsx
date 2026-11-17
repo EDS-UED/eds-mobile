@@ -211,6 +211,15 @@ export type EgEdsAnimaPageOptions = {
   mode?: ThemeMode;
   /** iOS 26+ 系统栏 scroll edge 固定值（如 `'automatic'` 交系统决定）。缺省同 EgNavBar：静止 `hidden` · 滚入栏下 `soft`（`useEgNavBarScroll`）。 */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;
+  /**
+   * JS 栈（如 Expo Router `expo-router/stack`）— 始终 RN page 弹簧，不用 iOS 26+ 系统转场。
+   * 默认 false。
+   */
+  jsStack?: boolean;
+  /**
+   * 栈内是否绘制 `EgNavBar` header。Expo / 自挂顶栏用 `none`。默认 `inline`。
+   */
+  stackHeader?: 'inline' | 'none';
 };
 
 type PageNavigation = { goBack: () => void };

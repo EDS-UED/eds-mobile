@@ -12,12 +12,14 @@ export const menuOutSpringConfig = cloneSpringConfig(EdsRecipeAnima('menu-dismis
 
 /** 按住拖拽松手 · spring.menu-stretch-release（欠阻尼果冻回弹）。 */
 export const menuStretchReleaseSpringConfig = cloneSpringConfig(
-  mobileTheme.motion.springByName['menu-stretch-release'] ?? { damping: 15, stiffness: 224, mass: 1 },
+  mobileTheme.motion.springByName['menu-stretch-release'] ?? { damping: 11, stiffness: 292, mass: 1 },
 );
 
-const menuStretchRatioX = mobileTheme.motion.ratio['ratio-menu-stretch-x'] ?? 0.08;
-const menuStretchRatioY = mobileTheme.motion.ratio['ratio-menu-stretch-y'] ?? 0.06;
-const menuStretchResistance = mobileTheme.motion.ratio['ratio-menu-stretch-resistance'] ?? 0.55;
+const menuStretchRatioX = mobileTheme.motion.ratio['ratio-menu-stretch-x'] ?? 0.1;
+const menuStretchRatioY = mobileTheme.motion.ratio['ratio-menu-stretch-y'] ?? 0.08;
+const menuStretchResistance = mobileTheme.motion.ratio['ratio-menu-stretch-resistance'] ?? 0.48;
+const menuStretchInsideRatio = mobileTheme.motion.ratio['ratio-menu-stretch-inside'] ?? 0.02;
+const menuStretchCoupleRatio = mobileTheme.motion.ratio['ratio-menu-stretch-couple'] ?? 0.32;
 
 /** 橡皮筋衰减（iOS rubber band）：拖得越远越难拉，渐近 `limit`。 */
 function rubberBand(distance: number, limit: number) {
@@ -57,20 +59,72 @@ export function menuStretchClampTranslation(translation: number, allow: number) 
   return translation;
 }
 
-/** 拖拽位移 → 拉伸量（px · ≥ 0）。 */
+/**
+ * 手指越出面板 [start, end] 的距离（px · ≥ 0），仅计 `allow` 允许的一侧：
+ * 1 仅 end 侧 · −1 仅 start 侧 · 0 两侧。
+ */
+export function menuStretchOverflow(
+  position: number,
+  start: number,
+  end: number,
+  allow: number,
+) {
+  'worklet';
+  const beyondEnd = Math.max(0, position - end);
+  const beyondStart = Math.max(0, start - position);
+  if (allow > 0) {
+    return beyondEnd;
+  }
+  if (allow < 0) {
+    return beyondStart;
+  }
+  return Math.max(beyondEnd, beyondStart);
+}
+
+/**
+ * 拖拽位移 → 拉伸量（px · ≥ 0）。
+ * - 手指在面板内：仅极小变形（橡皮筋上限 = 全量 limit × ratio-menu-stretch-inside）
+ * - 越出面板边缘：`overflow` 1:1 驱动大幅变形（上限 = 全量 limit）
+ */
 export function menuStretchAmount(
   translation: number,
+  overflow: number,
   size: number,
   axis: 'x' | 'y',
 ) {
   'worklet';
   const ratio = axis === 'x' ? menuStretchRatioX : menuStretchRatioY;
-  return rubberBand(Math.abs(translation), size * ratio);
+  const limit = size * ratio;
+  const inside = rubberBand(Math.abs(translation), limit * menuStretchInsideRatio);
+  const outside = rubberBand(Math.max(0, overflow), limit);
+  return Math.min(limit, inside + outside);
+}
+
+/**
+ * 主轴 `amountX/Y` 为拖拽方向额外宽/高；次轴按 `ratio-menu-stretch-couple` 联动收缩（主轴拉长 → 次轴略窄）。
+ */
+export function menuStretchScales(
+  amountX: number,
+  amountY: number,
+  width: number,
+  height: number,
+): { scaleX: number; scaleY: number } {
+  'worklet';
+  const safeW = Math.max(1, width);
+  const safeH = Math.max(1, height);
+  const couple = menuStretchCoupleRatio;
+  let scaleX = 1 + amountX / safeW - (couple * amountY) / safeH;
+  let scaleY = 1 + amountY / safeH - (couple * amountX) / safeW;
+  const minScaleX = 1 - couple * menuStretchRatioY;
+  const minScaleY = 1 - couple * menuStretchRatioX;
+  scaleX = Math.max(minScaleX, Math.min(1 + menuStretchRatioX, scaleX));
+  scaleY = Math.max(minScaleY, Math.min(1 + menuStretchRatioY, scaleY));
+  return { scaleX, scaleY };
 }
 
 /**
  * 拉伸层 · `amountX/Y` 为额外宽 / 高（px；松手回弹时可短暂 < 0），`dirX/Y` 为拖拽方向（±1）。
- * 以中心缩放后平移半个增量，使对侧边缘不动、朝手指方向展开。
+ * 以中心缩放后平移半个增量，使对侧边缘不动、朝手指方向展开；次轴收缩只进 scale、不加平移。
  */
 export function menuStretchStyle(
   amountX: number,
@@ -81,14 +135,13 @@ export function menuStretchStyle(
   height: number,
 ) {
   'worklet';
-  const safeW = Math.max(1, width);
-  const safeH = Math.max(1, height);
+  const { scaleX, scaleY } = menuStretchScales(amountX, amountY, width, height);
   return {
     transform: [
       { translateX: (dirX * amountX) / 2 },
       { translateY: (dirY * amountY) / 2 },
-      { scaleX: 1 + amountX / safeW },
-      { scaleY: 1 + amountY / safeH },
+      { scaleX },
+      { scaleY },
     ],
   };
 }
@@ -96,14 +149,16 @@ export function menuStretchStyle(
 /** 拉伸中的窗口 Y → 未拉伸坐标（命中区按静止布局测得）。`centerY` 为面板中心窗口 Y。 */
 export function menuStretchUnmapY(
   windowY: number,
+  amountX: number,
   amountY: number,
   dirY: number,
   centerY: number,
+  width: number,
   height: number,
 ) {
   'worklet';
-  const scale = 1 + amountY / Math.max(1, height);
-  return centerY + (windowY - centerY - (dirY * amountY) / 2) / scale;
+  const { scaleY } = menuStretchScales(amountX, amountY, width, height);
+  return centerY + (windowY - centerY - (dirY * amountY) / 2) / scaleY;
 }
 
 /** Base `motion-scale-menu-origin`。 */

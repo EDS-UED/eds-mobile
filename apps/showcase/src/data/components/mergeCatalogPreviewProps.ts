@@ -3,6 +3,7 @@ import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
 import { applyMenuTriggerPreviewProps } from './applyMenuTriggerPreviewProps.js';
 import { applyTabBarTextPreviewProps } from './tabBarTextCustomizeModel.js';
+import { applyPageBodyPreviewProps } from './pageBodyCustomizeModel.js';
 import { applyTabSlidePreviewProps } from './tabCustomizeModel.js';
 
 /** Merge Figma catalog defaults with playground Customize panel state. */

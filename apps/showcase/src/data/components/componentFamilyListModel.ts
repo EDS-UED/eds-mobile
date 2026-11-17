@@ -1,12 +1,18 @@
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
-import { familyEgComponentName, type ComponentFamilyNav } from './buildComponentCatalogNav.js';
+import {
+  familyEgComponentName,
+  familyTierRowTitle,
+  type ComponentFamilyNav,
+} from './buildComponentCatalogNav.js';
 import { familyBodyPreviewSlug } from './familyBodyPreviewSlug.js';
 import { isShowcaseInfraEntry, type ShowcaseCatalogEntry } from './showcaseCatalog.js';
 
 export const SHOWCASE_FAMILY_SECTION_BODY = '本体';
 export const SHOWCASE_FAMILY_SECTION_SCENES = '场景化';
 export const SHOWCASE_FAMILY_SECTION_COMPOSITION = '构成';
+/** Avatar 族 — 合并场景化 + 构成。 */
+export const SHOWCASE_FAMILY_SECTION_ASSETS = '资产';
 export const SHOWCASE_FAMILY_SECTION_EMPTY = '等待添加';
 
 /** 构成本体的子项 — 按族 slug 白名单（非场景业务组合）。 */
@@ -40,7 +46,17 @@ export function resolveFamilyBodyEntry(
     return base;
   }
 
-  return nav.entries.find((entry) => entry.slug.endsWith('-base'));
+  const suffixBase = nav.entries.find((entry) => entry.slug.endsWith('-base'));
+  if (suffixBase) {
+    return suffixBase;
+  }
+
+  /** 仅一项的族（如 Divider · NavBar）— 该项即本体，不列入场景化。 */
+  if (nav.entries.length === 1) {
+    return nav.entries[0];
+  }
+
+  return undefined;
 }
 
 export function resolveFamilyCompositionEntries(nav: ComponentFamilyNav): FigmaComponentEntry[] {
@@ -61,10 +77,14 @@ export function resolveFamilySceneEntries(nav: ComponentFamilyNav): FigmaCompone
     ? nav.entries.filter((entry) => entry.slug !== body.slug)
     : nav.entries;
   const withoutComposition = withoutBody.filter((entry) => !compositionSlugs.has(entry.slug));
+  const withoutAssetIcons =
+    nav.family === 'symbol'
+      ? withoutComposition.filter((entry) => entry.family !== 'icon' && entry.family !== 'crypto')
+      : withoutComposition;
   if (nav.family !== 'button') {
-    return withoutComposition;
+    return withoutAssetIcons;
   }
-  return withoutComposition.filter((entry) => !SHOWCASE_BUTTON_HIDDEN_SCENE_SLUGS.has(entry.slug));
+  return withoutAssetIcons.filter((entry) => !SHOWCASE_BUTTON_HIDDEN_SCENE_SLUGS.has(entry.slug));
 }
 
 /** 族页 Stack 大标题 — `Eg` + 族名（与 Tier 族列表一致）。 */

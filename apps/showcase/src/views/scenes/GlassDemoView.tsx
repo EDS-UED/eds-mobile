@@ -13,14 +13,19 @@ export function GlassDemoView() {
   const normalizedScheme = scheme === 'light' || scheme === 'dark' ? scheme : undefined;
   const mode = resolveThemeMode(normalizedScheme);
   const title = '液态玻璃';
-  const { stackScreenOptions, rnNavBar } = useShowcaseStackNav(title);
+  const { stackScreenOptions, rnNavBar, onScroll, scrollEventThrottle } = useShowcaseStackNav(title);
 
   return (
     <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <LiquidGlassDemo mode={mode} prepend={<EdsMobileRnPrincipleCallout />} />
+        <LiquidGlassDemo
+          mode={mode}
+          prepend={<EdsMobileRnPrincipleCallout />}
+          onScroll={onScroll}
+          scrollEventThrottle={scrollEventThrottle}
+        />
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );

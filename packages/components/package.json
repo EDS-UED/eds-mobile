@@ -44,6 +44,12 @@
       "types": "./dist/preview/LayoutContentTabDemo.d.ts",
       "default": "./dist/preview/LayoutContentTabDemo.js"
     },
+    "./preview/fade": {
+      "react-native": "./src/preview/FadeTabDemo.tsx",
+      "import": "./dist/preview/FadeTabDemo.js",
+      "types": "./dist/preview/FadeTabDemo.d.ts",
+      "default": "./dist/preview/FadeTabDemo.js"
+    },
     "./preview/atom-gallery": {
       "react-native": "./src/preview/AtomGallery.tsx",
       "import": "./dist/preview/AtomGallery.js",

@@ -1,8 +1,7 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
 import {
@@ -11,13 +10,12 @@ import {
   familyTierRowHint,
   familyTierRowTitle,
 } from '@/data/components/buildComponentCatalogNav';
-import { tierPageSubtitle } from '@/data/components/tierIntroCopy';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
-import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
+import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 export function ComponentTierView() {
   const screenStyles = useShowcaseScreenStyles();
@@ -32,7 +30,7 @@ export function ComponentTierView() {
     nativeStackNav,
     rnNavBar,
     rnScrollPaddingTop,
-  } = useShowcaseStackNav(navTitle);
+  } = useShowcaseStackNav(navTitle, { inlineLargeTitle: true });
 
   if (!tierNav) {
     return (
@@ -47,18 +45,16 @@ export function ComponentTierView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            screenStyles.scrollContent,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
+          contentPaddingTop={0}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          withTabBarInset={false}
+          style={screenStyles.scrollRoot}
         >
-          <ShowcasePageIntro subtitle lead={tierPageSubtitle(tier)} />
+          <ShowcaseTabHomeDisplayTitle>{navTitle}</ShowcaseTabHomeDisplayTitle>
 
           <View style={screenStyles.cardList}>
             {tierNav.families.map((family) => (
@@ -70,7 +66,7 @@ export function ComponentTierView() {
               />
             ))}
           </View>
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );

@@ -1,17 +1,16 @@
 import { router, Stack, type Href } from 'expo-router';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
 
 import { basicsEntries } from '@/data/basics/basicsNav';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
 import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 export function BasicsHomeView() {
   const screenStyles = useShowcaseScreenStyles();
@@ -30,26 +29,23 @@ export function BasicsHomeView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            screenStyles.scrollContent,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
+          contentPaddingTop={0}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          style={screenStyles.scrollRoot}
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
           <ShowcasePageIntro
             homeLargeTitle
             subtitle
-            lead="EDS 工程基础能力：布局对照、联调约定与跨场景基础设施入口。"
+            lead="EDS Mobile 工程基础知识：手势语义、遮罩与 Scroll Edge 等说明文档。"
           />
 
-          <ShowcaseSectionCard>
+          <View style={screenStyles.cardList}>
             {basicsEntries.map((entry) => (
               <ShowcaseCardRow
                 key={entry.id}
@@ -67,8 +63,8 @@ export function BasicsHomeView() {
                 }
               />
             ))}
-          </ShowcaseSectionCard>
-        </ScrollView>
+          </View>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );

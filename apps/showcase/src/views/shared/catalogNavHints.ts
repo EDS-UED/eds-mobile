@@ -5,5 +5,5 @@ export const catalogNavHints: Record<ShowcaseTabId, string> = {
   animations: 'Motion · 图形动画 · Demo',
   components: 'tier → family → scene · Live · Inspect',
   patterns: 'EgDataList · 列表场景',
-  basics: '手势 · 遮罩 · Layout parity',
+  basics: '手势 · 遮罩',
 };

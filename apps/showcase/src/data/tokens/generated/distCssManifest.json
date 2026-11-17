@@ -246,9 +246,11 @@
       "motion-opacity-hidden": "0",
       "motion-scale-menu-origin": "0.2",
       "motion-scale-menu-trigger-lift": "1.15",
-      "motion-ratio-menu-stretch-x": "0.08",
-      "motion-ratio-menu-stretch-y": "0.06",
-      "motion-ratio-menu-stretch-resistance": "0.55",
+      "motion-ratio-menu-stretch-x": "0.10",
+      "motion-ratio-menu-stretch-y": "0.08",
+      "motion-ratio-menu-stretch-resistance": "0.48",
+      "motion-ratio-menu-stretch-inside": "0.02",
+      "motion-ratio-menu-stretch-couple": "0.32",
       "motion-offset-layout-deform-y": "var(--spacing-2-5)",
       "motion-offset-menu-content-y": "var(--spacing-4)",
       "motion-offset-sheets-inset": "var(--spacing-2)",
@@ -311,13 +313,13 @@
       "motion-spring-menu-out-stiffness": "420",
       "motion-spring-menu-out-mass": "1",
       "ios-spring-menu-out": "damping:33,stiffness:420,mass:1",
-      "motion-spring-menu-stretch-release-response": "0.42",
-      "motion-spring-menu-stretch-release-damping-fraction": "0.5",
+      "motion-spring-menu-stretch-release-response": "0.38",
+      "motion-spring-menu-stretch-release-damping-fraction": "0.42",
       "motion-spring-menu-stretch-release-blend-duration": "0.1s",
-      "motion-spring-menu-stretch-release-damping": "15",
-      "motion-spring-menu-stretch-release-stiffness": "224",
+      "motion-spring-menu-stretch-release-damping": "11",
+      "motion-spring-menu-stretch-release-stiffness": "292",
       "motion-spring-menu-stretch-release-mass": "1",
-      "ios-spring-menu-stretch-release": "damping:15,stiffness:224,mass:1",
+      "ios-spring-menu-stretch-release": "damping:11,stiffness:292,mass:1",
       "motion-spring-menu-content-wave-response": "0.32",
       "motion-spring-menu-content-wave-damping-fraction": "0.5",
       "motion-spring-menu-content-wave-blend-duration": "0.1s",
@@ -372,6 +374,8 @@
       "ios-layout-deform-content-opacity": "duration:85,easing:cubic-bezier(0.42,0,0.58,1)",
       "ios-layout-deform-content-transform": "duration:180,easing:cubic-bezier(0.22,1,0.36,1)",
       "ios-layout-deform-content-swap": "duration:85,easing:cubic-bezier(0.42,0,0.58,1)",
+      "ios-fade-opacity": "duration:180,easing:cubic-bezier(0.42,0,0.58,1)",
+      "ios-fade-swap": "duration:85,easing:cubic-bezier(0.42,0,0.58,1)",
       "ios-menu-content-in": "duration:120,easing:cubic-bezier(0.25,0.1,0.25,1)",
       "ios-menu-content-in-stagger": "duration:30,easing:cubic-bezier(0,0,1,1)",
       "ios-sheets-dismiss": "duration:800,easing:cubic-bezier(0.32,0.72,0,1)",
@@ -401,7 +405,8 @@
       "motion-recipe-control": "transform var(--motion-duration-control) var(--motion-easing-product), width var(--motion-duration-control) var(--motion-easing-product)",
       "motion-recipe-layout-deform-content": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-float)",
       "motion-recipe-sheets": "transform var(--motion-duration-sheets) var(--motion-easing-sheets), height var(--motion-duration-sheets) var(--motion-easing-sheets), left var(--motion-duration-sheets) var(--motion-easing-sheets), right var(--motion-duration-sheets) var(--motion-easing-sheets), bottom var(--motion-duration-sheets) var(--motion-easing-sheets), border-radius var(--motion-duration-sheets) var(--motion-easing-sheets)",
-      "motion-recipe-menu": "transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate)",
+      "motion-recipe-fade": "opacity var(--motion-duration-fade) var(--motion-easing-standard)",
+      "undefined": "transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate)",
       "motion-recipe-page": "transform var(--motion-duration-page) var(--motion-easing-page), filter var(--motion-duration-page) var(--motion-easing-standard)",
       "motion-recipe-page-shot": "transform var(--motion-duration-page-shot) var(--motion-easing-page), top var(--motion-duration-page-shot) var(--motion-easing-page), left var(--motion-duration-page-shot) var(--motion-easing-page), width var(--motion-duration-page-shot) var(--motion-easing-page), height var(--motion-duration-page-shot) var(--motion-easing-page), border-radius var(--motion-duration-page-shot) var(--motion-easing-page)"
     }
@@ -1954,852 +1959,876 @@
         "file": "base.css",
         "startLine": 56,
         "endLine": 56,
-        "snippet": "  --motion-ratio-menu-stretch-x: 0.08; /* 左右拖拽加宽上限 = 面板宽 × 0.08（朝手指方向展开，对侧边缘不动） */"
+        "snippet": "  --motion-ratio-menu-stretch-x: 0.10; /* 左右拖拽加宽上限 = 面板宽 × 0.10（朝手指方向展开，对侧边缘不动） */"
       },
       "motion-ratio-menu-stretch-y": {
         "file": "base.css",
         "startLine": 57,
         "endLine": 57,
-        "snippet": "  --motion-ratio-menu-stretch-y: 0.06; /* 上下拖拽变高上限 = 面板高 × 0.06 */"
+        "snippet": "  --motion-ratio-menu-stretch-y: 0.08; /* 上下拖拽变高上限 = 面板高 × 0.08 */"
       },
       "motion-ratio-menu-stretch-resistance": {
         "file": "base.css",
         "startLine": 58,
         "endLine": 58,
-        "snippet": "  --motion-ratio-menu-stretch-resistance: 0.55; /* 橡皮筋阻尼系数（iOS rubber band）：stretch = limit × (1 − 1 / (d × c / limit + 1)) */"
+        "snippet": "  --motion-ratio-menu-stretch-resistance: 0.48; /* 橡皮筋阻尼系数（iOS rubber band）：略低则同位移拉伸更明显 */"
+      },
+      "motion-ratio-menu-stretch-inside": {
+        "file": "base.css",
+        "startLine": 59,
+        "endLine": 59,
+        "snippet": "  --motion-ratio-menu-stretch-inside: 0.02; /* 手指仍在 EgMenu 面板内：拉伸上限仅为全量 limit × 0.02（几乎不动）；越出面板边缘后 overflow 才按 1:1 驱动大幅变形 */"
+      },
+      "motion-ratio-menu-stretch-couple": {
+        "file": "base.css",
+        "startLine": 60,
+        "endLine": 60,
+        "snippet": "  --motion-ratio-menu-stretch-couple: 0.32; /* 主次轴联动（收缩）：主轴拉长时次轴 scale 减去 couple×(主轴相对形变)；幅度小于主轴 */"
       },
       "motion-offset-layout-deform-y": {
         "file": "base.css",
-        "startLine": 61,
-        "endLine": 61,
+        "startLine": 63,
+        "endLine": 63,
         "snippet": "  --motion-offset-layout-deform-y: var(--spacing-2-5); /* 10px · 内容 crossfade 向下 nudge */"
       },
       "motion-offset-menu-content-y": {
         "file": "base.css",
-        "startLine": 62,
-        "endLine": 62,
+        "startLine": 64,
+        "endLine": 64,
         "snippet": "  --motion-offset-menu-content-y: var(--spacing-4); /* 16px · Menu 展开时每行内容自下方上移（spring.menu-content-wave）的起始偏移 */"
       },
       "motion-offset-sheets-inset": {
         "file": "base.css",
-        "startLine": 63,
-        "endLine": 63,
+        "startLine": 65,
+        "endLine": 65,
         "snippet": "  --motion-offset-sheets-inset: var(--spacing-2); /* 8px · Sheets 悬浮档 Sheet 与屏幕左右 / 底边间隙；升至全高档时收为 0 */"
       },
       "motion-offset-sheets-top": {
         "file": "base.css",
-        "startLine": 64,
-        "endLine": 64,
+        "startLine": 66,
+        "endLine": 66,
         "snippet": "  --motion-offset-sheets-top: var(--spacing-0); /* Sheets 大尺寸（large）档顶边与设备系统条（状态栏 / 刘海 · safe area top）间距 · spacing-0（紧贴系统条底） */"
       },
       "motion-radius-sheets-floating": {
         "file": "base.css",
-        "startLine": 67,
-        "endLine": 67,
+        "startLine": 69,
+        "endLine": 69,
         "snippet": "  --motion-radius-sheets-floating: var(--radius-2xl); /* 悬浮档四角圆角 */"
       },
       "motion-radius-sheets-attached": {
         "file": "base.css",
-        "startLine": 68,
-        "endLine": 68,
+        "startLine": 70,
+        "endLine": 70,
         "snippet": "  --motion-radius-sheets-attached: var(--radius-2xl); /* 全高贴边档顶角圆角（底角 0） */"
       },
       "motion-opacity-sheets-dim-floating": {
         "file": "base.css",
-        "startLine": 71,
-        "endLine": 71,
+        "startLine": 73,
+        "endLine": 73,
         "snippet": "  --motion-opacity-sheets-dim-floating: 0.4; /* 悬浮档遮罩强度（× material-same-black）；全高档为 1 */"
       },
       "motion-ratio-page-parallax": {
         "file": "base.css",
-        "startLine": 74,
-        "endLine": 74,
+        "startLine": 76,
+        "endLine": 76,
         "snippet": "  --motion-ratio-page-parallax: 0.3; /* 推入时下层页视差位移 = 容器宽 × 0.3（向左）；返回时下层页整屏同速推回 */"
       },
       "motion-opacity-page-dim": {
         "file": "base.css",
-        "startLine": 75,
-        "endLine": 75,
+        "startLine": 77,
+        "endLine": 77,
         "snippet": "  --motion-opacity-page-dim: 0.2; /* 被覆盖页压暗强度（× material-same-black ≈ 10% 黑） */"
       },
       "motion-ratio-page-shot-close-launch": {
         "file": "base.css",
-        "startLine": 78,
-        "endLine": 78,
+        "startLine": 80,
+        "endLine": 80,
         "snippet": "  --motion-ratio-page-shot-close-launch: 12; /* 收回起步速度（progress / s · 1 = 整页→触发元素全程）— 离场先快后慢：起步即峰值、临界阻尼平稳减速落位；跟手松手更快时取跟手速度 */"
       },
       "motion-opacity-page-shot-dim": {
         "file": "base.css",
-        "startLine": 79,
-        "endLine": 79,
+        "startLine": 81,
+        "endLine": 81,
         "snippet": "  --motion-opacity-page-shot-dim: 0.8; /* 弹层整页展开后背后页面压暗强度（× material-same-black ≈ 40% 黑 · App Store 实测） */"
       },
       "motion-scale-page-shot-dismiss": {
         "file": "base.css",
-        "startLine": 80,
-        "endLine": 80,
+        "startLine": 82,
+        "endLine": 82,
         "snippet": "  --motion-scale-page-shot-dismiss: 0.82; /* 下拉 / 根页侧滑收起跟手最小缩放（拖满阈值时） */"
       },
       "motion-radius-page-shot": {
         "file": "base.css",
-        "startLine": 81,
-        "endLine": 81,
+        "startLine": 83,
+        "endLine": 83,
         "snippet": "  --motion-radius-page-shot: var(--radius-2xl); /* 跟手时整页圆角（静止整页为 0；收起终点用触发元素圆角） */"
       },
       "motion-spring-press-response": {
         "file": "base.css",
-        "startLine": 84,
-        "endLine": 84,
+        "startLine": 86,
+        "endLine": 86,
         "snippet": "  --motion-spring-press-response: 0.32;"
       },
       "motion-spring-press-damping-fraction": {
         "file": "base.css",
-        "startLine": 85,
-        "endLine": 85,
+        "startLine": 87,
+        "endLine": 87,
         "snippet": "  --motion-spring-press-damping-fraction: 0.88;"
       },
       "motion-spring-press-blend-duration": {
         "file": "base.css",
-        "startLine": 86,
-        "endLine": 86,
+        "startLine": 88,
+        "endLine": 88,
         "snippet": "  --motion-spring-press-blend-duration: 0.12s;"
       },
       "motion-spring-press-damping": {
         "file": "base.css",
-        "startLine": 87,
-        "endLine": 87,
+        "startLine": 89,
+        "endLine": 89,
         "snippet": "  --motion-spring-press-damping: 46;"
       },
       "motion-spring-press-stiffness": {
         "file": "base.css",
-        "startLine": 88,
-        "endLine": 88,
+        "startLine": 90,
+        "endLine": 90,
         "snippet": "  --motion-spring-press-stiffness: 560;"
       },
       "motion-spring-press-mass": {
         "file": "base.css",
-        "startLine": 89,
-        "endLine": 89,
+        "startLine": 91,
+        "endLine": 91,
         "snippet": "  --motion-spring-press-mass: 1;"
       },
       "ios-spring-press": {
         "file": "base.css",
-        "startLine": 90,
-        "endLine": 90,
+        "startLine": 92,
+        "endLine": 92,
         "snippet": "  --ios-spring-press: damping:46,stiffness:560,mass:1;"
       },
       "motion-spring-press-release-response": {
         "file": "base.css",
-        "startLine": 91,
-        "endLine": 91,
+        "startLine": 93,
+        "endLine": 93,
         "snippet": "  --motion-spring-press-release-response: 0.44;"
       },
       "motion-spring-press-release-damping-fraction": {
         "file": "base.css",
-        "startLine": 92,
-        "endLine": 92,
+        "startLine": 94,
+        "endLine": 94,
         "snippet": "  --motion-spring-press-release-damping-fraction: 0.66;"
       },
       "motion-spring-press-release-blend-duration": {
         "file": "base.css",
-        "startLine": 93,
-        "endLine": 93,
+        "startLine": 95,
+        "endLine": 95,
         "snippet": "  --motion-spring-press-release-blend-duration: 0.12s;"
       },
       "motion-spring-press-release-damping": {
         "file": "base.css",
-        "startLine": 94,
-        "endLine": 94,
+        "startLine": 96,
+        "endLine": 96,
         "snippet": "  --motion-spring-press-release-damping: 17;"
       },
       "motion-spring-press-release-stiffness": {
         "file": "base.css",
-        "startLine": 95,
-        "endLine": 95,
+        "startLine": 97,
+        "endLine": 97,
         "snippet": "  --motion-spring-press-release-stiffness: 350;"
       },
       "motion-spring-press-release-mass": {
         "file": "base.css",
-        "startLine": 96,
-        "endLine": 96,
+        "startLine": 98,
+        "endLine": 98,
         "snippet": "  --motion-spring-press-release-mass: 1;"
       },
       "ios-spring-press-release": {
         "file": "base.css",
-        "startLine": 97,
-        "endLine": 97,
+        "startLine": 99,
+        "endLine": 99,
         "snippet": "  --ios-spring-press-release: damping:17,stiffness:350,mass:1;"
       },
       "motion-spring-control-response": {
         "file": "base.css",
-        "startLine": 98,
-        "endLine": 98,
+        "startLine": 100,
+        "endLine": 100,
         "snippet": "  --motion-spring-control-response: 0.28;"
       },
       "motion-spring-control-damping-fraction": {
         "file": "base.css",
-        "startLine": 99,
-        "endLine": 99,
+        "startLine": 101,
+        "endLine": 101,
         "snippet": "  --motion-spring-control-damping-fraction: 0.82;"
       },
       "motion-spring-control-blend-duration": {
         "file": "base.css",
-        "startLine": 100,
-        "endLine": 100,
+        "startLine": 102,
+        "endLine": 102,
         "snippet": "  --motion-spring-control-blend-duration: 0.1s;"
       },
       "motion-spring-control-damping": {
         "file": "base.css",
-        "startLine": 101,
-        "endLine": 101,
+        "startLine": 103,
+        "endLine": 103,
         "snippet": "  --motion-spring-control-damping: 37;"
       },
       "motion-spring-control-stiffness": {
         "file": "base.css",
-        "startLine": 102,
-        "endLine": 102,
+        "startLine": 104,
+        "endLine": 104,
         "snippet": "  --motion-spring-control-stiffness: 503;"
       },
       "motion-spring-control-mass": {
         "file": "base.css",
-        "startLine": 103,
-        "endLine": 103,
+        "startLine": 105,
+        "endLine": 105,
         "snippet": "  --motion-spring-control-mass: 1;"
       },
       "ios-spring-control": {
         "file": "base.css",
-        "startLine": 104,
-        "endLine": 104,
+        "startLine": 106,
+        "endLine": 106,
         "snippet": "  --ios-spring-control: damping:37,stiffness:503,mass:1;"
       },
       "motion-spring-slide-commit-response": {
         "file": "base.css",
-        "startLine": 105,
-        "endLine": 105,
+        "startLine": 107,
+        "endLine": 107,
         "snippet": "  --motion-spring-slide-commit-response: 0.3;"
       },
       "motion-spring-slide-commit-damping-fraction": {
         "file": "base.css",
-        "startLine": 106,
-        "endLine": 106,
+        "startLine": 108,
+        "endLine": 108,
         "snippet": "  --motion-spring-slide-commit-damping-fraction: 0.81;"
       },
       "motion-spring-slide-commit-blend-duration": {
         "file": "base.css",
-        "startLine": 107,
-        "endLine": 107,
+        "startLine": 109,
+        "endLine": 109,
         "snippet": "  --motion-spring-slide-commit-blend-duration: 0.1s;"
       },
       "motion-spring-slide-commit-damping": {
         "file": "base.css",
-        "startLine": 108,
-        "endLine": 108,
+        "startLine": 110,
+        "endLine": 110,
         "snippet": "  --motion-spring-slide-commit-damping: 34;"
       },
       "motion-spring-slide-commit-stiffness": {
         "file": "base.css",
-        "startLine": 109,
-        "endLine": 109,
+        "startLine": 111,
+        "endLine": 111,
         "snippet": "  --motion-spring-slide-commit-stiffness: 440;"
       },
       "motion-spring-slide-commit-mass": {
         "file": "base.css",
-        "startLine": 110,
-        "endLine": 110,
+        "startLine": 112,
+        "endLine": 112,
         "snippet": "  --motion-spring-slide-commit-mass: 1;"
       },
       "ios-spring-slide-commit": {
         "file": "base.css",
-        "startLine": 111,
-        "endLine": 111,
+        "startLine": 113,
+        "endLine": 113,
         "snippet": "  --ios-spring-slide-commit: damping:34,stiffness:440,mass:1;"
       },
       "motion-spring-drag-response": {
         "file": "base.css",
-        "startLine": 112,
-        "endLine": 112,
+        "startLine": 114,
+        "endLine": 114,
         "snippet": "  --motion-spring-drag-response: 0.32;"
       },
       "motion-spring-drag-damping-fraction": {
         "file": "base.css",
-        "startLine": 113,
-        "endLine": 113,
+        "startLine": 115,
+        "endLine": 115,
         "snippet": "  --motion-spring-drag-damping-fraction: 0.82;"
       },
       "motion-spring-drag-blend-duration": {
         "file": "base.css",
-        "startLine": 114,
-        "endLine": 114,
+        "startLine": 116,
+        "endLine": 116,
         "snippet": "  --motion-spring-drag-blend-duration: 0.1s;"
       },
       "motion-spring-drag-damping": {
         "file": "base.css",
-        "startLine": 115,
-        "endLine": 115,
+        "startLine": 117,
+        "endLine": 117,
         "snippet": "  --motion-spring-drag-damping: 32;"
       },
       "motion-spring-drag-stiffness": {
         "file": "base.css",
-        "startLine": 116,
-        "endLine": 116,
+        "startLine": 118,
+        "endLine": 118,
         "snippet": "  --motion-spring-drag-stiffness: 385;"
       },
       "motion-spring-drag-mass": {
         "file": "base.css",
-        "startLine": 117,
-        "endLine": 117,
+        "startLine": 119,
+        "endLine": 119,
         "snippet": "  --motion-spring-drag-mass: 1;"
       },
       "ios-spring-drag": {
         "file": "base.css",
-        "startLine": 118,
-        "endLine": 118,
+        "startLine": 120,
+        "endLine": 120,
         "snippet": "  --ios-spring-drag: damping:32,stiffness:385,mass:1;"
       },
       "motion-spring-menu-in-response": {
         "file": "base.css",
-        "startLine": 119,
-        "endLine": 119,
+        "startLine": 121,
+        "endLine": 121,
         "snippet": "  --motion-spring-menu-in-response: 0.36;"
       },
       "motion-spring-menu-in-damping-fraction": {
         "file": "base.css",
-        "startLine": 120,
-        "endLine": 120,
+        "startLine": 122,
+        "endLine": 122,
         "snippet": "  --motion-spring-menu-in-damping-fraction: 0.74;"
       },
       "motion-spring-menu-in-blend-duration": {
         "file": "base.css",
-        "startLine": 121,
-        "endLine": 121,
+        "startLine": 123,
+        "endLine": 123,
         "snippet": "  --motion-spring-menu-in-blend-duration: 0.12s;"
       },
       "motion-spring-menu-in-damping": {
         "file": "base.css",
-        "startLine": 122,
-        "endLine": 122,
+        "startLine": 124,
+        "endLine": 124,
         "snippet": "  --motion-spring-menu-in-damping: 26;"
       },
       "motion-spring-menu-in-stiffness": {
         "file": "base.css",
-        "startLine": 123,
-        "endLine": 123,
+        "startLine": 125,
+        "endLine": 125,
         "snippet": "  --motion-spring-menu-in-stiffness: 305;"
       },
       "motion-spring-menu-in-mass": {
         "file": "base.css",
-        "startLine": 124,
-        "endLine": 124,
+        "startLine": 126,
+        "endLine": 126,
         "snippet": "  --motion-spring-menu-in-mass: 1;"
       },
       "ios-spring-menu-in": {
         "file": "base.css",
-        "startLine": 125,
-        "endLine": 125,
+        "startLine": 127,
+        "endLine": 127,
         "snippet": "  --ios-spring-menu-in: damping:26,stiffness:305,mass:1;"
       },
       "motion-spring-menu-out-response": {
         "file": "base.css",
-        "startLine": 126,
-        "endLine": 126,
+        "startLine": 128,
+        "endLine": 128,
         "snippet": "  --motion-spring-menu-out-response: 0.31;"
       },
       "motion-spring-menu-out-damping-fraction": {
         "file": "base.css",
-        "startLine": 127,
-        "endLine": 127,
+        "startLine": 129,
+        "endLine": 129,
         "snippet": "  --motion-spring-menu-out-damping-fraction: 0.8;"
       },
       "motion-spring-menu-out-blend-duration": {
         "file": "base.css",
-        "startLine": 128,
-        "endLine": 128,
+        "startLine": 130,
+        "endLine": 130,
         "snippet": "  --motion-spring-menu-out-blend-duration: 0.1s;"
       },
       "motion-spring-menu-out-damping": {
         "file": "base.css",
-        "startLine": 129,
-        "endLine": 129,
+        "startLine": 131,
+        "endLine": 131,
         "snippet": "  --motion-spring-menu-out-damping: 33;"
       },
       "motion-spring-menu-out-stiffness": {
         "file": "base.css",
-        "startLine": 130,
-        "endLine": 130,
+        "startLine": 132,
+        "endLine": 132,
         "snippet": "  --motion-spring-menu-out-stiffness: 420;"
       },
       "motion-spring-menu-out-mass": {
         "file": "base.css",
-        "startLine": 131,
-        "endLine": 131,
+        "startLine": 133,
+        "endLine": 133,
         "snippet": "  --motion-spring-menu-out-mass: 1;"
       },
       "ios-spring-menu-out": {
         "file": "base.css",
-        "startLine": 132,
-        "endLine": 132,
+        "startLine": 134,
+        "endLine": 134,
         "snippet": "  --ios-spring-menu-out: damping:33,stiffness:420,mass:1;"
       },
       "motion-spring-menu-stretch-release-response": {
         "file": "base.css",
-        "startLine": 133,
-        "endLine": 133,
-        "snippet": "  --motion-spring-menu-stretch-release-response: 0.42;"
+        "startLine": 135,
+        "endLine": 135,
+        "snippet": "  --motion-spring-menu-stretch-release-response: 0.38;"
       },
       "motion-spring-menu-stretch-release-damping-fraction": {
         "file": "base.css",
-        "startLine": 134,
-        "endLine": 134,
-        "snippet": "  --motion-spring-menu-stretch-release-damping-fraction: 0.5;"
+        "startLine": 136,
+        "endLine": 136,
+        "snippet": "  --motion-spring-menu-stretch-release-damping-fraction: 0.42;"
       },
       "motion-spring-menu-stretch-release-blend-duration": {
         "file": "base.css",
-        "startLine": 135,
-        "endLine": 135,
+        "startLine": 137,
+        "endLine": 137,
         "snippet": "  --motion-spring-menu-stretch-release-blend-duration: 0.1s;"
       },
       "motion-spring-menu-stretch-release-damping": {
         "file": "base.css",
-        "startLine": 136,
-        "endLine": 136,
-        "snippet": "  --motion-spring-menu-stretch-release-damping: 15;"
+        "startLine": 138,
+        "endLine": 138,
+        "snippet": "  --motion-spring-menu-stretch-release-damping: 11;"
       },
       "motion-spring-menu-stretch-release-stiffness": {
         "file": "base.css",
-        "startLine": 137,
-        "endLine": 137,
-        "snippet": "  --motion-spring-menu-stretch-release-stiffness: 224;"
+        "startLine": 139,
+        "endLine": 139,
+        "snippet": "  --motion-spring-menu-stretch-release-stiffness: 292;"
       },
       "motion-spring-menu-stretch-release-mass": {
         "file": "base.css",
-        "startLine": 138,
-        "endLine": 138,
+        "startLine": 140,
+        "endLine": 140,
         "snippet": "  --motion-spring-menu-stretch-release-mass: 1;"
       },
       "ios-spring-menu-stretch-release": {
         "file": "base.css",
-        "startLine": 139,
-        "endLine": 139,
-        "snippet": "  --ios-spring-menu-stretch-release: damping:15,stiffness:224,mass:1;"
+        "startLine": 141,
+        "endLine": 141,
+        "snippet": "  --ios-spring-menu-stretch-release: damping:11,stiffness:292,mass:1;"
       },
       "motion-spring-menu-content-wave-response": {
         "file": "base.css",
-        "startLine": 140,
-        "endLine": 140,
+        "startLine": 142,
+        "endLine": 142,
         "snippet": "  --motion-spring-menu-content-wave-response: 0.32;"
       },
       "motion-spring-menu-content-wave-damping-fraction": {
         "file": "base.css",
-        "startLine": 141,
-        "endLine": 141,
+        "startLine": 143,
+        "endLine": 143,
         "snippet": "  --motion-spring-menu-content-wave-damping-fraction: 0.5;"
       },
       "motion-spring-menu-content-wave-blend-duration": {
         "file": "base.css",
-        "startLine": 142,
-        "endLine": 142,
+        "startLine": 144,
+        "endLine": 144,
         "snippet": "  --motion-spring-menu-content-wave-blend-duration: 0.1s;"
       },
       "motion-spring-menu-content-wave-damping": {
         "file": "base.css",
-        "startLine": 143,
-        "endLine": 143,
+        "startLine": 145,
+        "endLine": 145,
         "snippet": "  --motion-spring-menu-content-wave-damping: 20;"
       },
       "motion-spring-menu-content-wave-stiffness": {
         "file": "base.css",
-        "startLine": 144,
-        "endLine": 144,
+        "startLine": 146,
+        "endLine": 146,
         "snippet": "  --motion-spring-menu-content-wave-stiffness: 385;"
       },
       "motion-spring-menu-content-wave-mass": {
         "file": "base.css",
-        "startLine": 145,
-        "endLine": 145,
+        "startLine": 147,
+        "endLine": 147,
         "snippet": "  --motion-spring-menu-content-wave-mass: 1;"
       },
       "ios-spring-menu-content-wave": {
         "file": "base.css",
-        "startLine": 146,
-        "endLine": 146,
+        "startLine": 148,
+        "endLine": 148,
         "snippet": "  --ios-spring-menu-content-wave: damping:20,stiffness:385,mass:1;"
       },
       "motion-spring-sheets-present-response": {
         "file": "base.css",
-        "startLine": 147,
-        "endLine": 147,
+        "startLine": 149,
+        "endLine": 149,
         "snippet": "  --motion-spring-sheets-present-response: 0.42;"
       },
       "motion-spring-sheets-present-damping-fraction": {
         "file": "base.css",
-        "startLine": 148,
-        "endLine": 148,
+        "startLine": 150,
+        "endLine": 150,
         "snippet": "  --motion-spring-sheets-present-damping-fraction: 0.82;"
       },
       "motion-spring-sheets-present-blend-duration": {
         "file": "base.css",
-        "startLine": 149,
-        "endLine": 149,
+        "startLine": 151,
+        "endLine": 151,
         "snippet": "  --motion-spring-sheets-present-blend-duration: 0.12s;"
       },
       "motion-spring-sheets-present-damping": {
         "file": "base.css",
-        "startLine": 150,
-        "endLine": 150,
+        "startLine": 152,
+        "endLine": 152,
         "snippet": "  --motion-spring-sheets-present-damping: 25;"
       },
       "motion-spring-sheets-present-stiffness": {
         "file": "base.css",
-        "startLine": 151,
-        "endLine": 151,
+        "startLine": 153,
+        "endLine": 153,
         "snippet": "  --motion-spring-sheets-present-stiffness: 224;"
       },
       "motion-spring-sheets-present-mass": {
         "file": "base.css",
-        "startLine": 152,
-        "endLine": 152,
+        "startLine": 154,
+        "endLine": 154,
         "snippet": "  --motion-spring-sheets-present-mass: 1;"
       },
       "ios-spring-sheets-present": {
         "file": "base.css",
-        "startLine": 153,
-        "endLine": 153,
+        "startLine": 155,
+        "endLine": 155,
         "snippet": "  --ios-spring-sheets-present: damping:25,stiffness:224,mass:1;"
       },
       "motion-spring-sheets-detent-response": {
         "file": "base.css",
-        "startLine": 154,
-        "endLine": 154,
+        "startLine": 156,
+        "endLine": 156,
         "snippet": "  --motion-spring-sheets-detent-response: 0.36;"
       },
       "motion-spring-sheets-detent-damping-fraction": {
         "file": "base.css",
-        "startLine": 155,
-        "endLine": 155,
+        "startLine": 157,
+        "endLine": 157,
         "snippet": "  --motion-spring-sheets-detent-damping-fraction: 0.72;"
       },
       "motion-spring-sheets-detent-blend-duration": {
         "file": "base.css",
-        "startLine": 156,
-        "endLine": 156,
+        "startLine": 158,
+        "endLine": 158,
         "snippet": "  --motion-spring-sheets-detent-blend-duration: 0.1s;"
       },
       "motion-spring-sheets-detent-damping": {
         "file": "base.css",
-        "startLine": 157,
-        "endLine": 157,
+        "startLine": 159,
+        "endLine": 159,
         "snippet": "  --motion-spring-sheets-detent-damping: 25;"
       },
       "motion-spring-sheets-detent-stiffness": {
         "file": "base.css",
-        "startLine": 158,
-        "endLine": 158,
+        "startLine": 160,
+        "endLine": 160,
         "snippet": "  --motion-spring-sheets-detent-stiffness: 305;"
       },
       "motion-spring-sheets-detent-mass": {
         "file": "base.css",
-        "startLine": 159,
-        "endLine": 159,
+        "startLine": 161,
+        "endLine": 161,
         "snippet": "  --motion-spring-sheets-detent-mass: 1;"
       },
       "ios-spring-sheets-detent": {
         "file": "base.css",
-        "startLine": 160,
-        "endLine": 160,
+        "startLine": 162,
+        "endLine": 162,
         "snippet": "  --ios-spring-sheets-detent: damping:25,stiffness:305,mass:1;"
       },
       "motion-spring-page-push-response": {
         "file": "base.css",
-        "startLine": 161,
-        "endLine": 161,
+        "startLine": 163,
+        "endLine": 163,
         "snippet": "  --motion-spring-page-push-response: 0.4;"
       },
       "motion-spring-page-push-damping-fraction": {
         "file": "base.css",
-        "startLine": 162,
-        "endLine": 162,
+        "startLine": 164,
+        "endLine": 164,
         "snippet": "  --motion-spring-page-push-damping-fraction: 0.8;"
       },
       "motion-spring-page-push-blend-duration": {
         "file": "base.css",
-        "startLine": 163,
-        "endLine": 163,
+        "startLine": 165,
+        "endLine": 165,
         "snippet": "  --motion-spring-page-push-blend-duration: 0.12s;"
       },
       "motion-spring-page-push-damping": {
         "file": "base.css",
-        "startLine": 164,
-        "endLine": 164,
+        "startLine": 166,
+        "endLine": 166,
         "snippet": "  --motion-spring-page-push-damping: 25;"
       },
       "motion-spring-page-push-stiffness": {
         "file": "base.css",
-        "startLine": 165,
-        "endLine": 165,
+        "startLine": 167,
+        "endLine": 167,
         "snippet": "  --motion-spring-page-push-stiffness: 246;"
       },
       "motion-spring-page-push-mass": {
         "file": "base.css",
-        "startLine": 166,
-        "endLine": 166,
+        "startLine": 168,
+        "endLine": 168,
         "snippet": "  --motion-spring-page-push-mass: 1;"
       },
       "ios-spring-page-push": {
         "file": "base.css",
-        "startLine": 167,
-        "endLine": 167,
+        "startLine": 169,
+        "endLine": 169,
         "snippet": "  --ios-spring-page-push: damping:25,stiffness:246,mass:1;"
       },
       "motion-spring-page-pop-response": {
         "file": "base.css",
-        "startLine": 168,
-        "endLine": 168,
+        "startLine": 170,
+        "endLine": 170,
         "snippet": "  --motion-spring-page-pop-response: 0.38;"
       },
       "motion-spring-page-pop-damping-fraction": {
         "file": "base.css",
-        "startLine": 169,
-        "endLine": 169,
+        "startLine": 171,
+        "endLine": 171,
         "snippet": "  --motion-spring-page-pop-damping-fraction: 0.76;"
       },
       "motion-spring-page-pop-blend-duration": {
         "file": "base.css",
-        "startLine": 170,
-        "endLine": 170,
+        "startLine": 172,
+        "endLine": 172,
         "snippet": "  --motion-spring-page-pop-blend-duration: 0.1s;"
       },
       "motion-spring-page-pop-damping": {
         "file": "base.css",
-        "startLine": 171,
-        "endLine": 171,
+        "startLine": 173,
+        "endLine": 173,
         "snippet": "  --motion-spring-page-pop-damping: 25;"
       },
       "motion-spring-page-pop-stiffness": {
         "file": "base.css",
-        "startLine": 172,
-        "endLine": 172,
+        "startLine": 174,
+        "endLine": 174,
         "snippet": "  --motion-spring-page-pop-stiffness: 273;"
       },
       "motion-spring-page-pop-mass": {
         "file": "base.css",
-        "startLine": 173,
-        "endLine": 173,
+        "startLine": 175,
+        "endLine": 175,
         "snippet": "  --motion-spring-page-pop-mass: 1;"
       },
       "ios-spring-page-pop": {
         "file": "base.css",
-        "startLine": 174,
-        "endLine": 174,
+        "startLine": 176,
+        "endLine": 176,
         "snippet": "  --ios-spring-page-pop: damping:25,stiffness:273,mass:1;"
       },
       "motion-spring-page-shot-open-response": {
         "file": "base.css",
-        "startLine": 175,
-        "endLine": 175,
+        "startLine": 177,
+        "endLine": 177,
         "snippet": "  --motion-spring-page-shot-open-response: 0.44;"
       },
       "motion-spring-page-shot-open-damping-fraction": {
         "file": "base.css",
-        "startLine": 176,
-        "endLine": 176,
+        "startLine": 178,
+        "endLine": 178,
         "snippet": "  --motion-spring-page-shot-open-damping-fraction: 0.78;"
       },
       "motion-spring-page-shot-open-blend-duration": {
         "file": "base.css",
-        "startLine": 177,
-        "endLine": 177,
+        "startLine": 179,
+        "endLine": 179,
         "snippet": "  --motion-spring-page-shot-open-blend-duration: 0.12s;"
       },
       "motion-spring-page-shot-open-damping": {
         "file": "base.css",
-        "startLine": 178,
-        "endLine": 178,
+        "startLine": 180,
+        "endLine": 180,
         "snippet": "  --motion-spring-page-shot-open-damping: 22;"
       },
       "motion-spring-page-shot-open-stiffness": {
         "file": "base.css",
-        "startLine": 179,
-        "endLine": 179,
+        "startLine": 181,
+        "endLine": 181,
         "snippet": "  --motion-spring-page-shot-open-stiffness: 204;"
       },
       "motion-spring-page-shot-open-mass": {
         "file": "base.css",
-        "startLine": 180,
-        "endLine": 180,
+        "startLine": 182,
+        "endLine": 182,
         "snippet": "  --motion-spring-page-shot-open-mass: 1;"
       },
       "ios-spring-page-shot-open": {
         "file": "base.css",
-        "startLine": 181,
-        "endLine": 181,
+        "startLine": 183,
+        "endLine": 183,
         "snippet": "  --ios-spring-page-shot-open: damping:22,stiffness:204,mass:1;"
       },
       "motion-spring-page-shot-close-response": {
         "file": "base.css",
-        "startLine": 182,
-        "endLine": 182,
+        "startLine": 184,
+        "endLine": 184,
         "snippet": "  --motion-spring-page-shot-close-response: 0.34;"
       },
       "motion-spring-page-shot-close-damping-fraction": {
         "file": "base.css",
-        "startLine": 183,
-        "endLine": 183,
+        "startLine": 185,
+        "endLine": 185,
         "snippet": "  --motion-spring-page-shot-close-damping-fraction: 1;"
       },
       "motion-spring-page-shot-close-blend-duration": {
         "file": "base.css",
-        "startLine": 184,
-        "endLine": 184,
+        "startLine": 186,
+        "endLine": 186,
         "snippet": "  --motion-spring-page-shot-close-blend-duration: 0.1s;"
       },
       "motion-spring-page-shot-close-damping": {
         "file": "base.css",
-        "startLine": 185,
-        "endLine": 185,
+        "startLine": 187,
+        "endLine": 187,
         "snippet": "  --motion-spring-page-shot-close-damping: 37;"
       },
       "motion-spring-page-shot-close-stiffness": {
         "file": "base.css",
-        "startLine": 186,
-        "endLine": 186,
+        "startLine": 188,
+        "endLine": 188,
         "snippet": "  --motion-spring-page-shot-close-stiffness: 342;"
       },
       "motion-spring-page-shot-close-mass": {
         "file": "base.css",
-        "startLine": 187,
-        "endLine": 187,
+        "startLine": 189,
+        "endLine": 189,
         "snippet": "  --motion-spring-page-shot-close-mass: 1;"
       },
       "ios-spring-page-shot-close": {
         "file": "base.css",
-        "startLine": 188,
-        "endLine": 188,
+        "startLine": 190,
+        "endLine": 190,
         "snippet": "  --ios-spring-page-shot-close: damping:37,stiffness:342,mass:1;"
       },
       "motion-haptic-selection": {
         "file": "base.css",
-        "startLine": 191,
-        "endLine": 191,
+        "startLine": 193,
+        "endLine": 193,
         "snippet": "  --motion-haptic-selection: \"selection\";"
       },
       "motion-haptic-light": {
         "file": "base.css",
-        "startLine": 192,
-        "endLine": 192,
+        "startLine": 194,
+        "endLine": 194,
         "snippet": "  --motion-haptic-light: \"light\";"
       },
       "ios-layout-deform-content-opacity": {
         "file": "base.css",
-        "startLine": 195,
-        "endLine": 195,
+        "startLine": 197,
+        "endLine": 197,
         "snippet": "  --ios-layout-deform-content-opacity: duration:85,easing:cubic-bezier(0.42,0,0.58,1);"
       },
       "ios-layout-deform-content-transform": {
         "file": "base.css",
-        "startLine": 196,
-        "endLine": 196,
+        "startLine": 198,
+        "endLine": 198,
         "snippet": "  --ios-layout-deform-content-transform: duration:180,easing:cubic-bezier(0.22,1,0.36,1);"
       },
       "ios-layout-deform-content-swap": {
         "file": "base.css",
-        "startLine": 197,
-        "endLine": 197,
+        "startLine": 199,
+        "endLine": 199,
         "snippet": "  --ios-layout-deform-content-swap: duration:85,easing:cubic-bezier(0.42,0,0.58,1);"
+      },
+      "ios-fade-opacity": {
+        "file": "base.css",
+        "startLine": 200,
+        "endLine": 200,
+        "snippet": "  --ios-fade-opacity: duration:180,easing:cubic-bezier(0.42,0,0.58,1);"
+      },
+      "ios-fade-swap": {
+        "file": "base.css",
+        "startLine": 201,
+        "endLine": 201,
+        "snippet": "  --ios-fade-swap: duration:85,easing:cubic-bezier(0.42,0,0.58,1);"
       },
       "ios-menu-content-in": {
         "file": "base.css",
-        "startLine": 198,
-        "endLine": 198,
+        "startLine": 202,
+        "endLine": 202,
         "snippet": "  --ios-menu-content-in: duration:120,easing:cubic-bezier(0.25,0.1,0.25,1);"
       },
       "ios-menu-content-in-stagger": {
         "file": "base.css",
-        "startLine": 199,
-        "endLine": 199,
+        "startLine": 203,
+        "endLine": 203,
         "snippet": "  --ios-menu-content-in-stagger: duration:30,easing:cubic-bezier(0,0,1,1);"
       },
       "ios-sheets-dismiss": {
         "file": "base.css",
-        "startLine": 200,
-        "endLine": 200,
+        "startLine": 204,
+        "endLine": 204,
         "snippet": "  --ios-sheets-dismiss: duration:800,easing:cubic-bezier(0.32,0.72,0,1);"
       },
       "motion-interaction-velocity-aware": {
         "file": "base.css",
-        "startLine": 203,
-        "endLine": 203,
+        "startLine": 207,
+        "endLine": 207,
         "snippet": "  --motion-interaction-velocity-aware: 1;"
       },
       "motion-interaction-interruptible": {
         "file": "base.css",
-        "startLine": 204,
-        "endLine": 204,
+        "startLine": 208,
+        "endLine": 208,
         "snippet": "  --motion-interaction-interruptible: 1;"
       },
       "motion-interaction-preserve-velocity": {
         "file": "base.css",
-        "startLine": 205,
-        "endLine": 205,
+        "startLine": 209,
+        "endLine": 209,
         "snippet": "  --motion-interaction-preserve-velocity: 1;"
       },
       "motion-duration-micro": {
         "file": "recipe.css",
-        "startLine": 46,
-        "endLine": 46,
+        "startLine": 47,
+        "endLine": 47,
         "snippet": "    --motion-duration-micro: var(--motion-0);"
       },
       "motion-duration-press": {
         "file": "recipe.css",
-        "startLine": 47,
-        "endLine": 47,
+        "startLine": 48,
+        "endLine": 48,
         "snippet": "    --motion-duration-press: var(--motion-0);"
       },
       "motion-duration-control": {
         "file": "recipe.css",
-        "startLine": 48,
-        "endLine": 48,
+        "startLine": 49,
+        "endLine": 49,
         "snippet": "    --motion-duration-control: var(--motion-0);"
       },
       "motion-duration-fade": {
         "file": "recipe.css",
-        "startLine": 49,
-        "endLine": 49,
+        "startLine": 50,
+        "endLine": 50,
         "snippet": "    --motion-duration-fade: var(--motion-0);"
       },
       "motion-duration-layout-deform": {
         "file": "recipe.css",
-        "startLine": 50,
-        "endLine": 50,
+        "startLine": 51,
+        "endLine": 51,
         "snippet": "    --motion-duration-layout-deform: var(--motion-0);"
       },
       "motion-duration-layout-deform-content": {
         "file": "recipe.css",
-        "startLine": 51,
-        "endLine": 51,
+        "startLine": 52,
+        "endLine": 52,
         "snippet": "    --motion-duration-layout-deform-content: var(--motion-0);"
       },
       "motion-duration-menu": {
         "file": "recipe.css",
-        "startLine": 52,
-        "endLine": 52,
+        "startLine": 53,
+        "endLine": 53,
         "snippet": "    --motion-duration-menu: var(--motion-0);"
       },
       "motion-duration-sheets": {
         "file": "recipe.css",
-        "startLine": 53,
-        "endLine": 53,
+        "startLine": 54,
+        "endLine": 54,
         "snippet": "    --motion-duration-sheets: var(--motion-0);"
       },
       "motion-duration-page": {
         "file": "recipe.css",
-        "startLine": 54,
-        "endLine": 54,
+        "startLine": 55,
+        "endLine": 55,
         "snippet": "    --motion-duration-page: var(--motion-0);"
       },
       "motion-duration-page-shot": {
         "file": "recipe.css",
-        "startLine": 55,
-        "endLine": 55,
+        "startLine": 56,
+        "endLine": 56,
         "snippet": "    --motion-duration-page-shot: var(--motion-0);"
       },
       "motion-delay-layout-deform-content-swap": {
@@ -2880,22 +2909,28 @@
         "endLine": 38,
         "snippet": "  --motion-recipe-sheets: transform var(--motion-duration-sheets) var(--motion-easing-sheets), height var(--motion-duration-sheets) var(--motion-easing-sheets), left var(--motion-duration-sheets) var(--motion-easing-sheets), right var(--motion-duration-sheets) var(--motion-easing-sheets), bottom var(--motion-duration-sheets) var(--motion-easing-sheets), border-radius var(--motion-duration-sheets) var(--motion-easing-sheets);"
       },
-      "motion-recipe-menu": {
+      "motion-recipe-fade": {
         "file": "recipe.css",
         "startLine": 39,
         "endLine": 39,
-        "snippet": "  --motion-recipe-menu: transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate);"
+        "snippet": "  --motion-recipe-fade: opacity var(--motion-duration-fade) var(--motion-easing-standard);"
       },
-      "motion-recipe-page": {
+      "undefined": {
         "file": "recipe.css",
         "startLine": 40,
         "endLine": 40,
+        "snippet": "  --undefined: transform var(--motion-duration-menu) var(--motion-easing-menu), opacity var(--motion-duration-fade) var(--motion-easing-decelerate);"
+      },
+      "motion-recipe-page": {
+        "file": "recipe.css",
+        "startLine": 41,
+        "endLine": 41,
         "snippet": "  --motion-recipe-page: transform var(--motion-duration-page) var(--motion-easing-page), filter var(--motion-duration-page) var(--motion-easing-standard);"
       },
       "motion-recipe-page-shot": {
         "file": "recipe.css",
-        "startLine": 41,
-        "endLine": 41,
+        "startLine": 42,
+        "endLine": 42,
         "snippet": "  --motion-recipe-page-shot: transform var(--motion-duration-page-shot) var(--motion-easing-page), top var(--motion-duration-page-shot) var(--motion-easing-page), left var(--motion-duration-page-shot) var(--motion-easing-page), width var(--motion-duration-page-shot) var(--motion-easing-page), height var(--motion-duration-page-shot) var(--motion-easing-page), border-radius var(--motion-duration-page-shot) var(--motion-easing-page);"
       },
       "motion-press": {
@@ -2916,28 +2951,34 @@
         "endLine": 48,
         "snippet": ".motion-layout-content\ntransition: var(--motion-recipe-layout-deform-content);\nopacity: var(--motion-opacity-visible);\ntransform: translateY(0);"
       },
+      "motion-fade": {
+        "file": "semantic.css",
+        "startLine": 70,
+        "endLine": 73,
+        "snippet": ".motion-fade\ntransition: var(--motion-recipe-fade);\nopacity: var(--motion-opacity-visible);"
+      },
       "motion-menu": {
         "file": "semantic.css",
-        "startLine": 74,
-        "endLine": 78,
+        "startLine": 97,
+        "endLine": 101,
         "snippet": ".motion-menu\ntransition: var(--motion-recipe-menu);\ntransform: scale(1);\nopacity: var(--motion-opacity-visible);"
       },
       "motion-sheets": {
         "file": "semantic.css",
-        "startLine": 96,
-        "endLine": 103,
+        "startLine": 119,
+        "endLine": 126,
         "snippet": ".motion-sheets\ntransition: var(--motion-recipe-sheets);\ntransform: translateY(0);\nleft: var(--motion-offset-sheets-inset);\nright: var(--motion-offset-sheets-inset);\nbottom: var(--motion-offset-sheets-inset);\nborder-radius: var(--motion-radius-sheets-floating);"
       },
       "motion-page": {
         "file": "semantic.css",
-        "startLine": 129,
-        "endLine": 132,
+        "startLine": 152,
+        "endLine": 155,
         "snippet": ".motion-page\ntransition: var(--motion-recipe-page);\ntransform: translateX(0);"
       },
       "motion-page-shot": {
         "file": "semantic.css",
-        "startLine": 156,
-        "endLine": 160,
+        "startLine": 179,
+        "endLine": 183,
         "snippet": ".motion-page-shot\ntransition: var(--motion-recipe-page-shot);\ntransform: none;\nborder-radius: 0;"
       },
       "motion-none": {
@@ -3248,6 +3289,28 @@
             "transition: none;",
             "opacity: var(--motion-opacity-hidden);",
             "transform: translateY(var(--motion-offset-layout-deform-y));"
+          ]
+        }
+      ],
+      "motion-fade": [
+        {
+          "selector": ".motion-fade",
+          "lines": [
+            "transition: var(--motion-recipe-fade);",
+            "opacity: var(--motion-opacity-visible);"
+          ]
+        },
+        {
+          "selector": ".motion-fade.is-exiting",
+          "lines": [
+            "opacity: var(--motion-opacity-hidden);"
+          ]
+        },
+        {
+          "selector": ".motion-fade.is-entering",
+          "lines": [
+            "transition: none;",
+            "opacity: var(--motion-opacity-hidden);"
           ]
         }
       ],

@@ -183,6 +183,15 @@ const LAYOUT_CONTENT_SNIPPET = [
   '</EgEdsAnimaLayoutContent>',
 ].join('\n');
 
+const FADE_SNIPPET = [
+  "import { EgEdsAnimaFade } from '@eds/mobile-components';",
+  '',
+  "// EdsSemanticAnima('fade') · 纯 opacity crossfade",
+  '<EgEdsAnimaFade contentKey={segmentId}>',
+  '  {content}',
+  '</EgEdsAnimaFade>',
+].join('\n');
+
 const MENU_SNIPPET = [
   "import { EgMenu } from '@eds/mobile-components';",
   '',
@@ -200,34 +209,34 @@ const SHEETS_SNIPPET = [
 ].join('\n');
 
 const PAGE_SNIPPET = [
-  "import { createEgEdsAnimaPageNavigator, EgEdsAnimaPage } from '@eds/mobile-components';",
+  "import { createEgPageNavigator, egPageScreenOptions, EgPage } from '@eds/mobile-components';",
   '',
-  '// iOS 26+ 系统 NavBar + 系统转场；Android · iOS ≤25 EDS page 弹簧 + EgNavBar',
-  '// 定制：方向 direction（horizontal 左右 / horizontal-reverse 右左 / vertical 上下）· 拖拽关闭 dragDismiss（默认开启）',
-  'const Stack = createEgEdsAnimaPageNavigator<ParamList>();',
+  '// EgPage 默认 左右 20 · 顶 lg 12 · 底 40 · contentPadding* / contentContainerStyle 可覆盖',
+  'const Stack = createEgPageNavigator<ParamList>();',
   '',
-  "<Stack.Navigator screenOptions={EgEdsAnimaPage({ direction: 'horizontal', dragDismiss: true })}>",
-  '  <Stack.Screen name="Detail" component={Detail} options={{ title: \'订单详情\' }} />',
+  "<Stack.Navigator screenOptions={egPageScreenOptions({ direction: 'horizontal', dragDismiss: true })}>",
+  "  <Stack.Screen name=\"Detail\" options={{ title: '订单详情' }}>",
+  '    {() => <EgPage mode="light">{/* 业务内容 */}</EgPage>}',
+  '  </Stack.Screen>',
   '</Stack.Navigator>',
 ].join('\n');
 
 const PAGE_SHOT_SNIPPET = [
-  "import { EgEdsAnimaPageShot, EgEdsAnimaPageShotTrigger } from '@eds/mobile-components';",
+  "import { EgPage, EgPageShot, EgPageShotContent, EgPageShotTrigger } from '@eds/mobile-components';",
   '',
-  '// 卡片 / 按钮 / 列表行等触发元素 · 同一动效展开整页；弹层内 api.push 左右切换（page）',
-  '<EgEdsAnimaPageShot',
+  '<EgPageShot',
   '  mode="light"',
-  '  // NavBar 标题（iOS 26+ 系统栏 · 其余 EgNavBar）；pageKey 为 null 即根页',
-  '  title={(source, pageKey) => pageKey ?? \'订单详情\'}',
-  '  // 滚动内容：<ScrollView contentInsetAdjustmentBehavior={api.contentInsetAdjustmentBehavior}',
-  '  //   contentContainerStyle={{ paddingTop: api.scrollTopInset }}>',
-  '  renderRoot={(api) => <Detail api={api} onOpen={api.push} />}',
-  '  renderPage={(api) => <SubPage api={api} />}',
+  "  title={(_, pageKey) => pageKey ?? '订单详情'}",
+  '  renderRoot={(api) => (',
+  '    <EgPageShotContent mode="light" api={api}>',
+  '      <OrderDetail onOpen={api.push} />',
+  '    </EgPageShotContent>',
+  '  )}',
   '>',
-  '  <EgEdsAnimaPageShotTrigger id="order" radius={16} morph>',
+  '  <EgPageShotTrigger id="order" radius={16} morph>',
   '    <OrderRow />',
-  '  </EgEdsAnimaPageShotTrigger>',
-  '</EgEdsAnimaPageShot>',
+  '  </EgPageShotTrigger>',
+  '</EgPageShot>',
 ].join('\n');
 
 function quote(value: string) {

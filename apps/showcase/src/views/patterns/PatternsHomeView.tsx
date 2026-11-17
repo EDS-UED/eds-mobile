@@ -1,17 +1,16 @@
 import { router, Stack } from 'expo-router';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
 
 import { patternEntries } from '@/data/patterns/patternNav';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
 import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 export function PatternsHomeView() {
   const screenStyles = useShowcaseScreenStyles();
@@ -30,16 +29,13 @@ export function PatternsHomeView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            screenStyles.scrollContent,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
+          contentPaddingTop={0}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          style={screenStyles.scrollRoot}
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
@@ -49,7 +45,7 @@ export function PatternsHomeView() {
             lead="数据与列表场景 · EgDataList 等在 components 维护场景 preset，业务侧用 Eg* 入口组合，不要手拼 primitives。"
           />
 
-          <ShowcaseSectionCard>
+          <View style={screenStyles.cardList}>
             {patternEntries.map((entry) => (
               <ShowcaseCardRow
                 key={entry.id}
@@ -62,13 +58,13 @@ export function PatternsHomeView() {
                 disabled={entry.status === 'planned'}
                 onPress={
                   entry.status === 'preview' && entry.detailSlug
-                    ? () => router.push(`/(components)/detail/${entry.detailSlug}`)
+                    ? () => router.push(`/(patterns)/detail/${entry.detailSlug}`)
                     : undefined
                 }
               />
             ))}
-          </ShowcaseSectionCard>
-        </ScrollView>
+          </View>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );

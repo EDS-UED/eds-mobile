@@ -36,6 +36,8 @@ export const showcaseTheme = {
     navContentGapInner: edsSpacing('spacing-3'),
     /** Large title → page subtitle — spacing-05 (2px). */
     pageSubtitleGap: edsSpacing('spacing-05'),
+    /** Tab 首页滚动区大标题 → 副文案 · -spacing-3（-12px，margin 上移）。 */
+    tabHomeTitleSubtitleGap: -edsSpacing('spacing-3'),
     titleHintGap: edsSpacing('spacing-05'),
     /** Token color list — item row gap · spacing-4 (16px). */
     tokenItemGap: edsSpacing('spacing-4'),
@@ -53,6 +55,8 @@ export const showcaseTheme = {
     tokenDetailTitleSubtextGap: edsSpacing('spacing-4'),
     /** Color detail — subtext rows · spacing-2 (8px). */
     tokenDetailSubtextRowGap: edsSpacing('spacing-2'),
+    /** 详情「预览」内容区左右 inset · spacing-5（20px）；上下不加壳层 padding。 */
+    previewContentPadding: edsSpacing('spacing-5'),
   },
   radius: {
     sm: edsRadius('radius-sm'),
@@ -111,8 +115,12 @@ export const showcaseTheme = {
     },
     pageTitle: edsTokenFont('headline', '700'),
     pageLead: edsTokenFont('body-medium', '400'),
-    /** Large-title page subtitle — body-medium (17px). */
-    pageSubtitle: edsTokenFont('body-medium', '400'),
+    /** Tab 首页副文案 — body-medium · 500 · 色见 `text-base-secondary`（60%）。 */
+    pageSubtitle: edsTokenFont('body-medium', '500'),
+    /** 详情「注释」小标题 — 17 / 600 · `text-base-primary`。 */
+    annotationSectionTitle: edsTokenFont('body-medium', '600'),
+    /** 详情「注释」正文 — 15 / 400 · `text-base-secondary`（60%）。 */
+    annotationBody: edsTokenFont('body-small', '400'),
   },
 };
 
@@ -148,6 +156,16 @@ export function showcaseCardChromeStyle(
   colors: Parameters<typeof showcaseCardFillColor>[0],
 ): ViewStyle {
   return showcasePageCardSurface(showcaseCardFillColor(colors));
+}
+
+/** 详情定制 — `EgItemGroup` 嵌入 `DocSection` 单卡，不叠第二层圆角底。 */
+export function showcaseCustomizeEgItemGroupStyle(): ViewStyle {
+  return {
+    backgroundColor: 'transparent',
+    padding: 0,
+    borderRadius: 0,
+    overflow: 'visible',
+  };
 }
 
 /** 全站页面根背景 — semantic `--box-page-card`（`colors.page` 同值）。 */

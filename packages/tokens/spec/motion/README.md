@@ -6,7 +6,7 @@ Base → Recipe → Semantic
 
 **Semantic class** 与 RN **`EdsSemanticAnima('<scenarioId>')`** 同名：`className = motion-{scenarioId}`。
 
-当前 spec 含 **`press`** · **`slide`** · **`layout-content`** · **`menu`** · **`sheets`** · **`page`** · **`page-shot`** 七个场景；新增 Semantic 时按需补 Base / Recipe（勿私造未引用参数）。
+当前 spec 含 **`press`** · **`slide`** · **`layout-content`** · **`fade`** · **`menu`** · **`sheets`** · **`page`** · **`page-shot`** 八个场景；新增 Semantic 时按需补 Base / Recipe（勿私造未引用参数）。
 
 ---
 

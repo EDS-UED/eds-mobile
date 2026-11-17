@@ -30,8 +30,21 @@ export type EgNavBarNativeStackOptions = {
   headerRight?: () => ReactNode;
   unstable_headerLeftItems?: () => ReturnType<typeof egNavBarNativeStackHeaderGlassItem>[];
   unstable_headerRightItems?: () => ReturnType<typeof egNavBarNativeStackHeaderGlassItem>[];
-  scrollEdgeEffects: { top: ScrollEdgeEffect };
+  /** `deferScrollEdgeToScrollHandler` 时不写入，由 `useEgNavBarScroll` `setOptions` 单源驱动。 */
+  scrollEdgeEffects?: EgNavBarNativeScrollEdgeEffects;
 };
+
+/** iOS 26+ RNS — 四边显式 `hidden`，避免只改 `top` 时其它边落回 `automatic`（hard 分割线闪一下）。 */
+export type EgNavBarNativeScrollEdgeEffects = {
+  top: ScrollEdgeEffect;
+  bottom: ScrollEdgeEffect;
+  left: ScrollEdgeEffect;
+  right: ScrollEdgeEffect;
+};
+
+export function egNavBarNativeScrollEdgeEffects(top: ScrollEdgeEffect): EgNavBarNativeScrollEdgeEffects {
+  return { top, bottom: 'hidden', left: 'hidden', right: 'hidden' };
+}
 
 export type EgNavBarNativeStackOptionsInput = Pick<
   EgNavBarProps,
@@ -47,6 +60,11 @@ export type EgNavBarNativeStackOptionsInput = Pick<
 > & {
   /** `background="auto"` — 内容已滚入栏下（`useEgNavBarScroll().scrollEdgeActive`）；静止 `hidden` · 滚入 `soft`。 */
   scrollEdgeActive?: boolean;
+  /**
+   * iOS 26+ scroll edge 由 `useEgNavBarScroll` `setOptions` 单源驱动时设为 `true` —
+   * 初始项固定静止 `hidden`，避免与滚动 `setOptions` 叠写导致 hidden↔soft 间闪过 `automatic`（hard）。
+   */
+  deferScrollEdgeToScrollHandler?: boolean;
 };
 
 /** 系统栏 scroll edge（iOS 26+ 页面）：`auto` 静止 `hidden`、滚入栏下 `soft`；`visible` 常显 `soft`；`hidden` 常隐。 */
@@ -57,6 +75,16 @@ export function resolveEgNavBarScrollEdge(
   if (background === 'visible') return 'soft';
   if (background === 'hidden') return 'hidden';
   return scrollEdgeActive ? 'soft' : 'hidden';
+}
+
+/** `background="auto"` 且未固定 `scrollEdgeEffect` — 勿在静态 `screenOptions` 写死 `scrollEdgeEffects`（避免盖掉 `setOptions` / 页级 `scrollEdgeActive`）。 */
+export function shouldDeferEgNavBarNativeScrollEdge(
+  background: EgNavBarBackground = 'auto',
+  scrollEdgeEffect?: EgNavBarProps['scrollEdgeEffect'],
+  deferScrollEdgeToScrollHandler?: boolean,
+): boolean {
+  if (deferScrollEdgeToScrollHandler != null) return deferScrollEdgeToScrollHandler;
+  return background === 'auto' && scrollEdgeEffect == null;
 }
 
 /**
@@ -100,8 +128,20 @@ export function egNavBarNativeStackOptions(input: EgNavBarNativeStackOptionsInpu
     background = 'auto',
     scrollEdgeEffect,
     scrollEdgeActive = false,
+    deferScrollEdgeToScrollHandler,
     mode = 'light',
   } = input;
+  const deferScrollEdge = shouldDeferEgNavBarNativeScrollEdge(
+    background,
+    scrollEdgeEffect,
+    deferScrollEdgeToScrollHandler,
+  );
+  const edgeActiveForOptions = deferScrollEdge ? false : scrollEdgeActive;
+  const scrollEdgeEffects = deferScrollEdge
+    ? undefined
+    : egNavBarNativeScrollEdgeEffects(
+        scrollEdgeEffect ?? resolveEgNavBarScrollEdge(background, edgeActiveForOptions),
+      );
   const color = getThemeColors(mode)['text-base-primary'] as string;
   const titlePreset = presetBodyMediumStrong();
   const nativeTitle = resolveEgNavBarNativeStackTitle(title);
@@ -134,7 +174,7 @@ export function egNavBarNativeStackOptions(input: EgNavBarNativeStackOptionsInpu
       showRight && right
         ? () => [egNavBarNativeStackHeaderGlassItem(<NativeBarItem action={right} mode={mode} />)]
         : undefined,
-    scrollEdgeEffects: { top: scrollEdgeEffect ?? resolveEgNavBarScrollEdge(background, scrollEdgeActive) },
+    ...(scrollEdgeEffects ? { scrollEdgeEffects } : null),
   };
 }
 
@@ -163,6 +203,7 @@ export function egNavBarNativeStackScreenOptions({
     background,
     scrollEdgeEffect,
     mode,
+    deferScrollEdgeToScrollHandler: shouldDeferEgNavBarNativeScrollEdge(background, scrollEdgeEffect),
   });
   const back: EgNavBarAction = {
     kind: 'icon',

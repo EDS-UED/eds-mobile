@@ -15,4 +15,9 @@ export const familyBodyPreviewSlug: Record<string, string> = {
   'item-body': 'item-body',
   'glass-body': 'glass-eg',
   'scroll-edge-body': 'glass-scroll-edge',
+  'divider-body': 'divider',
+  'nav-bar-body': 'tab-bar-nav-bar',
+  'sheets-body': 'sheets-body',
+  'page-body': 'page-body',
+  'page-shot-body': 'page-shot-body',
 };

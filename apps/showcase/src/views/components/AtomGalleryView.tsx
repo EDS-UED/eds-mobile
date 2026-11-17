@@ -1,9 +1,8 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 import { AtomGallery } from '@eds/mobile-components/preview/atom-gallery';
 import { useColorScheme } from 'react-native';
@@ -11,14 +10,16 @@ import { useColorScheme } from 'react-native';
 import { findFamilyNav, FAMILY_LABELS } from '@/data/components/buildComponentCatalogNav';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseSearchBar } from '@/views/shared/ShowcaseSearchBar';
-import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 export function AtomGalleryView() {
   const screenStyles = useShowcaseScreenStyles();
   const { tier: tierParam, family } = useLocalSearchParams<{ tier: string; family: string }>();
   const tier = tierParam as FigmaComponentEntry['tier'];
-  const familyNav = findFamilyNav(tier, family ?? '');
+  const galleryFamilyKey =
+    family === 'icon' || family === 'crypto' ? 'symbol' : family;
+  const familyNav = findFamilyNav(tier, galleryFamilyKey ?? '');
   const [query, setQuery] = useState('');
   const scheme = useColorScheme();
   const mode = scheme === 'dark' ? 'dark' : 'light';
@@ -41,17 +42,14 @@ export function AtomGalleryView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            styles.content,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
           keyboardShouldPersistTaps="handled"
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          withTabBarInset={false}
+          style={screenStyles.scrollRoot}
         >
           <ShowcaseSearchBar
             value={query}
@@ -60,15 +58,8 @@ export function AtomGalleryView() {
             accessibilityLabel="Search atom gallery"
           />
           <AtomGallery family={familyNav.galleryFamily} mode={mode} query={query} />
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  content: {
-    paddingBottom: 24,
-    paddingTop: theme.layout.navContentGapInner,
-  },
-});

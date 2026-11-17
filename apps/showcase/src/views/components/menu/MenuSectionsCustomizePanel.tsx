@@ -46,7 +46,8 @@ function createMenuSectionCustomizeStyles(colors: ShowcaseColorMap) {
       backgroundColor: colors['material-card-shallow'] as string,
     },
     chipActive: {
-      backgroundColor: colors['fill-brand-primary'] as string,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: colors['stroke-divider-shallow'] as string,
     },
     chipText: {
       fontSize: 13,

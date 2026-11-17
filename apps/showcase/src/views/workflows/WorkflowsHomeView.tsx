@@ -1,9 +1,8 @@
 import { router, Stack } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 
 import { workflowEntries } from '@/data/workflows/workflowNav';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
 import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
@@ -11,6 +10,7 @@ import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 export function WorkflowsHomeView() {
   const screenStyles = useShowcaseScreenStyles();
@@ -29,16 +29,12 @@ export function WorkflowsHomeView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            screenStyles.scrollContent,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          style={screenStyles.scrollRoot}
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
@@ -67,7 +63,7 @@ export function WorkflowsHomeView() {
               />
             ))}
           </View>
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );

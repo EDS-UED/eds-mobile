@@ -24,6 +24,9 @@ export const SHOWCASE_ITEM_BODY_SLUG = 'item-body';
 
 export const SHOWCASE_TAB_BAR_TEXT_SLUG = 'tab-bar-text';
 
+export const SHOWCASE_PAGE_BODY_SLUG = 'page-body';
+export const SHOWCASE_PAGE_SHOT_BODY_SLUG = 'page-shot-body';
+
 export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
   {
     figmaName: 'EgGlass',
@@ -112,6 +115,26 @@ export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
     tier: 'organisms',
     family: 'tab-bar',
     slug: SHOWCASE_TAB_BAR_TEXT_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgPage',
+    showcaseLabel: '页面本体 · spacing-5 边距 · motion-page',
+    exportName: 'EgPage',
+    tier: 'templates',
+    family: 'page',
+    slug: SHOWCASE_PAGE_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgPageShot',
+    showcaseLabel: '弹层页面 · motion-page-shot',
+    exportName: 'EgPageShot',
+    tier: 'templates',
+    family: 'page-shot',
+    slug: SHOWCASE_PAGE_SHOT_BODY_SLUG,
     figmaPage: INFRA_PAGE,
     kind: 'component',
   },

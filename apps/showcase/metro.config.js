@@ -18,6 +18,8 @@ const componentsCatalogEntry = path.resolve(workspaceRoot, 'packages/components/
 const previewModuleMap = {
   'liquid-glass': path.resolve(workspaceRoot, 'packages/components/src/preview/LiquidGlassDemo.tsx'),
   motion: path.resolve(workspaceRoot, 'packages/components/src/preview/MotionDemo.tsx'),
+  'layout-content': path.resolve(workspaceRoot, 'packages/components/src/preview/LayoutContentTabDemo.tsx'),
+  fade: path.resolve(workspaceRoot, 'packages/components/src/preview/FadeTabDemo.tsx'),
   'atom-gallery': path.resolve(workspaceRoot, 'packages/components/src/preview/AtomGallery.tsx'),
   parity: path.resolve(workspaceRoot, 'packages/components/src/preview/ParityHarness.tsx'),
 };

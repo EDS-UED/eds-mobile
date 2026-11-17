@@ -2,9 +2,8 @@ import SegmentedControl from '@react-native-segmented-control/segmented-control'
 import { Stack } from 'expo-router';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
 import type { ComponentType, PropsWithChildren } from 'react';
-import { ScrollView, StyleSheet, View, type NativeSyntheticEvent } from 'react-native';
+import { StyleSheet, View, type NativeSyntheticEvent } from 'react-native';
 
 type SegmentedControlChangeEvent = NativeSyntheticEvent<{ selectedSegmentIndex: number }>;
 
@@ -20,6 +19,8 @@ import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { edsScale } from '@/views/shared/resolveEdsTheme';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
+import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 
 type TokenSegmentScrollLayoutProps = PropsWithChildren<{
   title: string;
@@ -28,7 +29,7 @@ type TokenSegmentScrollLayoutProps = PropsWithChildren<{
   onSegmentIndexChange: (index: number) => void;
 }>;
 
-/** Token category inner page — sticky segment bar + scroll body (Typography pattern). */
+/** Token category inner page — sticky segment bar + scroll body（EgPage 水平 spacing-5）。 */
 export function TokenSegmentScrollLayout({
   title,
   segmentLabels,
@@ -48,21 +49,20 @@ export function TokenSegmentScrollLayout({
   } = useShowcaseStackNav(title);
 
   return (
-    <View style={screenStyles.scrollRoot}>
+    <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            styles.content,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
-          stickyHeaderIndices={[0]}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
+          contentPaddingTop={0}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          withTabBarInset={false}
+          sectionGap={false}
+          stickyHeaderIndices={[0]}
+          style={screenStyles.scrollRoot}
         >
           <View style={[styles.segmentBar, { backgroundColor: colors['box-page-card'] as string }]}>
             <TokenSegmentedControl
@@ -75,19 +75,15 @@ export function TokenSegmentScrollLayout({
             />
           </View>
           {children}
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
-    </View>
+    </ShowcaseStackScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    paddingBottom: theme.layout.scrollBottom,
-  },
   segmentBar: {
     paddingBottom: theme.spacing['spacing-6'] as number,
-    paddingHorizontal: theme.layout.pageInset,
     paddingTop: theme.layout.navContentGapInner,
   },
   segmentControl: {

@@ -70,9 +70,23 @@ export function egMenuSectionTitlePaddingBottomPx(): number {
   return mobileTheme.spacing['spacing-2-5'] as number;
 }
 
-/** 选中行强调 — event-focus-brand（聚焦语义底） */
-export function egMenuItemSelectedBackgroundColorToken(): 'event-focus-brand' {
-  return 'event-focus-brand';
+/** 行按住 / 跟手高亮 — var(--event-tap)。 */
+export function egMenuItemPressBackgroundColorToken(): 'event-tap' {
+  return 'event-tap';
+}
+
+/** 选中行右侧勾 — eds-enable-fill · fillTone decor → var(--material-decor) */
+export function egMenuItemSelectionIconName(): 'eds-enable-fill' {
+  return 'eds-enable-fill';
+}
+
+export function egMenuItemSelectionIconFillTone(): 'decor' {
+  return 'decor';
+}
+
+/** 选中勾渲染边长 — symbol-md（scale-5-5 · 22px）。 */
+export function egMenuItemSelectionIconDisplayPx(): number {
+  return mobileTheme.spacing['symbol-md'] as number;
 }
 
 /** 分割线左右 inset — var(--spacing-4) · 16px */

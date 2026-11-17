@@ -258,11 +258,11 @@ export const menuTriggerCustomizeControls: DocCustomizeControl[] = [
   },
   { kind: 'text', key: 'triggerIcon', label: '胶囊 icon' },
   { kind: 'boolean', key: 'disabled', label: '禁用' },
-  { kind: 'boolean', key: 'showItemIcon', label: '显示图标' },
+  { kind: 'boolean', key: 'showItemIcon', label: '图标' },
   {
     kind: 'select',
     key: 'placement',
-    label: '出现方向',
+    label: '方向',
     options: [
       { value: 'bottom', label: '下' },
       { value: 'top', label: '上' },

@@ -1,3 +1,4 @@
+import { EG_PAGE_CONTENT_PADDING_HORIZONTAL } from '@eds/mobile-components';
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -8,6 +9,8 @@ import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/sha
 /** Scroll / list shell styles — background & text follow system light/dark. */
 export function useShowcaseScreenStyles() {
   const colors = useShowcaseColors();
+  const tabBarInset = useShowcaseTabBarInset();
+  const pagePadH = EG_PAGE_CONTENT_PADDING_HORIZONTAL as number;
 
   return useMemo(
     () =>
@@ -16,18 +19,20 @@ export function useShowcaseScreenStyles() {
           flex: 1,
           backgroundColor: showcasePageBackgroundColor(colors),
         },
+        /** 遗留 `ScrollView` — 与 `EgPage` 同水平 spacing-5。 */
         scrollContent: {
-          paddingBottom: theme.layout.scrollBottom,
+          paddingHorizontal: pagePadH,
+          paddingBottom: theme.layout.scrollBottom + tabBarInset,
           gap: theme.layout.cardGap,
           paddingTop: theme.layout.navContentGapHome,
         },
         scrollContentInner: {
-          paddingBottom: theme.layout.scrollBottom,
+          paddingHorizontal: pagePadH,
+          paddingBottom: theme.layout.scrollBottom + tabBarInset,
           gap: theme.layout.cardGap,
           paddingTop: theme.layout.navContentGapInner,
         },
         cardList: {
-          paddingHorizontal: theme.layout.pageInset,
           gap: theme.layout.cardGap,
         },
         missing: {
@@ -35,6 +40,6 @@ export function useShowcaseScreenStyles() {
           color: colors['text-base-secondary'] as string,
         },
       }),
-    [colors],
+    [colors, pagePadH, tabBarInset],
   );
 }

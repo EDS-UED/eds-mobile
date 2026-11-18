@@ -29,7 +29,7 @@ push main → EAS Workflow (eas update) → Expo CDN · channel preview
 
 ### 自动（推荐）
 
-推 **main** → `.eas/workflows/publish-preview-update.yml` → channel **`preview`**。
+推 **main** → `apps/showcase/.eas/workflows/publish-preview-update.yml`（与 `eas.json` 同级，非仓库根）→ channel **`preview`**。
 
 ```bash
 npx eas-cli workflow:runs --limit 3
@@ -60,7 +60,7 @@ npx eas-cli update --channel preview --environment preview \
 
 ## Monorepo · 云端 install
 
-- **Workflow** `.eas/workflows/publish-preview-update.yml`：`defaults.image: sdk-58` + `tools.node: 22.11.0` + `tools.pnpm: 9.15.4`（满足根 `engines`；勿用 `corepack` — EAS 上易签名失败）
+- **Workflow** `apps/showcase/.eas/workflows/publish-preview-update.yml`：`defaults.image: sdk-58` + `tools.node: 22.11.0` + `tools.pnpm: 9.15.4`（满足根 `engines`；勿用 `corepack` — EAS 上易签名失败）
 - `after_install_node_modules`：`pnpm build:tokens` + CSS manifest（与 `eas-build-post-install` 对齐）
 - **`pnpm-lock.yaml` 必须与 `package.json` 一致**（EAS 默认 frozen-lockfile）
 - 勿把 `pnpm-workspace.yaml` 复制进 `apps/showcase`（会误判 workspace 根）

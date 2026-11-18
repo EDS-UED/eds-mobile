@@ -314,7 +314,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 2. **`git status`** — 已改 / 未跟踪：默认**全部**纳入 commit；用户明确排除的 path 除外。禁止留 unstaged、禁止「只 commit 一部分」除非用户当场限定范围。
 3. **commit** — `git add` 含相关 untracked；message 聚焦 why。默认分支 **`main`**（用户指定则用指定分支）。
 4. **`git push`** — 首次 `git push -u origin <branch>`；之后 `git push`。禁止只 commit 不 push。
-5. **EAS preview（【必须】亲自确认）** — push `main` 触发 `.eas/workflows/publish-preview-update.yml`（项目 **@theyangsongs-team/eds-ued`**）：
+5. **EAS preview（【必须】亲自确认）** — push `main` 触发 `apps/showcase/.eas/workflows/publish-preview-update.yml`（项目 **@theyangsongs-team/eds-ued`**）：
    - `cd apps/showcase && npx eas-cli workflow:runs --workflow publish-preview-update.yml --limit 1` → 取 `runId`
    - `npx eas-cli workflow:status <runId>` 等到 **SUCCESS**；**FAILURE** → `workflow:status` 读失败 step 日志，修 CI/锁文件/workflow 后重推或兜底
    - **兜底**：仓库根 `pnpm preview:update`（= `build:mobile` + `eas update --channel preview`）

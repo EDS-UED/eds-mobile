@@ -60,7 +60,8 @@ npx eas-cli update --channel preview --environment preview \
 
 ## Monorepo · 云端 install
 
-- `apps/showcase` → `eas-build-post-install`：`build:tokens` + CSS manifest（Workflow / Build 共用）
+- **Workflow** `.eas/workflows/publish-preview-update.yml`：`defaults.image: sdk-58` + `tools.node: 22.11.0` + `corepack: true`（满足根 `engines` · node≥20 · pnpm≥9；默认 runner 为 Node 18 / pnpm 8 会 `ERR_PNPM_UNSUPPORTED_ENGINE`）
+- `after_install_node_modules`：`pnpm build:tokens` + CSS manifest（与 `eas-build-post-install` 对齐）
 - **`pnpm-lock.yaml` 必须与 `package.json` 一致**（EAS 默认 frozen-lockfile）
 - 勿把 `pnpm-workspace.yaml` 复制进 `apps/showcase`（会误判 workspace 根）
 

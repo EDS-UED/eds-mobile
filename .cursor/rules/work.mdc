@@ -23,7 +23,7 @@ alwaysApply: true
 |--------|----|----|
 | 对齐 Desktop 命名 | §7 对照表；**不**强行改 Mobile export | 把 Mobile slug 改成 `-scene-` unless 用户明确要求 |
 | **同步** | §5.2 — 构建本仓 EDS → `pnpm sync` 等，业务侧**此时**才吃到最新设计系统 | 以为 push / 改完 EDS 业务就会变；每次改完 **主动** sync / watch / 催升包；未说「同步」就改 consumer |
-| **推送** | **§10** 全流程（§9 → 全量 commit → push；本地/worktree 不剩） | 只 commit 不 push、漏 add、推前跳过 §9、未确认就问「要不要 push」 |
+| **推送** | **§10** 全流程（§9 → commit → push → **EAS `preview` SUCCESS** 或 `pnpm preview:update`） | 只 commit 不 push、漏 add、推前跳过 §9、推完不报 Expo、未确认就问「要不要 push」 |
 
 ### 0.1 Agent 协作方式
 
@@ -177,7 +177,7 @@ Figma `--corner-smoothing`（60%）在 RN 上 **禁止** 裸写 `borderRadius: t
 |---|------|
 | **EDS 侧** | 改动只落在 `eds-mobile` + Showcase（`pnpm dev:showcase`）；§9 通过即可交付；**推送**只更新远程本仓，**不等于**业务已更新 |
 | **业务侧** | 继续用当前已解析的 link / npm 版本；**不因** EDS 改 spec、删 export、发版而自动变化 |
-| **Agent** | 任务收尾**默认**只验本仓 + Showcase；**禁止** `pnpm sync`、改 `~/Projects/**` 下 consumer、`watch:linked-consumers`、代跑 EAS Update / `preview:update`，除非本轮用户说了 **「同步」**（或联调且任务**明确**要求 watch — 见 `docs/consumer-linked-dev.md`） |
+| **Agent** | 任务收尾**默认**只验本仓 + Showcase；**禁止** `pnpm sync`、改 `~/Projects/**` 下 consumer、`watch:linked-consumers`；用户说 **「推送」** 时 §10 含 EAS preview（非「同步」口令） |
 | **谁决定升级** | **业务** — 何时拉新代码、重装依赖、发 preview；EDS 不代劳、不催促 |
 
 ### 5.2 用户说「同步」时
@@ -304,9 +304,9 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 - 批量改名后 `rg --hidden` 回扫残留
 - 报告须区分「本次引入」与「预先存在」失败
 
-## 10. 推送（GitHub）
+## 10. 推送（GitHub + EAS Showcase preview）
 
-用户说 **「推送」** = **本仓改动全部上 GitHub**；本地与工作区**不得**遗留未 push 的 commit、未暂存改动或未跟踪且应纳入的文件（除非用户**当场**另指定分支、远程或排除路径）。
+用户说 **「推送」「推」「推上去」** 等 = **本仓 `main` 与维护者本机一致**，且 **EAS channel `preview`（EDS Mobile Showcase）与本地 Metro 所见一致**（含 `pnpm build:mobile` 的 dist）；**不**等于业务 consumer 已「同步」（仍仅 **「同步」** 口令 · §5.2）。
 
 **顺序（不得跳步）**
 
@@ -314,13 +314,27 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 2. **`git status`** — 已改 / 未跟踪：默认**全部**纳入 commit；用户明确排除的 path 除外。禁止留 unstaged、禁止「只 commit 一部分」除非用户当场限定范围。
 3. **commit** — `git add` 含相关 untracked；message 聚焦 why。默认分支 **`main`**（用户指定则用指定分支）。
 4. **`git push`** — 首次 `git push -u origin <branch>`；之后 `git push`。禁止只 commit 不 push。
-5. **Pages / 站点** — **本仓（eds-mobile）无 GitHub Pages**（§4 已移除 Web preview / `deploy-pages.yml`）；push **不**触发文档站。Preview 真源：`pnpm dev:showcase`（原生）。若用户同时要 **EDS Desktop** 文档站（`eds-desktop` · `deploy-pages.yml` → [eds-desktop GitHub Pages](https://eds-ued.github.io/eds-desktop/)），须**单独**在 desktop 仓按该仓约定推送；**禁止**为「触发 Pages」默认改 `eds-desktop` 或其 consumer。
+5. **EAS preview（【必须】亲自确认）** — push `main` 触发 `.eas/workflows/publish-preview-update.yml`（项目 **@theyangsongs-team/eds-ued`**）：
+   - `cd apps/showcase && npx eas-cli workflow:runs --workflow publish-preview-update.yml --limit 1` → 取 `runId`
+   - `npx eas-cli workflow:status <runId>` 等到 **SUCCESS**；**FAILURE** → `workflow:status` 读失败 step 日志，修 CI/锁文件/workflow 后重推或兜底
+   - **兜底**：仓库根 `pnpm preview:update`（= `build:mobile` + `eas update --channel preview`）
+   - **收尾告知**： [Deployments](https://expo.dev/accounts/theyangsongs-team/projects/eds-ued/deployments) · 当次 run 链接；同事 **Expo Go SDK 58** 扫 Preview 二维码。详案：`docs/eas-expo-go-preview.md`
+6. **Pages / 站点** — **本仓无 GitHub Pages**（§4）；若用户要 **EDS Desktop** Pages，在 `eds-desktop` 仓单独推送。
+
+**与业务仓（Cregis）差异**
+
+| | **eds-mobile（本仓）** | **work-cregis-mobile** |
+|--|----------------------|-------------------------|
+| EAS 项目 | **EDS Mobile** `eds-ued` | **Cregis UED** `cregis` |
+| 云端 DS | monorepo 内 `build:tokens` + dist（无需 clone） | clone `EDS-UED/eds-mobile` + `pnpm build:mobile` |
+| 双仓 push 顺序 | 仅本仓 | **先** `eds-mobile` **后** 业务仓 |
 
 **禁止**
 
 - 问「要不要 push / 是否推送」——用户已说推送即执行 §10。
-- 漏 add、漏 push、推前跳过 §9。
+- 漏 add、漏 push、推前跳过 §9、**推完不报 EAS 成败**。
 - 对 **`main`** 做 `git push --force`（除非用户**明确要求**）。
+- 用 **「推送」** 代替 consumer **「同步」**（§5.2）。
 
 ## 19. 变更记录
 
@@ -339,6 +353,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 - 2026-10-12：移除 `dist/css/material`、`spec/material/`、`mobileTheme.glass.material`；GlassSurface preset 迁至 `spec/liquid-glass/surface.json` → `glass.surface`；showcase 无 Material token 页。
 - 2026-10-12：§6.0 **RN 默认栈（原生增强闸门）** — 无明确声明不得默认原生分叉；原 EDSGlassView 原则顺延 §6.1。
 - 2026-10-14：§10 **推送** — 「推送」= §9 全绿 → 全量 commit（默认 main）→ push；本仓无 Pages；Desktop Pages 另仓；禁止只 commit / 漏文件 / 默认 force push main。
+- 2026-11-18：§10 对齐业务 §3.3 — 「推送」含 EAS Showcase `preview` 确认（workflow / `pnpm preview:update`）；workflow 固定 Node 22 + corepack（engines 门禁）。
 - 2026-10-29：§5 — EDS 改动默认不主动同步业务 consumer；仅用户说 **「同步」** 时 §5.2；§9 破坏性 API 的 consumer 验证同口令触发。
 - 2026-10-29：§0 / §2 / §5 — 明确业务侧默认不受 EDS 改动与 push 影响；**「同步」** 为刷最新设计系统到 consumer 的唯一口令；§2 破坏性变更不再默认同轮改 consumer。
 - 2026-11-11：§6.0 — 用户声明 Android 平滑圆角原生增强（`SmoothCornerView` / `EdsSmoothCorner`，Android 13+）。

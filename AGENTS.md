@@ -16,7 +16,7 @@
 6. **场景组件** preset 在 `packages/components` 统一维护（§8）。
 7. **业务 consumer** — 本仓任意改动（含 **推送**）**不会**自动更新业务 App；业务侧**不受影响**，直至用户说 **「同步」** 才 §5.2 刷最新 EDS。日常只验证本仓 + Showcase（§9）；**禁止**未说「同步」就 `pnpm sync` / 改 consumer。
 8. **无明确原生增强声明 → 一律 RN 栈**（token + RN `boxShadow` / blur / Reanimated 等同路径）；禁止默认 `Platform.OS` 双实现或 elevation/Skia 替 token 语义。详案：`.cursor/rules/work.mdc` **§6.0**。
-9. 用户说 **「推送」** → `.cursor/rules/work.mdc` **§10**（§9 全绿 → 全量 commit → push；本仓无 GitHub Pages）。
+9. 用户说 **「推送」** → `.cursor/rules/work.mdc` **§10**（§9 → commit → push → 确认 EAS Showcase **`preview`** SUCCESS 或 `pnpm preview:update`；与业务「同步」无关）。
 
 ## Preview
 

@@ -5,11 +5,22 @@ on:
     branches:
       - main
 
+# 默认 runner 为 Node 18 + pnpm 8，无法满足根 package.json engines（node≥20 · pnpm≥9）。
+defaults:
+  image: sdk-58
+  tools:
+    node: 22.11.0
+    corepack: true
+
 jobs:
   publish_preview_update:
     name: Publish preview update
     type: update
+    environment: preview
     env:
       EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: '1'
     params:
       channel: preview
+    hooks:
+      after_install_node_modules:
+        - run: cd ../.. && pnpm build:tokens && node apps/showcase/scripts/extract-dist-css-manifest.mjs

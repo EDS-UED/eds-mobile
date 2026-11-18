@@ -10,7 +10,7 @@ defaults:
   image: sdk-58
   tools:
     node: 22.11.0
-    corepack: true
+    pnpm: 9.15.4
 
 jobs:
   publish_preview_update:

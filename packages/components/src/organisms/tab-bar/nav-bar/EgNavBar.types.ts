@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
 import type { ViewStyle } from 'react-native';
 import type { EgScrollEdgeEffectStyle } from '../../../atoms/glass/EgScrollEdgeEffect.js';
-import type { EgButtonGlassIconCount } from '../../../molecules/button/button-glass/EgButtonGlass.types.js';
+import type { EgGlassCapsuleIconCount } from '../../../molecules/button/button-glass/EgGlassCapsule.types.js';
 import type { ControlSize } from '../../../shared/types.js';
 import type { ThemeMode } from '../../../theme/index.js';
 
@@ -23,11 +24,11 @@ export type EgNavBarScrollEdgeEffect = EgScrollEdgeEffectStyle;
  */
 export type EgNavBarTitleAlign = 'center' | 'leading';
 
-/** 左 / 右操作 — 默认 icon 胶囊（`EgButtonGlass kind="icon"`）。 */
+/** 左 / 右操作 — 默认 icon 胶囊（`EgGlassCapsule kind="icon"`）。 */
 export type EgNavBarAction = {
   kind?: 'icon' | 'text';
   icon?: string;
-  iconCount?: EgButtonGlassIconCount;
+  iconCount?: EgGlassCapsuleIconCount;
   /** `iconCount={2}` 时默认 `split`（两颗独立玻璃钮）；`combined` 为单胶囊双 icon。 */
   iconLayout?: 'combined' | 'split';
   iconAlt?: string;
@@ -55,6 +56,8 @@ export type EgNavBarProps = {
    * iOS 26+ 系统栏：`title` 不可为空串（否则 scroll edge 背景失效）；`showTitle: false` 时仍传真实文案，由 EDS 透明隐藏。
    */
   title?: string;
+  /** 栏内标题区自定义内容（如分段）— `showTitle` 时替代 `title` 文本；须可点按时由子组件处理。 */
+  titleContent?: ReactNode;
   /** 左操作；缺省为返回（`eds-arrow-left-ios`）。 */
   left?: EgNavBarAction;
   right?: EgNavBarAction;

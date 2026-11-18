@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   nativeShell: {
     overflow: 'visible',
   },
-  /** 胶囊 — 默认随内容；EgButtonGlass 双 icon 在 contentStyle 上 stretch + 固定高度。 */
+  /** 胶囊 — 默认随内容；EgGlassCapsule 双 icon 在 contentStyle 上 stretch + 固定高度。 */
   pillHit: {
     alignItems: 'center',
     justifyContent: 'center',

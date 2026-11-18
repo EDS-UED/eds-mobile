@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { GlassBoxEffectPreview } from '@/views/tokens/GlassBoxEffectPreview';
-import { ScrollEdgeEffectMiniPreview } from '@/views/tokens/ScrollEdgeEffectMiniPreview';
+import { ScrollEdgeEffectPreviewLaunch } from '@/views/components/glass/ScrollEdgeEffectPreviewLaunch';
 
 type GlassPreviewModeProps = {
   mode?: 'light' | 'dark';
@@ -35,12 +35,11 @@ export function ShowcaseEgGlassPreview({
 
 type ShowcaseEgScrollEdgePreviewProps = GlassPreviewModeProps & Record<string, unknown>;
 
-/** EgScrollEdgeEffect 详情 — 迷你页面模拟。 */
+/** EgScrollEdgeEffect 详情 — 跳转全屏 page 演示（定制项经 query 带入）。 */
 export function ShowcaseEgScrollEdgePreview(props: ShowcaseEgScrollEdgePreviewProps) {
-  const colors = useShowcaseColors();
   return (
     <View style={styles.scrollEdgeStage} testID={props.testID}>
-      <ScrollEdgeEffectMiniPreview state={props} colors={colors} />
+      <ScrollEdgeEffectPreviewLaunch state={props} />
     </View>
   );
 }

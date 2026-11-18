@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 
-import { EgButtonGlass } from '../../../molecules/button/button-glass/EgButtonGlass.js';
-import { egButtonGlassSplitPairGapPx } from '../../../molecules/button/button-glass/_shared/resolveEgButtonGlassShellStyle.js';
+import { EgGlassCapsule } from '../../../molecules/button/button-glass/EgGlassCapsule.js';
+import { egButtonGlassSplitPairGapPx } from '../../../molecules/button/button-glass/_shared/resolveEgGlassCapsuleShellStyle.js';
 import type { EgNavBarProps } from './EgNavBar.types.js';
 import type { EgNavBarAction } from './EgNavBar.types.js';
 
@@ -30,7 +30,7 @@ export function EgNavBarActionView({
     const gap = egButtonGlassSplitPairGapPx();
     return (
       <View style={[styles.splitRow, { gap }]} testID={testID}>
-        <EgButtonGlass
+        <EgGlassCapsule
           kind="icon"
           icon={action.icon}
           iconCount={1}
@@ -40,7 +40,7 @@ export function EgNavBarActionView({
           onPress={action.onPress}
           accessibilityLabel={action.accessibilityLabel}
         />
-        <EgButtonGlass
+        <EgGlassCapsule
           kind="icon"
           icon={action.iconAlt}
           iconCount={1}
@@ -55,7 +55,7 @@ export function EgNavBarActionView({
   }
 
   return (
-    <EgButtonGlass
+    <EgGlassCapsule
       kind={kind}
       icon={action.icon}
       iconCount={iconCount}

@@ -21,7 +21,7 @@ import {
   resolveEgScrollEdgeEffect,
   type EgScrollEdgeEffectStyle,
 } from '../../../atoms/glass/EgScrollEdgeEffect.js';
-import { egButtonGlassIconMinSize } from '../../../molecules/button/button-glass/_shared/resolveEgButtonGlassShellStyle.js';
+import { egButtonGlassIconMinSize } from '../../../molecules/button/button-glass/_shared/resolveEgGlassCapsuleShellStyle.js';
 import { EgNavBarActionView } from './EgNavBarActionView.js';
 import { egNavBarSlotMotion } from './egNavBarSlotMotion.js';
 import { presetBodyMediumStrong, presetTitle } from '../../../shared/typographyStyles.js';
@@ -193,6 +193,7 @@ function resolveRnScrollEdgeStyle(
 export function EgNavBarRn(props: EgNavBarProps) {
   const {
     title,
+    titleContent,
     left = DEFAULT_LEFT,
     right,
     showLeft = true,
@@ -285,7 +286,11 @@ export function EgNavBarRn(props: EgNavBarProps) {
     return { opacity: manualFade.value };
   }, [scrollDriven, scrollOffset]);
 
-  const titleFadeStyle = useFade(showTitle && Boolean(title));
+  const titleVisible = showTitle && (Boolean(titleContent) || Boolean(title));
+  const titleFadeStyle = useFade(titleVisible);
+  const titleInteractive = Boolean(titleContent);
+  /** 自定义标题（分段等）— 相对整行几何居中，避免左右槽隐形占位挤偏 flex 标题区。 */
+  const centerTitleContent = Boolean(titleContent) && showTitle && titleAlign === 'center' && !leading;
   const leadingShiftStyle = useAnimatedStyle(
     () => ({ transform: [{ translateX: edgeShift ? -edgeShift.value : 0 }] }),
     [edgeShift],
@@ -348,6 +353,7 @@ export function EgNavBarRn(props: EgNavBarProps) {
       <View
         style={[
           styles.row,
+          centerTitleContent ? styles.rowWithTitleOverlay : null,
           {
             paddingHorizontal: rowPaddingHorizontal,
             paddingTop: rowPaddingTop,
@@ -379,32 +385,55 @@ export function EgNavBarRn(props: EgNavBarProps) {
           </EgNavBarSlot>
         )}
 
-        <Animated.View
-          style={[
-            styles.titleWrap,
-            leading
-              ? [
-                  styles.titleWrapLeading,
-                  layoutTransition ? titleMarginStyle : { marginLeft: titleMarginTarget },
-                ]
-              : null,
-            titleFadeStyle,
-            leading ? leadingShiftStyle : null,
-          ]}
-          pointerEvents="none"
-        >
-          <Text
-            accessibilityRole="header"
-            numberOfLines={1}
-            ellipsizeMode="tail"
+        {!centerTitleContent ? (
+          <Animated.View
             style={[
-              leading ? styles.titleLeading : styles.title,
-              { color: colors['text-base-primary'] as string },
+              styles.titleWrap,
+              leading
+                ? [
+                    styles.titleWrapLeading,
+                    layoutTransition ? titleMarginStyle : { marginLeft: titleMarginTarget },
+                  ]
+                : null,
+              titleFadeStyle,
+              leading ? leadingShiftStyle : null,
             ]}
+            pointerEvents={titleInteractive ? 'box-none' : 'none'}
           >
-            {title ?? ''}
-          </Text>
-        </Animated.View>
+            {titleContent && showTitle ? (
+              titleContent
+            ) : (
+              <Text
+                accessibilityRole="header"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={[
+                  leading ? styles.titleLeading : styles.title,
+                  { color: colors['text-base-primary'] as string },
+                ]}
+              >
+                {title ?? ''}
+              </Text>
+            )}
+          </Animated.View>
+        ) : null}
+
+        {centerTitleContent ? (
+          <Animated.View
+            style={[
+              styles.titleContentOverlay,
+              {
+                paddingHorizontal: rowPaddingHorizontal,
+                paddingTop: rowPaddingTop,
+                paddingBottom: rowPaddingBottom,
+              },
+              titleFadeStyle,
+            ]}
+            pointerEvents="box-none"
+          >
+            <View pointerEvents="auto">{titleContent}</View>
+          </Animated.View>
+        ) : null}
 
         {layoutTransition ? (
           <EgNavBarLayoutSlot
@@ -447,6 +476,14 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  rowWithTitleOverlay: {
+    position: 'relative',
+  },
+  titleContentOverlay: {
+    ...StyleSheet.absoluteFill,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   slot: {
     flexDirection: 'row',

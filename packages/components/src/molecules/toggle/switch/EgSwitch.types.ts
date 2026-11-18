@@ -12,6 +12,6 @@ export type EgSwitchProps = EgCommonProps & {
   onValueChange?: (value: boolean) => void;
   style?: ViewStyle;
   mode?: ThemeMode;
-  /** Showcase / 联调 — 强制 RN 自绘轨道。 */
+  /** 联调 — 强制 `EgSwitchRn`（默认 iOS 26+ 走系统 `UISwitch`）。 */
   forceRnImplementation?: boolean;
 };

@@ -82,6 +82,8 @@ const CATALOG = [
   { figmaName: 'Form Submission', exportName: 'EgFormSubmission', tier: 'molecules', family: 'feedback', slug: 'form-submission', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2, figmaId: '203:1064' },
   { figmaName: 'Status Card', exportName: 'EgStatusCard', tier: 'molecules', family: 'feedback', slug: 'status-card', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2, figmaId: '200:792' },
   { figmaName: 'Toast', exportName: 'EgToast', tier: 'molecules', family: 'feedback', slug: 'toast', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2, figmaId: '201:1030' },
+  { figmaName: 'Message', exportName: 'EgMessage', tier: 'molecules', family: 'feedback', slug: 'message', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2 },
+  { figmaName: 'Streamer', exportName: 'EgStreamer', tier: 'molecules', family: 'feedback', slug: 'streamer', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'set', variantCount: 2 },
   { figmaName: 'Reddot', tier: 'molecules', family: 'feedback', figmaPage: 'Feedback 反馈 ✅ 🕒', kind: 'component' },
 
   // —— Organisms · TabBar ——
@@ -173,8 +175,9 @@ const SCENE_FAMILY_SUFFIX = {
 
 /** Manual export overrides for edge cases */
 const EXPORT_OVERRIDES = {
-  'button:iCon Container': 'EgIconContainerButton',
-  'button:Glass': 'EgButtonGlass',
+  'button:Link': 'EgLink',
+  'button:iCon Container': 'EgSymbolAction',
+  'button:Glass': 'EgGlassCapsule',
   'input:Search': 'EgSearch',
   'input:Textarea': 'EgTextarea',
   'input:Input/Pointer': 'EgInputPointer',
@@ -191,6 +194,11 @@ const EXPORT_OVERRIDES = {
   'tab-bar:NavBar': 'EgNavBar',
   'popovers:Notes': 'EgNotesPopover',
   'feedback:Reddot': 'EgReddot',
+  'feedback:Toast': 'EgToast',
+  'feedback:Form Submission': 'EgFormSubmission',
+  'feedback:Status Card': 'EgStatusCard',
+  'feedback:Message': 'EgMessage',
+  'feedback:Streamer': 'EgStreamer',
 };
 
 const SCAFFOLD_MARKER = 'RN implementation —';
@@ -201,6 +209,9 @@ function computeSceneExportName(family, figmaName) {
 
   if (family === 'toggle') return `Eg${figmaNameToPascal(figmaName)}`;
 
+  /** Feedback 族 export 为 Eg{场景}，不追加 Feedback 后缀。 */
+  if (family === 'feedback') return `Eg${figmaNameToPascal(figmaName)}`;
+
   const suffix = SCENE_FAMILY_SUFFIX[family];
   if (!suffix) return `Eg${figmaNameToPascal(figmaName)}`;
 
@@ -208,6 +219,7 @@ function computeSceneExportName(family, figmaName) {
   const suffixLower = suffix.toLowerCase();
 
   if (family === 'input' && figmaName === 'Input') return 'EgInput';
+  if (family === 'tag' && figmaName === 'Color') return 'EgTag';
   if (family === 'tab-bar' && figmaName === 'TabBar') return 'EgTabBar';
 
   if (
@@ -293,12 +305,23 @@ function kebabFromExport(exportName) {
   return exportName.replace(/^Eg/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
+/** 手维实现目录与 export 名 kebab 不一致时（避免 regenerate 脚手架目录）。 */
+const COMPONENT_DIR_OVERRIDES = {
+  EgGlassCapsule: 'button-glass',
+  EgSymbolAction: 'button-symbol',
+  EgToggle: 'tab-block',
+};
+
+function componentDirFromExport(exportName) {
+  return COMPONENT_DIR_OVERRIDES[exportName] ?? kebabFromExport(exportName);
+}
+
 function isComponentImplemented(entry) {
   const componentPath = join(
     srcDir,
     entry.tier,
     entry.family,
-    kebabFromExport(entry.exportName),
+    componentDirFromExport(entry.exportName),
     `${entry.exportName}.tsx`,
   );
   if (!existsSync(componentPath)) return false;
@@ -307,9 +330,13 @@ function isComponentImplemented(entry) {
 
 function removeOrphanComponentDirs(entries) {
   const expected = new Set(
-    entries.map((e) => join(srcDir, e.tier, e.family, kebabFromExport(e.exportName))),
+    entries.map((e) => join(srcDir, e.tier, e.family, componentDirFromExport(e.exportName))),
   );
   /** Showcase infra / 手维实现 — 不在 Figma 202 路径下，禁止当 orphan 删除。 */
+  expected.add(join(srcDir, 'molecules', 'button', 'button'));
+  expected.add(join(srcDir, 'molecules', 'button', 'button-glass'));
+  expected.add(join(srcDir, 'molecules', 'button', 'button-symbol'));
+  expected.add(join(srcDir, 'molecules', 'button', 'link'));
   expected.add(join(srcDir, 'molecules', 'dropdown', 'menu'));
   expected.add(join(srcDir, 'molecules', 'tab', 'tab-block'));
   expected.add(join(srcDir, 'organisms', 'data-list'));
@@ -342,7 +369,7 @@ function atomPropsType(exportName) {
 }
 
 function writeComponentFile(entry) {
-  const folder = join(srcDir, entry.tier, entry.family, kebabFromExport(entry.exportName));
+  const folder = join(srcDir, entry.tier, entry.family, componentDirFromExport(entry.exportName));
   mkdirSync(folder, { recursive: true });
 
   const typesPath = join(folder, `${entry.exportName}.types.ts`);
@@ -426,13 +453,13 @@ writeFileSync(
 
 const previewLoaderLines = [
   ...FINAL_CATALOG.map((entry) => {
-    const rel = `../${entry.tier}/${entry.family}/${kebabFromExport(entry.exportName)}/${entry.exportName}.js`;
+    const rel = `../${entry.tier}/${entry.family}/${componentDirFromExport(entry.exportName)}/${entry.exportName}.js`;
     return `  ${entry.exportName}: () => require('${rel}').${entry.exportName},`;
   }),
   `  EgMenu: () => require('../molecules/dropdown/menu/EgMenu.js').EgMenu,`,
   `  EgMenuTrigger: () => require('../molecules/dropdown/menu/EgMenuTrigger.js').EgMenuTrigger,`,
   `  EgSheets: () => require('../organisms/sheets/EgSheets.js').EgSheets,`,
-  `  EgTabBlock: () => require('../molecules/tab/tab-block/EgTabBlock.js').EgTabBlock,`,
+  `  EgToggle: () => require('../molecules/tab/tab-block/EgToggle.js').EgToggle,`,
   `  EgDataList: () => require('../organisms/data-list/EgDataList.js').EgDataList,`,
   `  EgTabBarText: () => require('../organisms/tab-bar/tab-bar-text/EgTabBarText.js').EgTabBarText,`,
   `  EgPage: () => require('../templates/page/EgPage.js').EgPage,`,
@@ -453,25 +480,25 @@ writeFileSync(
 const exports = FINAL_CATALOG.filter(
   (e) => e.exportName !== 'EgAvatarPreset0' && e.exportName !== 'EgAvatarPreset1',
 ).map((e) => {
-  if (e.exportName === 'EgButtonGlass') {
+  if (e.exportName === 'EgGlassCapsule') {
     return `export {
-  EgButtonGlass,
-  EgButtonGlassNavAvatarFrame,
-  EgButtonGlassNavIconPlusSlotContent,
+  EgGlassCapsule,
+  EgGlassCapsuleNavAvatarFrame,
+  EgGlassCapsuleNavIconPlusSlotContent,
   egButtonGlassAvatarElementMarginPx,
   egButtonGlassAvatarInsetPx,
   egButtonGlassSplitPairGapPx,
-  resolveEgButtonGlassPressIntensity,
-  shouldUseEgButtonGlassNativeStack,
-  resolveEgButtonGlassRenderStack,
-  readEgButtonGlassStackDiagnostics,
+  resolveEgGlassCapsulePressIntensity,
+  shouldUseEgGlassCapsuleNativeStack,
+  resolveEgGlassCapsuleRenderStack,
+  readEgGlassCapsuleStackDiagnostics,
 } from './molecules/button/button-glass';
 export type {
-  EgButtonGlassProps,
-  EgButtonGlassKind,
-  EgButtonGlassIconCount,
-  EgButtonGlassRenderStack,
-  EgButtonGlassStackDiagnostics,
+  EgGlassCapsuleProps,
+  EgGlassCapsuleKind,
+  EgGlassCapsuleIconCount,
+  EgGlassCapsuleRenderStack,
+  EgGlassCapsuleStackDiagnostics,
 } from './molecules/button/button-glass';`;
   }
   if (e.exportName === 'EgNavBar') {
@@ -570,13 +597,30 @@ export type {
   EgTabBarNavBindItem,
 } from './organisms/tab-bar/tab-bar';`;
   }
-  return `export { ${e.exportName} } from './${e.tier}/${e.family}/${kebabFromExport(e.exportName)}';`;
+  if (e.exportName === 'EgSymbolAction') {
+    return `export { ${e.exportName} } from './molecules/button/button-symbol';`;
+  }
+  if (e.exportName === 'EgSwitch') {
+    return `export {
+  EG_SWITCH_DEFAULT_SIZE,
+  EG_SWITCH_DEFAULT_VALUE,
+  egSwitchComponentDefaults,
+  EgSwitch,
+  resolveEgSwitchSize,
+  resolveEgSwitchRenderStack,
+  shouldUseEgSwitchNativeStack,
+} from './molecules/toggle/switch';
+export type { EgSwitchProps, EgSwitchRenderStack } from './molecules/toggle/switch';`;
+  }
+  return `export { ${e.exportName} } from './${e.tier}/${e.family}/${componentDirFromExport(e.exportName)}';`;
 });
 writeFileSync(
   join(srcDir, 'index.ts'),
   `${exports.join('\n')}
-export { EgTabBlock } from './molecules/tab/tab-block';
-export type { EgTabBlockItem, EgTabBlockProps } from './molecules/tab/tab-block';
+export { EgButton } from './molecules/button/button';
+export type { EgButtonProps, EgButtonTone } from './molecules/button/button';
+export { EgToggle } from './molecules/tab/tab-block';
+export type { EgToggleItem, EgToggleProps } from './molecules/tab/tab-block';
 export { useEgHorizontalSegmentSwipe } from './molecules/tab/_shared/useEgHorizontalSegmentSwipe';
 export { EG_TAB_BLOCK_SCENE_CONTENT_INSET } from './molecules/tab/_shared/egTabBlockMetrics';
 export {
@@ -643,6 +687,10 @@ export {
   EG_TAB_BAR_TEXT_MAX_TABS,
 } from './organisms/tab-bar/tab-bar-text';
 export type { EgTabBarTextProps } from './organisms/tab-bar/tab-bar-text';
+export {
+  EG_TOGGLE_MARK_DEFAULT_SIZE,
+  egToggleMarkComponentDefaults,
+} from './molecules/toggle/_shared/toggleComponentDefaults.js';
 export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';\nexport type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';\nexport {\n  cryptoAssetNames,\n  formatSymbolDisplayName,\n  iconAssetNames,\n  resolveSymbolKind,\n} from './atoms/_shared/symbol/index.js';\nexport type { SymbolKind } from './atoms/_shared/symbol/index.js';\nexport { preloadAllCryptoChunks } from './atoms/_shared/crypto/cryptoAssetLoader.js';\nexport { preloadAllIconChunks } from './atoms/_shared/icon/iconAssetLoader.js';\nexport {\n  EgGlass,\n  EgScrollEdgeEffect,\n  resolveEgScrollEdgeEffect,\n  GlassSurface,\n  GlassInteraction,\n  GlassContainer,\n  GlassControlShell,\n  GlassBlurScope,\n  GlassBlurBackdrop,\n  useGlassBlurTargetRef,\n  getNativeBlurView,\n  nativeBlurIntensity,\n  resolveAndroidBlurMethod,\n  getNativeLinearGradient,\n  getSkiaModule,\n  isSkiaGlassAvailable,\n  resolveGlassBoxComposition,\n  glassBoxViewStyle,\n  glassBoxNativeBlurIntensity,\n} from './atoms/glass/index.js';\nexport type {\n  EgGlassProps,\n  EgScrollEdgeEffectProps,\n  EgScrollEdgeEffectStyle,\n  EgScrollEdgeEffectEdge,\n  EgScrollEdgeEffectContainer,\n  GlassVariant,\n  GlassShape,\n  GlassSurfaceProps,\n  GlassInteractionProps,\n  GlassContainerProps,\n  GlassControlShape,\n  GlassControlShellProps,\n  GlassBoxClassName,\n  GlassBoxComposition,\n  GlassBoxLayer,\n  GlassBoxShadowLayer,\n} from './atoms/glass/index.js';\nexport { figmaComponentCatalog, figmaComponentCount } from './catalog/figmaCatalog';\nexport type { FigmaComponentEntry } from './catalog/figmaCatalog';\nexport { implementedComponentSlugs, isImplementedCatalogEntry } from './catalog/implementedSlugs';\nexport { createCatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport type { CatalogPreviewProps } from './preview/createCatalogPreviewProps';\nexport { catalogPreviewCanvasStyle, catalogPreviewItemStyle } from './preview/catalogPreviewCanvas';\nexport { resolvePreviewComponent } from './preview/resolvePreviewComponent';\nexport { AtomGallery, atomGalleryFamily } from './preview/AtomGallery';\nexport type { AtomGalleryFamily } from './preview/AtomGallery';\nexport { PARITY_CONTAINER_WIDTH, ParityHarness, parityCatalogEntries } from './preview/ParityHarness';\nexport type { ParityMeasurement, ParityReport } from './preview/ParityHarness';\nexport { LiquidGlassDemo } from './preview/LiquidGlassDemo';\nexport { MotionDemo } from './preview/MotionDemo';\nexport { EgEdsAnimaPress } from './shared/motion/EgEdsAnimaPress.js';\nexport type { EgEdsAnimaPressProps } from './shared/motion/EgEdsAnimaPress.js';\nexport { useEgSlideTrack } from './shared/motion/useEgSlideTrack.js';\nexport type { EgSlideTrackOptions } from './shared/motion/useEgSlideTrack.js';\nexport { EgEdsAnimaSlide } from './shared/motion/EgEdsAnimaSlide.js';\nexport type { EgEdsAnimaSlideItem, EgEdsAnimaSlideProps } from './shared/motion/EgEdsAnimaSlide.js';\nexport {\n  EgEdsAnimaPage,\n  createEgEdsAnimaPageNavigator,\n  shouldUseEgEdsAnimaNativePage,\n} from './shared/motion/EgEdsAnimaPage.js';\nexport type { EgEdsAnimaPageDirection, EgEdsAnimaPageOptions } from './shared/motion/EgEdsAnimaPage.js';\nexport { EgEdsAnimaPageShot, EgEdsAnimaPageShotTrigger } from './shared/motion/EgEdsAnimaPageShot.js';\nexport type {\n  EgEdsAnimaPageShotPageApi,\n  EgEdsAnimaPageShotProps,\n  EgEdsAnimaPageShotRootApi,\n  EgEdsAnimaPageShotSource,\n  EgEdsAnimaPageShotTriggerProps,\n} from './shared/motion/EgEdsAnimaPageShot.js';\nexport {\n  EgPage,\n  createEgPageNavigator,\n  egPageScreenOptions,\n  shouldUseEgPageNativeStack,\n  EG_PAGE_CONTENT_PADDING_HORIZONTAL,\n  EG_PAGE_CONTENT_PADDING_TOP,\n  EG_PAGE_CONTENT_PADDING_BOTTOM,\n  egPageScrollContentStyle,\n  resolveEgPageScrollPaddingTop,\n  resolveEgPageScrollContentStyle,\n  resolveEgPageContentPaddingTopFromPreset,\n  EG_PAGE_CONTENT_PADDING_TOP_PRESETS,\n} from './templates/page/index.js';\nexport type { EgPageProps, EgPageScrollViewHandle, EgPageDirection, EgPageScreenOptions, EgPageContentPaddingTopPreset } from './templates/page/index.js';\nexport { EgPageShot, EgPageShotTrigger, EgPageShotContent } from './templates/page-shot/index.js';\nexport type {\n  EgPageShotProps,\n  EgPageShotTriggerProps,\n  EgPageShotSource,\n  EgPageShotRootApi,\n  EgPageShotPageApi,\n} from './templates/page-shot/index.js';\nexport { EgEdsAnimaLayoutContent } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport type { EgEdsAnimaLayoutContentProps } from './shared/motion/EgEdsAnimaLayoutContent.js';\nexport { EgEdsAnimaFade } from './shared/motion/EgEdsAnimaFade.js';\nexport type { EgEdsAnimaFadeProps } from './shared/motion/EgEdsAnimaFade.js';\nexport { useMotionPressScale } from './shared/useMotionPressScale.js';\nexport type { MotionPressRecipe, UseMotionPressScaleOptions } from './shared/useMotionPressScale.js';\nexport { EdsSansText } from './shared/EdsSansText.js';\nexport type { EdsSansTextProps } from './shared/EdsSansText.js';\nexport * from './theme';\n`,
 );
 

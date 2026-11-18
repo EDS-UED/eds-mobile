@@ -75,6 +75,11 @@ export function buttonTypography(size: ControlSize): TextPreset {
   }
 }
 
+/** {@link buttonTypography} · `weight-semibold`（600），供 {@link EdsSansText} `weight`。 */
+export function buttonLabelWeight(_size: ControlSize): TextStyle['fontWeight'] {
+  return String(base['weight-semibold']) as TextStyle['fontWeight'];
+}
+
 export function fieldTypography(size: ControlSize): TextPreset {
   switch (size) {
     case 'xl':
@@ -115,10 +120,22 @@ export function linkTypography(size: Extract<ControlSize, 'lg' | 'md' | 'sm'>): 
   }
 }
 
+/** {@link linkTypography} 字重 token，供 {@link EdsSansText} `weight`。 */
+export function linkLabelWeight(size: Extract<ControlSize, 'lg' | 'md' | 'sm'>): TextStyle['fontWeight'] {
+  switch (size) {
+    case 'sm':
+      return String(base['weight-semibold']) as TextStyle['fontWeight'];
+    case 'lg':
+    case 'md':
+    default:
+      return String(base['weight-medium']) as TextStyle['fontWeight'];
+  }
+}
+
+/** Tag · lg/md → `typography-footnote-strong` · sm → `typography-bar`。 */
 export function tagTypography(size: TagSize): TextPreset {
   switch (size) {
     case 'lg':
-      return DETAIL_STRONG;
     case 'md':
       return FOOTNOTE_STRONG;
     case 'sm':

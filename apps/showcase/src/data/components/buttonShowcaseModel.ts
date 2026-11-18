@@ -11,7 +11,7 @@ export const BUTTON_SHOWCASE_TONES = [
   { value: 'option', label: '边框' },
 ] as const;
 
-/** EgLinkButton Customize — option 展示为「标准」。 */
+/** EgLink Customize — option 展示为「标准」。 */
 export const LINK_BUTTON_SHOWCASE_TONES = [
   { value: 'brand', label: '品牌' },
   { value: 'decor', label: '装饰' },

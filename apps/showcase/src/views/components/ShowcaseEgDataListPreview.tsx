@@ -2,7 +2,7 @@ import {
   EG_DATA_LIST_SCENE_CONTENT_INSET,
   EG_DATA_LIST_SUB_TEXT_MAX_LINES,
   EgAvatar,
-  EgColorTag,
+  EgTag,
   EgCryptoBtc,
   EgDataList,
   EgDataListPrimaryText,
@@ -14,8 +14,9 @@ import {
 } from '@eds/mobile-components';
 import type { EgSymbolSize } from '@eds/mobile-components';
 import mobileTheme from '@eds/mobile-tokens/theme';
+import { catalogPreviewCanvasStyle } from '@eds/mobile-components/catalog';
 import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import { ShowcaseSansText } from '@/components/ShowcaseSansText';
 import {
@@ -32,8 +33,13 @@ import {
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { edsTokenFont } from '@/views/shared/resolveEdsTheme';
+import { showcaseTheme } from '@/views/shared/showcaseTheme';
 
 type ShowcaseEgDataListPreviewProps = Record<string, unknown>;
+
+/** 与 Divider 预览一致 — 画布 `alignItems: center` 时子树须显式撑满可用宽。 */
+const STAGE_HORIZONTAL_CHROME =
+  2 * (showcaseTheme.layout.cardPaddingHorizontal + catalogPreviewCanvasStyle.padding);
 
 type DataListPressIntensity = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -137,7 +143,7 @@ function DataListPrimaryRowWidgets({
     );
   }
   if (flags.showTag) {
-    nodes.push(<EgColorTag key="tag" size="sm" label="标签" mode={mode} />);
+    nodes.push(<EgTag key="tag" size="sm" label="标签" mode={mode} />);
   }
   if (flags.showCustom) {
     nodes.push(
@@ -256,6 +262,8 @@ function DataListDemoRow({
 /** EgDataList 详情 · Scene inset + DL-bleed + 插槽行预览。 */
 export function ShowcaseEgDataListPreview(props: ShowcaseEgDataListPreviewProps) {
   const colors = useShowcaseColors();
+  const { width: windowWidth } = useWindowDimensions();
+  const railWidth = Math.max(0, windowWidth - STAGE_HORIZONTAL_CHROME);
   const mode = props.mode === 'dark' ? 'dark' : 'light';
   const rowCount = readDataListRowCount(props);
   const interactive = props.interactive !== false;
@@ -281,19 +289,15 @@ export function ShowcaseEgDataListPreview(props: ShowcaseEgDataListPreviewProps)
   );
 
   return (
-    <View
-      style={[styles.scene, { paddingHorizontal: EG_DATA_LIST_SCENE_CONTENT_INSET }]}
-      testID={testID}
-    >
-      <EgDataList mode={mode}>{rows}</EgDataList>
+    <View style={[styles.rail, { width: railWidth }]} testID={testID}>
+      <EgDataList sceneContentInset={EG_DATA_LIST_SCENE_CONTENT_INSET}>{rows}</EgDataList>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scene: {
+  rail: {
     alignSelf: 'stretch',
-    width: '100%',
     paddingVertical: mobileTheme.spacing['spacing-4'] as number,
     overflow: 'visible',
   },

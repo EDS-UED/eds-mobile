@@ -26,9 +26,15 @@ export const segmentedControlSizeOptions = [
   { value: 'sm', label: 'SM' },
 ] as const;
 
+export const segmentedControlWidthModeOptions = [
+  { value: 'hug', label: '自适应' },
+  { value: 'fill', label: '全宽' },
+] as const;
+
 export const segmentedControlCustomizeDefaults = {
   ...tabSlideCustomizeDefaults,
-  size: 'md',
+  size: 'lg',
+  widthMode: 'hug',
 } as const;
 
 export const segmentedControlCustomizeControls: DocCustomizeControl[] = [
@@ -38,6 +44,12 @@ export const segmentedControlCustomizeControls: DocCustomizeControl[] = [
     key: 'size',
     label: '尺寸',
     options: [...segmentedControlSizeOptions],
+  },
+  {
+    kind: 'select',
+    key: 'widthMode',
+    label: '宽度',
+    options: [...segmentedControlWidthModeOptions],
   },
 ];
 
@@ -62,7 +74,7 @@ export function buildEgTabPreviewItems(count: number): { id: string; label: stri
   });
 }
 
-export function buildEgTabBlockPreviewItems(count: number): { id: string; label: string; count?: number }[] {
+export function buildEgTogglePreviewItems(count: number): { id: string; label: string; count?: number }[] {
   return Array.from({ length: count }, (_, index) => {
     const id = String(index + 1);
     return index === 1 ? { id, label: 'Label', count: 12 } : { id, label: 'Label' };
@@ -86,10 +98,10 @@ export function isEgTabPreviewEntry(
   return entry.exportName === 'EgTab' || entry.slug === 'tab-tabs';
 }
 
-export function isEgTabBlockPreviewEntry(
+export function isEgTogglePreviewEntry(
   entry: Pick<{ slug: string; exportName: string }, 'slug' | 'exportName'>,
 ): boolean {
-  return entry.exportName === 'EgTabBlock' || entry.slug === 'tab-block';
+  return entry.exportName === 'EgToggle' || entry.slug === 'tab-block';
 }
 
 export function isEgSegmentedControlPreviewEntry(
@@ -112,13 +124,13 @@ export function applyTabSlidePreviewProps(
     };
   }
 
-  if (isEgTabBlockPreviewEntry(entry)) {
+  if (isEgTogglePreviewEntry(entry)) {
     const count = readTabSegmentCount(props);
     const base = stripTabSlideCustomizeMeta(props);
     return {
       ...base,
       selectedId: '1',
-      items: buildEgTabBlockPreviewItems(count),
+      items: buildEgTogglePreviewItems(count),
     };
   }
 

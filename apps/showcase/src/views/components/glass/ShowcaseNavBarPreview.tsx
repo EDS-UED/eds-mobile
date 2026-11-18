@@ -97,24 +97,6 @@ export function ShowcaseNavBarPreview(props: ShowcaseNavBarPreviewProps) {
         }
         onPress={openFullScreenDemo}
       />
-      <ShowcaseCardRow
-        title="Cregis 主页场景"
-        hint="showTitle: false · 左文案 + 右双 icon · 上滑 scroll edge"
-        onPress={() =>
-          router.push({
-            pathname: '/(components)/nav-bar-demo',
-            params: {
-              scenario: 'cregis-home',
-              title: '主页',
-              showTitle: '0',
-              showLeft: '1',
-              showRight: '1',
-              rightIconCount: '2',
-              background: 'auto',
-            },
-          })
-        }
-      />
     </View>
   );
 }

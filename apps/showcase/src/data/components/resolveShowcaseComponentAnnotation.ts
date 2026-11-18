@@ -1,9 +1,11 @@
 import type { ShowcaseCatalogEntry } from '@/data/components/showcaseCatalog';
 import { isShowcaseEntryImplemented } from '@/data/components/showcaseCatalog';
 
+import { assembleComponentAnnotationDoc } from './componentAnnotationAssemble';
 import { buildFamilyComponentAnnotation } from './componentAnnotationFamilies';
 import { componentAnnotationBySlug } from './componentAnnotationRegistry';
 import type { ShowcaseComponentAnnotationDoc } from './componentAnnotationTypes';
+import { resolveSelfAnnotation, scaffoldAnnotation } from './componentAnnotationSelf';
 
 function resolveFamily(entry: ShowcaseCatalogEntry): string {
   if ('family' in entry && typeof entry.family === 'string') {
@@ -19,50 +21,24 @@ function resolveFamily(entry: ShowcaseCatalogEntry): string {
   return base;
 }
 
-function fallbackAnnotation(exportName: string): ShowcaseComponentAnnotationDoc {
-  return {
-    sections: [
-      {
-        title: '样式',
-        lines: [
-          `\`${exportName}\` 字号走 typography semantic`,
-          '颜色 `text-base-*` / `material-*`',
-        ],
-      },
-      {
-        title: '布局',
-        lines: [
-          '间距 `spacing-*`',
-          '圆角 `radius-*` + smoothRadius',
-        ],
-      },
-      {
-        title: '多系统差异',
-        lines: [
-          '默认 RN 单路径',
-          '仅声明场景启用 iOS 26+ 原生增强',
-        ],
-      },
-      {
-        title: '其他',
-        lines: ['可在 `componentAnnotationRegistry` 补 slug 细化'],
-      },
-    ],
-  };
-}
-
-/** 详情页底部「注释」文案 — slug 覆盖 > 族模板 > 兜底。 */
+/** 详情页底部「注释」— slug 覆盖 > 单组件 self > 族模板 > 脚手架兜底。 */
 export function resolveShowcaseComponentAnnotation(
   entry: ShowcaseCatalogEntry | undefined,
   exportName: string,
 ): ShowcaseComponentAnnotationDoc {
   if (!entry) {
-    return fallbackAnnotation(exportName);
+    return assembleComponentAnnotationDoc(scaffoldAnnotation(exportName), false);
   }
 
   const bySlug = componentAnnotationBySlug[entry.slug];
   if (bySlug) {
     return bySlug;
+  }
+
+  const self = resolveSelfAnnotation(entry);
+  if (self) {
+    const implemented = isShowcaseEntryImplemented(entry);
+    return assembleComponentAnnotationDoc(self, implemented);
   }
 
   const family = resolveFamily(entry);

@@ -62,7 +62,7 @@ export function isNativeLiquidGlassAvailable(): boolean {
       return false;
     }
     // `isLiquidGlassAvailable` = 编译进宿主 App 的能力（Expo Go 常为 false）；
-    // 运行时以 `isGlassEffectAPIAvailable` 为准（expo #40911），避免 EgButtonGlass 误走 RN。
+    // 运行时以 `isGlassEffectAPIAvailable` 为准（expo #40911），避免 EgGlassCapsule 误走 RN。
     const compiled = Boolean(mod.isLiquidGlassAvailable?.());
     liquidGlassAvailable = compiled || runtimeApi;
   } catch {

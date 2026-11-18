@@ -1,9 +1,4 @@
-import {
-  EgBrandButton,
-  EgDangerButton,
-  EgDecorButton,
-  EgOptionButton,
-} from '@eds/mobile-components';
+import { EgButton } from '@eds/mobile-components';
 import { StyleSheet, View } from 'react-native';
 
 import {
@@ -59,16 +54,7 @@ export function ShowcaseButtonPreview(props: ShowcaseButtonPreviewProps) {
     style: widthStyle,
   };
 
-  const button =
-    tone === 'decor' ? (
-      <EgDecorButton {...common} />
-    ) : tone === 'danger' ? (
-      <EgDangerButton {...common} />
-    ) : tone === 'option' ? (
-      <EgOptionButton {...common} />
-    ) : (
-      <EgBrandButton {...common} />
-    );
+  const button = <EgButton {...common} tone={tone} />;
 
   return (
     <View style={[styles.host, width === 'fill' ? styles.hostFill : null]}>

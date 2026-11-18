@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { EgButtonGlass } from '../../../button/button-glass/EgButtonGlass.js';
+import { EgGlassCapsule } from '../../../button/button-glass/EgGlassCapsule.js';
 import type { ControlSize } from '../../../../shared/types.js';
 import type { ThemeMode } from '../../../../theme/index.js';
 import type { EgMenuProps, EgMenuTriggerContext } from '../EgMenu.types.js';
@@ -39,7 +39,7 @@ export function renderEgMenuTrigger({
   }
 
   return (
-    <EgButtonGlass
+    <EgGlassCapsule
       kind="icon"
       iconCount={1}
       icon={triggerIcon ?? DEFAULT_TRIGGER_ICON}

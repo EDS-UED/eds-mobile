@@ -1,5 +1,7 @@
 import {
   AVATAR_NATIVE_PALETTE_SIZE,
+  EG_SWITCH_DEFAULT_SIZE,
+  EG_TOGGLE_MARK_DEFAULT_SIZE,
   formatAvatarPaletteName,
 } from '@eds/mobile-components';
 
@@ -41,7 +43,7 @@ import {
 } from './itemCustomizeModel.js';
 import {
   buildEgSegmentedControlPreviewSegments,
-  buildEgTabBlockPreviewItems,
+  buildEgTogglePreviewItems,
   buildEgTabPreviewItems,
   readTabSegmentCount,
   segmentedControlCustomizeControls,
@@ -62,6 +64,11 @@ import {
   pageBodyCustomizeDefaults,
   pageBodyCustomizeSummary,
 } from './pageBodyCustomizeModel.js';
+import { switchCustomizeControls, switchCustomizeDefaults } from './switchCustomizeModel.js';
+import {
+  toggleMarkCustomizeControls,
+  toggleMarkCustomizeDefaults,
+} from './toggleMarkCustomizeModel.js';
 import {
   BUTTON_OPTION_LABEL_STYLES,
   BUTTON_SHOWCASE_SIZES,
@@ -153,7 +160,7 @@ function menuBodyDoc(): RnDocConfig {
   return {
     componentTag: 'EgMenu',
     previewSlug: 'menu-body',
-    importCode: `// 触发器：默认 EgButtonGlass 胶囊，或 trigger 插槽
+    importCode: `// 触发器：默认 EgGlassCapsule 胶囊，或 trigger 插槽
 import { EgMenu } from '@eds/mobile-components';`,
     customizeDefaults: defaults,
     customizeControls: menuCustomizeControls,
@@ -161,7 +168,7 @@ import { EgMenu } from '@eds/mobile-components';`,
     propRows: [
       { name: 'sections', type: 'EgMenuSection[]', defaultValue: '—', description: '分组 · title? + items' },
       { name: 'items', type: 'EgMenuItem[]', defaultValue: '—', description: '单段菜单（兼容）' },
-      { name: 'trigger', type: 'ReactNode | (ctx) => ReactNode', defaultValue: 'EgButtonGlass 胶囊', description: '触发器插槽' },
+      { name: 'trigger', type: 'ReactNode | (ctx) => ReactNode', defaultValue: 'EgGlassCapsule 胶囊', description: '触发器插槽' },
       { name: 'triggerIcon', type: 'string', defaultValue: "'eds-more-ios'", description: '默认玻璃胶囊 symbol' },
       { name: 'selectedId', type: 'string', defaultValue: 'undefined', description: '受控选中 id' },
       { name: 'size', type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '默认玻璃触发器尺寸' },
@@ -462,7 +469,7 @@ import { EgMenuTrigger } from '@eds/mobile-components';`,
     customizeControls: menuCustomizeControls,
     customizeLayout: 'menu-sections',
     propRows: [
-      { name: 'trigger', type: 'ReactNode | (ctx) => ReactNode', defaultValue: 'EgButtonGlass 胶囊', description: '触发器插槽' },
+      { name: 'trigger', type: 'ReactNode | (ctx) => ReactNode', defaultValue: 'EgGlassCapsule 胶囊', description: '触发器插槽' },
       { name: 'triggerIcon', type: 'string', defaultValue: "'eds-more-ios'", description: '默认玻璃胶囊 symbol' },
       { name: 'size', type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '胶囊尺寸' },
       { name: 'sections', type: 'EgMenuSection[]', defaultValue: '演示分组', description: '菜单分组' },
@@ -571,7 +578,56 @@ const TAG_SIZES = [
   { value: 'sm', label: 'SM' },
 ] as const;
 
-function colorTagDoc(componentTag: string, previewSlug: string): RnDocConfig {
+const EG_TAG_VARIANTS = [
+  { value: 'subtle', label: '浅' },
+  { value: 'solid-brand', label: '实心品牌' },
+  { value: 'solid-red', label: '实心红' },
+  { value: 'gray', label: '灰' },
+  { value: 'stroke-subtle', label: '描边浅' },
+  { value: 'stroke-solid', label: '描边实心' },
+] as const;
+
+const TAG_SHAPES = [
+  { value: 'round', label: '圆形' },
+  { value: 'square', label: '方形' },
+] as const;
+
+function egTagDoc(componentTag: string, previewSlug: string): RnDocConfig {
+  const defaults = { variant: 'subtle', shape: 'round', size: 'sm', label: 'Tag' } as const;
+  return {
+    componentTag,
+    previewSlug,
+    importCode: `import { ${componentTag} } from '@eds/mobile-components';`,
+    customizeDefaults: { ...defaults },
+    customizeControls: [
+      {
+        kind: 'select',
+        key: 'variant',
+        label: '类型',
+        options: [...EG_TAG_VARIANTS],
+      },
+      { kind: 'select', key: 'shape', label: '形状', options: [...TAG_SHAPES] },
+      { kind: 'select', key: 'size', label: '尺寸', options: [...TAG_SIZES] },
+      { kind: 'text', key: 'label', label: '文案' },
+    ],
+    propRows: [
+      {
+        name: 'variant',
+        type: "'subtle' | 'solid-brand' | 'solid-red' | 'gray' | 'stroke-subtle' | 'stroke-solid'",
+        defaultValue: "'subtle'",
+        description: '语义类型',
+      },
+      { name: 'shape', type: "'round' | 'square'", defaultValue: "'round'", description: '圆角：radius-full · scale-1' },
+      { name: 'size', type: "'lg' | 'md' | 'sm'", defaultValue: "'sm'", description: '尺寸' },
+      { name: 'label', type: 'string', defaultValue: 'undefined', description: '标签文案' },
+    ],
+    propQueryKeys: ['variant', 'shape', 'size', 'label'],
+    buildUsageSnippet: (state) =>
+      buildRnSelfClosingSnippet(componentTag, state, { defaults: { ...defaults } }),
+  };
+}
+
+function colorTagAltDoc(componentTag: string, previewSlug: string): RnDocConfig {
   const defaults = { label: 'Tag', colorType: 'green', size: 'md' } as const;
   return {
     componentTag,
@@ -595,7 +651,7 @@ function colorTagDoc(componentTag: string, previewSlug: string): RnDocConfig {
     ],
     propRows: [
       { name: 'label', type: 'string', defaultValue: 'undefined', description: '标签文案' },
-      { name: 'colorType', type: 'ColorTagType', defaultValue: "'green'", description: '颜色族' },
+      { name: 'colorType', type: 'ColorTagType', defaultValue: "'green'", description: 'Colorful 色板' },
       { name: 'size', type: "'lg' | 'md' | 'sm'", defaultValue: "'md'", description: '尺寸' },
     ],
     propQueryKeys: ['label', 'colorType', 'size'],
@@ -636,35 +692,121 @@ function systemTagDoc(componentTag: string, previewSlug: string): RnDocConfig {
   };
 }
 
-const TOGGLE_SIZES = [
-  { value: 'lg', label: 'LG' },
-  { value: 'md', label: 'MD' },
-  { value: 'sm', label: 'SM' },
-] as const;
-
-function toggleDoc(
-  componentTag: string,
-  previewSlug: string,
-  checkedKey: string,
-  checkedLabel: string,
-): RnDocConfig {
-  const defaults = { size: 'md', [checkedKey]: false } as Record<string, unknown>;
+function switchDoc(componentTag: string, previewSlug: string): RnDocConfig {
+  const defaults = { ...switchCustomizeDefaults };
   return {
     componentTag,
     previewSlug,
     importCode: `import { ${componentTag} } from '@eds/mobile-components';`,
     customizeDefaults: defaults,
-    customizeControls: [
-      { kind: 'select', key: 'size', label: '尺寸', options: [...TOGGLE_SIZES] },
-      { kind: 'boolean', key: checkedKey, label: checkedLabel },
-    ],
+    customizeControls: [...switchCustomizeControls],
     propRows: [
-      { name: 'size', type: "'lg' | 'md' | 'sm'", defaultValue: "'md'", description: '尺寸' },
-      { name: checkedKey, type: 'boolean', defaultValue: 'false', description: checkedLabel },
+      {
+        name: 'size',
+        type: "'lg' | 'md' | 'sm'",
+        defaultValue: `'${EG_SWITCH_DEFAULT_SIZE}'`,
+        description: '尺寸',
+      },
+      {
+        name: 'value',
+        type: 'boolean',
+        defaultValue: '—',
+        description: '受控开关态',
+      },
+      {
+        name: 'defaultValue',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: '非受控默认',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: '禁用（开启轨 `--status-disable-brand`）',
+      },
+      {
+        name: 'forceRnImplementation',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: '强制 EgSwitchRn（跳过 iOS 26+ 系统 UISwitch）',
+      },
     ],
-    propQueryKeys: ['size', checkedKey],
-    buildUsageSnippet: (state) =>
-      buildRnSelfClosingSnippet(componentTag, state, { defaults }),
+    propQueryKeys: ['size', 'value', 'defaultValue', 'disabled', 'forceRnImplementation'],
+    buildUsageSnippet: (state) => {
+      const previewState = String(state.previewState ?? 'full');
+      const size = String(state.size ?? EG_SWITCH_DEFAULT_SIZE);
+      const attrs: Record<string, unknown> = { size };
+      if (previewState === 'full') {
+        attrs.defaultValue = false;
+      } else if (previewState === 'on') {
+        attrs.value = true;
+      } else if (previewState === 'off') {
+        attrs.value = false;
+      } else {
+        attrs.value = true;
+        attrs.disabled = true;
+      }
+      return buildRnSelfClosingSnippet(componentTag, attrs, {
+        defaults: { size: EG_SWITCH_DEFAULT_SIZE },
+      });
+    },
+  };
+}
+
+function toggleMarkDoc(
+  componentTag: string,
+  previewSlug: string,
+  valueKey: 'checked' | 'decided',
+  defaultKey: 'defaultChecked' | 'defaultDecided',
+): RnDocConfig {
+  const defaults = { ...toggleMarkCustomizeDefaults };
+  return {
+    componentTag,
+    previewSlug,
+    importCode: `import { ${componentTag} } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [...toggleMarkCustomizeControls],
+    propRows: [
+      {
+        name: 'size',
+        type: "'lg' | 'md' | 'sm'",
+        defaultValue: `'${EG_TOGGLE_MARK_DEFAULT_SIZE}'`,
+        description: '尺寸',
+      },
+      {
+        name: valueKey,
+        type: 'boolean',
+        defaultValue: '—',
+        description: '受控选中态',
+      },
+      {
+        name: defaultKey,
+        type: 'boolean',
+        defaultValue: 'false',
+        description: '非受控默认',
+      },
+      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
+    ],
+    propQueryKeys: ['size', valueKey, defaultKey, 'disabled'],
+    buildUsageSnippet: (state) => {
+      const previewState = String(state.previewState ?? 'full');
+      const size = String(state.size ?? EG_TOGGLE_MARK_DEFAULT_SIZE);
+      const attrs: Record<string, unknown> = { size };
+      if (previewState === 'full') {
+        attrs[defaultKey] = false;
+      } else if (previewState === 'on') {
+        attrs[valueKey] = true;
+      } else if (previewState === 'off') {
+        attrs[valueKey] = false;
+      } else {
+        attrs[valueKey] = true;
+        attrs.disabled = true;
+      }
+      return buildRnSelfClosingSnippet(componentTag, attrs, {
+        defaults: { size: EG_TOGGLE_MARK_DEFAULT_SIZE },
+      });
+    },
   };
 }
 
@@ -715,6 +857,62 @@ function dividerDoc(): RnDocConfig {
     propQueryKeys: ['variant', 'orientation', 'visible'],
     buildUsageSnippet: (state) =>
       buildRnSelfClosingSnippet(componentTag, state, { defaults: { ...defaults } }),
+  };
+}
+
+function symbolActionDoc(): RnDocConfig {
+  const defaults = {
+    size: 'md',
+    variant: 'solid',
+    figmaType: 'primary',
+    label: '+',
+    disabled: false,
+    loading: false,
+  };
+  return {
+    componentTag: 'EgSymbolAction',
+    previewSlug: 'button-icon-container',
+    importCode: `import { EgSymbolAction } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      {
+        kind: 'select',
+        key: 'variant',
+        label: '风格',
+        options: [...BUTTON_SHOWCASE_VARIANTS],
+      },
+      {
+        kind: 'select',
+        key: 'size',
+        label: '尺寸',
+        options: [...BUTTON_SHOWCASE_SIZES],
+      },
+      { kind: 'text', key: 'label', label: '符号文案' },
+      { kind: 'boolean', key: 'disabled', label: '禁用' },
+      { kind: 'boolean', key: 'loading', label: '加载' },
+    ],
+    propRows: [
+      {
+        name: 'figmaType',
+        type: "'primary' | 'secondary' | 'tertiary'",
+        defaultValue: "'primary'",
+        description: '实心 / 描边 / 浅底 · 由 showcase variant 映射',
+      },
+      { name: 'size', type: "'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '圆钮直径（capsule token）' },
+      { name: 'label', type: 'string', defaultValue: "'+'", description: '圆内文案（常为 + / −）' },
+      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
+      { name: 'loading', type: 'boolean', defaultValue: 'false', description: '加载' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['variant', 'size', 'label', 'disabled', 'loading'],
+    buildUsageSnippet: (state) => {
+      const figmaType = buttonShowcaseVariantToFigmaType(String(state.variant ?? 'solid'));
+      return buildRnSelfClosingSnippet(
+        'EgSymbolAction',
+        { ...state, figmaType },
+        { defaults },
+      );
+    },
   };
 }
 
@@ -1133,17 +1331,17 @@ function egTabDoc(): RnDocConfig {
   };
 }
 
-function egTabBlockDoc(): RnDocConfig {
+function egToggleDoc(): RnDocConfig {
   const defaults = { ...tabSlideCustomizeDefaults };
-  const previewItems = buildEgTabBlockPreviewItems(readTabSegmentCount(defaults));
+  const previewItems = buildEgTogglePreviewItems(readTabSegmentCount(defaults));
   return {
-    componentTag: 'EgTabBlock',
+    componentTag: 'EgToggle',
     previewSlug: 'tab-block',
-    importCode: `import { EgTabBlock } from '@eds/mobile-components';`,
+    importCode: `import { EgToggle } from '@eds/mobile-components';`,
     customizeDefaults: defaults,
     customizeControls: tabSlideCustomizeControls,
     propRows: [
-      { name: 'items', type: 'EgTabBlockItem[]', defaultValue: '3 × Label', description: '胶囊项（id · label · count?）' },
+      { name: 'items', type: 'EgToggleItem[]', defaultValue: '3 × Label', description: '胶囊项（id · label · count?）' },
       { name: 'selectedId', type: 'string', defaultValue: "'1'", description: '选中 id' },
       { name: 'onSelect', type: '(id: string, index: number) => void', defaultValue: 'undefined', description: '选中变化' },
       { name: 'children', type: 'ReactNode', defaultValue: 'undefined', description: '正文 · layout-content' },
@@ -1153,9 +1351,9 @@ function egTabBlockDoc(): RnDocConfig {
     propQueryKeys: ['segmentCount'],
     buildUsageSnippet: (state) => {
       const count = readTabSegmentCount(state);
-      const items = buildEgTabBlockPreviewItems(count);
+      const items = buildEgTogglePreviewItems(count);
       return buildRnSelfClosingSnippet(
-        'EgTabBlock',
+        'EgToggle',
         {
           ...stripTabSlideCustomizeMeta(state),
           selectedId: '1',
@@ -1184,15 +1382,21 @@ function egSegmentedControlDoc(): RnDocConfig {
       {
         name: 'size',
         type: "'lg' | 'md' | 'sm'",
-        defaultValue: "'md'",
-        description: 'Figma 493:4341 · 轨道 36 / 28 / 24px · 段 padding Lg 20×8 Md 16×4 Sm 12×2',
+        defaultValue: "'lg'",
+        description: 'Figma 493:4341 · 轨道 36 / 28 / 24px · 轨道与项间距 spacing-05 (2px)',
+      },
+      {
+        name: 'widthMode',
+        type: "'hug' | 'fill'",
+        defaultValue: "'hug'",
+        description: '自适应内容宽 · 全宽均分段宽',
       },
       { name: 'selectedIndex', type: 'number', defaultValue: 'undefined', description: '受控选中索引' },
       { name: 'defaultSelectedIndex', type: 'number', defaultValue: '0', description: '非受控默认选中' },
       { name: 'onSelect', type: '(index: number, segment: EgSegmentedControlSegment) => void', defaultValue: 'undefined', description: '选中变化' },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
-    propQueryKeys: ['segmentCount', 'size'],
+    propQueryKeys: ['segmentCount', 'size', 'widthMode'],
     buildUsageSnippet: (state) => {
       const count = readTabSegmentCount(state);
       const segments = buildEgSegmentedControlPreviewSegments(count);
@@ -1204,7 +1408,12 @@ function egSegmentedControlDoc(): RnDocConfig {
           segments,
         },
         {
-          defaults: { size: 'md', defaultSelectedIndex: 0, segments: previewSegments },
+          defaults: {
+            size: 'lg',
+            widthMode: 'hug',
+            defaultSelectedIndex: 0,
+            segments: previewSegments,
+          },
           omitKeys: ['segmentCount'],
         },
       );
@@ -1235,8 +1444,7 @@ function tabBarItemDoc(): RnDocConfig {
   };
 }
 
-const BUTTON_IMPORT =
-  "import { EgBrandButton, EgDecorButton, EgDangerButton, EgOptionButton } from '@eds/mobile-components';";
+const BUTTON_IMPORT = "import { EgButton } from '@eds/mobile-components';";
 
 function buttonDoc(
   componentTag: string,
@@ -1513,6 +1721,22 @@ function egScrollEdgeShowcaseDoc(): RnDocConfig {
 export const rnDocBySlug: Record<string, RnDocConfig> = {
   'input-body': inputDoc('EgInput', 'input-input'),
   'input-input': inputDoc('EgInput', 'input-input'),
+  'search-body': {
+    ...fieldDoc('EgSearch', 'input-search', 'Search'),
+    customizeDefaults: { size: 'md', event: 'default', placeholder: 'Search', disabled: false },
+    propRows: [
+      { name: 'size', type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '控件尺寸（Figma Search 为 md / 48px）' },
+      {
+        name: 'event',
+        type: "'default' | 'tap' | 'entering' | 'done'",
+        defaultValue: "'default'",
+        description: 'Default=居中 pill；Tap=展开+光标在前；Entering=输入中；Done=已填内容',
+      },
+      { name: 'placeholder', type: 'string', defaultValue: "'Search'", description: '占位文案' },
+      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+  },
   'input-search': {
     ...fieldDoc('EgSearch', 'input-search', 'Search'),
     customizeDefaults: { size: 'md', event: 'default', placeholder: 'Search', disabled: false },
@@ -1529,7 +1753,8 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
   },
-  'input-textarea': fieldDoc('EgTextarea', 'input-textarea', 'Textarea'),
+  'textarea-body': fieldDoc('EgTextarea', 'input-textarea', '文本域'),
+  'input-textarea': fieldDoc('EgTextarea', 'input-textarea', '文本域'),
   'input-quick-input': fieldDoc('EgQuickInput', 'input-quick-input', 'Quick input'),
   'input-pointer': {
     componentTag: 'EgInputPointer',
@@ -1543,9 +1768,9 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   },
   'button-body': buttonDoc('EgButton', 'button-brand'),
   'button-link': {
-    componentTag: 'EgLinkButton',
+    componentTag: 'EgLink',
     previewSlug: 'button-link',
-    importCode: `import { EgLinkButton } from '@eds/mobile-components';`,
+    importCode: `import { EgLink } from '@eds/mobile-components';`,
     customizeDefaults: { tone: 'brand', size: 'md', label: 'Link' },
     customizeControls: [
       {
@@ -1572,15 +1797,15 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       const tone = String(state.tone ?? 'brand');
       const snippetTone = tone === 'option' ? 'subtle' : tone;
       return buildRnSelfClosingSnippet(
-        'EgLinkButton',
+        'EgLink',
         { ...state, tone: snippetTone },
         { defaults: { tone: 'brand', size: 'md', label: 'Link' } },
       );
     },
   },
-  'tag-body': colorTagDoc('EgColorTag', 'tag-color'),
-  'tag-color': colorTagDoc('EgColorTag', 'tag-color'),
-  'tag-color-alt': colorTagDoc('EgColorTagAlt', 'tag-color-alt'),
+  'tag-body': egTagDoc('EgTag', 'tag-color'),
+  'tag-color': egTagDoc('EgTag', 'tag-color'),
+  'tag-color-alt': colorTagAltDoc('EgTagAlt', 'tag-color-alt'),
   'tag-system': systemTagDoc('EgSystemTag', 'tag-system'),
   'tag-system-alt': systemTagDoc('EgSystemTagAlt', 'tag-system-alt'),
   'menu-body': menuBodyDoc(),
@@ -1595,21 +1820,21 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
   'tab-bar-text': tabBarTextDoc(),
   'tab-bar-item': tabBarItemDoc(),
   'tab-tabs': egTabDoc(),
-  'tab-block': egTabBlockDoc(),
+  'tab-block': egToggleDoc(),
   'tab-segmented-control': egSegmentedControlDoc(),
-  'toggle-body': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
-  'toggle-switch': toggleDoc('EgSwitch', 'toggle-switch', 'defaultValue', '默认开启'),
-  'toggle-checkbox': toggleDoc('EgCheckbox', 'toggle-checkbox', 'defaultChecked', '默认选中'),
-  'toggle-radio': toggleDoc('EgRadio', 'toggle-radio', 'defaultChecked', '默认选中'),
-  'toggle-decide': toggleDoc('EgDecide', 'toggle-decide', 'defaultDecided', '默认决定'),
+  'toggle-body': switchDoc('EgSwitch', 'toggle-switch'),
+  'toggle-switch': switchDoc('EgSwitch', 'toggle-switch'),
+  'toggle-checkbox': toggleMarkDoc('EgCheckbox', 'toggle-checkbox', 'checked', 'defaultChecked'),
+  'toggle-radio': toggleMarkDoc('EgRadio', 'toggle-radio', 'checked', 'defaultChecked'),
+  'toggle-decide': toggleMarkDoc('EgDecide', 'toggle-decide', 'decided', 'defaultDecided'),
   'button-combo-action': minimalDoc('EgComboActionButton', 'button-combo-action'),
   'button-combo-action-alt': minimalDoc('EgComboActionButtonAlt', 'button-combo-action-alt'),
-  'button-icon-container': minimalDoc('EgIconContainerButton', 'button-icon-container'),
+  'button-icon-container': symbolActionDoc(),
   'button-glass': {
-    componentTag: 'EgButtonGlass',
+    componentTag: 'EgGlassCapsule',
     previewSlug: 'button-glass',
     importCode: `// iOS 26+：原生 Liquid Glass（GlassView）；Android / iOS ≤25：RN glass-button-box
-import { EgButtonGlass } from '@eds/mobile-components';`,
+import { EgGlassCapsule } from '@eds/mobile-components';`,
     customizeDefaults: {
       kind: 'text',
       size: 'md',
@@ -1698,7 +1923,7 @@ import { EgButtonGlass } from '@eds/mobile-components';`,
         name: 'kind',
         type: "'text' | 'icon'",
         defaultValue: "'text'",
-        description: '文本胶囊 / 圆形图标（业务只引 EgButtonGlass；平台分流见 import 注释）',
+        description: '文本胶囊 / 圆形图标（业务只引 EgGlassCapsule；平台分流见 import 注释）',
       },
       { name: 'label', type: 'string', defaultValue: 'undefined', description: '文本按钮文案' },
       {
@@ -1739,19 +1964,19 @@ import { EgButtonGlass } from '@eds/mobile-components';`,
           ].filter((name) => String(name).trim() !== '');
           const rows = icons.map((name) =>
             buildRnSelfClosingSnippet(
-              'EgButtonGlass',
+              'EgGlassCapsule',
               { kind: 'icon', icon: name, iconCount: 1, disabled: state.disabled },
               { defaults: { kind: 'icon', icon: 'eds-list-lattice-mobile', iconCount: 1 } },
             ),
           );
           return `// ${count} 颗独立玻璃圆钮（split）\n${rows.join('\n')}`;
         }
-        return buildRnSelfClosingSnippet('EgButtonGlass', state, {
+        return buildRnSelfClosingSnippet('EgGlassCapsule', state, {
           defaults: { kind: 'icon', icon: 'eds-list-lattice-mobile', iconCount: 1 },
           omitKeys: ['iconCount', 'iconAlt', 'iconThird', 'showAvatarSlot'],
         });
       }
-      return buildRnSelfClosingSnippet('EgButtonGlass', state, {
+      return buildRnSelfClosingSnippet('EgGlassCapsule', state, {
         defaults: { kind: 'text', size: 'md', label: '编辑' },
       });
     },
@@ -1822,7 +2047,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
         name: 'left',
         type: 'EgNavBarAction',
         defaultValue: "{ icon: 'eds-arrow-left-ios' }",
-        description: '左侧 icon 胶囊（EgButtonGlass）',
+        description: '左侧 icon 胶囊（EgGlassCapsule）',
       },
       { name: 'right', type: 'EgNavBarAction', defaultValue: 'undefined', description: '右侧；iconCount=2 默认两颗独立玻璃钮（split），combined 为单胶囊' },
       { name: 'showLeft', type: 'boolean', defaultValue: 'true', description: '显示左侧' },

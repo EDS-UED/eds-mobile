@@ -1,9 +1,12 @@
+import { resolveEgSwitchSize } from '@eds/mobile-components';
 import { createCatalogPreviewProps } from '@eds/mobile-components/catalog';
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
 import { applyMenuTriggerPreviewProps } from './applyMenuTriggerPreviewProps.js';
 import { applyTabBarTextPreviewProps } from './tabBarTextCustomizeModel.js';
 import { applyPageBodyPreviewProps } from './pageBodyCustomizeModel.js';
+import { applySwitchPreviewProps } from './switchCustomizeModel.js';
+import { applyToggleMarkPreviewProps } from './toggleMarkCustomizeModel.js';
 import { applyTabSlidePreviewProps } from './tabCustomizeModel.js';
 
 /** Merge Figma catalog defaults with playground Customize panel state. */
@@ -21,8 +24,18 @@ export function mergeCatalogPreviewProps(
     mode,
   };
 
+  if (entry.exportName === 'EgSwitch') {
+    merged.size = resolveEgSwitchSize(merged.size);
+  }
+
   return applyTabSlidePreviewProps(
     entry,
-    applyMenuTriggerPreviewProps(entry, merged),
+    applyToggleMarkPreviewProps(
+      entry,
+      applySwitchPreviewProps(
+        entry,
+        applyMenuTriggerPreviewProps(entry, merged),
+      ),
+    ),
   );
 }

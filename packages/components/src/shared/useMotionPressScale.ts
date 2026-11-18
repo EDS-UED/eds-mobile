@@ -21,7 +21,7 @@ export type UseMotionPressScaleOptions = {
   pressIntensity?: MotionPressIntensity;
   /** @default 'up' */
   pressScaleDirection?: MotionPressScaleDirection;
-  /** @default true — `false` 时仅跟踪 `pressing`，不做 scale（如 EgLinkButton 下划线反馈）。 */
+  /** @default true — `false` 时仅跟踪 `pressing`，不做 scale（如 EgLink 下划线反馈）。 */
   enabled?: boolean;
 };
 

@@ -19,7 +19,7 @@ const REQUIRED_PUBLIC_EG = [
   'EgSymbol',
   'EgDataList',
   'EgItem',
-  'EgTabBlock',
+  'EgToggle',
   'EgTabBarText',
 ];
 

@@ -27,7 +27,7 @@ export type ShowcasePageScrollProps = {
   withTabBarInset?: boolean;
   /** 区块间距 · 默认 spacing-4。 */
   sectionGap?: boolean;
-  /** 文档多区块 — `docSectionCardGap`（与三级族页一致）；关闭默认 `cardGap`。 */
+  /** 文档多区块 — 与索引 `cardList` 同 `cardGap`；关闭则走默认 `sectionGap`。 */
   docSectionStack?: boolean;
   style?: EgPageProps['style'];
   contentContainerStyle?: StyleProp<ViewStyle>;

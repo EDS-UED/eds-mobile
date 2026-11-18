@@ -4,6 +4,10 @@ import { StyleSheet } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { useShowcaseTabBarInset } from '@/hooks/useShowcaseTabBarInset';
+import {
+  showcaseDocPageSectionsContainerStyle,
+  showcaseIndexCardListGapStyle,
+} from '@/views/shared/showcaseDocSectionLayout';
 import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 
 /** Scroll / list shell styles — background & text follow system light/dark. */
@@ -32,9 +36,9 @@ export function useShowcaseScreenStyles() {
           gap: theme.layout.cardGap,
           paddingTop: theme.layout.navContentGapInner,
         },
-        cardList: {
-          gap: theme.layout.cardGap,
-        },
+        cardList: showcaseIndexCardListGapStyle,
+        /** 带分区标题的列表 — 组与组 `docSectionCardGap`。 */
+        sectionGroupList: showcaseDocPageSectionsContainerStyle,
         missing: {
           padding: theme.layout.pageInset,
           color: colors['text-base-secondary'] as string,

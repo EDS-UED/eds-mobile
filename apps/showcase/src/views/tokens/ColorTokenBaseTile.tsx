@@ -20,7 +20,7 @@ type ColorTokenBaseTileProps = {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const pressMotion = EdsRecipeAnima('press');
-const pressScale = mobileTheme.motion.scale['scale-press'] as number;
+const pressScale = mobileTheme.motion.scale['scale-press-down-sm'] as number;
 function isLightFill(value: string) {
   if (value === 'transparent') {
     return true;

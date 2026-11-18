@@ -1,28 +1,58 @@
 import { router, Stack } from 'expo-router';
-import { View } from 'react-native';
+import { useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import type { EgPageScrollViewHandle } from '@eds/mobile-components';
 import { motionScenarioDemos } from '@/data/animations/motionScenarioNav';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
+import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
+import { showcaseTabHomeLeads } from '@/navigation/showcaseTabHomeLeads';
+import { ShowcaseTabHomeIntro } from '@/views/shared/ShowcaseTabHomeIntro';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
+import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import {
+  AnimationsHomeInlineSegment,
+  AnimationsHomeNavSegment,
+  AnimationsHomeSegmentProvider,
+  useAnimationsHomeScrollPreserve,
+  useAnimationsHomeSegment,
+} from '@/views/animations/animationsHomeSegment';
 
 export function AnimationsHomeView() {
+  return (
+    <AnimationsHomeSegmentProvider>
+      <AnimationsHomeViewBody />
+    </AnimationsHomeSegmentProvider>
+  );
+}
+
+function AnimationsHomeViewBody() {
   const screenStyles = useShowcaseScreenStyles();
+  const scrollRef = useRef<EgPageScrollViewHandle>(null);
+  const { segmentIndex } = useAnimationsHomeSegment();
   const title = showcaseTabHomeTitles.animations;
+
   const {
-    onScroll,
+    onScroll: onScrollFromNav,
     scrollEventThrottle,
+    scrollEdgeActive,
     stackScreenOptions,
     nativeStackNav,
     rnNavBar,
     rnScrollPaddingTop,
-  } = useShowcaseTabHomeNav(title);
+  } = useShowcaseTabHomeNav(title, { ScrollEdgeTitleComponent: AnimationsHomeNavSegment });
+
+  const { onScroll, onCardsSectionLayout } = useAnimationsHomeScrollPreserve(
+    scrollRef,
+    scrollEdgeActive,
+    onScrollFromNav,
+  );
 
   return (
     <ShowcaseStackScreen>
@@ -30,6 +60,7 @@ export function AnimationsHomeView() {
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
         <ShowcasePageScroll
+          scrollViewRef={scrollRef}
           nativeStackNav={nativeStackNav}
           rnScrollPaddingTop={rnScrollPaddingTop}
           contentPaddingTop={0}
@@ -38,25 +69,46 @@ export function AnimationsHomeView() {
           style={screenStyles.scrollRoot}
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
+          <ShowcaseTabHomeIntro lead={showcaseTabHomeLeads.animations}>
+            {!scrollEdgeActive ? (
+              <AnimationsHomeInlineSegment testID="animations-home-segment" />
+            ) : null}
+          </ShowcaseTabHomeIntro>
 
-          <ShowcasePageIntro
-            homeLargeTitle
-            subtitle
-            lead="Live 预览与定制在此；RN 代码片段与 motion 参数在 Tokens · Motion。"
-          />
-
-          <View style={screenStyles.cardList}>
-            {motionScenarioDemos.map((demo) => (
-              <ShowcaseCardRow
-                key={demo.id}
-                title={demo.label}
-                hint={demo.lead}
-                onPress={() => router.push(`/(animations)/scenario/${demo.id}`)}
-              />
-            ))}
-          </View>
+          {segmentIndex === 0 ? (
+            <View
+              style={styles.segmentPane}
+              onLayout={(event) => onCardsSectionLayout(event.nativeEvent.layout.y)}
+            >
+              <View style={screenStyles.cardList}>
+                {motionScenarioDemos.map((demo) => (
+                  <ShowcaseCardRow
+                    key={demo.id}
+                    title={demo.label}
+                    hint={demo.lead}
+                    onPress={() => router.push(`/(animations)/scenario/${demo.id}`)}
+                  />
+                ))}
+              </View>
+            </View>
+          ) : (
+            <View
+              style={styles.segmentPane}
+              onLayout={(event) => onCardsSectionLayout(event.nativeEvent.layout.y)}
+            >
+              <ShowcaseSectionCard empty emptyText="图形动画筹备中，后续在此展示。" />
+            </View>
+          )}
         </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  /** 切换分段时维持最小高度，减轻内容高度突变把滚动位顶回顶部。 */
+  segmentPane: {
+    minHeight: 320,
+    marginTop: theme.layout.tabHomeTrailingToCardsExtra,
+  },
+});

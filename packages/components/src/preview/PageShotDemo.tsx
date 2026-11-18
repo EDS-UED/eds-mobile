@@ -2,7 +2,7 @@ import { useCallback, useState, type ReactNode } from 'react';
 import { Dimensions, Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { EgButtonGlass } from '../molecules/button/button-glass/EgButtonGlass.js';
+import { EgGlassCapsule } from '../molecules/button/button-glass/EgGlassCapsule.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
 import type { EgEdsAnimaPageShotRootApi } from '../shared/motion/EgEdsAnimaPageShot.js';
 import { EgPageShot, EgPageShotTrigger } from '../templates/page-shot/EgPageShot.js';
@@ -109,7 +109,7 @@ const DATA_ROWS = [
   { id: 'row-callback', label: '回调记录', value: '12 条' },
 ];
 
-/** 胶囊按钮 · EgButtonGlass `kind="icon"` 单 icon（左 / 中 / 右）。 */
+/** 胶囊按钮 · EgGlassCapsule `kind="icon"` 单 icon（左 / 中 / 右）。 */
 const CAPSULE_ICONS: Record<(typeof TRIGGER_SLOTS)[number]['slot'], string> = {
   left: 'eds-search',
   center: 'eds-share',
@@ -151,7 +151,7 @@ function TriggerFace({
   if (kind === 'capsule') {
     return (
       <View pointerEvents="none">
-        <EgButtonGlass kind="icon" iconCount={1} icon={CAPSULE_ICONS[slot]} mode={mode} accessibilityLabel={label} />
+        <EgGlassCapsule kind="icon" iconCount={1} icon={CAPSULE_ICONS[slot]} mode={mode} accessibilityLabel={label} />
       </View>
     );
   }

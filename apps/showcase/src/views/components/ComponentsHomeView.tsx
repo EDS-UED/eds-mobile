@@ -7,7 +7,7 @@ import { tierPageSubtitle } from '@/data/components/tierIntroCopy';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
+import { ShowcaseTabHomeIntro } from '@/views/shared/ShowcaseTabHomeIntro';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
@@ -41,7 +41,7 @@ export function ComponentsHomeView() {
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
-          <ShowcasePageIntro homeLargeTitle subtitle lead={COMPONENTS_SHOWCASE_LEAD} />
+          <ShowcaseTabHomeIntro lead={COMPONENTS_SHOWCASE_LEAD} />
 
           <View style={screenStyles.cardList}>
             {componentCatalogNav.map((tier) => (

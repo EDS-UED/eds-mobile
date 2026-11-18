@@ -29,6 +29,17 @@ export type ColorTagType =
 
 export type SystemTagType = 'subtle' | 'solid' | 'strokeSubtle' | 'strokeSolid' | 'gray';
 
+/** EgTag 本体 · Figma Color 场景（语义类型，非 Colorful 色板）。 */
+export type EgTagVariant =
+  | 'subtle'
+  | 'solid-brand'
+  | 'solid-red'
+  | 'gray'
+  | 'stroke-subtle'
+  | 'stroke-solid';
+
+export type TagShape = 'round' | 'square';
+
 export type ToggleSize = 'lg' | 'md' | 'sm';
 
 export type EgCommonProps = {

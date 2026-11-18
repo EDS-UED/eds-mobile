@@ -1,7 +1,12 @@
 /** `{family}-body` → 族基准场景 slug（nav 用 · 勿拖入 rnDocRegistry 全量）。 */
 export const familyBodyPreviewSlug: Record<string, string> = {
   'input-body': 'input-input',
+  'search-body': 'input-search',
+  'textarea-body': 'input-textarea',
   'button-body': 'button-brand',
+  'link-body': 'button-link',
+  'glass-button-body': 'button-glass',
+  'symbol-button-body': 'button-icon-container',
   'tag-body': 'tag-color',
   'toggle-body': 'toggle-switch',
   'menu-body': 'menu-body',

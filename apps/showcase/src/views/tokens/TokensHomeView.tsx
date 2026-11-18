@@ -1,16 +1,17 @@
 import { router, Stack } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 
 import { tokenCategories } from '@/data/tokens/tokenNav';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
-import { showcaseNavScrollContentStyle, showcaseNavScrollInset } from '@/navigation/showcaseNavScrollShell';
+import { showcaseTabHomeLeads } from '@/navigation/showcaseTabHomeLeads';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
+import { ShowcaseTabHomeIntro } from '@/views/shared/ShowcaseTabHomeIntro';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
+import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
 export function TokensHomeView() {
   const screenStyles = useShowcaseScreenStyles();
@@ -29,24 +30,17 @@ export function TokensHomeView() {
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
-        <ScrollView
-          style={screenStyles.scrollRoot}
-          contentContainerStyle={showcaseNavScrollContentStyle(
-            nativeStackNav,
-            rnScrollPaddingTop,
-            screenStyles.scrollContent,
-          )}
-          contentInsetAdjustmentBehavior={showcaseNavScrollInset(nativeStackNav)}
+        <ShowcasePageScroll
+          nativeStackNav={nativeStackNav}
+          rnScrollPaddingTop={rnScrollPaddingTop}
+          contentPaddingTop={0}
           onScroll={onScroll}
           scrollEventThrottle={scrollEventThrottle}
+          style={screenStyles.scrollRoot}
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
-          <ShowcasePageIntro
-            homeLargeTitle
-            subtitle
-            lead="EDS设计系统的全局资产，非特殊申明，业务侧禁止硬编码"
-          />
+          <ShowcaseTabHomeIntro lead={showcaseTabHomeLeads.tokens} />
 
           <View style={screenStyles.cardList}>
             {tokenCategories.map((category) => (
@@ -58,7 +52,7 @@ export function TokensHomeView() {
               />
             ))}
           </View>
-        </ScrollView>
+        </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
     </ShowcaseStackScreen>
   );

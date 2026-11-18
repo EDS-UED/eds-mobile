@@ -24,6 +24,20 @@ export const SHOWCASE_ITEM_BODY_SLUG = 'item-body';
 
 export const SHOWCASE_TAB_BAR_TEXT_SLUG = 'tab-bar-text';
 
+export const SHOWCASE_LINK_BODY_SLUG = 'link-body';
+
+export const SHOWCASE_BUTTON_BODY_SLUG = 'button-body';
+
+export const SHOWCASE_INPUT_BODY_SLUG = 'input-body';
+
+export const SHOWCASE_SEARCH_BODY_SLUG = 'search-body';
+
+export const SHOWCASE_TEXTAREA_BODY_SLUG = 'textarea-body';
+
+export const SHOWCASE_GLASS_BUTTON_BODY_SLUG = 'glass-button-body';
+
+export const SHOWCASE_SYMBOL_BUTTON_BODY_SLUG = 'symbol-button-body';
+
 export const SHOWCASE_PAGE_BODY_SLUG = 'page-body';
 export const SHOWCASE_PAGE_SHOT_BODY_SLUG = 'page-shot-body';
 
@@ -99,17 +113,87 @@ export const SHOWCASE_INFRA_CATALOG: ShowcaseInfraEntry[] = [
     kind: 'component',
   },
   {
-    figmaName: 'EgTabBlock',
+    figmaName: 'EgToggle',
     showcaseLabel: '胶囊横滚 · 计数红点 · 正文 layout-content',
-    exportName: 'EgTabBlock',
+    exportName: 'EgToggle',
     tier: 'molecules',
-    family: 'tab',
+    family: 'toggle-block',
     slug: 'tab-block',
     figmaPage: INFRA_PAGE,
     kind: 'component',
   },
   {
-    figmaName: 'TabBar Text',
+    figmaName: 'EgButton',
+    showcaseLabel: 'Button',
+    exportName: 'EgButton',
+    tier: 'molecules',
+    family: 'button',
+    slug: SHOWCASE_BUTTON_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgInput',
+    showcaseLabel: 'Input',
+    exportName: 'EgInput',
+    tier: 'molecules',
+    family: 'input',
+    slug: SHOWCASE_INPUT_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgSearch',
+    showcaseLabel: 'Search',
+    exportName: 'EgSearch',
+    tier: 'molecules',
+    family: 'search',
+    slug: SHOWCASE_SEARCH_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgTextarea',
+    showcaseLabel: 'Textarea',
+    exportName: 'EgTextarea',
+    tier: 'molecules',
+    family: 'textarea',
+    slug: SHOWCASE_TEXTAREA_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgLink',
+    showcaseLabel: 'Link',
+    exportName: 'EgLink',
+    tier: 'molecules',
+    family: 'link',
+    slug: SHOWCASE_LINK_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgGlassCapsule',
+    showcaseLabel: 'Glass Button',
+    exportName: 'EgGlassCapsule',
+    tier: 'molecules',
+    family: 'glass-button',
+    slug: SHOWCASE_GLASS_BUTTON_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgSymbolAction',
+    showcaseLabel: 'Symbol Button',
+    exportName: 'EgSymbolAction',
+    tier: 'molecules',
+    family: 'symbol-button',
+    slug: SHOWCASE_SYMBOL_BUTTON_BODY_SLUG,
+    figmaPage: INFRA_PAGE,
+    kind: 'component',
+  },
+  {
+    figmaName: 'EgTabBarText',
     showcaseLabel: '纯文本 Tab · Body Small Heavy · 无 icon',
     exportName: 'EgTabBarText',
     tier: 'organisms',

@@ -21,8 +21,10 @@ export const showcaseTheme = {
     /** Card interior — var(--spacing-5) × var(--spacing-4). */
     cardPaddingHorizontal: edsSpacing('spacing-5'),
     cardPaddingVertical: edsSpacing('spacing-4'),
-    /** Gap between cards / sections — var(--spacing-4). */
+    /** 同组内卡片 / 行间距 · spacing-4（16px）。 */
     cardGap: edsSpacing('spacing-4'),
+    /** 分区标题块之间（如 Molecules 输出 / 输入 / 反馈）· spacing-8（32px）。 */
+    sectionGroupGap: edsSpacing('spacing-8'),
     /** 详情区块标题距屏幕左缘 · spacing-10（40px）。 */
     docSectionTitleInset: edsSpacing('spacing-10'),
     /** 区块标题 → 下方卡片 · spacing-2（8px）。 */
@@ -36,6 +38,10 @@ export const showcaseTheme = {
     navContentGapInner: edsSpacing('spacing-3'),
     /** Large title → page subtitle — spacing-05 (2px). */
     pageSubtitleGap: edsSpacing('spacing-05'),
+    /** Tab 首页副文案 → 下挂分段等 · spacing-3（12px）。 */
+    tabHomeSubtitleTrailingGap: edsSpacing('spacing-3'),
+    /** 滚动 `cardGap` 之上补足至 spacing-8（32px）· 控件区 → 卡片。 */
+    tabHomeTrailingToCardsExtra: edsSpacing('spacing-8') - edsSpacing('spacing-4'),
     /** Tab 首页滚动区大标题 → 副文案 · -spacing-3（-12px，margin 上移）。 */
     tabHomeTitleSubtitleGap: -edsSpacing('spacing-3'),
     titleHintGap: edsSpacing('spacing-05'),
@@ -55,7 +61,7 @@ export const showcaseTheme = {
     tokenDetailTitleSubtextGap: edsSpacing('spacing-4'),
     /** Color detail — subtext rows · spacing-2 (8px). */
     tokenDetailSubtextRowGap: edsSpacing('spacing-2'),
-    /** 详情「预览」内容区左右 inset · spacing-5（20px）；上下不加壳层 padding。 */
+    /** 详情「预览」内容区四周 inset · spacing-5（20px）。 */
     previewContentPadding: edsSpacing('spacing-5'),
   },
   radius: {

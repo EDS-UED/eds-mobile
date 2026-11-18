@@ -204,7 +204,7 @@ export type EgEdsAnimaPageOptions = {
   direction?: EgEdsAnimaPageDirection;
   /**
    * 自屏幕边缘拖拽关闭（左右 = 左缘右滑 · 右左 = 右缘左滑 · 上下 = 下拉）。默认 true。
-   * 不做整页任意位置拖拽：页内横向手势（如 `EgTabBlock` 正文左右滑切）须独占页面中部。
+   * 不做整页任意位置拖拽：页内横向手势（如 `EgToggle` 正文左右滑切）须独占页面中部。
    * Android 恒关闭：整页 Pan 与原生 ScrollView 争抢触摸，拇指弧线滚动时卡片被横向拖动（页面晃动）；返回交给系统返回手势 / 返回键。
    */
   dragDismiss?: boolean;

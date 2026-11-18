@@ -11,7 +11,16 @@ import {
 } from './showcaseInfraCatalog.js';
 
 /** Showcase 不展示 — catalog 仍保留 Figma 对齐项。 */
-const SHOWCASE_EXCLUDED_CATALOG_SLUGS = new Set(['tab-base-tab', 'mode', 'index-title']);
+const SHOWCASE_EXCLUDED_CATALOG_SLUGS = new Set([
+  'tab-base-tab',
+  'tab-base-segmented-control',
+  'mode',
+  'index-title',
+  /** RN 真源在 `link` 族 · 保留 catalog slug `button-link` 仅供 preview / doc。 */
+  'button-link',
+  /** RN 真源 `EgButton` · 保留 `button-brand` 仅供 preview props。 */
+  'button-brand',
+]);
 
 export type ShowcaseCatalogEntry = FigmaComponentEntry | ShowcaseInfraEntry;
 

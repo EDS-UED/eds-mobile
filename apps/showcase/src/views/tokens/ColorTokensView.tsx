@@ -12,6 +12,7 @@ import { ColorTokenBaseTile } from '@/views/tokens/ColorTokenBaseTile';
 import { TokenCatalogListGroup } from '@/views/tokens/TokenCatalogListGroup';
 import { TokenListRow } from '@/views/tokens/TokenListRow';
 import { TokenSegmentScrollLayout } from '@/views/tokens/TokenSegmentScrollLayout';
+import { showcaseDocPageSectionsContainerStyle } from '@/views/shared/showcaseDocSectionLayout';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 
 const SEGMENTS = ['Base', 'Semantic'] as const;
@@ -42,13 +43,15 @@ export function ColorTokensView({ title }: ColorTokensViewProps) {
             ))}
           </View>
         ) : (
-          semanticGroups.map((group) => (
-            <TokenCatalogListGroup key={group.comment} title={group.comment}>
-              {group.tokens.map((entry) => (
-                <TokenListRow key={entry.cssVar} categoryId="color" entry={entry} colors={colors} />
-              ))}
-            </TokenCatalogListGroup>
-          ))
+          <View style={showcaseDocPageSectionsContainerStyle}>
+            {semanticGroups.map((group) => (
+              <TokenCatalogListGroup key={group.comment} title={group.comment}>
+                {group.tokens.map((entry) => (
+                  <TokenListRow key={entry.cssVar} categoryId="color" entry={entry} colors={colors} />
+                ))}
+              </TokenCatalogListGroup>
+            ))}
+          </View>
         )}
       </View>
     </TokenSegmentScrollLayout>

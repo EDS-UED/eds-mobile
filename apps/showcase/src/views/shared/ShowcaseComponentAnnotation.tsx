@@ -5,6 +5,7 @@ import type { ShowcaseComponentAnnotationDoc } from '@/data/components/component
 import { flattenAnnotationLines } from '@/data/components/flattenAnnotationLines';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 
+import { showcaseDocPageSectionsContainerStyle } from './showcaseDocSectionLayout';
 import { showcaseTheme as theme } from './showcaseTheme';
 
 const BULLET = '·';
@@ -60,9 +61,7 @@ export function ShowcaseComponentAnnotation({ doc }: ShowcaseComponentAnnotation
 }
 
 const styles = StyleSheet.create({
-  root: {
-    gap: theme.layout.docSectionCardGap,
-  },
+  root: showcaseDocPageSectionsContainerStyle,
   section: {
     gap: theme.layout.docSectionTitleCardGap,
   },

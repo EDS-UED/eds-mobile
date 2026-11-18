@@ -1,3 +1,4 @@
+import { resolveEgSwitchSize } from '../_shared/toggleComponentDefaults.js';
 import { resolveEgSwitchRenderStack } from './_shared/resolveEgSwitchStack.js';
 import { EgSwitchNative } from './EgSwitchNative.js';
 import { EgSwitchRn } from './EgSwitchRn.js';
@@ -12,8 +13,9 @@ export {
 
 /** Toggle Switch — iOS 26+ 系统开关 · 其余 EDS 自绘轨道。 */
 export function EgSwitch(props: EgSwitchProps) {
-  if (!props.forceRnImplementation && resolveEgSwitchRenderStack() === 'native') {
-    return <EgSwitchNative {...props} />;
+  const resolved = { ...props, size: resolveEgSwitchSize(props.size) };
+  if (!resolved.forceRnImplementation && resolveEgSwitchRenderStack() === 'native') {
+    return <EgSwitchNative {...resolved} />;
   }
-  return <EgSwitchRn {...props} />;
+  return <EgSwitchRn {...resolved} />;
 }

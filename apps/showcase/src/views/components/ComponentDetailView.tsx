@@ -9,6 +9,8 @@ import {
   buildTabBarTextDefaultSelectedOptions,
   readTabBarTextTabCount,
 } from '@/data/components/tabBarTextCustomizeModel';
+import { switchPreviewRemountSuffix } from '@/data/components/switchCustomizeModel';
+import { toggleMarkPreviewRemountSuffix } from '@/data/components/toggleMarkCustomizeModel';
 import { readTabSegmentCount } from '@/data/components/tabCustomizeModel';
 import {
   buildRnAiPrompt,
@@ -48,11 +50,20 @@ import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetail
 import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
-import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseComponentPreviewCanvas';
+import {
+  showcaseComponentPreviewContentStyle,
+  showcaseDataListPreviewContentStyle,
+  showcaseTogglePreviewContentStyle,
+} from '@/views/shared/showcaseComponentPreviewCanvas';
 import { resolveShowcaseComponentAnnotation } from '@/data/components/resolveShowcaseComponentAnnotation';
 import { ShowcaseComponentAnnotation } from '@/views/shared/ShowcaseComponentAnnotation';
 
-function createComponentDetailStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
+function createComponentDetailStyles(
+  colors: ShowcaseColorMap,
+  nativeStackNav: boolean,
+  dataListPreview: boolean,
+  togglePreview: boolean,
+) {
   const pageBg = showcasePageBackgroundColor(colors);
   return StyleSheet.create({
   /** iOS 26+ 系统 scroll edge — 勿在 ScrollView 外包带底色 View（`contentStyle` 已设色）。 */
@@ -60,7 +71,11 @@ function createComponentDetailStyles(colors: ShowcaseColorMap, nativeStackNav: b
       flex: 1,
       ...(nativeStackNav ? null : { backgroundColor: pageBg }),
     },
-    previewContent: showcaseComponentPreviewContentStyle,
+    previewContent: dataListPreview
+      ? showcaseDataListPreviewContentStyle
+      : togglePreview
+        ? showcaseTogglePreviewContentStyle
+        : showcaseComponentPreviewContentStyle,
     missing: {
       fontSize: 14,
       color: colors['text-base-secondary'] as string,
@@ -106,7 +121,14 @@ export function ComponentDetailView() {
     rnNavBar,
     rnScrollPaddingTop,
   } = useShowcaseStackNav(displayName, { showRight: true, right: inspectNavAction });
-  const styles = useThemedStyles((c) => createComponentDetailStyles(c, nativeStackNav));
+  const styles = useThemedStyles((c) =>
+    createComponentDetailStyles(
+      c,
+      nativeStackNav,
+      exportName === 'EgDataList',
+      false,
+    ),
+  );
   const scrollBottomInset =
     componentDetailFooterScrollPadding(insets.bottom) + (mode === 'inspect' ? 160 : 0);
 
@@ -143,16 +165,26 @@ export function ComponentDetailView() {
     }
     if (
       entry.exportName === 'EgTab' ||
-      entry.exportName === 'EgTabBlock' ||
+      entry.exportName === 'EgToggle' ||
       entry.exportName === 'EgSegmentedControl'
     ) {
-      return `${entry.slug}-${readTabSegmentCount(customize)}-${String(customize.size ?? 'md')}`;
+      return `${entry.slug}-${readTabSegmentCount(customize)}-${String(customize.size ?? 'lg')}-${String(customize.widthMode ?? 'hug')}`;
     }
     if (entry.exportName === 'EgDataList') {
       return `${entry.slug}-${String(customize.rowCount ?? '1')}-${String(customize.graphicEnabled)}-${String(customize.graphicType)}-${String(customize.primaryWeight)}-${String(customize.subBoldSegment)}-${String(customize.widgetEnabled)}-${String(customize.widgetShowTime)}-${String(customize.widgetShowTag)}-${String(customize.widgetShowCustom)}-${String(customize.widgetShowRedDot)}-${String(customize.interactive)}`;
     }
     if (entry.exportName === 'EgTabBarText') {
       return `${entry.slug}-${readTabBarTextTabCount(customize)}-${String(customize.defaultSelectedIndex ?? '0')}`;
+    }
+    if (entry.exportName === 'EgSwitch') {
+      return `${entry.slug}-${switchPreviewRemountSuffix(customize)}-${String(customize.forceRnImplementation)}`;
+    }
+    if (
+      entry.exportName === 'EgCheckbox' ||
+      entry.exportName === 'EgRadio' ||
+      entry.exportName === 'EgDecide'
+    ) {
+      return `${entry.slug}-${toggleMarkPreviewRemountSuffix(customize)}`;
     }
     return entry.slug;
   }, [customize, entry, slug]);

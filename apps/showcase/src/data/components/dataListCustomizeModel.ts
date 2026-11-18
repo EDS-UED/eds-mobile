@@ -60,7 +60,7 @@ const iconGraphic = (state: Record<string, unknown>) =>
 const widgetOn = (state: Record<string, unknown>) => state.widgetEnabled === true;
 
 export const dataListCustomizeDefaults = {
-  rowCount: '1' as DataListRowCountOption,
+  rowCount: DATA_LIST_ROW_COUNT_BUSINESS,
   graphicEnabled: true,
   graphicSize: 'md' as DataListGraphicSize,
   graphicType: 'crypto' as DataListGraphicType,

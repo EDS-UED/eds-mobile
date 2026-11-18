@@ -5,9 +5,9 @@ import { disabledOpacity } from '../../../shared/themeScalars.js';
 import { linkTypography } from '../../../shared/typographyStyles.js';
 import type { ButtonTone, ControlSize } from '../../../shared/types.js';
 
-export type EgLinkButtonTone = ButtonTone | 'option';
+export type EgLinkTone = ButtonTone | 'option';
 
-export function normalizeEgLinkButtonTone(tone?: EgLinkButtonTone): ButtonTone {
+export function normalizeEgLinkTone(tone?: EgLinkTone): ButtonTone {
   if (!tone || tone === 'brand') {
     return 'brand';
   }

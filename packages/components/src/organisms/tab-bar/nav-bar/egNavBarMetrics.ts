@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { egButtonGlassIconMinSize } from '../../../molecules/button/button-glass/_shared/resolveEgButtonGlassShellStyle.js';
+import { egButtonGlassIconMinSize } from '../../../molecules/button/button-glass/_shared/resolveEgGlassCapsuleShellStyle.js';
 import { mobileTheme } from '../../../theme/index.js';
 
 const spacing = mobileTheme.spacing;

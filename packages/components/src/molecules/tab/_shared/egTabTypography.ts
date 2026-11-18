@@ -14,11 +14,14 @@ export function egTabLabelTypography(): TextStyle {
   };
 }
 
-/** Figma Segmented Control · Footnote Strong（13 / medium）。 */
-export function egSegmentedControlLabelTypography(): TextStyle {
+/** Figma Segmented Control · Footnote（13 / 16 · `weight-medium` 500）。 */
+export function egSegmentedControlLabelTypography(): Pick<TextStyle, 'fontSize' | 'lineHeight'> {
   return {
     fontSize: base['size-footnote'] as number,
     lineHeight: base['line-height-footnote'] as number,
-    ...edsFontStyle(String(base['weight-medium']) as TextStyle['fontWeight']),
   };
+}
+
+export function egSegmentedControlLabelWeight(): TextStyle['fontWeight'] {
+  return String(base['weight-medium']) as TextStyle['fontWeight'];
 }

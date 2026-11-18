@@ -18,7 +18,7 @@ export const patternEntries: PatternEntry[] = [
   {
     id: 'eg-data-list',
     label: 'EgDataList',
-    lead: 'DL-bleed · EgDataListRow 行壳 · 点按缩放',
+    lead: '数据列',
     packagePath: 'packages/components/src/organisms/data-list',
     status: 'preview',
     detailSlug: SHOWCASE_DATA_LIST_BODY_SLUG,
@@ -26,7 +26,7 @@ export const patternEntries: PatternEntry[] = [
   {
     id: 'eg-item',
     label: 'EgItem',
-    lead: '个人中心设置行 · icon · 点按缩放 · module 分割线',
+    lead: '单行列',
     packagePath: 'packages/components/src/organisms/item',
     status: 'preview',
     detailSlug: SHOWCASE_ITEM_BODY_SLUG,

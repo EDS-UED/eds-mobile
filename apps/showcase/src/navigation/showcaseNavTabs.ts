@@ -1,6 +1,8 @@
 import type { Href } from 'expo-router';
 import type { EgTabBarNativeTabSpec } from '@eds/mobile-components';
 
+import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
+
 export type ShowcaseNavTab = EgTabBarNativeTabSpec & {
   key: string;
   href: Href;
@@ -18,7 +20,7 @@ export const showcaseNavTabs = [
   {
     routeName: '(animations)',
     key: 'animations',
-    label: '动画',
+    label: '动效',
     href: '/(animations)' as Href,
   },
   {
@@ -36,7 +38,7 @@ export const showcaseNavTabs = [
   {
     routeName: '(basics)',
     key: 'basics',
-    label: '基础',
+    label: '手册',
     href: '/(basics)' as Href,
   },
 ] as const satisfies readonly ShowcaseNavTab[];
@@ -44,12 +46,15 @@ export const showcaseNavTabs = [
 export const SHOWCASE_TAB_BAR_TEXT_TAB_COUNT = 5;
 
 /** Showcase EgTabBar `items` — 与 `createEgTabBarBottomTabsBinding` 共用。 */
-export const showcaseEgTabBarItems = showcaseNavTabs.map((tab) => ({
-  key: tab.key,
-  routeName: tab.routeName,
-  label: tab.label,
-  accessibilityLabel: tab.label,
-}));
+export const showcaseEgTabBarItems = showcaseNavTabs.map((tab) => {
+  const homeTitle = showcaseTabHomeTitles[tab.key as keyof typeof showcaseTabHomeTitles];
+  return {
+    key: tab.key,
+    routeName: tab.routeName,
+    label: tab.label,
+    accessibilityLabel: homeTitle ?? tab.label,
+  };
+});
 
 export function resolveShowcaseNavTabIndex(segments: string[]): number {
   const group = segments[0];

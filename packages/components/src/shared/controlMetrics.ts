@@ -1,4 +1,5 @@
 import { mobileTheme } from '../theme/index.js';
+import { edsScalePx } from './edsScale.js';
 import type { ControlSize, TagSize, ToggleSize } from './types.js';
 
 const spacing = mobileTheme.spacing;
@@ -23,29 +24,29 @@ export function switchTrackHeight(size: ToggleSize): number {
   return spacing[`switch-${size}`] as number;
 }
 
-/** Switch track width — RN layout only; uses spacing primitives, not semantic scale tokens. */
+/** Switch track width — scale 原语（sm `scale-8` · md `scale-11` · lg `scale-13`）。 */
 export function switchTrackWidth(size: ToggleSize): number {
   switch (size) {
     case 'sm':
-      return spacing['spacing-7'] as number;
+      return edsScalePx('scale-8');
     case 'lg':
-      return (spacing['spacing-10'] as number) + (spacing['spacing-05'] as number);
+      return edsScalePx('scale-13');
     case 'md':
     default:
-      return spacing['spacing-9'] as number;
+      return edsScalePx('scale-11');
   }
 }
 
-/** Switch thumb diameter — RN layout only; uses spacing primitives. */
+/** Switch knob 边长 — scale 原语（sm `scale-4` · md `scale-5-5` · lg `scale-7`）。 */
 export function switchThumbSize(size: ToggleSize): number {
   switch (size) {
     case 'sm':
-      return spacing['spacing-3'] as number;
+      return edsScalePx('scale-4');
     case 'lg':
-      return spacing['spacing-5'] as number;
+      return edsScalePx('scale-7');
     case 'md':
     default:
-      return spacing['spacing-4'] as number;
+      return edsScalePx('scale-5-5');
   }
 }
 

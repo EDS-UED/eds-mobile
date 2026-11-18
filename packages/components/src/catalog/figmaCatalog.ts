@@ -1,4 +1,4 @@
-/** Auto-generated from EDS Mobile Figma — 206 components */
+/** Auto-generated from EDS Mobile Figma — 208 components */
 export type FigmaComponentEntry = {
   figmaName: string;
   exportName: string;
@@ -251,7 +251,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Link",
-    "exportName": "EgLinkButton",
+    "exportName": "EgLink",
     "tier": "molecules",
     "family": "button",
     "slug": "button-link",
@@ -295,7 +295,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "iCon Container",
-    "exportName": "EgIconContainerButton",
+    "exportName": "EgSymbolAction",
     "tier": "molecules",
     "family": "button",
     "slug": "button-icon-container",
@@ -313,7 +313,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "kind": "set",
     "variantCount": 2,
     "figmaId": "710:900",
-    "exportName": "EgButtonGlass"
+    "exportName": "EgGlassCapsule"
   },
   {
     "figmaName": "Input",
@@ -401,7 +401,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Color",
-    "exportName": "EgColorTag",
+    "exportName": "EgTag",
     "tier": "molecules",
     "family": "tag",
     "slug": "tag-color",
@@ -412,7 +412,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Color",
-    "exportName": "EgColorTagAlt",
+    "exportName": "EgTagAlt",
     "tier": "molecules",
     "family": "tag",
     "slug": "tag-color-alt",
@@ -543,7 +543,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Form Submission",
-    "exportName": "EgFormSubmissionFeedback",
+    "exportName": "EgFormSubmission",
     "tier": "molecules",
     "family": "feedback",
     "slug": "feedback-form-submission",
@@ -554,7 +554,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Status Card",
-    "exportName": "EgStatusCardFeedback",
+    "exportName": "EgStatusCard",
     "tier": "molecules",
     "family": "feedback",
     "slug": "feedback-status-card",
@@ -565,7 +565,7 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
   },
   {
     "figmaName": "Toast",
-    "exportName": "EgToastFeedback",
+    "exportName": "EgToast",
     "tier": "molecules",
     "family": "feedback",
     "slug": "feedback-toast",
@@ -573,6 +573,26 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "kind": "set",
     "variantCount": 2,
     "figmaId": "201:1030"
+  },
+  {
+    "figmaName": "Message",
+    "exportName": "EgMessage",
+    "tier": "molecules",
+    "family": "feedback",
+    "slug": "feedback-message",
+    "figmaPage": "Feedback 反馈 ✅ 🕒",
+    "kind": "set",
+    "variantCount": 2
+  },
+  {
+    "figmaName": "Streamer",
+    "exportName": "EgStreamer",
+    "tier": "molecules",
+    "family": "feedback",
+    "slug": "feedback-streamer",
+    "figmaPage": "Feedback 反馈 ✅ 🕒",
+    "kind": "set",
+    "variantCount": 2
   },
   {
     "figmaName": "Reddot",

@@ -37,29 +37,29 @@ export { EgIconDraw } from './atoms/icon/icon-draw';
 export { EgBrandButton } from './molecules/button/brand-button';
 export { EgDecorButton } from './molecules/button/decor-button';
 export { EgDangerButton } from './molecules/button/danger-button';
-export { EgLinkButton } from './molecules/button/link-button';
+export { EgLink } from './molecules/button/link';
 export { EgOptionButton } from './molecules/button/option-button';
 export { EgComboActionButton } from './molecules/button/combo-action-button';
 export { EgComboActionButtonAlt } from './molecules/button/combo-action-button-alt';
-export { EgIconContainerButton } from './molecules/button/icon-container-button';
+export { EgSymbolAction } from './molecules/button/button-symbol';
 export {
-  EgButtonGlass,
-  EgButtonGlassNavAvatarFrame,
-  EgButtonGlassNavIconPlusSlotContent,
+  EgGlassCapsule,
+  EgGlassCapsuleNavAvatarFrame,
+  EgGlassCapsuleNavIconPlusSlotContent,
   egButtonGlassAvatarElementMarginPx,
   egButtonGlassAvatarInsetPx,
   egButtonGlassSplitPairGapPx,
-  resolveEgButtonGlassPressIntensity,
-  shouldUseEgButtonGlassNativeStack,
-  resolveEgButtonGlassRenderStack,
-  readEgButtonGlassStackDiagnostics,
+  resolveEgGlassCapsulePressIntensity,
+  shouldUseEgGlassCapsuleNativeStack,
+  resolveEgGlassCapsuleRenderStack,
+  readEgGlassCapsuleStackDiagnostics,
 } from './molecules/button/button-glass';
 export type {
-  EgButtonGlassProps,
-  EgButtonGlassKind,
-  EgButtonGlassIconCount,
-  EgButtonGlassRenderStack,
-  EgButtonGlassStackDiagnostics,
+  EgGlassCapsuleProps,
+  EgGlassCapsuleKind,
+  EgGlassCapsuleIconCount,
+  EgGlassCapsuleRenderStack,
+  EgGlassCapsuleStackDiagnostics,
 } from './molecules/button/button-glass';
 export { EgInput } from './molecules/input/input';
 export { EgSearch } from './molecules/input/search';
@@ -69,11 +69,20 @@ export { EgInputPointer } from './molecules/input/input-pointer';
 export { EgInputGroup } from './molecules/input/input-group';
 export { EgComboTextInput } from './molecules/input/combo-text-input';
 export { EgComboTextareaInput } from './molecules/input/combo-textarea-input';
-export { EgColorTag } from './molecules/tag/color-tag';
-export { EgColorTagAlt } from './molecules/tag/color-tag-alt';
+export { EgTag } from './molecules/tag/tag';
+export { EgTagAlt } from './molecules/tag/tag-alt';
 export { EgSystemTag } from './molecules/tag/system-tag';
 export { EgSystemTagAlt } from './molecules/tag/system-tag-alt';
-export { EgSwitch } from './molecules/toggle/switch';
+export {
+  EG_SWITCH_DEFAULT_SIZE,
+  EG_SWITCH_DEFAULT_VALUE,
+  egSwitchComponentDefaults,
+  EgSwitch,
+  resolveEgSwitchSize,
+  resolveEgSwitchRenderStack,
+  shouldUseEgSwitchNativeStack,
+} from './molecules/toggle/switch';
+export type { EgSwitchProps, EgSwitchRenderStack } from './molecules/toggle/switch';
 export { EgCheckbox } from './molecules/toggle/checkbox';
 export { EgRadio } from './molecules/toggle/radio';
 export { EgDecide } from './molecules/toggle/decide';
@@ -82,9 +91,11 @@ export { EgSegmentedControlBase } from './molecules/tab/segmented-control-base';
 export { EgSegmentedControl } from './molecules/tab/segmented-control';
 export { EgTab } from './molecules/tab/tab';
 export { EgTriggerDropdown } from './molecules/dropdown/trigger-dropdown';
-export { EgFormSubmissionFeedback } from './molecules/feedback/form-submission-feedback';
-export { EgStatusCardFeedback } from './molecules/feedback/status-card-feedback';
-export { EgToastFeedback } from './molecules/feedback/toast-feedback';
+export { EgFormSubmission } from './molecules/feedback/form-submission';
+export { EgStatusCard } from './molecules/feedback/status-card';
+export { EgToast } from './molecules/feedback/toast';
+export { EgMessage } from './molecules/feedback/message';
+export { EgStreamer } from './molecules/feedback/streamer';
 export { EgReddot } from './molecules/feedback/reddot';
 export {
   EgTabBar,
@@ -304,8 +315,10 @@ export { EgIconZoomIn } from './atoms/icon/icon-zoom-in';
 export { EgIconZoomOut } from './atoms/icon/icon-zoom-out';
 export { EgIconIConDrawType6 } from './atoms/icon/icon-icon-draw-type6';
 export { EgIconOvalTickMini } from './atoms/icon/icon-oval-tick-mini';
-export { EgTabBlock } from './molecules/tab/tab-block';
-export type { EgTabBlockItem, EgTabBlockProps } from './molecules/tab/tab-block';
+export { EgButton } from './molecules/button/button';
+export type { EgButtonProps, EgButtonTone } from './molecules/button/button';
+export { EgToggle } from './molecules/tab/tab-block';
+export type { EgToggleItem, EgToggleProps } from './molecules/tab/tab-block';
 export { useEgHorizontalSegmentSwipe } from './molecules/tab/_shared/useEgHorizontalSegmentSwipe';
 export { EG_TAB_BLOCK_SCENE_CONTENT_INSET } from './molecules/tab/_shared/egTabBlockMetrics';
 export {
@@ -372,6 +385,10 @@ export {
   EG_TAB_BAR_TEXT_MAX_TABS,
 } from './organisms/tab-bar/tab-bar-text';
 export type { EgTabBarTextProps } from './organisms/tab-bar/tab-bar-text';
+export {
+  EG_TOGGLE_MARK_DEFAULT_SIZE,
+  egToggleMarkComponentDefaults,
+} from './molecules/toggle/_shared/toggleComponentDefaults.js';
 export { EgSymbol } from './atoms/_shared/symbol/EgSymbol.js';
 export type { EgSymbolProps, EgSymbolSize } from './atoms/_shared/symbol/EgSymbol.js';
 export {

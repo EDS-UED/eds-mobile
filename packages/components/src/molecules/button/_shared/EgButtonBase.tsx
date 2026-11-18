@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { EdsSansText } from '../../../shared/EdsSansText.js';
 import { EgSpinner } from '../../../shared/EgSpinner.js';
 import { EgEdsAnimaPress } from '../../../shared/motion/EgEdsAnimaPress.js';
 import type {
@@ -10,6 +11,7 @@ import type {
   OptionLabelStyle,
 } from '../../../shared/types.js';
 import type { ThemeMode } from '../../../theme/index.js';
+import { buttonLabelWeight } from '../../../shared/typographyStyles.js';
 import { createButtonStyles, spinnerColor } from './buttonStyles.js';
 
 export type EgButtonBaseProps = EgCommonProps &
@@ -84,7 +86,13 @@ export function EgButtonBase({
         return (
           <View style={[visual.container, styles.row]}>
             {icon && iconPosition === 'leading' ? icon : null}
-            <Text style={visual.label}>{content}</Text>
+            {typeof content === 'string' ? (
+              <EdsSansText weight={buttonLabelWeight(size)} style={visual.label}>
+                {content}
+              </EdsSansText>
+            ) : (
+              <Text style={visual.label}>{content}</Text>
+            )}
             {icon && iconPosition === 'trailing' ? icon : null}
           </View>
         );

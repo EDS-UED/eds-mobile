@@ -3,6 +3,9 @@ import type { ViewStyle } from 'react-native';
 import type { ThemeMode } from '../../../theme/index.js';
 import type { EgSegmentedControlSize } from '../_shared/egSegmentedControlMetrics.js';
 
+/** 自适应内容宽 · 全宽均分段宽。 */
+export type EgSegmentedControlWidthMode = 'hug' | 'fill';
+
 export type EgSegmentedControlSegment = {
   id: string;
   label: string;
@@ -16,6 +19,7 @@ export type EgSegmentedControlProps = {
   defaultSelectedIndex?: number;
   onSelect?: (index: number, segment: EgSegmentedControlSegment) => void;
   size?: EgSegmentedControlSize;
+  widthMode?: EgSegmentedControlWidthMode;
   mode?: ThemeMode;
   testID?: string;
   style?: ViewStyle;

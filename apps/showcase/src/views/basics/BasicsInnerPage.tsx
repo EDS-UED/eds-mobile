@@ -6,8 +6,8 @@ import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
+import { showcaseDocPageSectionsContainerStyle } from '@/views/shared/showcaseDocSectionLayout';
 import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
-import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 
 type BasicsInnerPageProps = PropsWithChildren<{
   title: string;
@@ -43,7 +43,5 @@ export function BasicsInnerPage({ title, children }: BasicsInnerPageProps) {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    gap: theme.layout.docSectionCardGap,
-  },
+  content: showcaseDocPageSectionsContainerStyle,
 });

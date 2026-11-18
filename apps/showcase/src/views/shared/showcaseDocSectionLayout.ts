@@ -24,9 +24,8 @@ export const showcasePageHeadingInsetLeft =
  * Showcase 全局 — **区块标题 + 单张浅底圆角卡**（Tokens 列表分组 · 详情 USAGE/PROPS 同构）。
  */
 export const showcaseDocSectionLayout = StyleSheet.create({
-  block: {
-    marginBottom: theme.layout.docSectionCardGap,
-  },
+  /** 区块间距由 `ShowcasePageScroll` `docSectionStack` 的 `gap` 承担，勿叠 `marginBottom`。 */
+  block: {},
   /** 与 `DocSection` 标题一致 — 左 `docSectionTitleInset` · body-small-heavy。 */
   title: {
     ...theme.font.docSectionTitle,
@@ -81,7 +80,12 @@ export function showcaseDocSectionTitleStyle(colors: ShowcaseColorMap): TextStyl
   ];
 }
 
-/** 多 `DocSection` / `ShowcaseSectionCard` 并列 — 与族页、详情页滚动内容 `gap` 一致。 */
+/** Tab 索引等 — 卡片与卡片 · `cardGap`（spacing-4 · 16px）。 */
+export const showcaseIndexCardListGapStyle: ViewStyle = {
+  gap: theme.layout.cardGap,
+};
+
+/** 带区块标题的多组（`ShowcaseSectionCard` / `DocSection`）— `docSectionCardGap`（spacing-6 · 24px）。 */
 export const showcaseDocPageSectionsContainerStyle: ViewStyle = {
   gap: theme.layout.docSectionCardGap,
 };

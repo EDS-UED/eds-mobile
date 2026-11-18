@@ -14,9 +14,9 @@ import {
   SHOWCASE_FAMILY_SECTION_COMPOSITION,
   SHOWCASE_FAMILY_SECTION_SCENES,
   showcaseCompositionListTitle,
+  showcaseFamilyEntryHint,
   showcaseFamilyEntryTitle,
 } from '@/data/components/componentFamilyListModel';
-import { isShowcaseInfraEntry } from '@/data/components/showcaseCatalog';
 import { familyEgComponentName, findFamilyNav } from '@/data/components/buildComponentCatalogNav';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
 import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
@@ -116,7 +116,7 @@ export function ComponentFamilyView() {
                     variant="inset"
                     titleWeight="400"
                     title={showcaseFamilyEntryTitle(family, entry)}
-                    hint={isShowcaseInfraEntry(entry) ? entry.showcaseLabel : undefined}
+                    hint={showcaseFamilyEntryHint(bodyEntry, entry)}
                     onPress={() => router.push(`/(components)/detail/${entry.slug}`)}
                   />
                 ))}

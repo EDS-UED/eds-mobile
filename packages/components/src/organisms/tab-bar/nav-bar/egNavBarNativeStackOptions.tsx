@@ -25,7 +25,7 @@ export type EgNavBarNativeStackOptions = {
     color: string;
   };
   headerBackVisible: boolean;
-  /** iOS 26+ 自定义栏须走 `unstable_header*Items`；legacy 槽勿塞 `EgButtonGlass`。 */
+  /** iOS 26+ 自定义栏须走 `unstable_header*Items`；legacy 槽勿塞 `EgGlassCapsule`。 */
   headerLeft?: () => ReactNode;
   headerRight?: () => ReactNode;
   unstable_headerLeftItems?: () => ReturnType<typeof egNavBarNativeStackHeaderGlassItem>[];
@@ -113,7 +113,7 @@ export function egNavBarNativeStackHeaderGlassItem(
 
 /**
  * iOS 26+ — 导航栏交给系统 `UINavigationBar`（Liquid Glass + scroll edge effect）。
- * 自定义栏项：`EgNavBarActionView`（`EgButtonGlass`）+ `unstable_header*Items`（`egNavBarNativeStackHeaderGlassItem`）。
+ * 自定义栏项：`EgNavBarActionView`（`EgGlassCapsule`）+ `unstable_header*Items`（`egNavBarNativeStackHeaderGlassItem`）。
  *
  * `<Stack.Screen options={egNavBarNativeStackOptions({ title: '详情' })} />`
  */

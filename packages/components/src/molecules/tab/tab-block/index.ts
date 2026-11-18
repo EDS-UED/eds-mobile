@@ -1,2 +1,2 @@
-export { EgTabBlock } from './EgTabBlock.js';
-export type { EgTabBlockItem, EgTabBlockProps } from './EgTabBlock.types.js';
+export { EgToggle } from './EgToggle.js';
+export type { EgToggleItem, EgToggleProps } from './EgToggle.types.js';

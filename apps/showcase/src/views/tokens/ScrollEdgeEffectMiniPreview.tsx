@@ -1,5 +1,5 @@
 import {
-  EgButtonGlass,
+  EgGlassCapsule,
   EgItem,
   EgItemGroup,
   EgNavBar,
@@ -51,6 +51,7 @@ const LIST_ROWS = [
 type ScrollEdgeEffectMiniPreviewProps = {
   state: Record<string, unknown>;
   colors: ShowcaseColorMap;
+  layout?: 'card' | 'fullscreen';
 };
 
 function TileGrid({ colors, offset }: { colors: ShowcaseColorMap; offset: number }) {
@@ -70,7 +71,12 @@ function TileGrid({ colors, offset }: { colors: ShowcaseColorMap; offset: number
 }
 
 /** 真实页面模拟 — 状态栏 · RN 顶栏（顶部边缘）· 内容 · 玻璃工具栏（底部边缘）。 */
-export function ScrollEdgeEffectMiniPreview({ state, colors }: ScrollEdgeEffectMiniPreviewProps) {
+export function ScrollEdgeEffectMiniPreview({
+  state,
+  colors,
+  layout = 'card',
+}: ScrollEdgeEffectMiniPreviewProps) {
+  const fullscreen = layout === 'fullscreen';
   const { colorTheme } = useShowcaseThemeContext();
   const mode = colorTheme === 'dark' ? 'dark' : 'light';
   const container = state.container === 'sheet' ? 'sheet' : 'page';
@@ -114,8 +120,14 @@ export function ScrollEdgeEffectMiniPreview({ state, colors }: ScrollEdgeEffectM
   const textSecondary = colors['text-base-secondary'] as string;
 
   return (
-    <View style={styles.wrap}>
-      <View style={[styles.frame, theme.blockRadius, { backgroundColor: colors.page as string }]}>
+    <View style={[styles.wrap, fullscreen ? styles.wrapFullscreen : null]}>
+      <View
+        style={[
+          styles.frame,
+          fullscreen ? styles.frameFullscreen : theme.blockRadius,
+          { backgroundColor: colors.page as string },
+        ]}
+      >
         <GlassBlurScope>
           <GlassBlurBackdrop style={StyleSheet.absoluteFill}>
             <ScrollView
@@ -193,8 +205,8 @@ export function ScrollEdgeEffectMiniPreview({ state, colors }: ScrollEdgeEffectM
               />
             </Animated.View>
             <View style={styles.toolbarRow} pointerEvents="box-none">
-              <EgButtonGlass kind="icon" icon="eds-add" mode={mode} accessibilityLabel="添加" />
-              <EgButtonGlass kind="text" label="选择" size="md" mode={mode} />
+              <EgGlassCapsule kind="icon" icon="eds-add" mode={mode} accessibilityLabel="添加" />
+              <EgGlassCapsule kind="text" label="选择" size="md" mode={mode} />
             </View>
             <View style={[styles.homeIndicator, { backgroundColor: textPrimary }]} />
           </View>
@@ -216,12 +228,22 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  wrapFullscreen: {
+    flex: 1,
+    alignSelf: 'stretch',
+  },
   frame: {
     position: 'relative',
     width: '100%',
     maxWidth: 360,
     height: 520,
     overflow: 'hidden',
+  },
+  frameFullscreen: {
+    flex: 1,
+    maxWidth: undefined,
+    height: undefined,
+    minHeight: 0,
   },
   content: {
     paddingHorizontal: edsSpacing('spacing-4'),

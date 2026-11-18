@@ -1,4 +1,5 @@
 import type { FigmaComponentEntry } from '../catalog/figmaCatalog.js';
+import { egSwitchComponentDefaults } from '../molecules/toggle/_shared/toggleComponentDefaults.js';
 import type { ThemeMode } from '../theme/index.js';
 
 /**
@@ -46,8 +47,9 @@ export function createCatalogPreviewProps(
         secondary: { label: 'Secondary', size: 'lg' },
         layout: 'horizontal',
       };
+    case 'symbol-button-body':
     case 'button-icon-container':
-      return { ...base, figmaType: 'primary', size: 'md' };
+      return { ...base, figmaType: 'primary', size: 'md', label: '+' };
     case 'button-glass':
       return {
         ...base,
@@ -102,8 +104,9 @@ export function createCatalogPreviewProps(
       return { ...base, placeholder: 'Input', size: 'xl' };
     case 'input-search':
       return { ...base, placeholder: 'Search' };
+    case 'textarea-body':
     case 'input-textarea':
-      return { ...base, placeholder: 'Textarea' };
+      return { ...base, placeholder: '文本域' };
     case 'input-quick-input':
       return { ...base, placeholder: 'Quick input' };
     case 'input-pointer':
@@ -127,7 +130,7 @@ export function createCatalogPreviewProps(
       };
 
     case 'tag-color':
-      return { ...base, label: 'Tag', colorType: 'green', size: 'md' };
+      return { ...base, variant: 'subtle', shape: 'round', size: 'sm', label: 'Tag' };
     case 'tag-color-alt':
       return { ...base, label: 'Tag', colorType: 'green', size: 'md' };
     case 'tag-system':
@@ -136,13 +139,13 @@ export function createCatalogPreviewProps(
       return { ...base, label: 'Tag', systemType: 'strokeSubtle', size: 'md' };
 
     case 'toggle-switch':
-      return { ...base, size: 'md', defaultValue: false };
+      return { ...base, ...egSwitchComponentDefaults };
     case 'toggle-checkbox':
-      return { ...base, size: 'md', defaultChecked: false };
+      return { ...base, defaultChecked: false };
     case 'toggle-radio':
-      return { ...base, size: 'md', defaultChecked: false };
+      return { ...base, defaultChecked: false };
     case 'toggle-decide':
-      return { ...base, size: 'md', defaultDecided: false };
+      return { ...base, defaultDecided: false };
 
     case 'dropdown-trigger':
       return {
@@ -237,7 +240,8 @@ export function createCatalogPreviewProps(
     case 'tab-segmented-control':
       return {
         ...base,
-        size: 'md',
+        size: 'lg',
+        widthMode: 'hug',
         defaultSelectedIndex: 0,
         segments: ['Label', 'Label', 'Label'],
       };

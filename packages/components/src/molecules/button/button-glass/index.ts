@@ -1,19 +1,19 @@
-export { EgButtonGlass, shouldUseEgButtonGlassNativeStack, resolveEgButtonGlassRenderStack } from './EgButtonGlass.js';
-export type { EgButtonGlassRenderStack } from './_shared/resolveEgButtonGlassStack.js';
-export { readEgButtonGlassStackDiagnostics } from './_shared/resolveEgButtonGlassStack.js';
-export type { EgButtonGlassStackDiagnostics } from './_shared/resolveEgButtonGlassStack.js';
+export { EgGlassCapsule, shouldUseEgGlassCapsuleNativeStack, resolveEgGlassCapsuleRenderStack } from './EgGlassCapsule.js';
+export type { EgGlassCapsuleRenderStack } from './_shared/resolveEgGlassCapsuleStack.js';
+export { readEgGlassCapsuleStackDiagnostics } from './_shared/resolveEgGlassCapsuleStack.js';
+export type { EgGlassCapsuleStackDiagnostics } from './_shared/resolveEgGlassCapsuleStack.js';
 export {
-  EgButtonGlassNavAvatarFrame,
-  EgButtonGlassNavIconPlusSlotContent,
-} from './EgButtonGlassNavToolbarContent.js';
+  EgGlassCapsuleNavAvatarFrame,
+  EgGlassCapsuleNavIconPlusSlotContent,
+} from './EgGlassCapsuleNavToolbarContent.js';
 export {
   egButtonGlassAvatarElementMarginPx,
   egButtonGlassAvatarInsetPx,
   egButtonGlassSplitPairGapPx,
-} from './_shared/resolveEgButtonGlassShellStyle.js';
-export { resolveEgButtonGlassPressIntensity } from './_shared/resolveEgButtonGlassPressIntensity.js';
+} from './_shared/resolveEgGlassCapsuleShellStyle.js';
+export { resolveEgGlassCapsulePressIntensity } from './_shared/resolveEgGlassCapsulePressIntensity.js';
 export type {
-  EgButtonGlassProps,
-  EgButtonGlassKind,
-  EgButtonGlassIconCount,
-} from './EgButtonGlass.types.js';
+  EgGlassCapsuleProps,
+  EgGlassCapsuleKind,
+  EgGlassCapsuleIconCount,
+} from './EgGlassCapsule.types.js';

@@ -9,7 +9,7 @@ import {
   resolveHorizontalSegmentSwipeStep,
 } from './egHorizontalSegmentSwipeCommit.js';
 
-/** 左右滑切分段 · Swipe / Fling · `EgTabBlock` / `EgTab` 正文与整区。 */
+/** 左右滑切分段 · Swipe / Fling · `EgToggle` / `EgTab` 正文与整区。 */
 export function useEgHorizontalSegmentSwipe<T extends string>(
   segments: readonly T[],
   selectedId: T,

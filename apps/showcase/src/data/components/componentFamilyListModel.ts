@@ -18,7 +18,6 @@ export const SHOWCASE_FAMILY_SECTION_EMPTY = '等待添加';
 /** 构成本体的子项 — 按族 slug 白名单（非场景业务组合）。 */
 const SHOWCASE_FAMILY_COMPOSITION_SLUGS: Record<string, readonly string[]> = {
   'tab-bar': ['tab-bar-item', 'tab-bar-glass-bg'],
-  'segmented-control': ['tab-base-segmented-control'],
 };
 
 /** Button 色调已由 EgButton 本体定制；不再单独列场景页。 */
@@ -26,6 +25,8 @@ const SHOWCASE_BUTTON_HIDDEN_SCENE_SLUGS = new Set([
   'button-decor',
   'button-danger',
   'button-option',
+  'button-glass',
+  'button-icon-container',
 ]);
 
 /** 列表主标题 — 本体 export（如 EgTabBar）；无映射时回退 `-base` 或族 key。 */
@@ -37,6 +38,10 @@ export function resolveFamilyBodyEntry(
     const mapped = nav.entries.find((entry) => entry.slug === previewSlug);
     if (mapped) {
       return mapped;
+    }
+    const bodyEntry = nav.entries.find((entry) => entry.slug === nav.bodySlug);
+    if (bodyEntry) {
+      return bodyEntry;
     }
   }
 
@@ -103,6 +108,9 @@ export function resolveFamilyPageTitle(nav: ComponentFamilyNav): string {
  * Mobile TabBar：EgCregisTabBar → EgTabBarCregis。
  */
 export function showcaseSceneListTitle(family: string, exportName: string): string {
+  if (exportName === 'EgSymbolAction') {
+    return 'EgSymbolAction';
+  }
   const tabBar = /^Eg(.+)TabBar$/.exec(exportName);
   if (tabBar?.[1] && family === 'tab-bar') {
     return `EgTabBar${tabBar[1]}`;
@@ -139,4 +147,24 @@ export function showcaseFamilyEntryTitle(family: string, entry: ShowcaseCatalogE
 /** 构成列表标题 — 默认 catalog exportName。 */
 export function showcaseCompositionListTitle(entry: FigmaComponentEntry): string {
   return entry.exportName;
+}
+
+/** 族列表副文本 — 本体（含 `*-body`）一律不展示 showcaseLabel。 */
+export function showcaseFamilyEntryHint(
+  bodyEntry: FigmaComponentEntry | undefined,
+  entry: ShowcaseCatalogEntry,
+): string | undefined {
+  if (!isShowcaseInfraEntry(entry)) {
+    return undefined;
+  }
+  if (bodyEntry?.slug === entry.slug) {
+    return undefined;
+  }
+  if (entry.slug.endsWith('-body')) {
+    return undefined;
+  }
+  if (entry.slug === 'tab-bar-text') {
+    return undefined;
+  }
+  return entry.showcaseLabel;
 }

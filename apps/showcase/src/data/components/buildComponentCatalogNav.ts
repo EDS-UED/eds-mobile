@@ -39,7 +39,12 @@ export const FAMILY_LABELS: Record<string, string> = {
   glass: 'Glass 玻璃',
   'scroll-edge': 'Scroll Edge 滚动缘',
   button: 'Button 按钮',
+  'glass-button': 'Glass Button 玻璃按钮',
+  'symbol-button': 'Symbol Button 符号按钮',
+  link: 'Link 链接',
   input: 'Input 输入',
+  search: 'Search 搜索',
+  textarea: 'Textarea 文本域',
   tag: 'Tag 标签',
   toggle: 'Toggle 切换',
   tab: 'Tab 标签页',
@@ -65,7 +70,7 @@ const GALLERY_FAMILIES: Record<string, AtomGalleryFamily> = {
 };
 
 /** 仅在「数据」Tab 展示 — 不出现在 Components tier 族列表。 */
-const SHOWCASE_COMPONENTS_NAV_EXCLUDED_FAMILIES = new Set(['data-list', 'item', 'text']);
+const SHOWCASE_COMPONENTS_NAV_EXCLUDED_FAMILIES = new Set(['data-list', 'item', 'text', 'input-compose']);
 
 /** Figma catalog `icon` / `crypto` — EgSymbol 资产，并入 symbol 导航。 */
 export const SHOWCASE_NAV_MERGE_ICON_INTO_SYMBOL = true;
@@ -135,6 +140,126 @@ const SHOWCASE_NAV_PROMOTE_BY_SLUG: Record<
   'page-shot-body': {
     family: 'page-shot',
     directory: 'packages/components/src/templates/page-shot',
+  },
+  'link-body': {
+    family: 'link',
+    directory: 'packages/components/src/molecules/button/link',
+  },
+  'button-body': {
+    family: 'button',
+    directory: 'packages/components/src/molecules/button/button',
+  },
+  'glass-button-body': {
+    family: 'glass-button',
+    directory: 'packages/components/src/molecules/button/button-glass',
+  },
+  'symbol-button-body': {
+    family: 'symbol-button',
+    directory: 'packages/components/src/molecules/button/button-symbol',
+  },
+  'button-glass': {
+    family: 'glass-button',
+    directory: 'packages/components/src/molecules/button/button-glass',
+  },
+  'button-icon-container': {
+    family: 'symbol-button',
+    directory: 'packages/components/src/molecules/button/button-symbol',
+  },
+  'input-body': {
+    family: 'input',
+    directory: 'packages/components/src/molecules/input/input',
+  },
+  'search-body': {
+    family: 'search',
+    directory: 'packages/components/src/molecules/input/search',
+  },
+  'textarea-body': {
+    family: 'textarea',
+    directory: 'packages/components/src/molecules/input/textarea',
+  },
+  'input-input': {
+    family: 'input',
+    directory: 'packages/components/src/molecules/input/input',
+  },
+  'input-search': {
+    family: 'search',
+    directory: 'packages/components/src/molecules/input/search',
+  },
+  'input-textarea': {
+    family: 'textarea',
+    directory: 'packages/components/src/molecules/input/textarea',
+  },
+  'input-quick-input': {
+    family: 'input-compose',
+    directory: 'packages/components/src/molecules/input/quick-input',
+  },
+  'input-pointer': {
+    family: 'input-compose',
+    directory: 'packages/components/src/molecules/input/input-pointer',
+  },
+  'input-combo-input-group': {
+    family: 'input-compose',
+    directory: 'packages/components/src/molecules/input/input-group',
+  },
+  'input-combo-text-input': {
+    family: 'input-compose',
+    directory: 'packages/components/src/molecules/input/combo-text-input',
+  },
+  'input-combo-textarea-input': {
+    family: 'input-compose',
+    directory: 'packages/components/src/molecules/input/combo-textarea-input',
+  },
+  'feedback-toast': {
+    family: 'toast',
+    directory: 'packages/components/src/molecules/feedback/toast',
+  },
+  'feedback-form-submission': {
+    family: 'form-submission',
+    directory: 'packages/components/src/molecules/feedback/form-submission',
+  },
+  'feedback-status-card': {
+    family: 'status-card',
+    directory: 'packages/components/src/molecules/feedback/status-card',
+  },
+  'feedback-reddot': {
+    family: 'reddot',
+    directory: 'packages/components/src/molecules/feedback/reddot',
+  },
+  'feedback-message': {
+    family: 'message',
+    directory: 'packages/components/src/molecules/feedback/message',
+  },
+  'feedback-streamer': {
+    family: 'streamer',
+    directory: 'packages/components/src/molecules/feedback/streamer',
+  },
+  'tag-color': {
+    family: 'tag',
+    directory: 'packages/components/src/molecules/tag/tag',
+  },
+  'toggle-switch': {
+    family: 'switch',
+    directory: 'packages/components/src/molecules/toggle/switch',
+  },
+  'toggle-checkbox': {
+    family: 'checkbox',
+    directory: 'packages/components/src/molecules/toggle/checkbox',
+  },
+  'toggle-radio': {
+    family: 'radio',
+    directory: 'packages/components/src/molecules/toggle/radio',
+  },
+  'toggle-decide': {
+    family: 'decide',
+    directory: 'packages/components/src/molecules/toggle/decide',
+  },
+  'tab-block': {
+    family: 'toggle-block',
+    directory: 'packages/components/src/molecules/tab/tab-block',
+  },
+  'tab-tabs': {
+    family: 'tab',
+    directory: 'packages/components/src/molecules/tab/tab',
   },
 };
 
@@ -229,7 +354,80 @@ export function findFamilyNav(tier: CatalogTier, family: string): ComponentFamil
   return componentCatalogNav.find((item) => item.tier === tier)?.families.find((item) => item.family === family);
 }
 
+/**
+ * Molecules 二级列表 · 组标题与族顺序（仅 Showcase 分区/排序；每项仍是独立族与独立 Live）。
+ * 不构成组合组件、共享 API 或族索引页。
+ */
+export const MOLECULES_TIER_SECTION_OUTPUT = '输出';
+export const MOLECULES_TIER_SECTION_INPUT = '输入';
+export const MOLECULES_TIER_SECTION_FEEDBACK = '反馈';
+export const MOLECULES_TIER_SECTION_TAG = '标记';
+export const MOLECULES_TIER_SECTION_TOGGLE = '切换';
+export const MOLECULES_TIER_SECTION_CHOICE = '选择';
+
+/** 顺序：输入 → 输出 → 反馈 → 标记 → 切换 → 选择 */
+export const MOLECULES_TIER_SECTIONED_FAMILIES: Record<string, readonly string[]> = {
+  [MOLECULES_TIER_SECTION_INPUT]: ['input', 'search', 'textarea'],
+  [MOLECULES_TIER_SECTION_OUTPUT]: ['button', 'glass-button', 'symbol-button', 'link'],
+  [MOLECULES_TIER_SECTION_FEEDBACK]: [
+    'toast',
+    'form-submission',
+    'status-card',
+    'reddot',
+    'message',
+    'streamer',
+  ],
+  [MOLECULES_TIER_SECTION_TAG]: ['tag'],
+  [MOLECULES_TIER_SECTION_TOGGLE]: ['switch', 'segmented-control', 'toggle-block', 'tab'],
+  [MOLECULES_TIER_SECTION_CHOICE]: ['radio', 'checkbox', 'decide'],
+};
+
+export function buildTierFamilySections(
+  tierNav: ComponentTierNav,
+): Array<{ title?: string; families: ComponentFamilyNav[] }> {
+  if (tierNav.tier !== 'molecules') {
+    return [{ families: tierNav.families }];
+  }
+
+  const grouped = new Set(Object.values(MOLECULES_TIER_SECTIONED_FAMILIES).flat());
+  const sections: Array<{ title?: string; families: ComponentFamilyNav[] }> = [];
+
+  for (const [title, familyKeys] of Object.entries(MOLECULES_TIER_SECTIONED_FAMILIES)) {
+    const families = familyKeys
+      .map((key) => tierNav.families.find((item) => item.family === key))
+      .filter((item): item is ComponentFamilyNav => item != null);
+    if (families.length > 0) {
+      sections.push({ title, families });
+    }
+  }
+
+  const rest = tierNav.families.filter((item) => !grouped.has(item.family));
+  if (rest.length > 0) {
+    sections.push({ families: rest });
+  }
+
+  return sections.length > 0 ? sections : [{ families: tierNav.families }];
+}
+
 const FAMILY_EG_EXPORT_OVERRIDES: Record<string, string> = {
+  button: 'EgButton',
+  'glass-button': 'EgGlassCapsule',
+  'symbol-button': 'EgSymbolAction',
+  link: 'EgLink',
+  search: 'EgSearch',
+  textarea: 'EgTextarea',
+  toast: 'EgToast',
+  'form-submission': 'EgFormSubmission',
+  'status-card': 'EgStatusCard',
+  reddot: 'EgReddot',
+  message: 'EgMessage',
+  streamer: 'EgStreamer',
+  tag: 'EgTag',
+  switch: 'EgSwitch',
+  checkbox: 'EgCheckbox',
+  radio: 'EgRadio',
+  decide: 'EgDecide',
+  'toggle-block': 'EgToggle',
   menu: 'EgMenu',
   tab: 'EgTab',
   'segmented-control': 'EgSegmentedControl',
@@ -257,20 +455,34 @@ const FAMILY_TIER_ROW_HINT_OVERRIDES: Record<string, string> = {
   avatar: '头像',
   button: '按钮',
   divider: '分割线',
-  feedback: '提醒',
+  toast: '吐司',
+  'form-submission': '注释',
+  'status-card': '状态卡',
+  reddot: '红点',
+  message: '信息提示',
+  streamer: '横幅',
   glass: '容器材质',
-  input: '输入',
+  input: '文本输入',
+  search: '搜索框',
+  textarea: '文本域',
   popovers: '浮层',
   'scroll-edge': '遮罩',
+  tag: '标签',
+  switch: '开关',
   'segmented-control': '分段控制器',
+  radio: '单选',
+  checkbox: '复选',
+  decide: '勾选',
+  'toggle-block': '胶囊切换',
   symbol: '图形解析器、含Icon与Crypto',
+  link: '文字链接',
+  'glass-button': '玻璃胶囊',
+  'symbol-button': '符号圆钮',
   menu: '触发与下拉',
   'nav-bar': '导航栏',
   sheets: '悬浮层',
   'tab-bar': '标签栏',
   tab: '标签切换',
-  tag: '标签',
-  toggle: '开关',
 };
 
 export function familyTierRowHint(nav: ComponentFamilyNav): string {
@@ -290,6 +502,41 @@ export function familyTierRowHint(nav: ComponentFamilyNav): string {
   return nav.label;
 }
 
-export function familyTierPressHref(nav: ComponentFamilyNav): `/(components)/family/${string}/${string}` {
+/** 族列表直进 Live · 无族索引页。 */
+const FAMILY_TIER_DIRECT_DETAIL_SLUG: Partial<Record<string, string>> = {
+  divider: 'divider',
+  glass: 'glass-eg',
+  'scroll-edge': 'glass-scroll-edge',
+  'nav-bar': 'tab-bar-nav-bar',
+  'segmented-control': 'tab-segmented-control',
+  button: 'button-body',
+  'glass-button': 'button-glass',
+  'symbol-button': 'button-icon-container',
+  link: 'link-body',
+  input: 'input-body',
+  search: 'search-body',
+  textarea: 'textarea-body',
+  toast: 'feedback-toast',
+  'form-submission': 'feedback-form-submission',
+  'status-card': 'feedback-status-card',
+  reddot: 'feedback-reddot',
+  message: 'feedback-message',
+  streamer: 'feedback-streamer',
+  tag: 'tag-color',
+  switch: 'toggle-switch',
+  checkbox: 'toggle-checkbox',
+  radio: 'toggle-radio',
+  decide: 'toggle-decide',
+  'toggle-block': 'tab-block',
+  tab: 'tab-tabs',
+};
+
+export function familyTierPressHref(
+  nav: ComponentFamilyNav,
+): `/(components)/family/${string}/${string}` | `/(components)/detail/${string}` {
+  const directSlug = FAMILY_TIER_DIRECT_DETAIL_SLUG[nav.family];
+  if (directSlug) {
+    return `/(components)/detail/${directSlug}`;
+  }
   return `/(components)/family/${nav.tier}/${nav.family}`;
 }

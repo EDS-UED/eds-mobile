@@ -4,12 +4,15 @@ import {
   type EgNavBarScrollEdgeEffect,
   type ThemeMode,
 } from '@eds/mobile-components';
+import type { ReactNode } from 'react';
 import type { SharedValue } from 'react-native-reanimated';
 
 type ShowcaseRnEgNavBarOverlayProps = {
   title: string;
   mode: ThemeMode;
   scrollOffset: SharedValue<number>;
+  /** 滚入栏下后替换文字标题（如分段控制器）。 */
+  titleContent?: ReactNode;
   showTitle?: boolean;
   showLeft?: boolean;
   showRight?: boolean;
@@ -29,6 +32,7 @@ export function ShowcaseRnEgNavBarOverlay({
   title,
   mode,
   scrollOffset,
+  titleContent,
   /** 内页默认 `true`；Tab 首页传 `scrollEdgeActive` 滚动后再显现。 */
   showTitle = true,
   showLeft = false,
@@ -42,6 +46,7 @@ export function ShowcaseRnEgNavBarOverlay({
   return (
     <EgNavBar
       title={title}
+      titleContent={titleContent}
       mode={mode}
       chromeContext={chromeContext}
       forceRnImplementation={forceRnOnIos26}

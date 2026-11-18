@@ -12,14 +12,14 @@ export const basicsEntries: BasicsEntry[] = [
   {
     id: 'gestures',
     label: '手势',
-    lead: 'Mobile 基础交互手势',
+    lead: '基础交互手势',
     status: 'preview',
     href: '/(basics)/gestures',
   },
   {
     id: 'scroll-edge',
     label: '遮罩',
-    lead: 'Scroll Edge Effect · glass-mask-box',
+    lead: 'ScrollEdgeEffect、 EdsBlurGlass',
     status: 'preview',
     href: '/(basics)/scroll-edge',
   },

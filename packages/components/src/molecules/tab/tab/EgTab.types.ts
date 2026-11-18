@@ -11,7 +11,7 @@ export type EgTabItem = {
 
 /**
  * Figma: Tabs · 491:3819 · 切换时品牌下划线滑动。
- * 胶囊分段（横滚 · 虚化 · 计数 · 正文 layout-content）→ **`EgTabBlock`**。
+ * 胶囊分段（横滚 · 虚化 · 计数 · 正文 layout-content）→ **`EgToggle`**。
  */
 export type EgTabProps = {
   items: EgTabItem[];

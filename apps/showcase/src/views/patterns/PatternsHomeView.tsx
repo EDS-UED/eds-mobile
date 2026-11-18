@@ -5,7 +5,8 @@ import { patternEntries } from '@/data/patterns/patternNav';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcasePageIntro } from '@/views/shared/ShowcasePageIntro';
+import { showcaseTabHomeLeads } from '@/navigation/showcaseTabHomeLeads';
+import { ShowcaseTabHomeIntro } from '@/views/shared/ShowcaseTabHomeIntro';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
 import { useShowcaseScreenStyles } from '@/hooks/useShowcaseScreenStyles';
@@ -39,22 +40,14 @@ export function PatternsHomeView() {
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
 
-          <ShowcasePageIntro
-            homeLargeTitle
-            subtitle
-            lead="数据与列表场景 · EgDataList 等在 components 维护场景 preset，业务侧用 Eg* 入口组合，不要手拼 primitives。"
-          />
+          <ShowcaseTabHomeIntro lead={showcaseTabHomeLeads.patterns} />
 
           <View style={screenStyles.cardList}>
             {patternEntries.map((entry) => (
               <ShowcaseCardRow
                 key={entry.id}
                 title={entry.label}
-                hint={
-                  entry.status === 'planned'
-                    ? `${entry.lead} · 规划中，暂不可预览`
-                    : `${entry.lead} · 可预览`
-                }
+                hint={entry.lead}
                 disabled={entry.status === 'planned'}
                 onPress={
                   entry.status === 'preview' && entry.detailSlug

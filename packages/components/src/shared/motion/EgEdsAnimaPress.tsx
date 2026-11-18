@@ -19,7 +19,7 @@ export type EgEdsAnimaPressProps = {
   pressIntensity?: MotionPressIntensity;
   /** 缩放方向 — 默认 `up`（放大）；`down` 为对称缩小。 */
   pressScaleDirection?: MotionPressScaleDirection;
-  /** `glass` — `motion-glass-scale-press-*` + `glass-press`；与 `EgButtonGlass` RN 栈一致。 */
+  /** `glass` — `motion-glass-scale-press-*` + `glass-press`；与 `EgGlassCapsule` RN 栈一致。 */
   pressRecipe?: MotionPressRecipe;
   /** 关闭 scale，仅保留 `pressed` 态（链接等文案反馈）。 @default true */
   enablePressScale?: boolean;

@@ -23,11 +23,11 @@ EDS_CONSUMER_METRO_PORT=8081 pnpm watch:linked-consumers
 - 只监听 `packages/tokens/spec` → `build:tokens` → 给业务 Metro **reload**
 - **不**跑 `build:components` / assemble（避免占内存、死循环）
 
-## iOS 26 · EgButtonGlass
+## iOS 26 · EgGlassCapsule
 
-- **iOS 26+**：`GlassView` + `isInteractive`（`readEgButtonGlassStackDiagnostics()` → `native`）。
+- **iOS 26+**：`GlassView` + `isInteractive`（`readEgGlassCapsuleStackDiagnostics()` → `native`）。
 - **其它**：RN `glass-button-box`（→ `rn`）。
-- Consumer 须 `expo-glass-effect@~58`（canvas 原生路径）；系统 Nav 栏项同样用 **`EgButtonGlass`** + `unstable_header*Items` + `egNavBarNativeStackHeaderGlassItem`。
+- Consumer 须 `expo-glass-effect@~58`（canvas 原生路径）；系统 Nav 栏项同样用 **`EgGlassCapsule`** + `unstable_header*Items` + `egNavBarNativeStackHeaderGlassItem`。
 
 ## 结束联调
 

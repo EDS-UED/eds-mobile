@@ -15,6 +15,7 @@ import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
 import { showcaseTheme } from '@/views/shared/showcaseTheme';
 import { GlassBoxPreviewBackdropGradient } from '@/views/tokens/glassBoxPreviewBackdrop';
+import { GLASS_BOX_BACKDROP_ORB_PX } from '@/views/tokens/glassBoxPreviewMetrics';
 
 /** 详情画布居中且 Inspect 包裹层按内容定宽 — 须显式给宽。 */
 const STAGE_HORIZONTAL_CHROME =
@@ -124,13 +125,19 @@ const styles = StyleSheet.create({
   },
   stageWrap: {
     alignItems: 'stretch',
-    paddingVertical: showcaseTheme.layout.cardPaddingVertical,
+    paddingTop: Math.max(showcaseTheme.layout.cardPaddingVertical, GLASS_BOX_BACKDROP_ORB_PX * 0.22),
+    paddingBottom: Math.max(
+      showcaseTheme.layout.cardPaddingVertical,
+      GLASS_BOX_BACKDROP_ORB_PX * 0.22,
+    ),
     overflow: 'visible',
+    minHeight: GLASS_BOX_BACKDROP_ORB_PX + showcaseTheme.layout.cardPaddingVertical * 2,
   },
   previewBackdrop: {
     ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'visible',
   },
   nativeHint: {
     ...edsTokenFont('body-medium', '400'),

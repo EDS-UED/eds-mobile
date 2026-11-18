@@ -5,9 +5,16 @@ export type EgSegmentedControlSize = 'lg' | 'md' | 'sm';
 const spacing = mobileTheme.spacing;
 const footnoteLineHeight = mobileTheme.typography.base['line-height-footnote'] as number;
 
-/** Figma Segmented Control 493:4341 · track inset `spacing-05` (2px)。 */
-export function egSegmentedControlTrackPadding(): number {
+/**
+ * 轨道与分段/指示胶囊的间距 · 四向 `spacing-05`（2px）。
+ * 仅作用于 track `padding`，段内文案留白见 {@link egSegmentedControlSegmentPadding}。
+ */
+export function egSegmentedControlInset(): number {
   return spacing['spacing-05'] as number;
+}
+
+export function egSegmentedControlTrackPadding(): number {
+  return egSegmentedControlInset();
 }
 
 /**

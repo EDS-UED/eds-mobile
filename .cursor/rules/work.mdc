@@ -66,7 +66,7 @@ alwaysApply: true
 |----|------|-----------|--------|------|
 | `button` | `Button` | Brand | `EgButtonBrand` | `button-brand` |
 | `input` | `Input` | Search | `EgSearch` | `input-search` |
-| `tag` | `Tag` | Color | `EgTagColor` | `tag-color` |
+| `tag` | `Tag` | Color | `EgTag` | `tag-color` |
 | `dropdown` | `Dropdown` | Trigger | `EgDropdownTrigger` | `dropdown-trigger` |
 | `tab-bar` | `TabBar` | Apply_TabBar@Cregis | `EgCregisTabBar` | `tab-bar-cregis` |
 | `popovers` | `Popover` | Notes | `EgNotesPopover` | `popovers-notes` |
@@ -271,7 +271,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 |---------------|----------------|------|
 | `EgCregisTabBar` | `EgCregisNavBar` | TabBar vs 侧栏 NavBar |
 | `EgUDunTabBar` | `EgUdunModuleMenu` | 不同 organism |
-| `EgTagColor` | `EgColorfulTag` | 同色族 |
+| `EgTag` | `EgColorfulTag` | 同色族（Figma Color 场景 · 族本体 export） |
 | `EgTagSystem` | `EgStatusTag` | 状态 Tag |
 | `EgNotesPopover` | `EgRemarkPopover` | 备注 Popover |
 | `EgSearch` | `EgSearchInput` | 搜索输入 |

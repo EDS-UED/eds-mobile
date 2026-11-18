@@ -5,18 +5,33 @@ import { resolveColor } from '../../../shared/resolveColor.js';
 import { disabledOpacity } from '../../../shared/themeScalars.js';
 import type { ToggleSize } from '../../../shared/types.js';
 
+function switchTrackInset(): number {
+  return mobileTheme.spacing['spacing-05'] as number;
+}
+
+/** 轨 — 宽/高固定 · knob 宽 scale 三档 · 高 = 轨高 − 上下 inset（胶囊，非正圆）。 */
+export function switchTrackLayout(size: ToggleSize) {
+  const inset = switchTrackInset();
+  const thumb = switchThumbSize(size);
+  const width = switchTrackWidth(size);
+  const height = switchTrackHeight(size);
+  const thumbHeight = Math.max(0, height - inset * 2);
+  return { width, height, thumb, thumbHeight, inset };
+}
+
 export function switchMetrics(size: ToggleSize) {
+  const layout = switchTrackLayout(size);
   return {
-    width: switchTrackWidth(size),
-    height: switchTrackHeight(size),
-    thumb: switchThumbSize(size),
+    width: layout.width,
+    height: layout.height,
+    thumb: layout.thumb,
   };
 }
 
 export function switchTrackStyle(mode: ThemeMode, size: ToggleSize, on: boolean, disabled?: boolean): ViewStyle {
   const colors = getThemeColors(mode);
   const spacing = mobileTheme.spacing;
-  const { height, width } = switchMetrics(size);
+  const { width, height, inset } = switchTrackLayout(size);
   return {
     width,
     height,
@@ -24,20 +39,59 @@ export function switchTrackStyle(mode: ThemeMode, size: ToggleSize, on: boolean,
     backgroundColor: on
       ? resolveColor(colors, disabled ? 'status-disable-brand' : 'material-brand')
       : resolveColor(colors, 'material-card-deep'),
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    paddingHorizontal: spacing['spacing-05'] as number,
+    paddingHorizontal: inset,
+    paddingVertical: inset,
     opacity: disabled ? disabledOpacity() : 1,
   };
 }
 
 export function switchThumbStyle(mode: ThemeMode, size: ToggleSize): ViewStyle {
   const colors = getThemeColors(mode);
-  const { thumb } = switchMetrics(size);
+  const spacing = mobileTheme.spacing;
+  const { thumb, thumbHeight } = switchTrackLayout(size);
   return {
     width: thumb,
-    height: thumb,
-    borderRadius: thumb / 2,
+    height: thumbHeight,
+    borderRadius: spacing['radius-full'] as number,
     backgroundColor: resolveColor(colors, 'material-same-white'),
+  };
+}
+
+export function switchThumbTravel(size: ToggleSize): number {
+  const { width, thumb, inset } = switchTrackLayout(size);
+  return Math.max(0, width - thumb - inset * 2);
+}
+
+export function checkboxStyleBase(size: ToggleSize = 'md'): ViewStyle {
+  const dimension = checkboxSize(size);
+  return {
+    width: dimension,
+    height: dimension,
+    borderRadius: mobileTheme.spacing['radius-xs'] as number,
+    borderWidth: mobileTheme.spacing['stroke-md'] as number,
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+}
+
+export function decideStyleBase(size: ToggleSize = 'md'): ViewStyle {
+  return {
+    ...checkboxStyleBase(size),
+    borderRadius: mobileTheme.spacing['radius-sm'] as number,
+  };
+}
+
+export function radioStyleBase(size: ToggleSize = 'md'): ViewStyle {
+  const dimension = radioSize(size);
+  return {
+    width: dimension,
+    height: dimension,
+    borderRadius: dimension / 2,
+    borderWidth: mobileTheme.spacing['stroke-lg'] as number,
+    alignItems: 'center',
+    justifyContent: 'center',
   };
 }
 

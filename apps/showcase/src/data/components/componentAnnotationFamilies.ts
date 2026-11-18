@@ -1,253 +1,172 @@
 import type { ShowcaseCatalogEntry } from '@/data/components/showcaseCatalog';
 import { isShowcaseEntryImplemented } from '@/data/components/showcaseCatalog';
 
-import type { ShowcaseComponentAnnotationDoc, ShowcaseComponentAnnotationSection } from './componentAnnotationTypes';
+import { assembleComponentAnnotationDoc, type ComponentSelfAnnotationSpec } from './componentAnnotationAssemble';
 
-const GLOBAL_STYLE_TAIL = [
-  '主文案 `text-base-primary`',
-  '次要文案 `text-base-secondary`（60%）',
-  '辅助/占位 `text-base-tertiary`',
-  '品牌/焦点 `text-brand` · `event-focus-brand`',
-  '浅底 `material-card-shallow`',
-  '页面底 `box-page-card`',
-  '卡片衬底 `box-page`',
-];
-
-const GLOBAL_LAYOUT_TAIL = [
-  'Showcase 分组卡左右 `spacing-5`',
-  'Showcase 分组卡上下 `spacing-4`',
-  '块圆角 `radius-xl` + smoothRadius',
-];
-
-const GLOBAL_PLATFORM_RN = [
-  '默认 RN：`StyleSheet` + `mobileTheme`',
-  '无 spec 声明时不写 `Platform.OS` 双实现',
-];
-
-const GLOBAL_PLATFORM_GLASS = [
-  'iOS 26+：系统 Liquid Glass（材质 + 交互）',
-  'Android · iOS ≤25：expo-blur + token 叠层',
-  '双端共用同一套 token 数值',
-];
-
-const SCAFFOLD_OTHER = [
-  'Figma 对齐脚手架',
-  '真实现后随 packages/components 源码更新本节',
-];
-
-type FamilySpec = {
-  style: string[];
-  layout: string[];
-  motion?: string[];
-  platform?: string[];
-  other?: string[];
-};
+type FamilySpec = ComponentSelfAnnotationSpec;
 
 const FAMILY_SPECS: Record<string, FamilySpec> = {
   avatar: {
-    style: [
-      '图形槽尺寸 `symbol-*` / 头像 preset 色 `material-card-shallow`。',
-      '标签字：`typography-body-medium` · `text-base-primary`。',
-    ],
-    layout: ['行高对齐 `input-md` 档；与列表/标题间距 `spacing-4` · `spacing-5`。'],
-    motion: ['点按场景 `EdsSemanticAnima(\'press\')`（可点行）。'],
+    style: ['图形/字母 `typography-body-medium` · 槽底 `material-card-shallow`。'],
+    layout: ['圆形或圆角矩形槽；边长 `symbol-*` 档。'],
   },
   button: {
-    style: [
-      '文案：`typography-body-medium-heavy`（Brand / Primary）· Link 用 `body-medium`。',
-      '底色/描边：`--eds-brand` 映射 · `material-button-*` · 禁用 `text-base-tertiary`。',
-    ],
-    layout: ['高度 token `button-xl` … `button-xs`；水平 `spacing-5` 起、图标间距 `spacing-1` / `spacing-4`。'],
-    motion: ['`EdsSemanticAnima(\'press\')` · recipe `glass-press`（玻璃钮）。'],
-    platform: [
-      'EgButtonGlass：iOS 26+ `GlassView`；其余 `glass-button-box` RN。',
-      ...GLOBAL_PLATFORM_GLASS.slice(0, 1),
-    ],
+    style: ['按场景 preset：Brand/Danger/Decor/Link 色票 · 字 `typography-body-medium(-heavy)`。'],
+    layout: ['高度 `button-*` · 水平 `spacing-5` / 图标间距 `spacing-1` · `spacing-4`。'],
+    motion: ['按压 `EdsSemanticAnima(\'press\')`。'],
   },
   crypto: {
-    style: ['图标资产 `EgCrypto` · 色 `text-base-primary` / 品牌色。'],
-    layout: ['槽宽 `symbol-sm` / `spacing-4` 与列表图标列对齐。'],
+    style: ['加密资产 SVG · 保留资产配色。'],
+    layout: ['正方槽 `symbol-*`。'],
   },
   divider: {
-    style: ['线色 `stroke-divider-shallow` / `stroke-divider-deep`（module 分割线）。'],
-    layout: ['缩进随宿主行 `spacing-5` 或图标后文案列（EgItem `getEgItemDividerInset`）。'],
+    style: ['线色 `stroke-divider-shallow` / `stroke-divider-deep`。'],
+    layout: ['线宽 1px · 水平撑满父内容区。'],
   },
   dropdown: {
     style: ['菜单项 `typography-body-medium` · 选中 `text-face-primary`。'],
-    layout: ['浮层内边距 `spacing-4` · 圆角 `radius-lg` smooth。'],
-    motion: ['展开 `EdsSemanticAnima(\'menu\')` / EgMenu 场景 recipe。'],
-    platform: ['EgMenu：iOS 26+ 系统 Menu；其余 RN 浮层 + 同一动效语义。'],
+    layout: ['浮层内边距 `spacing-4` · 圆角 `radius-lg` + smooth。'],
+    motion: ['出现 `EdsSemanticAnima(\'menu\')`。'],
+    platform: ['触发器本组件仅负责锚点；浮层 Menu 平台分流见 Menu 详情。'],
   },
   feedback: {
-    style: ['状态字 `typography-body-medium` · 语义色 `text-semantic-*` · Toast 浅底 `material-card-shallow`。'],
-    layout: ['间距 `spacing-4` · 安全区底 `spacing-10` 避让。'],
-    motion: ['入出场 `motion-fade` / slide 场景（按组件 recipe）。'],
+    style: ['状态字 `typography-body-medium` · 语义色 `text-semantic-*`。'],
+    layout: ['相对宿主定位；点直径/角标 inset 随场景。'],
   },
   icon: {
-    style: ['EgSymbol 描边 token `text-base-primary` / `text-base-secondary`；尺寸 `symbol-xs` … `symbol-xl`。'],
-    layout: ['图标槽固定宽 + `spacing-4` 与主文案间距。'],
+    style: ['SVG 描边/填充 · `text-base-primary` / `text-brand`。'],
+    layout: ['正方 `symbol-*`。'],
   },
   index: {
-    style: ['索引条 `typography-detail` · `text-base-tertiary`。'],
-    layout: ['贴边 `spacing-2` · 与列表 `spacing-3` 行距。'],
+    style: ['索引字 `typography-detail` · `text-base-tertiary`。'],
+    layout: ['贴边 `spacing-2` · 行距 `spacing-3`。'],
   },
   input: {
-    style: [
-      '占位/输入：`typography-body-medium` · 值 `text-base-primary` · 占位 `text-base-tertiary`。',
-      '描边/底：`stroke-input` · focus `event-focus-brand`。',
-    ],
-    layout: ['高度 `input-xl` … `input-xs`；水平内边距 `spacing-4` / `spacing-5`。'],
-    motion: ['交互态 `event-tap` / `event-focus`（无整页转场）。'],
+    style: ['字 `typography-body-medium` · 值 `text-base-primary` · 占位 `text-base-tertiary` · 描边 `stroke-input`。'],
+    layout: ['高度 `input-*` · 内边距 `spacing-4` / `spacing-5`。'],
+    motion: ['focus `event-focus`（无整页 semantic）。'],
+  },
+  search: {
+    style: ['底 `material-card-shallow` · 字/占位同 Input · 搜索图标 `symbol-sm`。'],
+    layout: ['高度 `input-md` · 圆角 `radius-lg` + smooth。'],
+  },
+  textarea: {
+    style: ['多行字 `typography-body-medium` · 描边/占位同 Input。'],
+    layout: ['最小高度高档 `input-*` · 内边距 `spacing-4`。'],
+  },
+  link: {
+    style: ['字 `typography-body-medium` · `text-brand` · 无填充底。'],
+    layout: ['行内宽随文案 · 点按区 `spacing-4`。'],
+    motion: ['按压 `EdsSemanticAnima(\'press\')`。'],
   },
   popovers: {
     style: ['气泡底 `material-card-moderate` · 字 `body-small` / `body-medium`。'],
-    layout: ['箭头 inset `spacing-3` · 最大宽随屏 `spacing-5` 边距。'],
-    motion: ['弹出 `EdsSemanticAnima(\'slide\')` 或 popover recipe。'],
+    layout: ['箭头 inset `spacing-3` · 最大宽扣页边 `spacing-5`。'],
+    motion: ['露出 `EdsSemanticAnima(\'slide\')` 或 popover recipe。'],
   },
   tab: {
-    style: ['标签 `typography-body-medium` · 选中 `text-face-primary` / 未选 `text-base-secondary`。'],
-    layout: ['段块 `spacing-1` 内边距 · 胶囊 `radius-full`；正文区 layout-content 间距 `spacing-4`。'],
-    motion: ['切换 `EdsSemanticAnima(\'layout-content\')`（EgTab / EgTabBlock）。'],
+    style: ['标签 `typography-body-medium` · 选中/未选字色 face / secondary。'],
+    layout: ['段内 `spacing-1` · 胶囊 `radius-full`。'],
+    motion: ['切换 `EdsSemanticAnima(\'layout-content\')`。'],
+  },
+  'toggle-block': {
+    style: ['胶囊项字 `typography-body-medium` · 选中 face · 红点 `text-semantic-danger`。'],
+    layout: ['横滚胶囊 `radius-full` · 项 `spacing-3` · 正文顶距 `spacing-4`。'],
+    motion: ['切换 `EdsSemanticAnima(\'layout-content\')`。'],
   },
   'tab-bar': {
-    style: ['项文案 `typography-body-small` · 选中品牌/面 `text-face-primary`。'],
-    layout: ['栏高 token · 项水平 `spacing-4`；浮动 Tab 底留白 consumer 自垫。'],
-    motion: ['点按 `EdsSemanticAnima(\'press\')`；切换选中态 spring recipe。'],
-    platform: [
-      'EgTabBarNative：iOS 26+ `NativeTabs`；其余 RN `EgTabBarText` / `EgCregisTabBar`。',
-      '顶栏联动页面栈见 `EgEdsAnimaPage`。',
-    ],
+    style: ['项字 `typography-body-small` / heavy · 选中 `text-face-primary`。'],
+    layout: ['栏高 token · 项 `spacing-4`。'],
+    motion: ['点按 `EdsSemanticAnima(\'press\')`。'],
   },
   tag: {
-    style: [
-      'Color Tag：色块 semantic / 品牌 · 字 `typography-body-small-heavy`。',
-      'System Tag：状态色 `text-semantic-*` · 浅底 `material-card-shallow`。',
-    ],
-    layout: ['水平 `spacing-2` · `spacing-3` 内边距 · 胶囊 `radius-full`。'],
+    style: ['Color：色块 semantic · System：浅底 + `text-semantic-*`。'],
+    layout: ['内边距 `spacing-2` · `spacing-3` · `radius-full`。'],
   },
   text: {
-    style: ['层级 Display / Title / Headline / Body / Detail / Footnote semantic 类。'],
-    layout: ['默认随父容器；EDS 封装 `EdsSansText` + `edsFontStyle`。'],
+    style: ['Display / Title / Headline / Body / Detail / Footnote 字阶 class。'],
+    layout: ['块级宽随父；行高走 typography token。'],
   },
   toggle: {
-    style: ['轨道/拇指 semantic 色 · 标签 `typography-body-medium`。'],
-    layout: ['Switch 尺寸 token · 与 EgItem 行 `spacing-4` 对齐。'],
-    motion: ['切换 `EdsSemanticAnima(\'press\')` + haptic recipe（若启用）。'],
+    style: ['轨道/壳 semantic 色；Switch 轨/拇指、Mark 勾/点各色票见子组件详情。'],
+    layout: ['Switch 轨 scale · Mark 方壳 `toggle-mark-*`。'],
   },
   menu: {
-    style: ['与 dropdown 同族 · `typography-body-medium`。'],
-    layout: ['分组间距 `spacing-6` · 行 `spacing-4` 内边距。'],
+    style: ['行字 `typography-body-medium` · 分组标题 `text-base-secondary`。'],
+    layout: ['行内边距 `spacing-4` · 分组间距 `spacing-6`。'],
     motion: ['`EdsSemanticAnima(\'menu\')`。'],
-    platform: ['iOS 26+ 系统 Menu；Android / iOS ≤25 RN overlay。'],
+    platform: ['iOS 26+ 系统 Menu 宿主；Android / ≤25 RN overlay（浮层本体，不含触发钮样式）。'],
   },
   sheets: {
-    style: ['顶栏/把手 `text-base-primary` · Sheet 底 `material-card-shallow` / glass-mask。'],
-    layout: ['档位高度 token · 内容左右 `spacing-5` · 顶栏 scroll edge automatic→hard。'],
-    motion: ['出现 `EdsSemanticAnima(\'slide\')` · 拖拽关闭 recipe。'],
-    platform: ['顶栏 scroll edge：iOS 26+ 系统；RN 栈 `EgScrollEdgeEffect`（glass-mask-box）。'],
+    style: ['面板底 `material-card-shallow` / glass-mask · 把手/标题 `text-base-primary`。'],
+    layout: ['档位高度 token · 内容左右 `spacing-5` · 顶栏占位含 safe area。'],
+    motion: ['升起/降下 `EdsSemanticAnima(\'slide\')` · 拖拽关闭 recipe。'],
+    platform: ['顶栏 scroll edge 绘制见 `EgScrollEdgeEffect`（非本组件布局栏）。'],
   },
   'data-list': {
-    style: ['主/副文案 `typography-body-medium` / `body-small` · 图形槽 preset。'],
-    layout: ['行 `spacing-4`/`spacing-5` · DL-bleed 场景 token。'],
-    motion: ['行点按 `EdsSemanticAnima(\'press\')`。'],
+    style: ['行主/副字 `typography-body-medium` / `body-small` · 副文 `text-base-secondary`。'],
+    layout: ['行竖向 `spacing-4` · DL-bleed 左右 token。'],
+    motion: ['行可点时 `EdsSemanticAnima(\'press\')`。'],
   },
   item: {
-    style: ['EgItem 标签 `typography-body-medium` · 值 `body-small` · `text-base-secondary`。'],
-    layout: ['EgItemGroup 内边距 `spacing-1` · 行 `spacing-4` · 圆角 `radius-lg`。'],
-    motion: ['`EdsSemanticAnima(\'press\')` · Switch 无整页动效。'],
+    style: ['主字 `typography-body-medium` · 值 `body-small` · `text-base-secondary`。'],
+    layout: ['行高 `input-md` 对齐 · 组内 `spacing-4` · 组圆角 `radius-lg`。'],
+    motion: ['可点行 `EdsSemanticAnima(\'press\')`。'],
   },
   page: {
-    style: ['页面底 `box-page`（ScrollView）· 业务页底常用 `box-page-card`。'],
-    layout: [
-      'EgPage：左右 `spacing-5` · 底 `spacing-10` · 顶 `contentPaddingTop`（默认 lg 12px）。',
-    ],
-    motion: ['页面转场 `EdsSemanticAnima(\'page\')` · 返回 `page-back`。'],
-    platform: [
-      '导航：`createEgPageNavigator` · iOS 26+ 系统栏+转场；≤25 RN `EgNavBar` + page spring。',
-      'Scroll edge：`background="auto"` 静止 hidden · 滚入 soft（系统栏 / RN 遮罩一致语义）。',
-    ],
+    style: ['滚动区背景 `box-page`（`backgroundColor` / `style` 可覆盖）。'],
+    layout: ['水平 `spacing-5` · 底 `spacing-10` · 顶 `contentPaddingTop` 默认 lg（12px）。'],
   },
   'page-shot': {
-    style: ['弹层页同色 `box-page` · 卡片 `material-card-shallow`。'],
-    layout: ['自触发元素 frame 展开；内容仍走 EgPage 边距契约。'],
-    motion: ['`EdsSemanticAnima(\'page-shot\')` 展开/收回；内可嵌套 `page`。'],
-    platform: ['iOS 26+ 弹层内 `ScreenStack` 系统栏；其余 RN Modal + EgNavBar。'],
+    style: ['弹层全屏区背景 `box-page` · 与 EgPage 同色票。'],
+    layout: ['全屏宿主；内层仍用 EgPage content 边距契约（由组合方式决定）。'],
+    motion: ['壳层 `EdsSemanticAnima(\'page-shot\')` 展开/收回（触发帧由业务传入）。'],
   },
   'nav-bar': {
-    style: ['标题 `typography-body-medium-heavy`（17/600）· 按钮 `EgButtonGlass`。'],
-    layout: ['栏高 safe area + `EG_NAV_BAR_*` metrics · 左右 `spacing-5`。'],
-    motion: ['栏项 `EdsSemanticAnima(\'press\')`；`background="auto"` 随滚动透明度。'],
-    platform: [
-      'EgNavBar：iOS 26+ 不写 RN 栏，用 `egNavBarNativeStackOptions`；≤25 RN `EgNavBar` + `EgScrollEdgeEffect`。',
-    ],
+    style: ['标题 `typography-body-medium-heavy` · 栏项玻璃钮色票同 Glass Capsule。'],
+    layout: ['栏高 `EG_NAV_BAR_*` · 左右 `spacing-5` · 含 safe top。'],
+    motion: ['栏项 `EdsSemanticAnima(\'press\')` · `background=auto` 随滚动淡入底。'],
+    platform: ['iOS 26+ 页面栈用系统栏（本 RN 组件用于 ≤25 / 叠加场景）。'],
   },
   glass: {
-    style: ['材质 `effect-glass-*` / `glass.surface` preset · 叠层 tint 来自 token。'],
-    layout: ['blur 强度 `blur-sm`→`nativeBlurIntensity` · 圆角 smoothRadius。'],
-    platform: GLOBAL_PLATFORM_GLASS,
+    style: ['blur + tint 来自 `glass.surface` / `effect-glass-*`。'],
+    layout: ['圆角 smoothRadius · blur 换算 `nativeBlurIntensity`。'],
+    motion: ['按压/闪烁 recipe `glass-press` / `glass-shimmer`（若包在可点壳内）。'],
+    platform: ['iOS 26+ 原生材质；Android / ≤25 expo-blur + token 叠层。'],
+  },
+  'glass-button': {
+    style: ['同 Glass Capsule liquid preset · 字 `typography-body-medium`。'],
+    layout: ['高度 `button-*` · `radius-full`。'],
+    motion: ['`EdsSemanticAnima(\'press\')` + `glass-press`。'],
+    platform: ['iOS 26+ Native · 其余 RN。'],
+  },
+  'symbol-button': {
+    style: ['图标 `text-base-primary` · 容器 `material-card-shallow`。'],
+    layout: ['正方 `button-md` · 图标 `symbol-md` 居中。'],
+    motion: ['`EdsSemanticAnima(\'press\')`。'],
   },
   'scroll-edge': {
-    style: ['`glass-mask-box` · 不透明度/渐变随 soft / hard 档。'],
-    layout: ['贴栏单侧；宽同内容区，高由 scroll edge 组件测算。'],
-    motion: ['随滚动 offset 淡入；无 press 场景。'],
-    platform: [
-      'RN `EgScrollEdgeEffect`；iOS 26+ 页面栈可与系统 `scrollEdgeEffects` 同名联动。',
-    ],
+    style: ['单层 `glass-mask-box` · soft/hard 不透明度与渐变 token。'],
+    layout: ['贴父顶/底/侧；宽同宿主；高由 scroll edge 测算。'],
+    motion: ['随 scroll offset 显现（无 press semantic）。'],
+    platform: ['RN `EgScrollEdgeEffect` 双端一致。'],
   },
   symbol: {
-    style: [
-      'EgSymbol 描边色 token · 尺寸 `symbol-*` · Icon + Crypto 资产见族页「资产」网格。',
-    ],
-    layout: ['与父行图标槽 `EG_ITEM_ICON_SLOT` 对齐。'],
+    style: ['`name` → Icon/Crypto SVG · 色 `color` / `mode`。'],
+    layout: ['正方 `symbol-*` · 与父行图标槽对齐。'],
   },
 };
-
-function mergeSections(spec: FamilySpec, implemented: boolean): ShowcaseComponentAnnotationSection[] {
-  const sections: ShowcaseComponentAnnotationSection[] = [
-    {
-      title: '样式',
-      lines: ['主题 `mode` → semantic 色表', ...spec.style, ...GLOBAL_STYLE_TAIL],
-    },
-    {
-      title: '布局',
-      lines: [...spec.layout, ...GLOBAL_LAYOUT_TAIL],
-    },
-  ];
-
-  if (spec.motion?.length) {
-    sections.push({ title: '动效', lines: spec.motion });
-  }
-
-  const platform = spec.platform?.length
-    ? [...spec.platform, ...GLOBAL_PLATFORM_RN]
-    : [...GLOBAL_PLATFORM_RN];
-
-  sections.push({ title: '多系统差异', lines: platform });
-
-  sections.push({
-    title: '其他',
-    lines: implemented
-      ? (spec.other ?? [
-          '实现见 packages/components 对应族目录',
-          'Customize / Inspect 与 Live 同源 props',
-        ])
-      : SCAFFOLD_OTHER,
-  });
-
-  return sections;
-}
 
 export function buildFamilyComponentAnnotation(
   family: string,
   entry: Pick<ShowcaseCatalogEntry, 'slug' | 'exportName'>,
-): ShowcaseComponentAnnotationDoc {
-  const spec = FAMILY_SPECS[family] ?? {
-    style: [`族 \`${family}\` · 色/字走 EDS semantic token，勿硬编码 hex。`],
-    layout: ['间距对齐 Figma Scale → `spacing-*` · 圆角 `radius-*` + smooth。'],
-    motion: undefined,
-    platform: undefined,
-  };
+): ReturnType<typeof assembleComponentAnnotationDoc> {
+  const spec: FamilySpec =
+    FAMILY_SPECS[family] ?? {
+      style: [`\`${entry.exportName}\` 色/字走 EDS semantic token（族 \`${family}\`）。`],
+      layout: ['间距/圆角/控件高走 Figma Scale → `spacing-*` · `radius-*` · control 档。'],
+    };
 
   const implemented = isShowcaseEntryImplemented(entry);
-  return { sections: mergeSections(spec, implemented) };
+  return assembleComponentAnnotationDoc(spec, implemented);
 }

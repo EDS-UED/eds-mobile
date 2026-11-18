@@ -1,9 +1,11 @@
-/** Tab stack index — 内容区 display 标题文案（栏标题见 `useShowcaseTabHomeNav`）。 */
+/** Tab stack index — 内容区大标题（底栏文案见 `showcaseNavTabs.label`）。 */
 export const showcaseTabHomeTitles = {
   tokens: '设计令牌',
+  animations: '动效',
   components: '组件',
-  animations: '动画',
-  patterns: '数据',
-  basics: '基础',
+  patterns: '数据与业务流',
+  basics: '知识手册',
   workflows: '业务流',
 } as const;
+
+export type ShowcaseTabHomeTitleKey = keyof typeof showcaseTabHomeTitles;

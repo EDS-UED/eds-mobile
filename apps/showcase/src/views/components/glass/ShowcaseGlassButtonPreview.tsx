@@ -1,17 +1,13 @@
 import {
   EgAvatar,
-  EgButtonGlass,
+  EgGlassCapsule,
   egButtonGlassSplitPairGapPx,
-  readEgButtonGlassStackDiagnostics,
-  shouldUseEgButtonGlassNativeStack,
 } from '@eds/mobile-components';
-import { Platform, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type ViewStyle } from 'react-native';
 
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import { GlassBoxPreviewBackdropGradient } from '@/views/tokens/glassBoxPreviewBackdrop';
 import { GLASS_BOX_BACKDROP_ORB_PX } from '@/views/tokens/glassBoxPreviewMetrics';
-import { showcaseTheme } from '@/views/shared/showcaseTheme';
-
 type ShowcaseGlassButtonPreviewProps = Record<string, unknown> & {
   mode?: 'light' | 'dark';
   kind?: 'text' | 'icon';
@@ -40,7 +36,7 @@ function resolveSplitIconCount(mode: string): number {
   return 0;
 }
 
-/** 组件详情 — Live 用业务 `EgButtonGlass`（iOS 26+ 原生 / 其它 RN）。 */
+/** 组件详情 — Live 用业务 `EgGlassCapsule`（iOS 26+ 原生 / 其它 RN）。 */
 export function ShowcaseGlassButtonPreview(props: ShowcaseGlassButtonPreviewProps) {
   const {
     mode = 'light',
@@ -67,15 +63,6 @@ export function ShowcaseGlassButtonPreview(props: ShowcaseGlassButtonPreviewProp
   const iconThirdName = String(iconThird ?? '').trim() || undefined;
   const splitGap = egButtonGlassSplitPairGapPx();
   const previewButtonStyle = styles.previewButtonAlign;
-  const stackHint =
-    __DEV__ && Platform.OS === 'ios'
-      ? typeof readEgButtonGlassStackDiagnostics === 'function'
-        ? readEgButtonGlassStackDiagnostics().hint
-        : shouldUseEgButtonGlassNativeStack()
-          ? 'EgButtonGlass → GlassView（系统液态玻璃）'
-          : 'EgButtonGlass → glass-button-box（RN）'
-      : null;
-
   const sharedIconButtonProps = {
     kind: 'icon' as const,
     mode,
@@ -89,7 +76,7 @@ export function ShowcaseGlassButtonPreview(props: ShowcaseGlassButtonPreviewProp
         {[iconName, iconAltName, splitCount === 3 ? iconThirdName : undefined]
           .filter((name): name is string => Boolean(name))
           .map((name, index) => (
-            <EgButtonGlass
+            <EgGlassCapsule
               key={`${name}-${index}`}
               {...sharedIconButtonProps}
               icon={name}
@@ -98,7 +85,7 @@ export function ShowcaseGlassButtonPreview(props: ShowcaseGlassButtonPreviewProp
           ))}
       </View>
     ) : (
-      <EgButtonGlass
+      <EgGlassCapsule
         {...sharedIconButtonProps}
         icon={iconName}
         iconCount={1}
@@ -106,7 +93,7 @@ export function ShowcaseGlassButtonPreview(props: ShowcaseGlassButtonPreviewProp
       />
     )
   ) : (
-    <EgButtonGlass
+    <EgGlassCapsule
       kind="text"
       size={size}
       label={label}
@@ -124,19 +111,6 @@ export function ShowcaseGlassButtonPreview(props: ShowcaseGlassButtonPreviewProp
         </View>
         <View style={styles.contentLayer}>{previewBody}</View>
       </View>
-      {stackHint ? (
-        <Text
-          style={[
-            styles.stackHint,
-            {
-              color: colors['text-base-secondary'] as string,
-              marginTop: showcaseTheme.layout.cardPaddingVertical,
-            },
-          ]}
-        >
-          {stackHint}
-        </Text>
-      ) : null}
     </View>
   );
 }
@@ -144,12 +118,16 @@ export function ShowcaseGlassButtonPreview(props: ShowcaseGlassButtonPreviewProp
 const styles = StyleSheet.create({
   host: {
     width: '100%',
+    alignSelf: 'stretch',
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: GLASS_BOX_BACKDROP_ORB_PX + 8,
   },
-  /** 与 `GLASS_BOX_BACKDROP_ORB_PX` 同边长 — 橙球与按钮共用坐标系。 */
+  /** 与 `GLASS_BOX_BACKDROP_ORB_PX` 同边长 — 色轮与按钮共用坐标系（RN · 原生同几何）。 */
   stage: {
     width: GLASS_BOX_BACKDROP_ORB_PX,
     height: GLASS_BOX_BACKDROP_ORB_PX,
+    alignSelf: 'center',
     position: 'relative',
     overflow: 'visible',
   },
@@ -173,11 +151,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  stackHint: {
-    fontSize: 12,
-    lineHeight: 16,
-    textAlign: 'center',
-    paddingHorizontal: showcaseTheme.layout.cardPaddingHorizontal,
   },
 });

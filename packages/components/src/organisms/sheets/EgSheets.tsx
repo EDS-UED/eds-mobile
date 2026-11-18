@@ -102,7 +102,7 @@ function normalizeDetents(detents: readonly EgSheetsDetent[] | undefined): EgShe
  * 卡片 `EgGlass` · `glass-sheets-box`；背后遮罩小中 `effect-sheets-background`、大档 `material-base-tertiary`；
  * 顶部 EgNavBar 悬浮于内容之上（边距 + 内容定高；可选拖拽指示条），`background="auto"`（内容滚入栏下才显现背景与 scroll edge）。
  * 小 / 中档内容区不滚动、整张可拖拽；最高档内容区滚动，顶栏拖拽或长按内容区拖拽。
- * 顶栏：左侧返回（默认隐藏）；右侧默认关闭，可由 `rightAction` 覆盖（如文本 `EgButtonGlass`）。
+ * 顶栏：左侧返回（默认隐藏）；右侧默认关闭，可由 `rightAction` 覆盖（如文本 `EgGlassCapsule`）。
  * 顶栏按钮 / 内容插槽 / action 距卡片边恒定，不随档位变化。
  */
 export function EgSheets({

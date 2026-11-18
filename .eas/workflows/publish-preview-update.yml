@@ -23,4 +23,4 @@ jobs:
       channel: preview
     hooks:
       after_install_node_modules:
-        - run: cd ../.. && pnpm build:tokens && node apps/showcase/scripts/extract-dist-css-manifest.mjs
+        - run: node scripts/eas-build-post-install.mjs

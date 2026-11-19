@@ -35,6 +35,7 @@
       "scale-50": "calc(50 * var(--scale-base))",
       "scale-full": "888px",
       "spacing-0": "var(--scale-0)",
+      "spacing-025": "var(--scale-025)",
       "spacing-05": "var(--scale-05)",
       "spacing-1": "var(--scale-1)",
       "spacing-1-5": "var(--scale-1-5)",
@@ -617,514 +618,520 @@
         "endLine": 10,
         "snippet": "  --spacing-0: var(--scale-0);"
       },
-      "spacing-05": {
+      "spacing-025": {
         "file": "semantic.css",
         "startLine": 11,
         "endLine": 11,
+        "snippet": "  --spacing-025: var(--scale-025); /* 1px */"
+      },
+      "spacing-05": {
+        "file": "semantic.css",
+        "startLine": 12,
+        "endLine": 12,
         "snippet": "  --spacing-05: var(--scale-05);"
       },
       "spacing-1": {
         "file": "semantic.css",
-        "startLine": 12,
-        "endLine": 12,
+        "startLine": 13,
+        "endLine": 13,
         "snippet": "  --spacing-1: var(--scale-1);"
       },
       "spacing-1-5": {
         "file": "semantic.css",
-        "startLine": 13,
-        "endLine": 13,
+        "startLine": 14,
+        "endLine": 14,
         "snippet": "  --spacing-1-5: var(--scale-1-5);"
       },
       "spacing-2": {
         "file": "semantic.css",
-        "startLine": 14,
-        "endLine": 14,
+        "startLine": 15,
+        "endLine": 15,
         "snippet": "  --spacing-2: var(--scale-2);"
       },
       "spacing-2-5": {
         "file": "semantic.css",
-        "startLine": 15,
-        "endLine": 15,
+        "startLine": 16,
+        "endLine": 16,
         "snippet": "  --spacing-2-5: var(--scale-2-5); /* 10px */"
       },
       "spacing-3": {
         "file": "semantic.css",
-        "startLine": 16,
-        "endLine": 16,
+        "startLine": 17,
+        "endLine": 17,
         "snippet": "  --spacing-3: var(--scale-3);"
       },
       "spacing-4": {
         "file": "semantic.css",
-        "startLine": 17,
-        "endLine": 17,
+        "startLine": 18,
+        "endLine": 18,
         "snippet": "  --spacing-4: var(--scale-4);"
       },
       "spacing-5": {
         "file": "semantic.css",
-        "startLine": 18,
-        "endLine": 18,
+        "startLine": 19,
+        "endLine": 19,
         "snippet": "  --spacing-5: var(--scale-5);"
       },
       "spacing-6": {
         "file": "semantic.css",
-        "startLine": 19,
-        "endLine": 19,
+        "startLine": 20,
+        "endLine": 20,
         "snippet": "  --spacing-6: var(--scale-6);"
       },
       "spacing-7": {
         "file": "semantic.css",
-        "startLine": 20,
-        "endLine": 20,
+        "startLine": 21,
+        "endLine": 21,
         "snippet": "  --spacing-7: var(--scale-7);"
       },
       "spacing-8": {
         "file": "semantic.css",
-        "startLine": 21,
-        "endLine": 21,
+        "startLine": 22,
+        "endLine": 22,
         "snippet": "  --spacing-8: var(--scale-8);"
       },
       "spacing-9": {
         "file": "semantic.css",
-        "startLine": 22,
-        "endLine": 22,
+        "startLine": 23,
+        "endLine": 23,
         "snippet": "  --spacing-9: var(--scale-9);"
       },
       "spacing-10": {
         "file": "semantic.css",
-        "startLine": 23,
-        "endLine": 23,
+        "startLine": 24,
+        "endLine": 24,
         "snippet": "  --spacing-10: var(--scale-10);"
       },
       "spacing-12": {
         "file": "semantic.css",
-        "startLine": 24,
-        "endLine": 24,
+        "startLine": 25,
+        "endLine": 25,
         "snippet": "  --spacing-12: var(--scale-12);"
       },
       "spacing-14": {
         "file": "semantic.css",
-        "startLine": 25,
-        "endLine": 25,
+        "startLine": 26,
+        "endLine": 26,
         "snippet": "  --spacing-14: var(--scale-14);"
       },
       "spacing-16": {
         "file": "semantic.css",
-        "startLine": 26,
-        "endLine": 26,
+        "startLine": 27,
+        "endLine": 27,
         "snippet": "  --spacing-16: var(--scale-16);"
       },
       "spacing-18": {
         "file": "semantic.css",
-        "startLine": 27,
-        "endLine": 27,
+        "startLine": 28,
+        "endLine": 28,
         "snippet": "  --spacing-18: var(--scale-18);"
       },
       "spacing-20": {
         "file": "semantic.css",
-        "startLine": 28,
-        "endLine": 28,
+        "startLine": 29,
+        "endLine": 29,
         "snippet": "  --spacing-20: var(--scale-20);"
       },
       "radius-0": {
         "file": "semantic.css",
-        "startLine": 31,
-        "endLine": 31,
+        "startLine": 32,
+        "endLine": 32,
         "snippet": "  --radius-0: var(--scale-0);"
       },
       "radius-xs": {
         "file": "semantic.css",
-        "startLine": 32,
-        "endLine": 32,
+        "startLine": 33,
+        "endLine": 33,
         "snippet": "  --radius-xs: var(--scale-3);    /* 12px */"
       },
       "radius-sm": {
         "file": "semantic.css",
-        "startLine": 33,
-        "endLine": 33,
+        "startLine": 34,
+        "endLine": 34,
         "snippet": "  --radius-sm: var(--scale-4);    /* 16px */"
       },
       "radius-md": {
         "file": "semantic.css",
-        "startLine": 34,
-        "endLine": 34,
+        "startLine": 35,
+        "endLine": 35,
         "snippet": "  --radius-md: var(--scale-5);    /* 20px */"
       },
       "radius-lg": {
         "file": "semantic.css",
-        "startLine": 35,
-        "endLine": 35,
+        "startLine": 36,
+        "endLine": 36,
         "snippet": "  --radius-lg: var(--scale-6);    /* 24px */"
       },
       "radius-xl": {
         "file": "semantic.css",
-        "startLine": 36,
-        "endLine": 36,
+        "startLine": 37,
+        "endLine": 37,
         "snippet": "  --radius-xl: var(--scale-8);    /* 32px */"
       },
       "radius-2xl": {
         "file": "semantic.css",
-        "startLine": 37,
-        "endLine": 37,
+        "startLine": 38,
+        "endLine": 38,
         "snippet": "  --radius-2xl: var(--scale-9);   /* 36px */"
       },
       "radius-full": {
         "file": "semantic.css",
-        "startLine": 38,
-        "endLine": 38,
+        "startLine": 39,
+        "endLine": 39,
         "snippet": "  --radius-full: var(--scale-full); /* 888px */"
       },
       "stroke-xs": {
         "file": "semantic.css",
-        "startLine": 41,
-        "endLine": 41,
+        "startLine": 42,
+        "endLine": 42,
         "snippet": "  --stroke-xs: 0.2px;             /* 0.2px */"
       },
       "stroke-sm": {
         "file": "semantic.css",
-        "startLine": 42,
-        "endLine": 42,
+        "startLine": 43,
+        "endLine": 43,
         "snippet": "  --stroke-sm: var(--scale-0125); /* 0.5px */"
       },
       "stroke-md": {
         "file": "semantic.css",
-        "startLine": 43,
-        "endLine": 43,
+        "startLine": 44,
+        "endLine": 44,
         "snippet": "  --stroke-md: var(--scale-025);  /* 1px */"
       },
       "stroke-lg": {
         "file": "semantic.css",
-        "startLine": 44,
-        "endLine": 44,
+        "startLine": 45,
+        "endLine": 45,
         "snippet": "  --stroke-lg: var(--scale-0375); /* 1.5px */"
       },
       "stroke-xl": {
         "file": "semantic.css",
-        "startLine": 45,
-        "endLine": 45,
+        "startLine": 46,
+        "endLine": 46,
         "snippet": "  --stroke-xl: var(--scale-05);   /* 2px */"
       },
       "blur-xs": {
         "file": "semantic.css",
-        "startLine": 48,
-        "endLine": 48,
+        "startLine": 49,
+        "endLine": 49,
         "snippet": "  --blur-xs: var(--scale-0);      /* 0px */"
       },
       "blur-sm": {
         "file": "semantic.css",
-        "startLine": 49,
-        "endLine": 49,
+        "startLine": 50,
+        "endLine": 50,
         "snippet": "  --blur-sm: var(--scale-2);      /* 8px */"
       },
       "blur-md": {
         "file": "semantic.css",
-        "startLine": 50,
-        "endLine": 50,
+        "startLine": 51,
+        "endLine": 51,
         "snippet": "  --blur-md: var(--scale-4);      /* 16px */"
       },
       "blur-lg": {
         "file": "semantic.css",
-        "startLine": 51,
-        "endLine": 51,
+        "startLine": 52,
+        "endLine": 52,
         "snippet": "  --blur-lg: var(--scale-20);     /* 80px */"
       },
       "depth-xs": {
         "file": "semantic.css",
-        "startLine": 54,
-        "endLine": 54,
+        "startLine": 55,
+        "endLine": 55,
         "snippet": "  --depth-xs: var(--scale-0125);  /* 0.5px */"
       },
       "depth-sm": {
         "file": "semantic.css",
-        "startLine": 55,
-        "endLine": 55,
+        "startLine": 56,
+        "endLine": 56,
         "snippet": "  --depth-sm: var(--scale-05);    /* 2px */"
       },
       "depth-md": {
         "file": "semantic.css",
-        "startLine": 56,
-        "endLine": 56,
+        "startLine": 57,
+        "endLine": 57,
         "snippet": "  --depth-md: var(--scale-1);     /* 4px */"
       },
       "depth-lg": {
         "file": "semantic.css",
-        "startLine": 57,
-        "endLine": 57,
+        "startLine": 58,
+        "endLine": 58,
         "snippet": "  --depth-lg: var(--scale-4);     /* 16px */"
       },
       "capsule-xs": {
         "file": "semantic.css",
-        "startLine": 60,
-        "endLine": 60,
+        "startLine": 61,
+        "endLine": 61,
         "snippet": "  --capsule-xs: var(--scale-9);   /* 36px */"
       },
       "capsule-sm": {
         "file": "semantic.css",
-        "startLine": 61,
-        "endLine": 61,
+        "startLine": 62,
+        "endLine": 62,
         "snippet": "  --capsule-sm: var(--scale-10);  /* 40px */"
       },
       "capsule-md": {
         "file": "semantic.css",
-        "startLine": 62,
-        "endLine": 62,
+        "startLine": 63,
+        "endLine": 63,
         "snippet": "  --capsule-md: var(--scale-12);  /* 48px */"
       },
       "capsule-lg": {
         "file": "semantic.css",
-        "startLine": 63,
-        "endLine": 63,
+        "startLine": 64,
+        "endLine": 64,
         "snippet": "  --capsule-lg: var(--scale-13);  /* 52px */"
       },
       "capsule-xl": {
         "file": "semantic.css",
-        "startLine": 64,
-        "endLine": 64,
+        "startLine": 65,
+        "endLine": 65,
         "snippet": "  --capsule-xl: var(--scale-14);  /* 56px */"
       },
       "symbol-xs": {
         "file": "semantic.css",
-        "startLine": 67,
-        "endLine": 67,
+        "startLine": 68,
+        "endLine": 68,
         "snippet": "  --symbol-xs: var(--scale-4);    /* 16px */"
       },
       "symbol-sm": {
         "file": "semantic.css",
-        "startLine": 68,
-        "endLine": 68,
+        "startLine": 69,
+        "endLine": 69,
         "snippet": "  --symbol-sm: var(--scale-5);    /* 20px */"
       },
       "symbol-md": {
         "file": "semantic.css",
-        "startLine": 69,
-        "endLine": 69,
+        "startLine": 70,
+        "endLine": 70,
         "snippet": "  --symbol-md: var(--scale-5-5);  /* 22px */"
       },
       "symbol-lg": {
         "file": "semantic.css",
-        "startLine": 70,
-        "endLine": 70,
+        "startLine": 71,
+        "endLine": 71,
         "snippet": "  --symbol-lg: var(--scale-6);    /* 24px */"
       },
       "avatar-xs": {
         "file": "semantic.css",
-        "startLine": 73,
-        "endLine": 73,
+        "startLine": 74,
+        "endLine": 74,
         "snippet": "  --avatar-xs: var(--scale-4);    /* 16px */"
       },
       "avatar-sm": {
         "file": "semantic.css",
-        "startLine": 74,
-        "endLine": 74,
+        "startLine": 75,
+        "endLine": 75,
         "snippet": "  --avatar-sm: var(--scale-6);    /* 24px */"
       },
       "avatar-md": {
         "file": "semantic.css",
-        "startLine": 75,
-        "endLine": 75,
+        "startLine": 76,
+        "endLine": 76,
         "snippet": "  --avatar-md: var(--scale-8);    /* 32px */"
       },
       "avatar-lg": {
         "file": "semantic.css",
-        "startLine": 76,
-        "endLine": 76,
+        "startLine": 77,
+        "endLine": 77,
         "snippet": "  --avatar-lg: var(--scale-9);    /* 36px */"
       },
       "avatar-xl": {
         "file": "semantic.css",
-        "startLine": 77,
-        "endLine": 77,
+        "startLine": 78,
+        "endLine": 78,
         "snippet": "  --avatar-xl: var(--scale-10);   /* 40px */"
       },
       "avatar-2xl": {
         "file": "semantic.css",
-        "startLine": 78,
-        "endLine": 78,
+        "startLine": 79,
+        "endLine": 79,
         "snippet": "  --avatar-2xl: var(--scale-11);  /* 44px */"
       },
       "avatar-3xl": {
         "file": "semantic.css",
-        "startLine": 79,
-        "endLine": 79,
+        "startLine": 80,
+        "endLine": 80,
         "snippet": "  --avatar-3xl: var(--scale-12);  /* 48px */"
       },
       "avatar-4xl": {
         "file": "semantic.css",
-        "startLine": 80,
-        "endLine": 80,
+        "startLine": 81,
+        "endLine": 81,
         "snippet": "  --avatar-4xl: var(--scale-13);  /* 52px */"
       },
       "avatar-5xl": {
         "file": "semantic.css",
-        "startLine": 81,
-        "endLine": 81,
+        "startLine": 82,
+        "endLine": 82,
         "snippet": "  --avatar-5xl: var(--scale-14);  /* 56px */"
       },
       "button-xs": {
         "file": "semantic.css",
-        "startLine": 84,
-        "endLine": 84,
+        "startLine": 85,
+        "endLine": 85,
         "snippet": "  --button-xs: var(--scale-8);    /* 32px */"
       },
       "button-sm": {
         "file": "semantic.css",
-        "startLine": 85,
-        "endLine": 85,
+        "startLine": 86,
+        "endLine": 86,
         "snippet": "  --button-sm: var(--scale-10);   /* 40px */"
       },
       "button-md": {
         "file": "semantic.css",
-        "startLine": 86,
-        "endLine": 86,
+        "startLine": 87,
+        "endLine": 87,
         "snippet": "  --button-md: var(--scale-12);   /* 48px */"
       },
       "button-lg": {
         "file": "semantic.css",
-        "startLine": 87,
-        "endLine": 87,
+        "startLine": 88,
+        "endLine": 88,
         "snippet": "  --button-lg: var(--scale-14);   /* 56px */"
       },
       "button-xl": {
         "file": "semantic.css",
-        "startLine": 88,
-        "endLine": 88,
+        "startLine": 89,
+        "endLine": 89,
         "snippet": "  --button-xl: var(--scale-15);   /* 60px */"
       },
       "input-xs": {
         "file": "semantic.css",
-        "startLine": 91,
-        "endLine": 91,
+        "startLine": 92,
+        "endLine": 92,
         "snippet": "  --input-xs: var(--scale-8);     /* 32px */"
       },
       "input-sm": {
         "file": "semantic.css",
-        "startLine": 92,
-        "endLine": 92,
+        "startLine": 93,
+        "endLine": 93,
         "snippet": "  --input-sm: var(--scale-10);    /* 40px */"
       },
       "input-md": {
         "file": "semantic.css",
-        "startLine": 93,
-        "endLine": 93,
+        "startLine": 94,
+        "endLine": 94,
         "snippet": "  --input-md: var(--scale-12);    /* 48px */"
       },
       "input-lg": {
         "file": "semantic.css",
-        "startLine": 94,
-        "endLine": 94,
+        "startLine": 95,
+        "endLine": 95,
         "snippet": "  --input-lg: var(--scale-13);    /* 52px */"
       },
       "input-xl": {
         "file": "semantic.css",
-        "startLine": 95,
-        "endLine": 95,
+        "startLine": 96,
+        "endLine": 96,
         "snippet": "  --input-xl: var(--scale-14);    /* 56px */"
       },
       "dropdown-xs": {
         "file": "semantic.css",
-        "startLine": 96,
-        "endLine": 96,
+        "startLine": 97,
+        "endLine": 97,
         "snippet": "  --dropdown-xs: var(--scale-8);  /* 32px */"
       },
       "dropdown-sm": {
         "file": "semantic.css",
-        "startLine": 97,
-        "endLine": 97,
+        "startLine": 98,
+        "endLine": 98,
         "snippet": "  --dropdown-sm: var(--scale-10); /* 40px */"
       },
       "dropdown-md": {
         "file": "semantic.css",
-        "startLine": 98,
-        "endLine": 98,
+        "startLine": 99,
+        "endLine": 99,
         "snippet": "  --dropdown-md: var(--scale-12); /* 48px */"
       },
       "dropdown-lg": {
         "file": "semantic.css",
-        "startLine": 99,
-        "endLine": 99,
+        "startLine": 100,
+        "endLine": 100,
         "snippet": "  --dropdown-lg: var(--scale-13); /* 52px */"
       },
       "dropdown-xl": {
         "file": "semantic.css",
-        "startLine": 100,
-        "endLine": 100,
+        "startLine": 101,
+        "endLine": 101,
         "snippet": "  --dropdown-xl: var(--scale-14); /* 56px */"
       },
       "tag-sm": {
         "file": "semantic.css",
-        "startLine": 103,
-        "endLine": 103,
+        "startLine": 104,
+        "endLine": 104,
         "snippet": "  --tag-sm: var(--scale-4);       /* 16px */"
       },
       "tag-md": {
         "file": "semantic.css",
-        "startLine": 104,
-        "endLine": 104,
+        "startLine": 105,
+        "endLine": 105,
         "snippet": "  --tag-md: var(--scale-5);       /* 20px */"
       },
       "tag-lg": {
         "file": "semantic.css",
-        "startLine": 105,
-        "endLine": 105,
+        "startLine": 106,
+        "endLine": 106,
         "snippet": "  --tag-lg: var(--scale-6);       /* 24px */"
       },
       "checkbox-sm": {
         "file": "semantic.css",
-        "startLine": 106,
-        "endLine": 106,
+        "startLine": 107,
+        "endLine": 107,
         "snippet": "  --checkbox-sm: var(--scale-4);  /* 16px */"
       },
       "checkbox-md": {
         "file": "semantic.css",
-        "startLine": 107,
-        "endLine": 107,
+        "startLine": 108,
+        "endLine": 108,
         "snippet": "  --checkbox-md: var(--scale-5);  /* 20px */"
       },
       "checkbox-lg": {
         "file": "semantic.css",
-        "startLine": 108,
-        "endLine": 108,
+        "startLine": 109,
+        "endLine": 109,
         "snippet": "  --checkbox-lg: var(--scale-6);  /* 24px */"
       },
       "radio-sm": {
         "file": "semantic.css",
-        "startLine": 109,
-        "endLine": 109,
+        "startLine": 110,
+        "endLine": 110,
         "snippet": "  --radio-sm: var(--scale-4);     /* 16px */"
       },
       "radio-md": {
         "file": "semantic.css",
-        "startLine": 110,
-        "endLine": 110,
+        "startLine": 111,
+        "endLine": 111,
         "snippet": "  --radio-md: var(--scale-5);     /* 20px */"
       },
       "radio-lg": {
         "file": "semantic.css",
-        "startLine": 111,
-        "endLine": 111,
+        "startLine": 112,
+        "endLine": 112,
         "snippet": "  --radio-lg: var(--scale-6);     /* 24px */"
       },
       "switch-sm": {
         "file": "semantic.css",
-        "startLine": 112,
-        "endLine": 112,
+        "startLine": 113,
+        "endLine": 113,
         "snippet": "  --switch-sm: var(--scale-4);    /* 16px */"
       },
       "switch-md": {
         "file": "semantic.css",
-        "startLine": 113,
-        "endLine": 113,
+        "startLine": 114,
+        "endLine": 114,
         "snippet": "  --switch-md: var(--scale-5);    /* 20px */"
       },
       "switch-lg": {
         "file": "semantic.css",
-        "startLine": 114,
-        "endLine": 114,
+        "startLine": 115,
+        "endLine": 115,
         "snippet": "  --switch-lg: var(--scale-6);    /* 24px */"
       },
       "reddot": {
         "file": "semantic.css",
-        "startLine": 115,
-        "endLine": 115,
+        "startLine": 116,
+        "endLine": 116,
         "snippet": "  --reddot: var(--scale-2-5);     /* 10px */"
       }
     },

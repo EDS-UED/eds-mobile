@@ -50,6 +50,8 @@ export type DocCustomizeHeadingControl = {
   kind: 'heading';
   key: string;
   label: string;
+  /** 标题行右侧开关 — 绑定 Customize boolean state key。 */
+  toggleKey?: string;
   row?: number;
   visibleWhen?: (state: Record<string, unknown>) => boolean;
 };

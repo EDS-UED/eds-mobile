@@ -3,6 +3,7 @@ import type { StyleProp, ViewStyle } from 'react-native';
 
 import type { EgMenuItem } from '../../molecules/dropdown/menu/EgMenu.types.js';
 import type { MotionPressIntensity } from '../../shared/themeScalars.js';
+import type { ToggleSize } from '../../shared/types.js';
 import type { ThemeMode } from '../../theme/index.js';
 
 export type EgItemTrailingDisplay = 'icon' | 'menu' | 'switch' | 'custom';
@@ -30,6 +31,8 @@ export type EgItemProps = {
   switchValue?: boolean;
   defaultSwitchValue?: boolean;
   onSwitchValueChange?: (value: boolean) => void;
+  /** `switch` — `EgSwitch` 尺寸 · 默认 `md` */
+  switchSize?: ToggleSize;
   /** `custom` — 业务右侧插槽（优先于内置挂件） */
   trailing?: ReactNode;
   /** 行底 module 分割线（缩进对齐图标后文案）· 默认 `true` */

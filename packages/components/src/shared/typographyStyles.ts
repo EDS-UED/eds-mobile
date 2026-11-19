@@ -132,6 +132,11 @@ export function linkLabelWeight(size: Extract<ControlSize, 'lg' | 'md' | 'sm'>):
   }
 }
 
+/** Message · `typography-footnote-strong`。 */
+export function messageTypography(): TextPreset {
+  return FOOTNOTE_STRONG;
+}
+
 /** Tag · lg/md → `typography-footnote-strong` · sm → `typography-bar`。 */
 export function tagTypography(size: TagSize): TextPreset {
   switch (size) {

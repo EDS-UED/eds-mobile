@@ -11,6 +11,7 @@ alwaysApply: true
 
 ## 0. Agent 执行范围
 
+- **【必须】改本仓前须用户当次授权**：用户消息须明确允许改 EDS（或点名组件/文件）；未授权 → 只读、说明、列拟改范围并**询问**。授权范围以外（Showcase、token、`generate-catalog`、build）**禁止**擅自扩大；**上一任务授权不延续到下一任务**（与 consumer `work.md` §3.1 一致）
 - 只改 `eds-mobile` 仓库；**最小 diff**
 - **RN 默认栈** → §6.0（无明确原生增强声明，一律 RN 同路径；禁止默认分叉）
 - token 无 spec → **停改**，先问

@@ -13,7 +13,7 @@ export function hitTestMenuItemAtY(y: number, rects: EgMenuItemHitRect[]): EgMen
 
   for (let i = 0; i < rects.length; i += 1) {
     const rect = rects[i];
-    if (y >= rect.top && y < rect.bottom) {
+    if (y >= rect.top && y <= rect.bottom) {
       return rect;
     }
   }

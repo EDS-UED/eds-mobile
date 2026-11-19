@@ -42,6 +42,7 @@ export { EgOptionButton } from './molecules/button/option-button';
 export { EgComboActionButton } from './molecules/button/combo-action-button';
 export { EgComboActionButtonAlt } from './molecules/button/combo-action-button-alt';
 export { EgSymbolAction } from './molecules/button/button-symbol';
+export type { EgSymbolActionProps, EgSymbolActionTone } from './molecules/button/button-symbol';
 export {
   EgGlassCapsule,
   EgGlassCapsuleNavAvatarFrame,
@@ -95,6 +96,7 @@ export { EgFormSubmission } from './molecules/feedback/form-submission';
 export { EgStatusCard } from './molecules/feedback/status-card';
 export { EgToast } from './molecules/feedback/toast';
 export { EgMessage } from './molecules/feedback/message';
+export type { EgMessageProps, EgMessageTone } from './molecules/feedback/message';
 export { EgStreamer } from './molecules/feedback/streamer';
 export { EgReddot } from './molecules/feedback/reddot';
 export {
@@ -335,11 +337,16 @@ export type {
   EgMenuTriggerProps,
 } from './molecules/dropdown/menu';
 export { EgSheets } from './organisms/sheets';
-export type { EgSheetsDetent, EgSheetsProps } from './organisms/sheets';
+export type {
+  EgSheetsActionsBlankCompensation,
+  EgSheetsDetent,
+  EgSheetsProps,
+} from './organisms/sheets';
 export {
   EgDataList,
   EgDataListPrimaryText,
   EgDataListReddot,
+  EgDataListMessage,
   EgDataListRow,
   EgDataListSubText,
   egDataListPrimaryTextStyle,
@@ -360,6 +367,7 @@ export type {
   EgDataListPrimaryWeight,
   EgDataListProps,
   EgDataListReddotProps,
+  EgDataListMessageProps,
   EgDataListRowProps,
   EgDataListRowLayout,
   EgDataListSubTextProps,

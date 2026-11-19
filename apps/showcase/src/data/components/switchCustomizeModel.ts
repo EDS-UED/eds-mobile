@@ -25,9 +25,9 @@ export const switchCustomizeControls: DocCustomizeControl[] = [
     key: 'size',
     label: '尺寸',
     options: [
-      { value: 'lg', label: 'LG（token 轨 · RN）' },
-      { value: 'md', label: 'MD（token 轨 · RN）' },
-      { value: 'sm', label: 'SM（token 轨 · RN）' },
+      { value: 'lg', label: 'LG' },
+      { value: 'md', label: 'MD' },
+      { value: 'sm', label: 'SM' },
     ],
   },
   {

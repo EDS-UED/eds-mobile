@@ -4,6 +4,8 @@ export { EgDataListRow } from './EgDataListRow.js';
 export type { EgDataListRowProps } from './EgDataListRow.types.js';
 export { EgDataListReddot } from './EgDataListReddot.js';
 export type { EgDataListReddotProps } from './EgDataListReddot.js';
+export { EgDataListMessage } from './EgDataListMessage.js';
+export type { EgDataListMessageProps } from './EgDataListMessage.js';
 export { EgDataListPrimaryText } from './EgDataListPrimaryText.js';
 export type { EgDataListPrimaryTextProps } from './EgDataListPrimaryText.js';
 export { EgDataListSubText } from './EgDataListSubText.js';

@@ -1,4 +1,5 @@
 import type { DocCustomizeControl } from './types.js';
+import { SHOWCASE_SIZE_OPTIONS_XL_TO_XS } from './showcaseSizeOptions.js';
 
 export const MENU_MAX_SECTIONS = 6;
 export const MENU_MAX_ITEMS = 6;
@@ -248,13 +249,7 @@ export const menuTriggerCustomizeControls: DocCustomizeControl[] = [
     kind: 'select',
     key: 'size',
     label: '胶囊尺寸',
-    options: [
-      { value: 'xl', label: 'XL' },
-      { value: 'lg', label: 'LG' },
-      { value: 'md', label: 'MD' },
-      { value: 'sm', label: 'SM' },
-      { value: 'xs', label: 'XS' },
-    ],
+    options: [...SHOWCASE_SIZE_OPTIONS_XL_TO_XS],
   },
   { kind: 'text', key: 'triggerIcon', label: '胶囊 icon' },
   { kind: 'boolean', key: 'disabled', label: '禁用' },

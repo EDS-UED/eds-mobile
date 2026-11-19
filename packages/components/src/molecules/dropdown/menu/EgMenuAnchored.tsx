@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -9,7 +10,7 @@ import {
   View,
   type LayoutChangeEvent,
 } from 'react-native';
-import { GestureDetector } from 'react-native-gesture-handler';
+import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
   useAnimatedReaction,
@@ -28,6 +29,7 @@ import { EgGlass } from '../../../atoms/glass/EgGlass.js';
 import { rnGlassBoxOuterShadowHostStyle } from '../../../atoms/glass/glassBoxRnStyle.js';
 import { resolveGlassBoxComposition } from '../../../atoms/glass/resolveGlassBox.js';
 import { edsFontStyle } from '../../../shared/fontFamily.js';
+import { SmoothCornerView } from '../../../shared/smoothCorner/SmoothCornerView.js';
 import { fieldTypography } from '../../../shared/typographyStyles.js';
 import { getThemeColors, mobileTheme } from '../../../theme/index.js';
 import {
@@ -86,6 +88,11 @@ const REDUCED_MOTION_FADE_MS = 180;
 
 type MenuRowMeasurable = {
   measureInWindow: (callback: (x: number, y: number, width: number, height: number) => void) => void;
+  measureLayout: (
+    relativeToNativeNode: MenuRowMeasurable,
+    onSuccess: (x: number, y: number, width: number, height: number) => void,
+    onFail?: () => void,
+  ) => void;
 };
 
 type MeasurableNode = {
@@ -188,6 +195,8 @@ function EgMenuPanel({
   const innerRef = useRef(null as MenuRowMeasurable | null);
   const rebuildGenerationRef = useRef(0);
   const layoutsShared = useSharedValue<EgMenuItemHitRect[]>([]);
+  const innerOriginY = useSharedValue(0);
+  const scrollOffsetY = useSharedValue(0);
 
   const rebuildHitRects = useCallback(() => {
     const generation = rebuildGenerationRef.current + 1;
@@ -201,7 +210,7 @@ function EgMenuPanel({
 
     const targets = flatItems.flatMap((item) => {
       const node = rowRefs.current.get(item.id);
-      if (!node?.measureInWindow) {
+      if (!node?.measureLayout) {
         return [];
       }
       return [{ item, node }];
@@ -212,28 +221,49 @@ function EgMenuPanel({
       return;
     }
 
-    inner.measureInWindow((_innerX: number, _innerY: number) => {
+    inner.measureInWindow((_innerX: number, innerY: number) => {
       if (rebuildGenerationRef.current !== generation) {
         return;
       }
+      innerOriginY.value = innerY;
 
       let remaining = targets.length;
       const measured: EgMenuItemHitRect[] = [];
 
+      const finish = () => {
+        remaining -= 1;
+        if (remaining === 0) {
+          layoutsShared.value = measured.slice().sort((a, b) => a.top - b.top);
+        }
+      };
+
       targets.forEach(({ item, node }) => {
-        node.measureInWindow((_x: number, y: number, _w: number, h: number) => {
-          if (rebuildGenerationRef.current !== generation) {
-            return;
-          }
-          measured.push({ top: y, bottom: y + h, itemId: item.id });
-          remaining -= 1;
-          if (remaining === 0) {
-            layoutsShared.value = measured.slice().sort((a, b) => a.top - b.top);
-          }
-        });
+        node.measureLayout(
+          inner,
+          (_x: number, y: number, _w: number, h: number) => {
+            if (rebuildGenerationRef.current !== generation) {
+              return;
+            }
+            measured.push({ top: y, bottom: y + h, itemId: item.id });
+            finish();
+          },
+          () => {
+            if (rebuildGenerationRef.current !== generation) {
+              return;
+            }
+            if (node.measureInWindow) {
+              node.measureInWindow((_wx: number, wy: number, _ww: number, wh: number) => {
+                measured.push({ top: wy - innerY, bottom: wy - innerY + wh, itemId: item.id });
+                finish();
+              });
+              return;
+            }
+            finish();
+          },
+        );
       });
     });
-  }, [flatItems, layoutsShared]);
+  }, [flatItems, innerOriginY, layoutsShared]);
 
   const rebuildScheduledRef = useRef(false);
   const scheduleRebuildHitRects = useCallback(() => {
@@ -269,6 +299,8 @@ function EgMenuPanel({
   const { gesture, hoverItemId } = useEgMenuTrackInteraction({
     disabled: false,
     layoutsShared,
+    innerOriginY,
+    scrollOffsetY,
     isItemDisabled,
     onTapItem: handleTapItem,
     onTrackActiveChange: setTrackActive,
@@ -292,6 +324,9 @@ function EgMenuPanel({
         },
         scroll: {
           maxHeight: maxScrollHeight,
+        },
+        innerTrack: {
+          width: menuWidth,
         },
         inner: {
           position: 'relative',
@@ -317,6 +352,8 @@ function EgMenuPanel({
           paddingVertical: itemPadV,
           borderRadius: itemRadius,
           borderCurve: 'continuous',
+          // Android RN 点按底须裁切圆角；iOS 保持 visible 与 EgDataListRow 一致。
+          overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
         },
         rowPressed: {
           backgroundColor: colors[itemPressBgToken] as string,
@@ -379,20 +416,26 @@ function EgMenuPanel({
   }, [sections]);
 
   const menuScroll = (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={{
-        paddingHorizontal: containerPadH,
-        paddingVertical: containerPadV,
-      }}
-      keyboardShouldPersistTaps="handled"
-      scrollEnabled={needsScroll && !trackActive}
-      onContentSizeChange={(_, height) => {
-        setContentHeight(height);
-        scheduleRebuildHitRects();
-      }}
-    >
-      <GestureDetector gesture={gesture}>
+    <GestureDetector gesture={gesture}>
+      <View collapsable={false} style={styles.innerTrack}>
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={{
+            paddingHorizontal: containerPadH,
+            paddingVertical: containerPadV,
+          }}
+          keyboardShouldPersistTaps="handled"
+          nestedScrollEnabled
+          scrollEnabled={needsScroll && !trackActive}
+          scrollEventThrottle={16}
+          onScroll={(event) => {
+            scrollOffsetY.value = event.nativeEvent.contentOffset.y;
+          }}
+          onContentSizeChange={(_, height) => {
+            setContentHeight(height);
+            scheduleRebuildHitRects();
+          }}
+        >
         <View
           ref={(node) => {
             innerRef.current = node as unknown as MenuRowMeasurable | null;
@@ -440,15 +483,19 @@ function EgMenuPanel({
                             rowRefs.current.delete(item.id);
                           }
                         }}
+                        collapsable={false}
+                        onLayout={scheduleRebuildHitRects}
+                        style={itemIndex > 0 ? { marginTop: itemRowGap } : undefined}
+                      >
+                      <SmoothCornerView
+                        radius={itemRadius}
                         accessibilityRole="menuitem"
                         accessibilityState={{ selected, disabled: item.disabled }}
                         style={[
                           styles.row,
                           rowHover ? styles.rowPressed : null,
-                          itemIndex > 0 ? { marginTop: itemRowGap } : null,
                           item.disabled ? styles.labelDisabled : null,
                         ]}
-                        onLayout={scheduleRebuildHitRects}
                       >
                         {item.icon ? (
                           <View style={styles.iconSlot}>
@@ -481,6 +528,7 @@ function EgMenuPanel({
                             />
                           </View>
                         ) : null}
+                      </SmoothCornerView>
                       </View>
                     </EgMenuRevealRow>
                   );
@@ -490,8 +538,9 @@ function EgMenuPanel({
             );
           })}
         </View>
-      </GestureDetector>
-    </ScrollView>
+        </ScrollView>
+      </View>
+    </GestureDetector>
   );
 
   return (
@@ -610,6 +659,8 @@ export function EgMenuAnchored(props: EgMenuProps) {
         floater: {
           position: 'absolute',
           width: menuWidth,
+          zIndex: 1,
+          ...(Platform.OS === 'android' ? { elevation: 8 } : null),
         },
         shell: {
           overflow: 'hidden',
@@ -826,7 +877,10 @@ export function EgMenuAnchored(props: EgMenuProps) {
 
       {mounted ? (
         <Modal visible transparent animationType="none" onRequestClose={closeMenu}>
-          <View style={shellStyles.modalRoot} pointerEvents={open ? 'box-none' : 'none'}>
+          <GestureHandlerRootView
+            style={shellStyles.modalRoot}
+            pointerEvents={open ? 'box-none' : 'none'}
+          >
             <Pressable style={shellStyles.dismissLayer} onPress={closeMenu} accessibilityLabel="关闭菜单" />
             {frame ? (
               <Animated.View
@@ -885,7 +939,7 @@ export function EgMenuAnchored(props: EgMenuProps) {
                 </Animated.View>
               </Animated.View>
             ) : null}
-          </View>
+          </GestureHandlerRootView>
         </Modal>
       ) : null}
     </>

@@ -82,6 +82,14 @@ import {
   LINK_BUTTON_SHOWCASE_TONES,
   type ButtonShowcaseTone,
 } from './buttonShowcaseModel.js';
+import {
+  SHOWCASE_AVATAR_SIZE_OPTIONS,
+  SHOWCASE_AVATAR_SIZE_OPTIONS_TO_2XL,
+  SHOWCASE_SIZE_OPTIONS_LG_TO_SM,
+  SHOWCASE_SIZE_OPTIONS_LG_TO_XS,
+  SHOWCASE_SIZE_OPTIONS_XL_TO_XS,
+  SHOWCASE_SYMBOL_SIZE_OPTIONS,
+} from './showcaseSizeOptions.js';
 
 export type RnDocConfig = {
   componentTag: string;
@@ -111,13 +119,7 @@ const FIELD_EVENTS = [
   { value: 'disable', label: '禁用' },
 ] as const;
 
-const CONTROL_SIZES = [
-  { value: 'xl', label: 'XL' },
-  { value: 'lg', label: 'LG' },
-  { value: 'md', label: 'MD' },
-  { value: 'sm', label: 'SM' },
-  { value: 'xs', label: 'XS' },
-] as const;
+const CONTROL_SIZES = SHOWCASE_SIZE_OPTIONS_XL_TO_XS;
 
 const fieldCustomizeControls: DocCustomizeControl[] = [
   {
@@ -233,6 +235,13 @@ import { EgSheets } from '@eds/mobile-components';`,
       { name: 'children', type: 'ReactNode', defaultValue: 'undefined', description: '内容插槽 · 顶栏下方滚动区；最高档可滚动，自适应档按其高度定档' },
       { name: 'actions', type: 'ReactNode', defaultValue: 'undefined', description: '底部 action 插槽 · 始终贴当前档位底边；缺省一个 EgBrandButton「确认」（点击收起），传入即替换，按钮数量 / 样式 / 组合由业务自定义' },
       { name: 'showActions', type: 'boolean', defaultValue: 'true', description: '显示底部 action 插槽' },
+      {
+        name: 'actionsBlankCompensation',
+        type: 'EgSheetsActionsBlankCompensation',
+        defaultValue: 'undefined',
+        description:
+          '留白补偿 · `showActions` 且 detents 含 `adaptive` 时从自适应高度扣减对应 spacing（px）；未传则保持既有算法',
+      },
       { name: 'contentStyle', type: 'StyleProp<ViewStyle>', defaultValue: 'undefined', description: '内容插槽容器样式（默认左右 / 底部 spacing-5）' },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
@@ -400,7 +409,7 @@ function dataListBodyDoc(): RnDocConfig {
     componentTag: 'EgDataList',
     previewSlug: 'data-list-body',
     importCode: `// 父级 Scene 须有 spacing-5 水平 padding；列表区 DL-bleed
-import { EgDataList, EgDataListReddot, EgDataListRow } from '@eds/mobile-components';`,
+import { EgDataList, EgDataListMessage, EgDataListReddot, EgDataListRow } from '@eds/mobile-components';`,
     customizeDefaults: { ...dataListCustomizeDefaults },
     customizeControls: dataListComponentCustomizeControls,
     customizeSlotControls: dataListSlotCustomizeControls,
@@ -436,6 +445,7 @@ import { EgDataList, EgDataListReddot, EgDataListRow } from '@eds/mobile-compone
       'widgetShowTime',
       'widgetShowTag',
       'widgetShowCustom',
+      'widgetShowMessage',
       'widgetShowRedDot',
       'rowCount',
       'interactive',
@@ -860,12 +870,57 @@ function dividerDoc(): RnDocConfig {
   };
 }
 
+const SYMBOL_ACTION_SHOWCASE_TONES = [
+  { value: 'brand', label: '品牌' },
+  { value: 'decor', label: '装饰' },
+  { value: 'danger', label: '危险' },
+  { value: 'shallow', label: '浅' },
+  { value: 'plain', label: '无背景' },
+] as const;
+
+const MESSAGE_SHOWCASE_TONES = [
+  { value: 'brand', label: '品牌' },
+  { value: 'decor', label: '装饰' },
+  { value: 'danger', label: '危险' },
+  { value: 'shallow', label: '浅' },
+] as const;
+
+function messageDoc(): RnDocConfig {
+  const defaults = { tone: 'brand', label: '9' };
+  return {
+    componentTag: 'EgMessage',
+    previewSlug: 'feedback-message',
+    importCode: `import { EgMessage } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      {
+        kind: 'select',
+        key: 'tone',
+        label: '色调',
+        options: [...MESSAGE_SHOWCASE_TONES],
+      },
+      { kind: 'text', key: 'label', label: '文案' },
+    ],
+    propRows: [
+      {
+        name: 'tone',
+        type: "'brand' | 'decor' | 'danger' | 'shallow'",
+        defaultValue: "'brand'",
+        description: '色调 · material / status',
+      },
+      { name: 'label', type: 'string', defaultValue: "'9'", description: '短文案或数字' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+    ],
+    propQueryKeys: ['tone', 'label'],
+    buildUsageSnippet: (state) => buildRnSelfClosingSnippet('EgMessage', state, { defaults }),
+  };
+}
+
 function symbolActionDoc(): RnDocConfig {
   const defaults = {
     size: 'md',
-    variant: 'solid',
-    figmaType: 'primary',
-    label: '+',
+    tone: 'brand',
+    icon: 'eds-add',
     disabled: false,
     loading: false,
   };
@@ -877,41 +932,41 @@ function symbolActionDoc(): RnDocConfig {
     customizeControls: [
       {
         kind: 'select',
-        key: 'variant',
-        label: '风格',
-        options: [...BUTTON_SHOWCASE_VARIANTS],
+        key: 'tone',
+        label: '色调',
+        options: [...SYMBOL_ACTION_SHOWCASE_TONES],
       },
       {
         kind: 'select',
         key: 'size',
         label: '尺寸',
-        options: [...BUTTON_SHOWCASE_SIZES],
+        options: [...SHOWCASE_SIZE_OPTIONS_XL_TO_XS],
       },
-      { kind: 'text', key: 'label', label: '符号文案' },
+      { kind: 'text', key: 'icon', label: '符号' },
       { kind: 'boolean', key: 'disabled', label: '禁用' },
       { kind: 'boolean', key: 'loading', label: '加载' },
     ],
     propRows: [
       {
-        name: 'figmaType',
-        type: "'primary' | 'secondary' | 'tertiary'",
-        defaultValue: "'primary'",
-        description: '实心 / 描边 / 浅底 · 由 showcase variant 映射',
+        name: 'tone',
+        type: "'brand' | 'decor' | 'danger' | 'shallow' | 'plain'",
+        defaultValue: "'brand'",
+        description: '色调 · material / status / event-tap',
       },
-      { name: 'size', type: "'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '圆钮直径（capsule token）' },
-      { name: 'label', type: 'string', defaultValue: "'+'", description: '圆内文案（常为 + / −）' },
+      {
+        name: 'size',
+        type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'",
+        defaultValue: "'md'",
+        description: '容器 scale-14…7 · 图标 symbol-md/sm/xs',
+      },
+      { name: 'icon', type: 'string', defaultValue: "'eds-add'", description: 'EDS icon 资源名' },
       { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
       { name: 'loading', type: 'boolean', defaultValue: 'false', description: '加载' },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
-    propQueryKeys: ['variant', 'size', 'label', 'disabled', 'loading'],
+    propQueryKeys: ['tone', 'size', 'icon', 'disabled', 'loading'],
     buildUsageSnippet: (state) => {
-      const figmaType = buttonShowcaseVariantToFigmaType(String(state.variant ?? 'solid'));
-      return buildRnSelfClosingSnippet(
-        'EgSymbolAction',
-        { ...state, figmaType },
-        { defaults },
-      );
+      return buildRnSelfClosingSnippet('EgSymbolAction', state, { defaults });
     },
   };
 }
@@ -968,12 +1023,7 @@ function symbolBodyDoc(): RnDocConfig {
         kind: 'select',
         key: 'size',
         label: '尺寸',
-        options: [
-          { value: 'xs', label: 'xs' },
-          { value: 'sm', label: 'sm' },
-          { value: 'md', label: 'md' },
-          { value: 'lg', label: 'lg' },
-        ],
+        options: [...SHOWCASE_SYMBOL_SIZE_OPTIONS],
       },
       {
         kind: 'select',
@@ -1015,17 +1065,7 @@ function symbolBodyDoc(): RnDocConfig {
 }
 
 function avatarBodyDoc(): RnDocConfig {
-  const avatarSizeOptions = [
-    { value: 'xs', label: 'xs · 16px' },
-    { value: 'sm', label: 'sm · 24px' },
-    { value: 'md', label: 'md · 32px' },
-    { value: 'lg', label: 'lg · 36px' },
-    { value: 'xl', label: 'xl · 40px' },
-    { value: '2xl', label: '2xl · 44px' },
-    { value: '3xl', label: '3xl · 48px' },
-    { value: '4xl', label: '4xl · 52px' },
-    { value: '5xl', label: '5xl · 56px' },
-  ] as const;
+  const avatarSizeOptions = SHOWCASE_AVATAR_SIZE_OPTIONS;
   const colorIndexOptions = [
     { value: 'auto', label: '自动（按 name）' },
     ...Array.from({ length: AVATAR_NATIVE_PALETTE_SIZE }, (_, index) => ({
@@ -1114,14 +1154,7 @@ function avatarPreset0Doc(): RnDocConfig {
         kind: 'select',
         key: 'size',
         label: '尺寸',
-        options: [
-          { value: 'xs', label: 'xs' },
-          { value: 'sm', label: 'sm' },
-          { value: 'md', label: 'md' },
-          { value: 'lg', label: 'lg' },
-          { value: 'xl', label: 'xl' },
-          { value: '2xl', label: '2xl' },
-        ],
+        options: [...SHOWCASE_AVATAR_SIZE_OPTIONS_TO_2XL],
       },
     ],
     propRows: [
@@ -1146,14 +1179,7 @@ function avatarPreset1Doc(): RnDocConfig {
         kind: 'select',
         key: 'size',
         label: '尺寸',
-        options: [
-          { value: 'xs', label: 'xs' },
-          { value: 'sm', label: 'sm' },
-          { value: 'md', label: 'md' },
-          { value: 'lg', label: 'lg' },
-          { value: 'xl', label: 'xl' },
-          { value: '2xl', label: '2xl' },
-        ],
+        options: [...SHOWCASE_AVATAR_SIZE_OPTIONS_TO_2XL],
       },
     ],
     propRows: [
@@ -1779,7 +1805,7 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         label: '色调',
         options: [...LINK_BUTTON_SHOWCASE_TONES],
       },
-      { kind: 'select', key: 'size', label: '尺寸', options: [{ value: 'lg', label: 'LG' }, { value: 'md', label: 'MD' }, { value: 'sm', label: 'SM' }] },
+      { kind: 'select', key: 'size', label: '尺寸', options: [...SHOWCASE_SIZE_OPTIONS_LG_TO_SM] },
       { kind: 'text', key: 'label', label: '文案' },
     ],
     propRows: [
@@ -1860,12 +1886,7 @@ import { EgGlassCapsule } from '@eds/mobile-components';`,
         kind: 'select',
         key: 'size',
         label: '尺寸',
-        options: [
-          { value: 'lg', label: 'LG' },
-          { value: 'md', label: 'MD' },
-          { value: 'sm', label: 'SM' },
-          { value: 'xs', label: 'XS' },
-        ],
+        options: [...SHOWCASE_SIZE_OPTIONS_LG_TO_XS],
         visibleWhen: (state) => state.kind === 'text' || state.kind === undefined,
       },
       {
@@ -2114,6 +2135,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
   'input-combo-input-group': minimalDoc('EgInputGroup', 'input-combo-input-group'),
   'input-combo-text-input': minimalDoc('EgComboTextInput', 'input-combo-text-input'),
   'input-combo-textarea-input': minimalDoc('EgComboTextareaInput', 'input-combo-textarea-input'),
+  'feedback-message': messageDoc(),
   divider: dividerDoc(),
   'glass-eg': egGlassShowcaseDoc(),
   'glass-scroll-edge': egScrollEdgeShowcaseDoc(),

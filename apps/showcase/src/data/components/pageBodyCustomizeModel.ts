@@ -6,16 +6,13 @@ import {
 
 import type { DocCustomizeControl } from './types.js';
 
+import { SHOWCASE_PAGE_PADDING_PRESET_SIZE_OPTIONS } from './showcaseSizeOptions.js';
+
 export const PAGE_BODY_CONTENT_PADDING_TOP_PRESET_OPTIONS: {
   value: EgPageContentPaddingTopPreset | 'custom';
   label: string;
 }[] = [
-  { value: 'xs', label: 'xs · 0' },
-  { value: 'sm', label: 'sm · 4px' },
-  { value: 'md', label: 'md · 8px' },
-  { value: 'lg', label: 'lg · 12px（默认）' },
-  { value: 'xl', label: 'xl · 16px' },
-  { value: '2xl', label: '2xl · 20px' },
+  ...SHOWCASE_PAGE_PADDING_PRESET_SIZE_OPTIONS,
   { value: 'custom', label: '自定义' },
 ];
 

@@ -6,6 +6,7 @@ import {
   EgCryptoBtc,
   EgDataList,
   EgDataListPrimaryText,
+  EgDataListMessage,
   EgDataListReddot,
   EgDataListRow,
   EgDataListSubText,
@@ -247,8 +248,13 @@ function DataListDemoRow({
             numberOfLines={EG_DATA_LIST_SUB_TEXT_MAX_LINES}
             ellipsizeMode="tail"
           />
-          {widgetFlags.showRedDot ? (
-            <EgDataListReddot mode={mode} accessibilityLabel="未读" />
+          {widgetFlags.showMessage || widgetFlags.showRedDot ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing['spacing-2'] as number }}>
+              {widgetFlags.showMessage ? (
+                <EgDataListMessage mode={mode} label="9" accessibilityLabel="未读计数" />
+              ) : null}
+              {widgetFlags.showRedDot ? <EgDataListReddot mode={mode} accessibilityLabel="未读" /> : null}
+            </View>
           ) : null}
         </View>
         {descriptionEnabled ? (
@@ -298,7 +304,6 @@ export function ShowcaseEgDataListPreview(props: ShowcaseEgDataListPreviewProps)
 const styles = StyleSheet.create({
   rail: {
     alignSelf: 'stretch',
-    paddingVertical: mobileTheme.spacing['spacing-4'] as number,
     overflow: 'visible',
   },
 });

@@ -2,16 +2,13 @@ import type { EgSymbolSize } from '@eds/mobile-components';
 import type { EgDataListPrimaryWeight } from '@eds/mobile-components';
 
 import type { DocCustomizeControl } from './types.js';
+import { SHOWCASE_SIZE_OPTIONS_SM_TO_LG, SHOWCASE_SYMBOL_SIZE_OPTIONS } from './showcaseSizeOptions.js';
 
 export type DataListGraphicSize = 'sm' | 'md' | 'lg';
 export type DataListGraphicType = 'crypto' | 'avatar' | 'icon' | 'custom';
 export type DataListPrimaryWeight = EgDataListPrimaryWeight;
 
-export const DATA_LIST_GRAPHIC_SIZES = [
-  { value: 'sm', label: 'SM · avatar-lg' },
-  { value: 'md', label: 'MD · avatar-xl（默认）' },
-  { value: 'lg', label: 'LG · avatar-3xl' },
-] as const;
+export const DATA_LIST_GRAPHIC_SIZES = [...SHOWCASE_SIZE_OPTIONS_SM_TO_LG];
 
 export const DATA_LIST_GRAPHIC_TYPES = [
   { value: 'crypto', label: '币种 · EgCrypto' },
@@ -20,12 +17,7 @@ export const DATA_LIST_GRAPHIC_TYPES = [
   { value: 'custom', label: '自定义' },
 ] as const;
 
-export const DATA_LIST_ICON_SYMBOL_SIZES = [
-  { value: 'xs', label: 'XS · symbol-xs' },
-  { value: 'sm', label: 'SM · symbol-sm' },
-  { value: 'md', label: 'MD · symbol-md（默认）' },
-  { value: 'lg', label: 'LG · symbol-lg' },
-] as const;
+export const DATA_LIST_ICON_SYMBOL_SIZES = [...SHOWCASE_SYMBOL_SIZE_OPTIONS];
 
 export const DATA_LIST_PRIMARY_WEIGHTS = [
   { value: 'normal', label: '正常 · typography-body-medium' },
@@ -51,6 +43,7 @@ export type DataListWidgetFlags = {
   showTime: boolean;
   showTag: boolean;
   showCustom: boolean;
+  showMessage: boolean;
   showRedDot: boolean;
 };
 
@@ -60,7 +53,7 @@ const iconGraphic = (state: Record<string, unknown>) =>
 const widgetOn = (state: Record<string, unknown>) => state.widgetEnabled === true;
 
 export const dataListCustomizeDefaults = {
-  rowCount: DATA_LIST_ROW_COUNT_BUSINESS,
+  rowCount: '1' as DataListRowCountOption,
   graphicEnabled: true,
   graphicSize: 'md' as DataListGraphicSize,
   graphicType: 'crypto' as DataListGraphicType,
@@ -72,6 +65,7 @@ export const dataListCustomizeDefaults = {
   widgetShowTime: true,
   widgetShowTag: false,
   widgetShowCustom: false,
+  widgetShowMessage: false,
   widgetShowRedDot: false,
   interactive: true,
   pressIntensity: 'xs',
@@ -92,40 +86,39 @@ export const dataListComponentCustomizeControls: DocCustomizeControl[] = [
   {
     kind: 'select',
     key: 'pressIntensity',
-    label: '点按缩放',
+    label: '动效',
     options: [...DATA_LIST_PRESS_INTENSITIES],
     visibleWhen: (state) => Boolean(state.interactive),
   },
-  { kind: 'boolean', key: 'interactive', label: '可点按' },
+  { kind: 'boolean', key: 'interactive', label: '点按' },
   {
     kind: 'boolean',
     key: 'forceTouchEnabled',
-    label: '压感 / 3D Touch',
+    label: '压感',
     visibleWhen: (state) => Boolean(state.interactive),
   },
 ];
 
 export const dataListSlotCustomizeControls: DocCustomizeControl[] = [
-  { kind: 'heading', key: 'graphicHeading', label: '图形' },
-  { kind: 'boolean', key: 'graphicEnabled', label: '图形插槽' },
+  { kind: 'heading', key: 'graphicHeading', label: '图形', toggleKey: 'graphicEnabled' },
   {
     kind: 'select',
     key: 'graphicSize',
-    label: '图形尺寸',
+    label: '尺寸',
     options: [...DATA_LIST_GRAPHIC_SIZES],
     visibleWhen: graphicOn,
   },
   {
     kind: 'select',
     key: 'graphicType',
-    label: '图形类型',
+    label: '类型',
     options: [...DATA_LIST_GRAPHIC_TYPES],
     visibleWhen: graphicOn,
   },
   {
     kind: 'select',
     key: 'iconSymbolSize',
-    label: '图标 symbol 尺寸',
+    label: '符号尺寸',
     options: [...DATA_LIST_ICON_SYMBOL_SIZES],
     visibleWhen: iconGraphic,
   },
@@ -133,43 +126,48 @@ export const dataListSlotCustomizeControls: DocCustomizeControl[] = [
   {
     kind: 'select',
     key: 'primaryWeight',
-    label: '主文本粗细',
+    label: '字宽',
     options: [...DATA_LIST_PRIMARY_WEIGHTS],
   },
   {
     kind: 'boolean',
     key: 'subBoldSegment',
-    label: '副文本片段 A 加粗',
+    label: '副文本加粗',
   },
   {
     kind: 'boolean',
     key: 'descriptionEnabled',
     label: '说明文本',
   },
-  { kind: 'heading', key: 'widgetHeading', label: '挂件' },
-  { kind: 'boolean', key: 'widgetEnabled', label: '挂件插槽' },
+  { kind: 'heading', key: 'widgetHeading', label: '挂件', toggleKey: 'widgetEnabled' },
   {
     kind: 'boolean',
     key: 'widgetShowTime',
-    label: '时间 · 主文本同行',
+    label: '时间',
     visibleWhen: widgetOn,
   },
   {
     kind: 'boolean',
     key: 'widgetShowTag',
-    label: 'Tag · 主文本同行',
+    label: 'EgTag',
     visibleWhen: widgetOn,
   },
   {
     kind: 'boolean',
     key: 'widgetShowCustom',
-    label: '自定义 · 主文本同行',
+    label: '自定义',
+    visibleWhen: widgetOn,
+  },
+  {
+    kind: 'boolean',
+    key: 'widgetShowMessage',
+    label: 'EgMessage',
     visibleWhen: widgetOn,
   },
   {
     kind: 'boolean',
     key: 'widgetShowRedDot',
-    label: '红点 · 副文本同行（可与上三项同开）',
+    label: 'EgReddot',
     visibleWhen: widgetOn,
   },
 ];
@@ -223,7 +221,7 @@ export function readDataListSubBoldSegment(state: Record<string, unknown>): bool
 export function readDataListWidgetFlags(state: Record<string, unknown>): DataListWidgetFlags {
   const enabled = state.widgetEnabled === true;
   if (!enabled) {
-    return { showTime: false, showTag: false, showCustom: false, showRedDot: false };
+    return { showTime: false, showTag: false, showCustom: false, showMessage: false, showRedDot: false };
   }
 
   const legacyType = state.widgetType;
@@ -235,6 +233,7 @@ export function readDataListWidgetFlags(state: Record<string, unknown>): DataLis
     'widgetShowTime' in state ||
     'widgetShowTag' in state ||
     'widgetShowCustom' in state ||
+    'widgetShowMessage' in state ||
     'widgetShowRedDot' in state;
 
   if (!hasNewKeys && legacyType != null) {
@@ -242,6 +241,7 @@ export function readDataListWidgetFlags(state: Record<string, unknown>): DataLis
       showTime: legacyPrimary === 'time',
       showTag: legacyPrimary === 'tag',
       showCustom: legacyPrimary === 'custom',
+      showMessage: false,
       showRedDot: legacyRedDotOnly,
     };
   }
@@ -250,6 +250,7 @@ export function readDataListWidgetFlags(state: Record<string, unknown>): DataLis
     showTime: state.widgetShowTime !== false,
     showTag: state.widgetShowTag === true,
     showCustom: state.widgetShowCustom === true,
+    showMessage: state.widgetShowMessage === true,
     showRedDot: state.widgetShowRedDot === true,
   };
 }

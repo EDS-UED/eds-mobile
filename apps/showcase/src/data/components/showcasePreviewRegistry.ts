@@ -21,6 +21,7 @@ const showcasePreviewLoaders: Record<string, ShowcasePreviewLoader> = {
     require('@/views/components/glass/ShowcaseTabBarGlassBgPreview').ShowcaseTabBarGlassBgPreview,
   EgGlassCapsule: () => require('@/views/components/glass/ShowcaseGlassButtonPreview').ShowcaseGlassButtonPreview,
   EgSymbolAction: () => require('@/views/components/ShowcaseSymbolActionPreview').ShowcaseSymbolActionPreview,
+  EgMessage: () => require('@/views/components/ShowcaseMessagePreview').ShowcaseMessagePreview,
   EgNavBar: () => require('@/views/components/glass/ShowcaseNavBarPreview').ShowcaseNavBarPreview,
   EgSheets: () => require('@/views/components/ShowcaseSheetsPreview').ShowcaseSheetsPreview,
   EgPage: () => require('@/views/components/ShowcaseEgPagePreview').ShowcaseEgPagePreview,

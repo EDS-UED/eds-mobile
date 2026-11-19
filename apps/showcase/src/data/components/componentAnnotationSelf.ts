@@ -97,6 +97,12 @@ const SELF_BY_SLUG: Record<string, ComponentSelfAnnotationSpec | ((exportName: s
     style: ['点色 `text-semantic-danger` / 品牌强调底（档内 token）。'],
     layout: ['直径 `scale-2` 档；相对宿主图标/文案角标定位（`position` 由父级）。'],
   },
+  'feedback-message': {
+    style: [
+      '字 `typography-footnote-strong`；色调 material-brand / decor / status-danger / material-card-deep。',
+    ],
+    layout: ['最小宽 18px；内边距 `spacing-025` × `spacing-1-5`；胶囊 `radius-full`；高度随内容。'],
+  },
   'tag-color': {
     style: ['色块底 semantic 彩色 · 字 `typography-body-small-heavy` · `text-base-primary`。'],
     layout: ['水平内边距 `spacing-2` · `spacing-3`；胶囊 `radius-full`。'],
@@ -181,8 +187,10 @@ function buttonSceneSelf(slug: string, exportName: string): ComponentSelfAnnotat
       };
     case 'button-icon-container':
       return {
-        style: [`${exportName} 图标色 text-base-primary · 容器底 material-card-shallow。`],
-        layout: ['正方 `button-md` 档；图标 `symbol-md` 居中。'],
+        style: [
+          `${exportName} 色调：品牌/装饰/危险底 + stroke-same-white；浅 material-card-deep + stroke-base-primary；无背景 material-hide + stroke-base-primary · 点按 event-tap。`,
+        ],
+        layout: ['圆形容器 scale-14…7；图标 symbol-md/sm/xs；点按 motion-scale-press-down-lg。'],
       };
     default:
       return {

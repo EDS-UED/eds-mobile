@@ -16,6 +16,20 @@ export type { EgNavBarAction };
  */
 export type EgSheetsDetent = 'small' | 'medium' | 'large' | 'adaptive';
 
+/** 留白补偿 · spacing 语义键（值为对应 px，如 `spacing-3` = 12）。 */
+export type EgSheetsActionsBlankCompensation =
+  | 'spacing-1'
+  | 'spacing-2'
+  | 'spacing-3'
+  | 'spacing-4'
+  | 'spacing-5'
+  | 'spacing-6'
+  | 'spacing-8'
+  | 'spacing-10'
+  | 'spacing-12'
+  | 'spacing-14'
+  | 'spacing-16';
+
 export type EgSheetsProps = {
   visible: boolean;
   /** 收起动画结束后回调（关闭按钮 / 遮罩 / 下拉 / 系统返回 / 外部 `visible=false`）。 */
@@ -69,5 +83,10 @@ export type EgSheetsProps = {
   actions?: ReactNode;
   /** 显示底部 action 插槽；默认 `true`。 */
   showActions?: boolean;
+  /**
+   * 留白补偿 · `showActions` 且档位含 `adaptive` 时，从自适应 Sheet 高度扣减对应 spacing（px）。
+   * 未传则保持既有高度算法。
+   */
+  actionsBlankCompensation?: EgSheetsActionsBlankCompensation;
   testID?: string;
 };

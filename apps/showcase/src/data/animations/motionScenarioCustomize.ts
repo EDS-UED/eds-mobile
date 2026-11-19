@@ -1,11 +1,5 @@
 import type { DocCustomizeControl } from '@/data/components';
-
-const PRESS_INTENSITY_OPTIONS = [
-  { label: 'xs', value: 'xs' },
-  { label: 'sm', value: 'sm' },
-  { label: 'md', value: 'md' },
-  { label: 'lg', value: 'lg' },
-] as const;
+import { SHOWCASE_MOTION_PRESS_INTENSITY_OPTIONS } from '@/data/components/showcaseSizeOptions';
 
 export type MotionScenarioId =
   | 'press'
@@ -107,10 +101,7 @@ export function motionScenarioCustomizeControls(scenario: MotionScenarioId): Doc
         kind: 'select',
         key: 'pressIntensity',
         label: '点按强度',
-        options: PRESS_INTENSITY_OPTIONS.map((option) => ({
-          label: option.label,
-          value: option.value,
-        })),
+        options: [...SHOWCASE_MOTION_PRESS_INTENSITY_OPTIONS],
       },
       {
         kind: 'select',

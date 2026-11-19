@@ -101,6 +101,7 @@ export function ShowcaseSheetsPreview(props: ShowcaseSheetsPreviewProps) {
         scrollEdgeEffect={sheetProps.scrollEdgeEffect}
         showDragIndicator={sheetProps.showDragIndicator}
         showActions={sheetProps.showActions}
+        actionsBlankCompensation={sheetProps.actionsBlankCompensation}
       >
         <SheetsContent kind={sheetProps.content} mode={mode} />
       </EgSheets>

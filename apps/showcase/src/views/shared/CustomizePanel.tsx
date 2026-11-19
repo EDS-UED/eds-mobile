@@ -1,5 +1,5 @@
 import type { EgMenuItem } from '@eds/mobile-components';
-import { EgItem, EgItemGroup, EG_ITEM_PAD_H, EG_ITEM_PAD_V } from '@eds/mobile-components';
+import { EgItem, EgItemGroup, EgSwitch, EG_ITEM_PAD_H, EG_ITEM_PAD_V } from '@eds/mobile-components';
 import { useMemo } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import {
@@ -15,6 +15,7 @@ import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
+import { SHOWCASE_CUSTOMIZE_SWITCH_SIZE } from '@/views/shared/showcaseCustomizeSwitch';
 import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 
 function createCustomizePanelStyles(colors: ShowcaseColorMap) {
@@ -34,6 +35,24 @@ function createCustomizePanelStyles(colors: ShowcaseColorMap) {
     },
     slotCategoryTitleGap: {
       marginTop: edsSpacing('spacing-6'),
+    },
+    headingToggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: EG_ITEM_PAD_H,
+      paddingBottom: edsSpacing('spacing-1'),
+      gap: edsSpacing('spacing-2'),
+    },
+    headingToggleTitle: {
+      flex: 1,
+      flexShrink: 1,
+      paddingHorizontal: 0,
+      paddingBottom: 0,
+    },
+    /** 插槽卡底 — 与首段 {@link styles.slotCategoryTitleFirst} 顶内边距对称。 */
+    slotPanelBottomInset: {
+      paddingBottom: EG_ITEM_PAD_V,
     },
     inlineInput: {
       minWidth: 96,
@@ -101,7 +120,7 @@ function shouldShowRowDivider(index: number, visibleControls: DocCustomizeContro
   return true;
 }
 
-export function CustomizePanel({ controls, state, onChange }: CustomizePanelProps) {
+export function CustomizePanel({ controls, state, onChange, sectionDividers }: CustomizePanelProps) {
   const colors = useShowcaseColors();
   const styles = useThemedStyles(createCustomizePanelStyles);
   const { colorTheme } = useShowcaseThemeContext();
@@ -126,13 +145,29 @@ export function CustomizePanel({ controls, state, onChange }: CustomizePanelProp
         if (control.kind === 'heading') {
           const isFirstHeading = visibleHeadingIndex === 0;
           visibleHeadingIndex += 1;
+          const sectionChrome = [
+            isFirstHeading ? styles.slotCategoryTitleFirst : styles.slotCategoryTitleGap,
+          ];
+          if (control.toggleKey) {
+            const value = Boolean(state[control.toggleKey]);
+            return (
+              <View key={control.key} style={[styles.headingToggleRow, ...sectionChrome]}>
+                <Text style={[styles.slotCategoryTitle, styles.headingToggleTitle]}>{control.label}</Text>
+                <EgSwitch
+                  size={SHOWCASE_CUSTOMIZE_SWITCH_SIZE}
+                  value={value}
+                  onValueChange={(next) => onChange({ ...state, [control.toggleKey!]: next })}
+                  mode={mode}
+                  testID={`customize-${control.toggleKey}`}
+                  accessibilityLabel={control.label}
+                />
+              </View>
+            );
+          }
           return (
             <Text
               key={control.key}
-              style={[
-                styles.slotCategoryTitle,
-                isFirstHeading ? styles.slotCategoryTitleFirst : styles.slotCategoryTitleGap,
-              ]}
+              style={[styles.slotCategoryTitle, ...sectionChrome]}
             >
               {control.label}
             </Text>
@@ -149,6 +184,7 @@ export function CustomizePanel({ controls, state, onChange }: CustomizePanelProp
               trailingEnabled
               trailingDisplay="switch"
               switchValue={value}
+              switchSize={SHOWCASE_CUSTOMIZE_SWITCH_SIZE}
               onSwitchValueChange={(next) => onChange(applyBooleanChange(control, state, next))}
               showPressFeedback
               showDivider={showDivider}
@@ -222,6 +258,7 @@ export function CustomizePanel({ controls, state, onChange }: CustomizePanelProp
 
         return null;
       })}
+      {sectionDividers ? <View style={styles.slotPanelBottomInset} /> : null}
     </EgItemGroup>
   );
 }

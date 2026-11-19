@@ -1,3 +1,5 @@
+import { SHOWCASE_SIZE_OPTIONS_LG_TO_XS } from './showcaseSizeOptions.js';
+
 export type ButtonShowcaseTone = 'brand' | 'decor' | 'danger' | 'option';
 export type ButtonShowcaseFigmaType = 'primary' | 'secondary' | 'tertiary';
 export type ButtonShowcaseVariant = 'solid' | 'outline' | 'text';
@@ -50,12 +52,7 @@ export const BUTTON_SHOWCASE_WIDTHS = [
   { value: 'fill', label: '充满' },
 ] as const;
 
-export const BUTTON_SHOWCASE_SIZES = [
-  { value: 'lg', label: '大' },
-  { value: 'md', label: '中' },
-  { value: 'sm', label: '小' },
-  { value: 'xs', label: '特小' },
-] as const;
+export const BUTTON_SHOWCASE_SIZES = [...SHOWCASE_SIZE_OPTIONS_LG_TO_XS];
 
 export const buttonShowcaseDefaults = {
   tone: 'brand' as ButtonShowcaseTone,

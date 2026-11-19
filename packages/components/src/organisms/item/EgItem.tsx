@@ -133,6 +133,7 @@ function EgItemSwitchTrailing({
   switchValue,
   defaultSwitchValue,
   onSwitchValueChange,
+  switchSize = 'md',
   testID,
   accessibilityLabel,
 }: {
@@ -142,6 +143,7 @@ function EgItemSwitchTrailing({
   switchValue?: boolean;
   defaultSwitchValue?: boolean;
   onSwitchValueChange?: (value: boolean) => void;
+  switchSize?: EgItemProps['switchSize'];
   testID?: string;
   accessibilityLabel?: string;
 }) {
@@ -162,7 +164,7 @@ function EgItemSwitchTrailing({
       <EgSwitch
         testID={testID ? `${testID}-switch` : undefined}
         mode={mode}
-        size="md"
+        size={switchSize}
         value={switchValue}
         defaultValue={defaultSwitchValue}
         onValueChange={onSwitchValueChange}
@@ -187,6 +189,7 @@ export function EgItem({
   switchValue,
   defaultSwitchValue,
   onSwitchValueChange,
+  switchSize = 'md',
   trailing: trailingSlot,
   showDivider = true,
   onPress,
@@ -243,6 +246,7 @@ export function EgItem({
       switchValue={switchValue}
       defaultSwitchValue={defaultSwitchValue}
       onSwitchValueChange={onSwitchValueChange}
+      switchSize={switchSize}
       testID={testID}
       accessibilityLabel={accessibilityLabel ?? label}
     />

@@ -1,6 +1,11 @@
-import type { EgNavBarScrollEdgeEffect, EgSheetsDetent } from '@eds/mobile-components';
+import type {
+  EgNavBarScrollEdgeEffect,
+  EgSheetsActionsBlankCompensation,
+  EgSheetsDetent,
+} from '@eds/mobile-components';
 
 import { buildRnSelfClosingSnippet } from './buildRnUsageSnippet.js';
+import { SHOWCASE_SHEETS_DETENT_SIZE_OPTIONS } from './showcaseSizeOptions.js';
 import type { DocCustomizeControl } from './types.js';
 
 const DETENT_KEYS: { detent: EgSheetsDetent; key: string }[] = [
@@ -39,7 +44,40 @@ export const sheetsCustomizeDefaults: Record<string, unknown> = {
   scrollEdgeEffect: 'soft',
   content: 'slot',
   showActions: true,
+  actionsBlankCompensation: '',
 };
+
+const ACTIONS_BLANK_COMPENSATION_KEYS = [
+  'spacing-1',
+  'spacing-2',
+  'spacing-3',
+  'spacing-4',
+  'spacing-5',
+  'spacing-6',
+  'spacing-8',
+  'spacing-10',
+  'spacing-12',
+  'spacing-14',
+  'spacing-16',
+] as const satisfies readonly EgSheetsActionsBlankCompensation[];
+
+export const ACTIONS_BLANK_COMPENSATION_OPTIONS = [
+  { value: '', label: '不设置（默认）' },
+  ...ACTIONS_BLANK_COMPENSATION_KEYS.map((value) => ({
+    value,
+    label: `${value} · 扣减对应 px`,
+  })),
+];
+
+export function parseActionsBlankCompensation(
+  value: unknown,
+): EgSheetsActionsBlankCompensation | undefined {
+  if (value == null || value === '') {
+    return undefined;
+  }
+  const key = String(value);
+  return ACTIONS_BLANK_COMPENSATION_KEYS.find((item) => item === key);
+}
 
 export type SheetsContentKind = 'slot' | 'long';
 
@@ -49,19 +87,17 @@ export const sheetsCustomizeControls: DocCustomizeControl[] = [
   { kind: 'boolean', key: 'showLeft', label: '左侧返回', row: 2 },
   { kind: 'boolean', key: 'showRight', label: '右侧关闭', row: 2 },
   { kind: 'heading', key: 'detentHeading', label: '档位' },
-  { kind: 'boolean', key: 'detentSmall', label: '小 28%', row: 3 },
-  { kind: 'boolean', key: 'detentMedium', label: '中 50%', row: 3 },
-  { kind: 'boolean', key: 'detentLarge', label: '大 · 贴系统条 spacing-0', row: 3 },
+  { kind: 'boolean', key: 'detentSmall', label: 'SM 28%', row: 3 },
+  { kind: 'boolean', key: 'detentMedium', label: 'MD 50%', row: 3 },
+  { kind: 'boolean', key: 'detentLarge', label: 'LG · spacing-0', row: 3 },
   { kind: 'boolean', key: 'detentAdaptive', label: '自适应', row: 4 },
   {
     kind: 'select',
     key: 'initialDetent',
     label: '初始档位',
     options: [
-      { value: 'small', label: '小' },
-      { value: 'medium', label: '中' },
+      ...SHOWCASE_SHEETS_DETENT_SIZE_OPTIONS,
       { value: 'adaptive', label: '自适应' },
-      { value: 'large', label: '大' },
     ],
   },
   { kind: 'boolean', key: 'dismissible', label: '遮罩 / 下拉收起' },
@@ -82,6 +118,12 @@ export const sheetsCustomizeControls: DocCustomizeControl[] = [
     ],
   },
   { kind: 'boolean', key: 'showActions', label: '底部 Action' },
+  {
+    kind: 'select',
+    key: 'actionsBlankCompensation',
+    label: '留白补偿（仅 Action + adaptive）',
+    options: ACTIONS_BLANK_COMPENSATION_OPTIONS,
+  },
 ];
 
 export type SheetsPreviewProps = {
@@ -96,6 +138,7 @@ export type SheetsPreviewProps = {
   scrollEdgeEffect: EgNavBarScrollEdgeEffect;
   content: SheetsContentKind;
   showActions: boolean;
+  actionsBlankCompensation?: EgSheetsActionsBlankCompensation;
 };
 
 export function buildSheetsPropsFromCustomize(state: Record<string, unknown>): SheetsPreviewProps {
@@ -115,6 +158,7 @@ export function buildSheetsPropsFromCustomize(state: Record<string, unknown>): S
     scrollEdgeEffect: parseScrollEdgeEffect(merged.scrollEdgeEffect) ?? 'soft',
     content: merged.content === 'long' ? 'long' : 'slot',
     showActions: Boolean(merged.showActions),
+    actionsBlankCompensation: parseActionsBlankCompensation(merged.actionsBlankCompensation),
   };
 }
 

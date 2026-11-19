@@ -1,2 +1,2 @@
 export { EgMessage } from './EgMessage.js';
-export type { EgMessageProps } from './EgMessage.types.js';
+export type { EgMessageProps, EgMessageTone } from './EgMessage.types.js';

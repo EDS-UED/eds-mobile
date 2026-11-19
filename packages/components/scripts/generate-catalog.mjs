@@ -598,7 +598,12 @@ export type {
 } from './organisms/tab-bar/tab-bar';`;
   }
   if (e.exportName === 'EgSymbolAction') {
-    return `export { ${e.exportName} } from './molecules/button/button-symbol';`;
+    return `export { ${e.exportName} } from './molecules/button/button-symbol';
+export type { EgSymbolActionProps, EgSymbolActionTone } from './molecules/button/button-symbol';`;
+  }
+  if (e.exportName === 'EgMessage') {
+    return `export { EgMessage } from './molecules/feedback/message';
+export type { EgMessageProps, EgMessageTone } from './molecules/feedback/message';`;
   }
   if (e.exportName === 'EgSwitch') {
     return `export {
@@ -637,11 +642,16 @@ export type {
   EgMenuTriggerProps,
 } from './molecules/dropdown/menu';
 export { EgSheets } from './organisms/sheets';
-export type { EgSheetsDetent, EgSheetsProps } from './organisms/sheets';
+export type {
+  EgSheetsActionsBlankCompensation,
+  EgSheetsDetent,
+  EgSheetsProps,
+} from './organisms/sheets';
 export {
   EgDataList,
   EgDataListPrimaryText,
   EgDataListReddot,
+  EgDataListMessage,
   EgDataListRow,
   EgDataListSubText,
   egDataListPrimaryTextStyle,
@@ -662,6 +672,7 @@ export type {
   EgDataListPrimaryWeight,
   EgDataListProps,
   EgDataListReddotProps,
+  EgDataListMessageProps,
   EgDataListRowProps,
   EgDataListRowLayout,
   EgDataListSubTextProps,

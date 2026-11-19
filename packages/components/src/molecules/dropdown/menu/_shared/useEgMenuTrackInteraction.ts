@@ -72,6 +72,10 @@ export type EgMenuStretchState = {
 type UseEgMenuTrackInteractionOptions = {
   disabled: boolean;
   layoutsShared: ReturnType<typeof useSharedValue<EgMenuItemHitRect[]>>;
+  /** 列表内容顶在窗口中的 Y（与 `measureLayout` 命中区同一参照系）。 */
+  innerOriginY: SharedValue<number>;
+  /** ScrollView 纵向偏移。 */
+  scrollOffsetY: SharedValue<number>;
   isItemDisabled: (itemId: string) => boolean;
   /** 松手命中行内时选中（滑动过程仅跟手高亮，不改 selectedId）。 */
   onTapItem: (itemId: string) => void;
@@ -84,6 +88,8 @@ type UseEgMenuTrackInteractionOptions = {
 export function useEgMenuTrackInteraction({
   disabled,
   layoutsShared,
+  innerOriginY,
+  scrollOffsetY,
   isItemDisabled,
   onTapItem,
   onTrackActiveChange,
@@ -146,6 +152,11 @@ export function useEgMenuTrackInteraction({
         leftMenuPanelWhileTracking.value = true;
       }
     };
+  const resolveContentHitY = (absoluteY: number) => {
+    'worklet';
+    const windowStaticY = stretch ? restY(absoluteY) : absoluteY;
+    return windowStaticY - innerOriginY.value + scrollOffsetY.value;
+  };
     return Gesture.Pan()
       .enabled(!disabled)
       .minDistance(0)
@@ -162,7 +173,7 @@ export function useEgMenuTrackInteraction({
         leftItemRowWhileTracking.value = false;
         leftMenuPanelWhileTracking.value = false;
         markPanelContainment(event.absoluteX, event.absoluteY);
-        const hit = hitTestMenuItemAtY(restY(event.absoluteY), layoutsShared.value);
+        const hit = hitTestMenuItemAtY(resolveContentHitY(event.absoluteY), layoutsShared.value);
         if (!hit) {
           dragItemId.value = '';
           return;
@@ -201,7 +212,7 @@ export function useEgMenuTrackInteraction({
           stretch.amountY.value =
             stretchBaseY.value + menuStretchAmount(ty, overflowY, stretch.height, 'y');
         }
-        const hit = hitTestMenuItemAtY(restY(event.absoluteY), layoutsShared.value);
+        const hit = hitTestMenuItemAtY(resolveContentHitY(event.absoluteY), layoutsShared.value);
         if (!hit) {
           if (dragItemId.value !== '') {
             leftItemRowWhileTracking.value = true;
@@ -218,7 +229,7 @@ export function useEgMenuTrackInteraction({
       })
       .onFinalize((event) => {
         'worklet';
-        const hit = hitTestMenuItemAtY(restY(event.absoluteY), layoutsShared.value);
+        const hit = hitTestMenuItemAtY(resolveContentHitY(event.absoluteY), layoutsShared.value);
         if (stretch) {
           stretch.amountX.value = withSpring(0, menuStretchReleaseSpringConfig);
           stretch.amountY.value = withSpring(0, menuStretchReleaseSpringConfig);
@@ -246,9 +257,11 @@ export function useEgMenuTrackInteraction({
     dragItemId,
     fireHaptic,
     leftItemRowWhileTracking,
+    innerOriginY,
     leftMenuPanelWhileTracking,
     layoutsShared,
     menuPanelBounds,
+    scrollOffsetY,
     onTapItem,
     onTrackActiveChange,
     stretch,

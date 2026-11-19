@@ -49,7 +49,7 @@ export function createCatalogPreviewProps(
       };
     case 'symbol-button-body':
     case 'button-icon-container':
-      return { ...base, figmaType: 'primary', size: 'md', label: '+' };
+      return { ...base, tone: 'brand', size: 'md', icon: 'eds-add' };
     case 'button-glass':
       return {
         ...base,
@@ -248,6 +248,9 @@ export function createCatalogPreviewProps(
 
     case 'feedback-reddot':
       return base;
+
+    case 'feedback-message':
+      return { ...base, tone: 'brand', label: '9' };
 
     default:
       if (entry.family === 'icon' || entry.family === 'crypto') {

@@ -126,6 +126,7 @@ export function EgSheets({
   children,
   actions,
   showActions = true,
+  actionsBlankCompensation,
   testID,
 }: EgSheetsProps) {
   const colors = getThemeColors(mode);
@@ -172,16 +173,22 @@ export function EgSheets({
     setNativeScrollInsetLocked(true);
   }, []);
   const contentTopInset = egSheetsContentTopInset();
+  const actionsBlankCompensationPx = useMemo(() => {
+    if (!hasActions || actionsBlankCompensation == null) {
+      return 0;
+    }
+    const value = mobileTheme.spacing[actionsBlankCompensation];
+    return typeof value === 'number' ? value : 0;
+  }, [actionsBlankCompensation, hasActions]);
   const resolveAdaptiveHeight = useCallback(
     (contentHeight: number) => {
       const scrollPadBottom = mobileTheme.spacing['spacing-5'] as number;
-      const body = Math.max(
-        contentTopInset + scrollPadBottom,
-        contentTopInset + contentHeight,
-      );
-      return Math.min(largeHeight, Math.round(body));
+      const minBody = contentTopInset + scrollPadBottom;
+      const body = Math.max(minBody, contentTopInset + contentHeight);
+      const trimmed = Math.max(minBody, body - actionsBlankCompensationPx);
+      return Math.min(largeHeight, Math.round(trimmed));
     },
-    [contentTopInset, largeHeight],
+    [actionsBlankCompensationPx, contentTopInset, largeHeight],
   );
 
   const detentHeightsKey = detentNames

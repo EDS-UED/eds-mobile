@@ -189,6 +189,7 @@ const scaleSemantic = {
       comment: '间距（Spacing）',
       tokens: [
         { name: 'spacing-0', value: 'var(--scale-0)' },
+        { name: 'spacing-025', value: 'var(--scale-025)', comment: '1px' },
         { name: 'spacing-05', value: 'var(--scale-05)' },
         { name: 'spacing-1', value: 'var(--scale-1)' },
         { name: 'spacing-1-5', value: 'var(--scale-1-5)' },

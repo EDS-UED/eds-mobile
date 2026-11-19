@@ -1,15 +1,12 @@
 import { EgSymbolAction } from '@eds/mobile-components';
 import { StyleSheet, View } from 'react-native';
 
-import { buttonShowcaseVariantToFigmaType } from '@/data/components/buttonShowcaseModel';
-
 type ShowcaseSymbolActionPreviewProps = Record<string, unknown> & {
   mode?: 'light' | 'dark';
   testID?: string;
-  size?: 'lg' | 'md' | 'sm' | 'xs';
-  variant?: string;
-  figmaType?: 'primary' | 'secondary' | 'tertiary';
-  label?: string;
+  size?: 'xl' | 'lg' | 'md' | 'sm' | 'xs';
+  tone?: 'brand' | 'decor' | 'danger' | 'shallow' | 'plain';
+  icon?: string;
   disabled?: boolean;
   loading?: boolean;
 };
@@ -20,15 +17,11 @@ export function ShowcaseSymbolActionPreview(props: ShowcaseSymbolActionPreviewPr
     mode = 'light',
     testID,
     size = 'md',
-    variant = 'solid',
-    figmaType: figmaTypeProp,
-    label = '+',
+    tone = 'brand',
+    icon = 'eds-add',
     disabled = false,
     loading = false,
   } = props;
-
-  const figmaType =
-    figmaTypeProp ?? buttonShowcaseVariantToFigmaType(String(variant ?? 'solid'));
 
   return (
     <View style={styles.host}>
@@ -36,8 +29,8 @@ export function ShowcaseSymbolActionPreview(props: ShowcaseSymbolActionPreviewPr
         mode={mode}
         testID={testID}
         size={size}
-        figmaType={figmaType}
-        label={label}
+        tone={tone}
+        icon={icon}
         disabled={disabled}
         loading={loading}
         accessibilityLabel="Symbol action"

@@ -12,7 +12,6 @@ export type ComponentDetailDocPanel = 'usage' | 'props';
 
 type ComponentDetailDocActionsProps = {
   onOpen: (panel: ComponentDetailDocPanel) => void;
-  onCopyAiPrompt?: () => void;
 };
 
 function createDocActionStyles(colors: ShowcaseColorMap) {

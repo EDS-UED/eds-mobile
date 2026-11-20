@@ -1,0 +1,31 @@
+/** Desktop eds-* / @keyframes 时序 — RN 1:1（ms）。 */
+export const VERIFY_RING_DOT_COUNT = 36;
+export const VERIFY_RING_DOT_STEP_DEG = 10;
+export const VERIFY_RING_DOT_SIZE = 3;
+export const VERIFY_RING_DEFAULT_SIZE = 74;
+export const VERIFY_RING_PULSE_MS = 1400;
+export const VERIFY_RING_STAGGER_MS = 38.9;
+export const VERIFY_RING_DOT_IDLE_OPACITY = 0.48;
+
+export const DONE_TICK_DRAW_MS = 780;
+export const DONE_TICK_SIZE = 30;
+export const DONE_TICK_VIEWBOX = 48;
+export const DONE_TICK_PATH =
+  'M 3.776 17.762 L 19.7 33.628 L 40.906 12.437';
+
+export const MOTION_PROCESSING_DEFAULT_SIZE = 26;
+export const MOTION_PROCESSING_STROKE = 2;
+export const MOTION_PROCESSING_LONG_ROTATE_MS = 1200;
+export const MOTION_PROCESSING_SHORT_ROTATE_MS = 20_000;
+export const MOTION_PROCESSING_SHORT_INITIAL_DEG = 45;
+
+export const RIPPLE_PULSE_DEFAULT_SIZE = 80;
+export const RIPPLE_PULSE_STROKE = 0.5;
+export const RIPPLE_PULSE_DURATION_MS = 1500;
+export const RIPPLE_PULSE_STAGGER_MS = 500;
+export const RIPPLE_PULSE_START_SCALE = 0.1;
+export const RIPPLE_PULSE_END_SCALE = 1.2;
+
+export const ODOMETER_DIGIT_DURATION_MS = 2000;
+export const ODOMETER_DIGIT_STAGGER_MS = 56;
+export const ODOMETER_ROLL_EXTRA_DIGITS = 10;

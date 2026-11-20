@@ -1,6 +1,5 @@
 import { Stack, router } from 'expo-router';
 import type { ReactNode } from 'react';
-import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,12 +9,6 @@ import type { TokenPreviewDestination } from '@/data/tokens/tokenPreviewDestinat
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
-import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
-import {
-  ComponentDetailActionFooter,
-  componentDetailFooterScrollPadding,
-} from '@/views/shared/ComponentDetailActionFooter';
-import { DocContentSheet } from '@/views/shared/DocContentSheet';
 import { DocSection } from '@/views/shared/DocSection';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseComponentPreviewCanvas';
@@ -67,11 +60,7 @@ export function TokenDetailRootView({
     rnScrollPaddingTop,
   } = useShowcaseStackNav(title);
   const styles = useThemedStyles((c) => createTokenDetailStyles(c, nativeStackNav));
-  const scrollBottomInset = componentDetailFooterScrollPadding(insets.bottom);
-  const [docPanel, setDocPanel] = useState<ComponentDetailDocPanel | null>(null);
-
-  const docSheetTitle =
-    docPanel === 'usage' ? 'USAGE' : docPanel === 'props' ? 'PROPS / API' : '';
+  const scrollBottomExtra = Math.max(insets.bottom, edsSpacing('spacing-3')) + theme.layout.pageInset;
 
   return (
     <ShowcaseStackScreen>
@@ -87,7 +76,7 @@ export function TokenDetailRootView({
           withTabBarInset={false}
           docSectionStack
           bottomInsetReplacesPagePadding
-          bottomInsetExtra={scrollBottomInset}
+          bottomInsetExtra={scrollBottomExtra}
           style={styles.scrollRoot}
         >
           {referenceOnly ? (
@@ -101,8 +90,8 @@ export function TokenDetailRootView({
                   />
                 </DocSection>
               ) : null}
-              <DocSection title="USAGE">{usageContent}</DocSection>
-              <DocSection title="PROPS / API" cardPadding="none">
+              <DocSection title="用法">{usageContent}</DocSection>
+              <DocSection title="组件 API" cardPadding="none">
                 {propsContent}
               </DocSection>
             </>
@@ -115,22 +104,15 @@ export function TokenDetailRootView({
               <DocSection title="定制" egItemGroupFrame>
                 {customize}
               </DocSection>
+
+              <DocSection title="用法">{usageContent}</DocSection>
+              <DocSection title="组件 API" cardPadding="none">
+                {propsContent}
+              </DocSection>
             </>
           )}
         </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
-
-      {referenceOnly ? null : <ComponentDetailActionFooter onOpen={setDocPanel} />}
-
-      <DocContentSheet
-        visible={docPanel != null}
-        title={docSheetTitle}
-        onClose={() => setDocPanel(null)}
-      >
-        {docPanel === 'usage' ? usageContent : null}
-        {docPanel === 'props' ? propsContent : null}
-      </DocContentSheet>
-
     </ShowcaseStackScreen>
   );
 }

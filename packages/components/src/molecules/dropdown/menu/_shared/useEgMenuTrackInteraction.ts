@@ -72,9 +72,8 @@ export type EgMenuStretchState = {
 type UseEgMenuTrackInteractionOptions = {
   disabled: boolean;
   layoutsShared: ReturnType<typeof useSharedValue<EgMenuItemHitRect[]>>;
-  /** 列表内容顶在窗口中的 Y（与 `measureLayout` 命中区同一参照系）。 */
+  /** 滑选 stretch 期间的内容 Y 换算（measureLayout 系 + scroll）。 */
   innerOriginY: SharedValue<number>;
-  /** ScrollView 纵向偏移。 */
   scrollOffsetY: SharedValue<number>;
   isItemDisabled: (itemId: string) => boolean;
   /** 松手命中行内时选中（滑动过程仅跟手高亮，不改 selectedId）。 */
@@ -83,6 +82,11 @@ type UseEgMenuTrackInteractionOptions = {
   stretch?: EgMenuStretchState;
   /** Reduce Motion 无 stretch 时仍用手势边界判定是否离开浮层。 */
   menuPanelBounds?: EgMenuPanelBounds;
+  /**
+   * 手势挂在列表 `inner` 上，用 `event.y` 与 `measureLayout` 命中区直比（不经 window 换算）。
+   * @default true
+   */
+  hitTestUsesLocalY?: boolean;
 };
 
 export function useEgMenuTrackInteraction({
@@ -95,6 +99,7 @@ export function useEgMenuTrackInteraction({
   onTrackActiveChange,
   stretch,
   menuPanelBounds,
+  hitTestUsesLocalY = true,
 }: UseEgMenuTrackInteractionOptions) {
   const dragItemId = useSharedValue('');
   const stretchBaseX = useSharedValue(0);
@@ -152,11 +157,17 @@ export function useEgMenuTrackInteraction({
         leftMenuPanelWhileTracking.value = true;
       }
     };
-  const resolveContentHitY = (absoluteY: number) => {
-    'worklet';
-    const windowStaticY = stretch ? restY(absoluteY) : absoluteY;
-    return windowStaticY - innerOriginY.value + scrollOffsetY.value;
-  };
+    const resolveHitY = (absoluteY: number, localY: number) => {
+      'worklet';
+      const stretching =
+        stretch != null &&
+        (Math.abs(stretch.amountX.value) > 0.5 || Math.abs(stretch.amountY.value) > 0.5);
+      if (hitTestUsesLocalY && !stretching) {
+        return localY;
+      }
+      const windowStaticY = stretch ? restY(absoluteY) : absoluteY;
+      return windowStaticY - innerOriginY.value + scrollOffsetY.value;
+    };
     return Gesture.Pan()
       .enabled(!disabled)
       .minDistance(0)
@@ -173,7 +184,10 @@ export function useEgMenuTrackInteraction({
         leftItemRowWhileTracking.value = false;
         leftMenuPanelWhileTracking.value = false;
         markPanelContainment(event.absoluteX, event.absoluteY);
-        const hit = hitTestMenuItemAtY(resolveContentHitY(event.absoluteY), layoutsShared.value);
+        const hit = hitTestMenuItemAtY(
+          resolveHitY(event.absoluteY, event.y),
+          layoutsShared.value,
+        );
         if (!hit) {
           dragItemId.value = '';
           return;
@@ -212,7 +226,10 @@ export function useEgMenuTrackInteraction({
           stretch.amountY.value =
             stretchBaseY.value + menuStretchAmount(ty, overflowY, stretch.height, 'y');
         }
-        const hit = hitTestMenuItemAtY(resolveContentHitY(event.absoluteY), layoutsShared.value);
+        const hit = hitTestMenuItemAtY(
+          resolveHitY(event.absoluteY, event.y),
+          layoutsShared.value,
+        );
         if (!hit) {
           if (dragItemId.value !== '') {
             leftItemRowWhileTracking.value = true;
@@ -227,26 +244,26 @@ export function useEgMenuTrackInteraction({
           scheduleOnRN(fireHaptic);
         }
       })
-      .onFinalize((event) => {
+      .onFinalize(() => {
         'worklet';
-        const hit = hitTestMenuItemAtY(resolveContentHitY(event.absoluteY), layoutsShared.value);
         if (stretch) {
           stretch.amountX.value = withSpring(0, menuStretchReleaseSpringConfig);
           stretch.amountY.value = withSpring(0, menuStretchReleaseSpringConfig);
         }
+        const releaseItemId = dragItemId.value;
         dragItemId.value = '';
         scheduleOnRN(onTrackActiveChange, false);
         scheduleOnRN(setHoverItemId, null);
         const commitSelect =
-          Boolean(hit) &&
+          releaseItemId !== '' &&
           beganOnItemRow.value &&
           !leftItemRowWhileTracking.value &&
           !leftMenuPanelWhileTracking.value;
         beganOnItemRow.value = false;
         leftItemRowWhileTracking.value = false;
         leftMenuPanelWhileTracking.value = false;
-        if (commitSelect && hit) {
-          scheduleOnRN(onTapItem, hit.itemId);
+        if (commitSelect) {
+          scheduleOnRN(onTapItem, releaseItemId);
         }
       });
   }, [
@@ -256,6 +273,7 @@ export function useEgMenuTrackInteraction({
     disabled,
     dragItemId,
     fireHaptic,
+    hitTestUsesLocalY,
     leftItemRowWhileTracking,
     innerOriginY,
     leftMenuPanelWhileTracking,

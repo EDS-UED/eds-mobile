@@ -48,7 +48,10 @@ import {
   menuTriggerLift,
   menuTriggerStyle,
 } from '../../../shared/motion/menuMotion.js';
-import type { EgMenuItemHitRect } from './_shared/egMenuItemHitTest.js';
+import {
+  partitionMenuItemHitRects,
+  type EgMenuItemHitRect,
+} from './_shared/egMenuItemHitTest.js';
 import {
   EG_MENU_DEFAULT_MAX_HEIGHT_PX,
   EG_MENU_DEFAULT_WIDTH_PX,
@@ -122,7 +125,11 @@ function EgMenuRevealRow({
   children: ReactNode;
 }) {
   const { elapsedMs, reduceMotion } = clock;
-  const style = useAnimatedStyle(() => menuContentRowStyle(elapsedMs.value, index, reduceMotion));
+  const disableWaveTranslate = Platform.OS === 'android';
+  const style = useAnimatedStyle(
+    () => menuContentRowStyle(elapsedMs.value, index, reduceMotion, disableWaveTranslate),
+    [disableWaveTranslate, index, reduceMotion],
+  );
   return <Animated.View style={style}>{children}</Animated.View>;
 }
 
@@ -233,7 +240,7 @@ function EgMenuPanel({
       const finish = () => {
         remaining -= 1;
         if (remaining === 0) {
-          layoutsShared.value = measured.slice().sort((a, b) => a.top - b.top);
+          layoutsShared.value = partitionMenuItemHitRects(measured);
         }
       };
 
@@ -306,6 +313,7 @@ function EgMenuPanel({
     onTrackActiveChange: setTrackActive,
     stretch,
     menuPanelBounds,
+    hitTestUsesLocalY: true,
   });
 
   const selectionIconName = egMenuItemSelectionIconName();
@@ -416,34 +424,34 @@ function EgMenuPanel({
   }, [sections]);
 
   const menuScroll = (
-    <GestureDetector gesture={gesture}>
-      <View collapsable={false} style={styles.innerTrack}>
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={{
-            paddingHorizontal: containerPadH,
-            paddingVertical: containerPadV,
-          }}
-          keyboardShouldPersistTaps="handled"
-          nestedScrollEnabled
-          scrollEnabled={needsScroll && !trackActive}
-          scrollEventThrottle={16}
-          onScroll={(event) => {
-            scrollOffsetY.value = event.nativeEvent.contentOffset.y;
-          }}
-          onContentSizeChange={(_, height) => {
-            setContentHeight(height);
-            scheduleRebuildHitRects();
-          }}
-        >
-        <View
-          ref={(node) => {
-            innerRef.current = node as unknown as MenuRowMeasurable | null;
-          }}
-          style={styles.inner}
-          collapsable={false}
-          onLayout={scheduleRebuildHitRects}
-        >
+    <View collapsable={false} style={styles.innerTrack}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={{
+          paddingHorizontal: containerPadH,
+          paddingVertical: containerPadV,
+        }}
+        keyboardShouldPersistTaps="handled"
+        nestedScrollEnabled
+        scrollEnabled={needsScroll && !trackActive}
+        scrollEventThrottle={16}
+        onScroll={(event) => {
+          scrollOffsetY.value = event.nativeEvent.contentOffset.y;
+        }}
+        onContentSizeChange={(_, height) => {
+          setContentHeight(height);
+          scheduleRebuildHitRects();
+        }}
+      >
+        <GestureDetector gesture={gesture}>
+          <View
+            ref={(node) => {
+              innerRef.current = node as unknown as MenuRowMeasurable | null;
+            }}
+            style={styles.inner}
+            collapsable={false}
+            onLayout={scheduleRebuildHitRects}
+          >
           {sections.map((section, sectionIndex) => {
             const revealStart = sectionRevealStart[sectionIndex] ?? 0;
             const itemRevealStart = revealStart + (section.title ? 1 : 0);
@@ -470,23 +478,20 @@ function EgMenuPanel({
                   const selected = item.id === selectedId;
                   const rowHover = item.id === hoverItemId;
                   return (
-                    <EgMenuRevealRow
+                    <View
                       key={item.id}
-                      index={itemRevealStart + itemIndex}
-                      clock={revealClock}
+                      ref={(node) => {
+                        if (node) {
+                          rowRefs.current.set(item.id, node as unknown as MenuRowMeasurable);
+                        } else {
+                          rowRefs.current.delete(item.id);
+                        }
+                      }}
+                      collapsable={false}
+                      onLayout={scheduleRebuildHitRects}
+                      style={itemIndex > 0 ? { marginTop: itemRowGap } : undefined}
                     >
-                      <View
-                        ref={(node) => {
-                          if (node) {
-                            rowRefs.current.set(item.id, node as unknown as MenuRowMeasurable);
-                          } else {
-                            rowRefs.current.delete(item.id);
-                          }
-                        }}
-                        collapsable={false}
-                        onLayout={scheduleRebuildHitRects}
-                        style={itemIndex > 0 ? { marginTop: itemRowGap } : undefined}
-                      >
+                      <EgMenuRevealRow index={itemRevealStart + itemIndex} clock={revealClock}>
                       <SmoothCornerView
                         radius={itemRadius}
                         accessibilityRole="menuitem"
@@ -529,18 +534,18 @@ function EgMenuPanel({
                           </View>
                         ) : null}
                       </SmoothCornerView>
-                      </View>
-                    </EgMenuRevealRow>
+                      </EgMenuRevealRow>
+                    </View>
                   );
                 })}
               </View>
             </View>
             );
           })}
-        </View>
-        </ScrollView>
-      </View>
-    </GestureDetector>
+          </View>
+        </GestureDetector>
+      </ScrollView>
+    </View>
   );
 
   return (

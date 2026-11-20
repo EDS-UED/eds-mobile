@@ -32,7 +32,7 @@ export function useShowcaseTabHomeNav(title: string, navOptions?: UseShowcaseTab
   const scrollEdgeTitleContent = navOptions?.scrollEdgeTitleContent ?? null;
   const hasCustomNavTitle = Boolean(ScrollEdgeTitleComponent) || scrollEdgeTitleContent != null;
   const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll({
-    nativeScrollEdge: !native,
+    nativeScrollEdge: false,
   });
 
   const showStringNavTitle = scrollEdgeActive && !hasCustomNavTitle;

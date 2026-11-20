@@ -209,7 +209,10 @@ export type EgEdsAnimaPageOptions = {
    */
   dragDismiss?: boolean;
   mode?: ThemeMode;
-  /** iOS 26+ 系统栏 scroll edge 固定值（如 `'automatic'` 交系统决定）。缺省同 EgNavBar：静止 `hidden` · 滚入栏下 `soft`（`useEgNavBarScroll`）。 */
+  /**
+   * iOS 26+ 系统栏 scroll edge 固定值（`soft` / `hard` / `hidden`）。
+   * 缺省或 `'automatic'`：页面语义 — 静止 `hidden` · 滚入栏下 `soft`，由页根 `EgPage` + `useEgNavBarScroll` 驱动（勿向 RNS 下发 `automatic`）。
+   */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;
   /**
    * JS 栈（如 Expo Router `expo-router/stack`）— 始终 RN page 弹簧，不用 iOS 26+ 系统转场。
@@ -264,7 +267,10 @@ export function EgEdsAnimaPage({
   const reverse = direction === 'horizontal-reverse';
   if (shouldUseEgEdsAnimaNativePage()) {
     return ({ navigation }: { navigation: PageNavigation }) => {
-      markEgNavBarScrollEdgeFixed(navigation, scrollEdgeEffect != null);
+      markEgNavBarScrollEdgeFixed(
+        navigation,
+        scrollEdgeEffect != null && scrollEdgeEffect !== 'automatic',
+      );
       return {
         ...egNavBarNativeStackScreenOptions({ onBack: () => navigation.goBack(), mode, scrollEdgeEffect }),
         animation: vertical ? 'slide_from_bottom' : reverse ? 'slide_from_left' : 'default',

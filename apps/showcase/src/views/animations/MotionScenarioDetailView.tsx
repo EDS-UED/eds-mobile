@@ -16,6 +16,7 @@ import { findMotionScenarioDemo } from '@/data/animations/motionScenarioNav';
 import { menuCustomizeDefaults } from '@/data/components/menuCustomizeModel';
 import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
 import { SCENARIO_PROPS } from '@/data/tokens/motionTokenPropRows';
+import { motionScenarioUsageSnippet } from '@/data/tokens/motionNativeDisplay';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
@@ -23,6 +24,7 @@ import { CustomizePanel } from '@/views/shared/CustomizePanel';
 import { DocSection } from '@/views/shared/DocSection';
 import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
 import { PropsDocCardList } from '@/views/shared/PropsDocCardList';
+import { ShowcasePlainCodeSnippet } from '@/views/shared/ShowcasePlainCodeSnippet';
 import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { showcaseComponentPreviewContentStyle } from '@/views/shared/showcaseComponentPreviewCanvas';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
@@ -71,6 +73,7 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
   );
 
   const propRows = scenario && SCENARIO_PROPS[scenario] ? SCENARIO_PROPS[scenario] : [];
+  const usageSnippet = scenario ? motionScenarioUsageSnippet(scenario) : '';
 
   const navTitle = demo?.label ?? scenarioId;
   const {
@@ -149,6 +152,13 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
                 }
               />
             )}
+          </DocSection>
+
+          <DocSection title="用法">
+            <ShowcasePlainCodeSnippet
+              snippet={usageSnippet || `// ${demo.label}`}
+              accessibilityLabel="复制用法代码"
+            />
           </DocSection>
 
           <DocSection title="组件 API" cardPadding="none">

@@ -243,6 +243,30 @@ function quote(value: string) {
   return `'${value}'`;
 }
 
+/** 动效场景 Live 页 — 与 {@link resolveMotionTokenLiveNativeSnippet} 同套 consumer 片段。 */
+export function motionScenarioUsageSnippet(scenarioId: string): string {
+  switch (scenarioId) {
+    case 'press':
+      return PRESS_SNIPPET;
+    case 'slide':
+      return SLIDE_SNIPPET;
+    case 'layout-content':
+      return LAYOUT_CONTENT_SNIPPET;
+    case 'fade':
+      return FADE_SNIPPET;
+    case 'menu':
+      return MENU_SNIPPET;
+    case 'sheets':
+      return SHEETS_SNIPPET;
+    case 'page':
+      return PAGE_SNIPPET;
+    case 'page-shot':
+      return PAGE_SHOT_SNIPPET;
+    default:
+      return '';
+  }
+}
+
 /** USAGE — 与动效 API 配套的 consumer RN（非 preview/* Demo）。 */
 export function resolveMotionTokenLiveNativeSnippet(
   entry: Pick<TokenEntry, 'name'> & { layer?: TokenEntry['layer'] },

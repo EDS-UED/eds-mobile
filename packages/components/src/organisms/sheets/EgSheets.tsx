@@ -182,13 +182,21 @@ export function EgSheets({
   }, [actionsBlankCompensation, hasActions]);
   const resolveAdaptiveHeight = useCallback(
     (contentHeight: number) => {
-      const scrollPadBottom = mobileTheme.spacing['spacing-5'] as number;
+      const scrollPadBottom = SHEETS_CONTENT_PADDING;
       const minBody = contentTopInset + scrollPadBottom;
+      /**
+       * 仅 adaptive 档位：ScrollView contentSize 已含顶栏 inset + 插槽 + 底 padding（及 Action 预留）。
+       * 勿再 `contentTopInset + contentHeight` 叠高。Action 留白 / `actionsBlankCompensation` 逻辑不变。
+       */
+      if (!hasActions) {
+        const trimmed = Math.max(minBody, contentHeight - actionsBlankCompensationPx);
+        return Math.min(largeHeight, Math.round(trimmed));
+      }
       const body = Math.max(minBody, contentTopInset + contentHeight);
       const trimmed = Math.max(minBody, body - actionsBlankCompensationPx);
       return Math.min(largeHeight, Math.round(trimmed));
     },
-    [actionsBlankCompensationPx, contentTopInset, largeHeight],
+    [actionsBlankCompensationPx, contentTopInset, hasActions, largeHeight],
   );
 
   const detentHeightsKey = detentNames

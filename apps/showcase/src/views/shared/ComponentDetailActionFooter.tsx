@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,8 +10,6 @@ import {
   showcaseShallowBlockSurface,
   showcaseTheme as theme,
 } from '@/views/shared/showcaseTheme';
-import { copyShowcaseText } from '@/views/shared/showcaseCopyText';
-
 import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
 
 /**
@@ -63,43 +60,16 @@ function createFooterStyles(colors: ShowcaseColorMap) {
       ...theme.font.customizeFieldTitle,
       color: colors['text-base-primary'] as string,
     },
-    labelSecondary: {
-      ...theme.font.customizeChipLabel,
-      color: colors['text-base-secondary'] as string,
-    },
   });
 }
 
 type ComponentDetailActionFooterProps = {
   onOpen: (panel: ComponentDetailDocPanel) => void;
-  copyPrompt?: string;
 };
 
-export function ComponentDetailActionFooter({ onOpen, copyPrompt }: ComponentDetailActionFooterProps) {
+export function ComponentDetailActionFooter({ onOpen }: ComponentDetailActionFooterProps) {
   const styles = useThemedStyles(createFooterStyles);
   const insets = useSafeAreaInsets();
-  const [copied, setCopied] = useState(false);
-  const promptRef = useRef(copyPrompt);
-  promptRef.current = copyPrompt;
-
-  useEffect(() => {
-    if (!copied) {
-      return;
-    }
-    const timer = setTimeout(() => setCopied(false), 2000);
-    return () => clearTimeout(timer);
-  }, [copied]);
-
-  const onCopy = useCallback(async () => {
-    const text = promptRef.current?.trim();
-    if (!text) {
-      return;
-    }
-    const ok = await copyShowcaseText(text, 'EDS Mobile AI 提示词');
-    if (ok) {
-      setCopied(true);
-    }
-  }, []);
 
   return (
     <View style={[styles.root, { paddingBottom: Math.max(insets.bottom, edsSpacing('spacing-3')) }]}>
@@ -122,20 +92,6 @@ export function ComponentDetailActionFooter({ onOpen, copyPrompt }: ComponentDet
             PROPS / API
           </Text>
         </Pressable>
-        {copyPrompt != null ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="复制 AI 提示词"
-            style={styles.button}
-            onPress={() => {
-              void onCopy();
-            }}
-          >
-            <Text style={[styles.labelSecondary, { textAlign: 'center' }]} numberOfLines={2} adjustsFontSizeToFit>
-              {copied ? '已复制' : '复制 AI 提示词'}
-            </Text>
-          </Pressable>
-        ) : null}
       </View>
     </View>
   );

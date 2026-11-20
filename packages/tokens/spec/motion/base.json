@@ -201,13 +201,19 @@
     }
   ],
   "springs": {
-    "press": { "response": 0.32, "dampingFraction": 0.88, "blendDuration": 0.12, "reanimated": { "damping": 46, "stiffness": 560, "mass": 1 } },
+    "press": {
+      "response": 0.26,
+      "dampingFraction": 0.88,
+      "blendDuration": 0.1,
+      "reanimated": { "damping": 54, "stiffness": 760, "mass": 1 },
+      "comment": "Tap scale-in · 高刚度快速落位"
+    },
     "press-release": {
-      "response": 0.44,
-      "dampingFraction": 0.66,
-      "blendDuration": 0.12,
-      "reanimated": { "damping": 17, "stiffness": 350, "mass": 1 },
-      "comment": "Scale release bounce · recipe press-scale-out"
+      "response": 0.32,
+      "dampingFraction": 0.64,
+      "blendDuration": 0.1,
+      "reanimated": { "damping": 20, "stiffness": 620, "mass": 1 },
+      "comment": "Scale release · recipe press-scale-out · 保留过冲、加快回弹周期"
     },
     "control": { "response": 0.28, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 37, "stiffness": 503, "mass": 1 } },
     "slide-commit": {

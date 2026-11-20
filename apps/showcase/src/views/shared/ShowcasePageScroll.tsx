@@ -58,7 +58,7 @@ export function ShowcasePageScroll({
   contentContainerStyle,
   onScroll,
   scrollEventThrottle,
-  nativeScrollEdge = false,
+  nativeScrollEdge,
   contentInsetAdjustmentBehavior,
   nestedScrollEnabled,
   keyboardShouldPersistTaps,
@@ -90,7 +90,7 @@ export function ShowcasePageScroll({
       contentPaddingTop={contentPaddingTop}
       onScroll={onScroll}
       scrollEventThrottle={scrollEventThrottle}
-      nativeScrollEdge={nativeScrollEdge}
+      nativeScrollEdge={nativeScrollEdge ?? false}
       nestedScrollEnabled={nestedScrollEnabled}
       keyboardShouldPersistTaps={keyboardShouldPersistTaps}
       scrollIndicatorInsets={scrollIndicatorInsets}

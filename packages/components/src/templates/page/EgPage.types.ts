@@ -23,8 +23,10 @@ export type EgPageProps = Omit<ScrollViewProps, 'children' | 'contentContainerSt
   scrollTopInset?: number;
   contentInsetAdjustmentBehavior?: 'automatic' | 'never';
   /**
-   * iOS 26+ 是否允许 `useEgNavBarScroll` 驱动系统 scroll edge（`setOptions`）。
-   * 与外层 `EgEdsAnimaPage` 固定 scroll edge 时传 `false`。
+   * iOS 26+ 是否由本页滚动驱动系统 scroll edge（静止 `hidden` · 滚入 `soft`）。
+   * 业务页根须用 `EgPage`（或等价的 `useEgNavBarScroll` + 首子 `ScrollView`，勿外包断链 `View`）。
+   * 栈配 `egPageScreenOptions` 且未固定 `scrollEdgeEffect` 时保持默认 `true`；
+   * 外层已固定 scroll edge 时传 `false`。
    */
   nativeScrollEdge?: boolean;
   /** 供外层 `scrollTo` 等 · 与 RN `ScrollView` ref 同型。 */

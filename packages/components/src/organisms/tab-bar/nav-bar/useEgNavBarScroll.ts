@@ -42,7 +42,7 @@ export type UseEgNavBarScrollOptions = {
    * iOS 26+ 驱动所在页系统栏 scroll edge（静止 `hidden` · 滚入栏下 `soft`）：react-navigation native-stack 页自动
    * `setOptions`；RN `EgNavBar` 的 `showTitle`、expo-router 等把返回的 `scrollEdgeActive` 传给 `egNavBarNativeStackOptions`。
    * 默认 true（`EgPage` 内）。Showcase 等已用 `scrollEdgeActive` 写进 `<Stack.Screen options>` 时传 `false`，避免双写。
-   * 业务已配 `scrollEdgeEffect`（如 `'automatic'`）时以配置为准，滚动不改写。
+   * 业务已固定 `scrollEdgeEffect`（`soft` / `hard` / `hidden`）时以配置为准，滚动不改写；`'automatic'` 视同缺省。
    */
   nativeScrollEdge?: boolean;
 };
@@ -90,13 +90,6 @@ export function useEgNavBarScroll({ nativeScrollEdge = true }: UseEgNavBarScroll
   useLayoutEffect(() => {
     if (!settled) restOffset.current = null;
   }, [settled]);
-
-  useLayoutEffect(() => {
-    if (!drivesNativeEdge || !navigation || fixedScrollEdgeNavigations.has(navigation) || setHostEdge) {
-      return;
-    }
-    applyNativeScrollEdge('hidden');
-  }, [applyNativeScrollEdge, drivesNativeEdge, navigation, setHostEdge]);
 
   const resetScrollChrome = useCallback(() => {
     clearNativeEdgeHiddenTimer();

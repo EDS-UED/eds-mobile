@@ -329,16 +329,25 @@ export function menuContentRevealTotalMs(count: number) {
  * 自上而下逐行起步（menu-content-in-stagger）：淡入（menu-content-in）先完成，
  * 自 offset-menu-content-y 上移走 spring.menu-content-wave — 冲过落点再回落，逐行错峰成波浪。
  */
-export function menuContentRowStyle(elapsedMs: number, index: number, reduceMotion: boolean) {
+export function menuContentRowStyle(
+  elapsedMs: number,
+  index: number,
+  reduceMotion: boolean,
+  /** Android 为 true：`translateY` 与 `measureLayout` 不同步时关掉波浪位移。 */
+  disableWaveTranslate = false,
+) {
   'worklet';
   if (reduceMotion) {
     return { opacity: 1, transform: [{ translateY: 0 }] };
   }
   const local = elapsedMs - index * contentStaggerMs;
   const opacity = contentOpacityEasing(clamp01(local / contentOpacityMs));
+  const waveTranslateY = disableWaveTranslate
+    ? 0
+    : contentOffsetY * waveDisplacement(local / 1000);
   return {
     opacity,
-    transform: [{ translateY: contentOffsetY * waveDisplacement(local / 1000) }],
+    transform: [{ translateY: waveTranslateY }],
   };
 }
 

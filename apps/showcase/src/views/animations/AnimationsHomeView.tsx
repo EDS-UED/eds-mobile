@@ -3,11 +3,11 @@ import { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import type { EgPageScrollViewHandle } from '@eds/mobile-components';
+import { sceneAnimationCatalog } from '@/data/animations/sceneAnimationCatalog';
 import { motionScenarioDemos } from '@/data/animations/motionScenarioNav';
 import { useShowcaseTabHomeNav } from '@/hooks/useShowcaseTabHomeNav';
 import { showcaseTabHomeTitles } from '@/navigation/showcaseTabHomeTitles';
 import { ShowcaseCardRow } from '@/views/shared/ShowcaseCardRow';
-import { ShowcaseSectionCard } from '@/views/shared/ShowcaseSectionCard';
 import { showcaseTabHomeLeads } from '@/navigation/showcaseTabHomeLeads';
 import { ShowcaseTabHomeIntro } from '@/views/shared/ShowcaseTabHomeIntro';
 import { ShowcaseTabHomeDisplayTitle } from '@/views/shared/ShowcaseTabHomeDisplayTitle';
@@ -96,7 +96,16 @@ function AnimationsHomeViewBody() {
               style={styles.segmentPane}
               onLayout={(event) => onCardsSectionLayout(event.nativeEvent.layout.y)}
             >
-              <ShowcaseSectionCard empty emptyText="图形动画筹备中，后续在此展示。" />
+              <View style={screenStyles.cardList}>
+                {sceneAnimationCatalog.map((entry) => (
+                  <ShowcaseCardRow
+                    key={entry.slug}
+                    title={entry.name}
+                    hint={entry.lead}
+                    onPress={() => router.push(`/(animations)/scene/${entry.slug}`)}
+                  />
+                ))}
+              </View>
             </View>
           )}
         </ShowcasePageScroll>

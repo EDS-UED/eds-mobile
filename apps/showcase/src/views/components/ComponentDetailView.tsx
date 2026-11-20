@@ -12,12 +12,6 @@ import {
 import { switchPreviewRemountSuffix } from '@/data/components/switchCustomizeModel';
 import { toggleMarkPreviewRemountSuffix } from '@/data/components/toggleMarkCustomizeModel';
 import { readTabSegmentCount } from '@/data/components/tabCustomizeModel';
-import {
-  buildRnAiPrompt,
-  figmaNameFromCatalogEntry,
-  resolveRnAiCustomizeState,
-  tierFamilyFromEntry,
-} from '@/data/components/buildRnAiPrompt';
 import { buildPageBodyDemoParams } from '@/data/components/pageBodyDemoParams';
 import { showcaseInfraPreviewDefaults } from '@/data/components/showcaseInfraPreviewDefaults';
 import { SHOWCASE_PAGE_BODY_SLUG } from '@/data/components/showcaseInfraCatalog';
@@ -31,22 +25,17 @@ import { useShowcaseDev } from '@/hooks/useShowcaseDev';
 import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
-import {
-  ComponentDetailActionFooter,
-  componentDetailFooterScrollPadding,
-} from '@/views/shared/ComponentDetailActionFooter';
 import { CustomizePanel } from '@/views/shared/CustomizePanel';
 import { CustomizeSlotCardStack } from '@/views/shared/CustomizeSlotCardStack';
-import { DocContentSheet } from '@/views/shared/DocContentSheet';
 import { DocSection } from '@/views/shared/DocSection';
 import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
 import { InspectSheet } from '@/views/shared/InspectSheet';
-import { PropsDocTable } from '@/views/shared/PropsDocTable';
+import { PropsDocCardList } from '@/views/shared/PropsDocCardList';
 import { ShowcaseInspectTarget } from '@/views/shared/ShowcaseInspectTarget';
 import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
 import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { UsageSnippetBlock } from '@/views/shared/UsageSnippetBlock';
-import type { ComponentDetailDocPanel } from '@/views/components/ComponentDetailDocActions';
+import { edsSpacing } from '@/views/shared/resolveEdsTheme';
 import { MenuSectionsCustomizePanel } from '@/views/components/menu/MenuSectionsCustomizePanel';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
@@ -129,8 +118,10 @@ export function ComponentDetailView() {
       false,
     ),
   );
-  const scrollBottomInset =
-    componentDetailFooterScrollPadding(insets.bottom) + (mode === 'inspect' ? 160 : 0);
+  const scrollBottomExtra =
+    Math.max(insets.bottom, edsSpacing('spacing-3')) +
+    theme.layout.pageInset +
+    (mode === 'inspect' ? 160 : 0);
 
   const { colorTheme } = useShowcaseThemeContext();
   const PreviewComponent = resolveShowcasePreviewComponent(exportName);
@@ -142,7 +133,6 @@ export function ComponentDetailView() {
     setCustomize((prev) => ({ ...prev, ...next }));
   };
   const [measuredLayout, setMeasuredLayout] = useState<string[]>([]);
-  const [docPanel, setDocPanel] = useState<ComponentDetailDocPanel | null>(null);
 
   const previewProps = useMemo(() => {
     const previewMode =
@@ -210,19 +200,6 @@ export function ComponentDetailView() {
     return `<${doc?.componentTag ?? exportName} />`;
   }, [customize, doc, exportName]);
 
-  const aiPrompt = useMemo(() => {
-    const snippet = usageCode.trim() || `<${exportName} />`;
-    return buildRnAiPrompt({
-      exportName,
-      slug,
-      figmaName: figmaNameFromCatalogEntry(entry),
-      ...tierFamilyFromEntry(entry),
-      doc: doc ?? undefined,
-      customizeState: resolveRnAiCustomizeState(doc ?? undefined, customize),
-      usageSnippet: snippet,
-    });
-  }, [customize, doc, entry, exportName, slug, usageCode]);
-
   const styleLines = useMemo(() => {
     const lines = Object.entries(customize)
       .filter(([, value]) => value !== undefined && value !== '')
@@ -232,9 +209,6 @@ export function ComponentDetailView() {
     }
     return lines;
   }, [customize, measuredLayout]);
-
-  const docSheetTitle =
-    docPanel === 'usage' ? 'USAGE' : docPanel === 'props' ? 'PROPS / API' : '';
 
   const isPageBody = slug === SHOWCASE_PAGE_BODY_SLUG;
 
@@ -253,7 +227,7 @@ export function ComponentDetailView() {
           withTabBarInset={false}
           docSectionStack
           bottomInsetReplacesPagePadding
-          bottomInsetExtra={scrollBottomInset}
+          bottomInsetExtra={scrollBottomExtra}
           style={styles.scrollRoot}
         >
           {isPageBody ? (
@@ -326,6 +300,19 @@ export function ComponentDetailView() {
             </DocSection>
           ) : null}
 
+          <DocSection title="用法">
+            <UsageSnippetBlock
+              importCode={
+                doc?.importCode ?? `import { ${exportName} } from '@eds/mobile-components';`
+              }
+              usageCode={usageCode}
+            />
+          </DocSection>
+
+          <DocSection title="组件 API" cardPadding="none">
+            <PropsDocCardList rows={doc?.propRows ?? []} />
+          </DocSection>
+
           <DocSection title="注释">
             <ShowcaseComponentAnnotation
               doc={resolveShowcaseComponentAnnotation(entry, exportName)}
@@ -333,24 +320,6 @@ export function ComponentDetailView() {
           </DocSection>
         </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
-
-      <ComponentDetailActionFooter copyPrompt={aiPrompt} onOpen={setDocPanel} />
-
-      <DocContentSheet
-        visible={docPanel != null}
-        title={docSheetTitle}
-        onClose={() => setDocPanel(null)}
-      >
-        {docPanel === 'usage' ? (
-          <UsageSnippetBlock
-            importCode={
-              doc?.importCode ?? `import { ${exportName} } from '@eds/mobile-components';`
-            }
-            usageCode={usageCode}
-          />
-        ) : null}
-        {docPanel === 'props' ? <PropsDocTable rows={doc?.propRows ?? []} /> : null}
-      </DocContentSheet>
 
       <InspectSheet />
     </ShowcaseStackScreen>

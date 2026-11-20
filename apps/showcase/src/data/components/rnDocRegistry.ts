@@ -297,7 +297,13 @@ import {
       },
       { name: 'contentContainerStyle', type: 'StyleProp<ViewStyle>', defaultValue: 'undefined', description: '业务样式最后合并 · 同名字段以业务为准' },
       { name: 'onScroll', type: 'ScrollView props', defaultValue: 'useEgNavBarScroll()', description: '与顶栏 background="auto" 联动' },
-      { name: 'nativeScrollEdge', type: 'boolean', defaultValue: 'true', description: '是否由滚动驱动系统 scroll edge' },
+      {
+        name: 'nativeScrollEdge',
+        type: 'boolean',
+        defaultValue: 'true',
+        description:
+          'iOS 26+ 由本页滚动驱动系统 scroll edge（静止 hidden · 滚入 soft）；页根须 EgPage 为首 ScrollView',
+      },
     ],
     propQueryKeys: ['mode', 'contentPaddingTopPreset', 'contentPaddingTopCustom'],
     buildUsageSnippet: (state) => {

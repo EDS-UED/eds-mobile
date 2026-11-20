@@ -265,20 +265,20 @@
       "motion-opacity-page-shot-dim": "0.8",
       "motion-scale-page-shot-dismiss": "0.82",
       "motion-radius-page-shot": "var(--radius-2xl)",
-      "motion-spring-press-response": "0.32",
+      "motion-spring-press-response": "0.26",
       "motion-spring-press-damping-fraction": "0.88",
-      "motion-spring-press-blend-duration": "0.12s",
-      "motion-spring-press-damping": "46",
-      "motion-spring-press-stiffness": "560",
+      "motion-spring-press-blend-duration": "0.1s",
+      "motion-spring-press-damping": "54",
+      "motion-spring-press-stiffness": "760",
       "motion-spring-press-mass": "1",
-      "ios-spring-press": "damping:46,stiffness:560,mass:1",
-      "motion-spring-press-release-response": "0.44",
-      "motion-spring-press-release-damping-fraction": "0.66",
-      "motion-spring-press-release-blend-duration": "0.12s",
-      "motion-spring-press-release-damping": "17",
-      "motion-spring-press-release-stiffness": "350",
+      "ios-spring-press": "damping:54,stiffness:760,mass:1",
+      "motion-spring-press-release-response": "0.32",
+      "motion-spring-press-release-damping-fraction": "0.64",
+      "motion-spring-press-release-blend-duration": "0.1s",
+      "motion-spring-press-release-damping": "20",
+      "motion-spring-press-release-stiffness": "620",
       "motion-spring-press-release-mass": "1",
-      "ios-spring-press-release": "damping:17,stiffness:350,mass:1",
+      "ios-spring-press-release": "damping:20,stiffness:620,mass:1",
       "motion-spring-control-response": "0.28",
       "motion-spring-control-damping-fraction": "0.82",
       "motion-spring-control-blend-duration": "0.1s",
@@ -2074,7 +2074,7 @@
         "file": "base.css",
         "startLine": 86,
         "endLine": 86,
-        "snippet": "  --motion-spring-press-response: 0.32;"
+        "snippet": "  --motion-spring-press-response: 0.26;"
       },
       "motion-spring-press-damping-fraction": {
         "file": "base.css",
@@ -2086,19 +2086,19 @@
         "file": "base.css",
         "startLine": 88,
         "endLine": 88,
-        "snippet": "  --motion-spring-press-blend-duration: 0.12s;"
+        "snippet": "  --motion-spring-press-blend-duration: 0.1s;"
       },
       "motion-spring-press-damping": {
         "file": "base.css",
         "startLine": 89,
         "endLine": 89,
-        "snippet": "  --motion-spring-press-damping: 46;"
+        "snippet": "  --motion-spring-press-damping: 54;"
       },
       "motion-spring-press-stiffness": {
         "file": "base.css",
         "startLine": 90,
         "endLine": 90,
-        "snippet": "  --motion-spring-press-stiffness: 560;"
+        "snippet": "  --motion-spring-press-stiffness: 760;"
       },
       "motion-spring-press-mass": {
         "file": "base.css",
@@ -2110,37 +2110,37 @@
         "file": "base.css",
         "startLine": 92,
         "endLine": 92,
-        "snippet": "  --ios-spring-press: damping:46,stiffness:560,mass:1;"
+        "snippet": "  --ios-spring-press: damping:54,stiffness:760,mass:1;"
       },
       "motion-spring-press-release-response": {
         "file": "base.css",
         "startLine": 93,
         "endLine": 93,
-        "snippet": "  --motion-spring-press-release-response: 0.44;"
+        "snippet": "  --motion-spring-press-release-response: 0.32;"
       },
       "motion-spring-press-release-damping-fraction": {
         "file": "base.css",
         "startLine": 94,
         "endLine": 94,
-        "snippet": "  --motion-spring-press-release-damping-fraction: 0.66;"
+        "snippet": "  --motion-spring-press-release-damping-fraction: 0.64;"
       },
       "motion-spring-press-release-blend-duration": {
         "file": "base.css",
         "startLine": 95,
         "endLine": 95,
-        "snippet": "  --motion-spring-press-release-blend-duration: 0.12s;"
+        "snippet": "  --motion-spring-press-release-blend-duration: 0.1s;"
       },
       "motion-spring-press-release-damping": {
         "file": "base.css",
         "startLine": 96,
         "endLine": 96,
-        "snippet": "  --motion-spring-press-release-damping: 17;"
+        "snippet": "  --motion-spring-press-release-damping: 20;"
       },
       "motion-spring-press-release-stiffness": {
         "file": "base.css",
         "startLine": 97,
         "endLine": 97,
-        "snippet": "  --motion-spring-press-release-stiffness: 350;"
+        "snippet": "  --motion-spring-press-release-stiffness: 620;"
       },
       "motion-spring-press-release-mass": {
         "file": "base.css",
@@ -2152,7 +2152,7 @@
         "file": "base.css",
         "startLine": 99,
         "endLine": 99,
-        "snippet": "  --ios-spring-press-release: damping:17,stiffness:350,mass:1;"
+        "snippet": "  --ios-spring-press-release: damping:20,stiffness:620,mass:1;"
       },
       "motion-spring-control-response": {
         "file": "base.css",

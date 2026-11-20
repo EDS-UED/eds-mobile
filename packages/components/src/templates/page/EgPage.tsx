@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react';
+import { useCallback } from 'react';
 import { ScrollView, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useEgNavBarScroll } from '../../organisms/tab-bar/nav-bar/useEgNavBarScroll.js';
@@ -37,6 +38,13 @@ export function EgPage({
 }: EgPageProps) {
   const colors = getThemeColors(mode);
   const navScroll = useEgNavBarScroll({ nativeScrollEdge });
+  const handleScroll = useCallback(
+    (event: Parameters<NonNullable<EgPageProps['onScroll']>>[0]) => {
+      navScroll.onScroll(event);
+      onScroll?.(event);
+    },
+    [navScroll.onScroll, onScroll],
+  );
   const resolvedTop =
     contentPaddingTop ?? EG_PAGE_CONTENT_PADDING_TOP;
   const paddingTop = resolveEgPageScrollPaddingTop({
@@ -66,7 +74,7 @@ export function EgPage({
       style={rootStyle}
       contentContainerStyle={contentStyle}
       contentInsetAdjustmentBehavior={contentInsetAdjustmentBehavior}
-      onScroll={onScroll ?? navScroll.onScroll}
+      onScroll={handleScroll}
       scrollEventThrottle={scrollEventThrottle ?? navScroll.scrollEventThrottle}
       {...rest}
     >

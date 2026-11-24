@@ -16,11 +16,17 @@ const androidNavigationBarTranslucent = (
  */
 export function EgEdsAnimaOverlayModal({
   visible,
+  presentationKey = 0,
   onRequestClose,
   onShow,
   children,
 }: {
   visible: boolean;
+  /**
+   * iOS 26+ `ScreenStackItem` 每次呈现的唯一段（默认 0）· page-shot 每次打开递增，
+   * 避免复用 `transparentModal` 导致浮层内液态玻璃钮二次失效。
+   */
+  presentationKey?: number;
   onRequestClose?: () => void;
   onShow?: () => void;
   children: ReactNode;
@@ -54,7 +60,8 @@ export function EgEdsAnimaOverlayModal({
       </ScreenStackItem>
       {visible ? (
         <ScreenStackItem
-          screenId="eg-overlay"
+          key={`eg-overlay-${presentationKey}`}
+          screenId={`eg-overlay-${presentationKey}`}
           activityState={2}
           stackPresentation="transparentModal"
           stackAnimation="none"

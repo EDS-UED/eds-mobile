@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 
 /** Optional `expo-haptics` — no hard dependency on `@eds/mobile-components`. */
 export function triggerGlassPressHaptic(): void {
-  if (Platform.OS !== 'ios') return;
+  if (Platform.OS !== 'ios' && Platform.OS !== 'android') return;
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports

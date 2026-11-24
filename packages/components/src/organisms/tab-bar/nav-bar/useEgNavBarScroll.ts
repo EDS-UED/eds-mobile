@@ -115,6 +115,16 @@ export function useEgNavBarScroll({ nativeScrollEdge = true }: UseEgNavBarScroll
       const y = event.nativeEvent.contentOffset.y;
       if (!settled) {
         scrollOffset.value = Math.max(0, y);
+        // page-shot 飞行中仍上报顶停，供根页下拉关闭。
+        if (setHostAtTop) {
+          if (restOffset.current === null) restOffset.current = Math.min(y, 0);
+          const underUnsettled = Math.max(0, y - restOffset.current);
+          const atTopUnsettled = underUnsettled <= SCROLL_EDGE_ACTIVE_DISTANCE;
+          if (atTop.current !== atTopUnsettled) {
+            atTop.current = atTopUnsettled;
+            setHostAtTop(atTopUnsettled);
+          }
+        }
         return;
       }
       // 系统避让（`automatic`）静止位置为负；`never` 首个事件已是用户拖动，静止即 0。

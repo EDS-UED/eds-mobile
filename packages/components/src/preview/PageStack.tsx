@@ -1,7 +1,12 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import type {
+  EgEdsAnimaPageShotPageApi,
+  EgEdsAnimaPageShotRootApi,
+} from '../shared/motion/EgEdsAnimaPageShot.js';
 import { EgPage } from '../templates/page/EgPage.js';
+import { EgPageShotContent } from '../templates/page-shot/EgPageShotContent.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
 import { getThemeColors, mobileTheme, type ThemeMode } from '../theme/index.js';
 
@@ -16,7 +21,7 @@ export function PageStackDemoPage({
   mode,
   title,
   backLabel,
-  topInset,
+  topInset = 0,
   rows,
   onBack,
   onPush,
@@ -25,11 +30,14 @@ export function PageStackDemoPage({
   onScroll: onScrollProp,
   scrollEventThrottle: scrollThrottleProp,
   contentInsetAdjustmentBehavior = topInset > 0 ? 'never' : 'automatic',
+  pageShotApi,
+  pageShotLayer = 'stack-page',
 }: {
   mode: ThemeMode;
   title: string;
   backLabel: string;
-  topInset: number;
+  /** 仅 standalone `EgPage` 演示 · `pageShotApi` 存在时由 api 注入 inset。 */
+  topInset?: number;
   rows: string[];
   onBack: () => void;
   onPush: (title: string) => void;
@@ -38,6 +46,9 @@ export function PageStackDemoPage({
   onScroll?: (event: ScrollOffsetEvent) => void;
   scrollEventThrottle?: number;
   contentInsetAdjustmentBehavior?: 'automatic' | 'never';
+  /** `EgPageShot` api · `modal-root` 走弹层滚动（下拉关闭）；`stack-page` 标准 `EgPage`（motion-page）。 */
+  pageShotApi?: EgEdsAnimaPageShotRootApi | EgEdsAnimaPageShotPageApi;
+  pageShotLayer?: 'modal-root' | 'stack-page';
 }) {
   const colors = getThemeColors(mode);
   const primary = colors['text-base-primary'] as string;
@@ -64,6 +75,33 @@ export function PageStackDemoPage({
     </View>
   );
   if (!showHeader) {
+    if (pageShotApi && pageShotLayer === 'modal-root') {
+      return (
+        <EgPageShotContent
+          mode={mode}
+          api={pageShotApi}
+          nativeScrollEdge={false}
+          onScroll={onScrollProp}
+          scrollEventThrottle={scrollThrottleProp}
+        >
+          {list}
+        </EgPageShotContent>
+      );
+    }
+    if (pageShotApi && pageShotLayer === 'stack-page') {
+      return (
+        <EgPage
+          mode={mode}
+          topInset={pageShotApi.topInset}
+          scrollTopInset={pageShotApi.scrollTopInset}
+          contentInsetAdjustmentBehavior={pageShotApi.contentInsetAdjustmentBehavior}
+          onScroll={onScrollProp}
+          scrollEventThrottle={scrollThrottleProp}
+        >
+          {list}
+        </EgPage>
+      );
+    }
     return (
       <EgPage
         mode={mode}
@@ -72,6 +110,7 @@ export function PageStackDemoPage({
         contentInsetAdjustmentBehavior={contentInsetAdjustmentBehavior}
         onScroll={onScrollProp}
         scrollEventThrottle={scrollThrottleProp}
+        nativeScrollEdge={false}
       >
         {list}
       </EgPage>

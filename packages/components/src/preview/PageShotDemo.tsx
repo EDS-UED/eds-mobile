@@ -1,11 +1,19 @@
 import { useCallback, useState, type ReactNode } from 'react';
-import { Dimensions, Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type LayoutChangeEvent,
+} from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { EgGlassCapsule } from '../molecules/button/button-glass/EgGlassCapsule.js';
 import { edsFontStyle } from '../shared/fontFamily.js';
 import type { EgEdsAnimaPageShotRootApi } from '../shared/motion/EgEdsAnimaPageShot.js';
 import { EgPageShot, EgPageShotTrigger } from '../templates/page-shot/EgPageShot.js';
+import { EgPageShotContent } from '../templates/page-shot/EgPageShotContent.js';
 import {
   EG_PAGE_CONTENT_PADDING_HORIZONTAL,
   EG_PAGE_CONTENT_PADDING_TOP,
@@ -16,6 +24,13 @@ import { PageStackDemoPage } from './PageStack.js';
 /** 整页坐标系下 Hero 高度（卡片 = Hero 按卡片宽等比缩小）。 */
 const HERO_HEIGHT = 420;
 const SHOT_ROWS = ['相关文章', '开发者信息'];
+
+/** 卡片展开根页 · 长列表便于测滚动、顶部下拉 / 长按拖拽关闭。 */
+const CARD_SCROLL_FILLER = Array.from({ length: 28 }, (_, i) => ({
+  id: `card-scroll-${i + 1}`,
+  label: `测试区块 ${i + 1}`,
+  detail: i % 3 === 0 ? '可点行推入子页' : '向下滚动',
+}));
 
 const spacing = mobileTheme.spacing as Record<string, number>;
 const CARD_RADIUS = spacing['radius-xl'] ?? 20;
@@ -60,13 +75,19 @@ function ScaledPage({
   );
 }
 
-/** 卡片触发的整页根内容 · Hero + 后段淡入正文 + 可推入的行。 */
+/** 卡片触发的整页根内容 · Hero 与正文同一 ScrollView；`EgNavBar` 仍由壳层浮在页上。 */
 function CardShotRoot({ mode, api }: { mode: ThemeMode; api: EgEdsAnimaPageShotRootApi }) {
   const colors = getThemeColors(mode);
   const primary = colors['text-base-primary'] as string;
   const secondary = colors['text-base-secondary'] as string;
   return (
-    <>
+    <EgPageShotContent
+      mode={mode}
+      api={api}
+      contentPaddingHorizontal={0}
+      contentPaddingTop={0}
+      style={{ backgroundColor: 'transparent' }}
+    >
       <Hero mode={mode} />
       <Animated.View style={[styles.body, api.bodyStyle]}>
         <Text style={[styles.bodyTitle, { color: primary }]}>EdsSemanticAnima('page-shot')</Text>
@@ -84,8 +105,14 @@ function CardShotRoot({ mode, api }: { mode: ThemeMode; api: EgEdsAnimaPageShotR
             <Text style={[styles.rowLabel, { color: secondary }]}>›</Text>
           </Pressable>
         ))}
+        {CARD_SCROLL_FILLER.map((row) => (
+          <View key={row.id} style={[styles.row, { backgroundColor: colors['box-page-card'] as string }]}>
+            <Text style={[styles.rowLabel, { color: primary }]}>{row.label}</Text>
+            <Text style={[styles.rowValue, { color: secondary }]}>{row.detail}</Text>
+          </View>
+        ))}
       </Animated.View>
-    </>
+    </EgPageShotContent>
   );
 }
 
@@ -197,8 +224,8 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
             mode={mode}
             title={shotTitle(api.source.id)}
             backLabel="关闭"
-            topInset={api.scrollTopInset}
-            contentInsetAdjustmentBehavior={api.contentInsetAdjustmentBehavior}
+            pageShotApi={api}
+            pageShotLayer="modal-root"
             showHeader={false}
             rows={SHOT_ROWS}
             onBack={api.close}
@@ -211,8 +238,8 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
           mode={mode}
           title={api.pageKey}
           backLabel="‹ 返回"
-          topInset={api.scrollTopInset}
-          contentInsetAdjustmentBehavior={api.contentInsetAdjustmentBehavior}
+          pageShotApi={api}
+          pageShotLayer="stack-page"
           showHeader={false}
           rows={api.canPush ? [`${api.pageKey} · 下一层`] : []}
           onBack={api.back}
@@ -291,7 +318,8 @@ export function PageShotDemo({ mode }: { mode: ThemeMode }) {
 const styles = StyleSheet.create({
   root: {
     alignSelf: 'stretch',
-    alignItems: 'center',
+    width: '100%',
+    alignItems: 'stretch',
     gap: spacing['spacing-4'] ?? 16,
   },
   card: {

@@ -20,9 +20,6 @@ import {
   resolveEgPageShotVerticalBounce,
 } from './egPageShotScrollBounces.js';
 
-/** 停顶 Fling 关页 · 与 `EgEdsAnimaPageShot` `PULL_FLING_VELOCITY_Y` 一致。 */
-const SCROLL_FLING_DISMISS_VELOCITY_Y = 520;
-
 export type EgPageShotScrollProps = Omit<ScrollViewProps, 'bounces' | 'overScrollMode'> & {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -181,19 +178,9 @@ export function EgPageShotScroll({
 
   const handleScrollEndDrag = useCallback(
     (event: ScrollEvent) => {
-      const y = event.nativeEvent.contentOffset.y;
-      syncScrollChrome(y);
-      if (!pullBridge) return;
-      const native = event.nativeEvent as {
-        contentOffset: { y: number };
-        velocity?: { y: number };
-      };
-      const velocityY = native.velocity?.y ?? 0;
-      if (y <= EG_PAGE_SHOT_SCROLL_LEAVE_TOP_Y && velocityY > SCROLL_FLING_DISMISS_VELOCITY_Y) {
-        pullBridge.onFlingDismissAtTop(velocityY);
-      }
+      syncScrollChrome(event.nativeEvent.contentOffset.y);
     },
-    [pullBridge, syncScrollChrome],
+    [syncScrollChrome],
   );
 
   const handleMomentumScrollEnd = useCallback(

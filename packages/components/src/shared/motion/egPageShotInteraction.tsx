@@ -16,7 +16,7 @@ export type EgPageShotPullBridge = {
   scrollNative: GestureType;
   /** 停顶轻扫 / 长按下滑 · 与 `scrollNative` 同挂在 `EgPageShotScroll` 上。 */
   scrollDismissDown: GestureType;
-  /** 停顶快速下滑 Fling · ScrollView 未激活 Pan 时由滚动松手速度触发。 */
+  /** 保留给壳层下拉 `releaseDown` · Scroll 上下/惯性滚动不触发关页。 */
   onFlingDismissAtTop: (velocityY: number) => void;
   /** 与 `PageShotLayer` `chromeSession` 同步 · 仅新场次重置滚动偏移。 */
   chromeSession: number;

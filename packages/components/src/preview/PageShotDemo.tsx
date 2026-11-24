@@ -46,7 +46,7 @@ function Hero({ mode }: { mode: ThemeMode }) {
   );
 }
 
-/** 按整页宽排版、等比缩放到 `scale` 并左上对齐。 */
+/** 按整页宽排版、等比缩放到 `scale`；外壳收紧为缩放后尺寸，避免父级 `overflow: hidden` 裁左右。 */
 function ScaledPage({
   pageWidth,
   pageHeight,
@@ -58,19 +58,23 @@ function ScaledPage({
   scale: number;
   children: ReactNode;
 }) {
+  const scaledWidth = pageWidth * scale;
+  const scaledHeight = pageHeight * scale;
   return (
-    <View
-      style={{
-        width: pageWidth,
-        height: pageHeight,
-        transform: [
-          { translateX: (-pageWidth * (1 - scale)) / 2 },
-          { translateY: (-pageHeight * (1 - scale)) / 2 },
-          { scale },
-        ],
-      }}
-    >
-      {children}
+    <View style={{ width: scaledWidth, height: scaledHeight, overflow: 'hidden' }}>
+      <View
+        style={{
+          width: pageWidth,
+          height: pageHeight,
+          transform: [
+            { translateX: (-pageWidth * (1 - scale)) / 2 },
+            { translateY: (-pageHeight * (1 - scale)) / 2 },
+            { scale },
+          ],
+        }}
+      >
+        {children}
+      </View>
     </View>
   );
 }

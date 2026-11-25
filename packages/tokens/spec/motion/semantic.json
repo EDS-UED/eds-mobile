@@ -277,6 +277,7 @@
             "两类页面切换：普通左右切换 → motion-page；弹层页面、卡片 → motion-page-shot（触发元素不同，动效一致；与 motion-page 可互相嵌套，收起时弹层内整个栈随整页飞回）",
             "点按触发源 → Recipe(press) 下沉；松手展开：frame 源 → 整页、圆角 → 0、背后压暗 0 → opacity-page-shot-dim，正文于展开后段淡入",
             "关闭 / 下拉 / 根页左缘侧滑松手 → Recipe(page-shot-dismiss) · spring.page-shot-close 飞回触发元素 · 先快后慢（起步 ratio-page-shot-close-launch，跟手更快取跟手速度）；未过阈值弹回整页",
+            "收回触发卡片 · 业务仅用 EgPageShotContent + api.close；滚后 scroll 与 progress 同轨由组件内建（EDS 调 ratio-page-shot-scroll-retreat-power 等 token）",
             "RN · 页面内容按整页宽排版、随 frame 等比缩放并顶部对齐裁切（卡片即整页顶部）· pageShotMotion.pageShotFrame",
             "业务入口：EgEdsAnimaPageShot（renderRoot / renderPage）+ EgEdsAnimaPageShotTrigger（@eds/mobile-components）"
           ]

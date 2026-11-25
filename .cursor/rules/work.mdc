@@ -312,9 +312,9 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 **顺序（不得跳步）**
 
 1. **§9** — 按本次 diff 跑齐必跑项；汇报区分「本次引入」与「预先存在」失败；有本次引入失败 → **不推送**，先修。
-2. **`git status`** — 已改 / 未跟踪：默认**全部**纳入 commit；用户明确排除的 path 除外。禁止留 unstaged、禁止「只 commit 一部分」除非用户当场限定范围。
-3. **commit** — `git add` 含相关 untracked；message 聚焦 why。默认分支 **`main`**（用户指定则用指定分支）。
-4. **`git push`** — 首次 `git push -u origin <branch>`；之后 `git push`。禁止只 commit 不 push。
+2. **`git status`** — 已改 / 未跟踪：默认**全部**纳入 commit；用户明确排除的 path 除外。禁止留 unstaged、禁止「只 commit 一部分」除非用户当场限定范围。**禁止**在尚有未纳入变更时宣称「已提交 / 已推送」完成。
+3. **commit** — `git add -A`（或等价全量 staging）含 untracked 与生成物；message 聚焦 why。默认分支 **`main`**（用户指定则用指定分支）。**commit 后**再跑 `git status`，须**工作区干净**（无 modified、无 untracked）；不干净 → 继续 add + commit，**不得** push。
+4. **`git push`** — 首次 `git push -u origin <branch>`；之后 `git push`。禁止只 commit 不 push。**push 后**再跑 `git status`，须仍**干净**且与 `origin/<branch>` 一致。
 5. **EAS preview（【必须】亲自确认）** — push `main` 触发 `apps/showcase/.eas/workflows/publish-preview-update.yml`（项目 **@theyangsongs-team/eds-ued`**）：
    - `cd apps/showcase && npx eas-cli workflow:runs --workflow publish-preview-update.yml --limit 1` → 取 `runId`
    - `npx eas-cli workflow:status <runId>` 等到 **SUCCESS**；**FAILURE** → `workflow:status` 读失败 step 日志，修 CI/锁文件/workflow 后重推或兜底
@@ -333,7 +333,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 **禁止**
 
 - 问「要不要 push / 是否推送」——用户已说推送即执行 §10。
-- 漏 add、漏 push、推前跳过 §9、**推完不报 EAS 成败**。
+- 漏 add、漏 push、推前跳过 §9、**推完不报 EAS 成败**、**commit / push 后工作区仍脏**（部分文件未提交）。
 - 对 **`main`** 做 `git push --force`（除非用户**明确要求**）。
 - 用 **「推送」** 代替 consumer **「同步」**（§5.2）。
 
@@ -355,6 +355,7 @@ Mobile 与 Desktop **组件集不同**；export 名按各端 Figma catalog，**�
 - 2026-10-12：§6.0 **RN 默认栈（原生增强闸门）** — 无明确声明不得默认原生分叉；原 EDSGlassView 原则顺延 §6.1。
 - 2026-10-14：§10 **推送** — 「推送」= §9 全绿 → 全量 commit（默认 main）→ push；本仓无 Pages；Desktop Pages 另仓；禁止只 commit / 漏文件 / 默认 force push main。
 - 2026-11-18：§10 对齐业务 §3.3 — 「推送」含 EAS Showcase `preview` 确认（workflow / `pnpm preview:update`）；workflow 固定 Node 22 + corepack（engines 门禁）。
+- 2026-11-25：§10 — commit / push 后 **工作区须干净**（全量纳入、禁止部分提交遗留）。
 - 2026-10-29：§5 — EDS 改动默认不主动同步业务 consumer；仅用户说 **「同步」** 时 §5.2；§9 破坏性 API 的 consumer 验证同口令触发。
 - 2026-10-29：§0 / §2 / §5 — 明确业务侧默认不受 EDS 改动与 push 影响；**「同步」** 为刷最新设计系统到 consumer 的唯一口令；§2 破坏性变更不再默认同轮改 consumer。
 - 2026-11-11：§6.0 — 用户声明 Android 平滑圆角原生增强（`SmoothCornerView` / `EdsSmoothCorner`，Android 13+）。

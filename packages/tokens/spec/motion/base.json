@@ -196,6 +196,41 @@
           "name": "motion-radius-page-shot",
           "value": "var(--radius-2xl)",
           "comment": "跟手时整页圆角（静止整页为 0；收起终点用触发元素圆角）"
+        },
+        {
+          "name": "motion-ratio-page-shot-morph",
+          "value": "0.3",
+          "comment": "外壳与触发元素 morph 交叉淡化进度窗（progress / morph 前缘锚定触发元素外观）"
+        },
+        {
+          "name": "motion-ratio-page-shot-body-in-start",
+          "value": "0.55",
+          "comment": "展开 · 正文淡入起始 progress（低于此前仅壳 / 卡片区）"
+        },
+        {
+          "name": "motion-ratio-page-shot-body-in-span",
+          "value": "0.45",
+          "comment": "展开 · 正文淡入 progress 跨度（至 1 落满）"
+        },
+        {
+          "name": "motion-ratio-page-shot-land",
+          "value": "0.5",
+          "comment": "收回落位 spring 欠冲时触发元素外观微缩系数（progress < 0）"
+        },
+        {
+          "name": "motion-ratio-page-shot-drag-range",
+          "value": "0.35",
+          "comment": "下拉跟手满量 = 屏高 × 此比（drag 0→1）"
+        },
+        {
+          "name": "motion-ratio-page-shot-dismiss-drag-distance",
+          "value": "0.15",
+          "comment": "下拉松手关页阈值 = 屏高 × 此比（纯位移，无 Fling 速度关页）"
+        },
+        {
+          "name": "motion-ratio-page-shot-scroll-retreat-power",
+          "value": "1.22",
+          "comment": "收回时滚动回顶 vs close progress：targetY = fromY × (progress/start)^power；>1 内容略领先缩卡（App Store 式从上往下收进触发卡片）"
         }
       ]
     }

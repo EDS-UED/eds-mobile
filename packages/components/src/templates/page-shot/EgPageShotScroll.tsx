@@ -1,5 +1,5 @@
-import type { ComponentRef, ReactNode, Ref } from 'react';
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import {
   Platform,
   ScrollView as RnScrollView,
@@ -8,13 +8,23 @@ import {
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
-import { Gesture, GestureDetector, ScrollView as GhsScrollView } from 'react-native-gesture-handler';
-import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Reanimated, {
+  runOnJS,
+  scrollTo,
+  useAnimatedProps,
+  useAnimatedReaction,
+  useAnimatedRef,
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
+
+const AnimatedScrollView = Reanimated.createAnimatedComponent(RnScrollView);
 
 import { useEgPageShotPullBridge } from '../../shared/motion/egPageShotInteraction.js';
 import { useEgNavBarScroll } from '../../organisms/tab-bar/nav-bar/useEgNavBarScroll.js';
 import {
+  EG_PAGE_SHOT_DISMISS_TOP_Y,
   EG_PAGE_SHOT_SCROLL_LEAVE_TOP_Y,
   resolveEgPageShotScrollBounces,
   resolveEgPageShotVerticalBounce,
@@ -33,6 +43,7 @@ export type EgPageShotScrollProps = Omit<ScrollViewProps, 'bounces' | 'overScrol
 
 /**
  * `EgPageShot` 自定义滚动区 — 停顶区无顶弹；离顶且可滚时开 `bounces`（到底底弹）；停顶下拉由壳 Pan。
+ * 滚动 / 收回插值走 UI 线程，避免 `scrollTo` 与 `bounces` 在 JS 帧上抖动。
  */
 export function EgPageShotScroll({
   children,
@@ -55,52 +66,19 @@ export function EgPageShotScroll({
   const navScroll = useEgNavBarScroll({ nativeScrollEdge });
   const pullBridge = useEgPageShotPullBridge();
   const indicatorUnlessClosing = showsVerticalScrollIndicatorProp ?? true;
-  type ScrollViewNative = ComponentRef<typeof RnScrollView> & {
-    setNativeProps?: (props: { showsVerticalScrollIndicator?: boolean }) => void;
-  };
-  const scrollRef = useRef<ScrollViewNative | null>(null);
+
+  const scrollBouncesFlag = useSharedValue(scrollBounces);
+  scrollBouncesFlag.value = scrollBounces;
+  const scrollEnabledUser = useSharedValue(scrollEnabledProp ?? true);
+  scrollEnabledUser.value = scrollEnabledProp ?? true;
+  const showIndicatorDefault = useSharedValue(indicatorUnlessClosing);
+  showIndicatorDefault.value = indicatorUnlessClosing;
+
+  const animatedScrollRef = useAnimatedRef<{ scrollTo?: (options: { y: number; animated?: boolean }) => void }>();
   const scrollOffsetYRef = useRef(0);
-  const [gesturesReady, setGesturesReady] = useState(false);
-  const [scrollLocked, setScrollLocked] = useState(false);
-
-  const applyScrollOffset = useCallback((y: number) => {
-    const clamped = Math.max(0, y);
-    if (Math.abs(scrollOffsetYRef.current - clamped) < 0.5) return;
-    (scrollRef.current as { scrollTo?: (options: { y: number; animated?: boolean }) => void } | null)?.scrollTo?.({
-      y: clamped,
-      animated: false,
-    });
-    scrollOffsetYRef.current = clamped;
-    if (pullBridge) pullBridge.scrollOffsetYSv.value = clamped;
-  }, [pullBridge]);
-
-  const applyScrollIndicator = useCallback(
-    (closing: boolean) => {
-      scrollRef.current?.setNativeProps?.({
-        showsVerticalScrollIndicator: indicatorUnlessClosing && !closing,
-      });
-    },
-    [indicatorUnlessClosing],
-  );
-
-  useAnimatedReaction(
-    () => pullBridge?.openSettledSv.value ?? false,
-    (settled, prev) => {
-      if (settled === prev) return;
-      scheduleOnRN(setGesturesReady, settled);
-    },
-    [pullBridge],
-  );
-
-  useAnimatedReaction(
-    () => (pullBridge ? pullBridge.closingSv.value : false),
-    (closing, prev) => {
-      if (prev !== null && closing === prev) return;
-      scheduleOnRN(applyScrollIndicator, closing);
-      scheduleOnRN(setScrollLocked, closing);
-    },
-    [pullBridge, applyScrollIndicator],
-  );
+  const contentHeightSv = useSharedValue(0);
+  const layoutHeightSv = useSharedValue(0);
+  const closeSyncLastYSv = useSharedValue(-1);
 
   useAnimatedReaction(
     () => {
@@ -113,133 +91,153 @@ export function EgPageShotScroll({
       if (fromY <= 0) return;
       const start = pullBridge.closeProgressStartSv.value;
       const ratio = Math.min(1, Math.max(0, p / start));
-      scheduleOnRN(applyScrollOffset, fromY * ratio);
+      const targetY = fromY * ratio;
+      if (Math.abs(targetY - closeSyncLastYSv.value) < 0.5) return;
+      closeSyncLastYSv.value = targetY;
+      scrollTo(animatedScrollRef, 0, targetY, false);
+      pullBridge.scrollOffsetYSv.value = targetY;
     },
-    [pullBridge, applyScrollOffset],
-  );
-
-  const [scrollMetrics, setScrollMetrics] = useState({ contentHeight: 0, layoutHeight: 0 });
-  const [verticalBounce, setVerticalBounce] = useState(false);
-
-  const syncScrollChrome = useCallback(
-    (y: number) => {
-      scrollOffsetYRef.current = y;
-      if (pullBridge) pullBridge.scrollOffsetYSv.value = y;
-      if (!pullBridge) return;
-      const atTop = y <= EG_PAGE_SHOT_SCROLL_LEAVE_TOP_Y;
-      pullBridge.scrollAtTopSv.value = atTop;
-      if (!gesturesReady) return;
-      const nextBounce = resolveEgPageShotVerticalBounce(
-        scrollBounces,
-        y,
-        scrollMetrics.contentHeight,
-        scrollMetrics.layoutHeight,
-      );
-      setVerticalBounce((prev) => (prev === nextBounce ? prev : nextBounce));
-    },
-    [gesturesReady, pullBridge, scrollBounces, scrollMetrics.contentHeight, scrollMetrics.layoutHeight],
+    [pullBridge],
   );
 
   const handleContentSizeChange = useCallback(
-    (_w: number, h: number) => {
-      setScrollMetrics((prev) => (prev.contentHeight === h ? prev : { ...prev, contentHeight: h }));
+    (w: number, h: number) => {
+      contentHeightSv.value = h;
+      onContentSizeChangeProp?.(w, h);
     },
-    [],
+    [contentHeightSv, onContentSizeChangeProp],
   );
 
   const handleLayout = useCallback(
     (event: LayoutChangeEvent) => {
-      const h = event.nativeEvent.layout.height;
-      setScrollMetrics((prev) => (prev.layoutHeight === h ? prev : { ...prev, layoutHeight: h }));
+      layoutHeightSv.value = event.nativeEvent.layout.height;
       onLayoutProp?.(event);
     },
-    [onLayoutProp],
-  );
-
-  const handleContentSizeChangeWrapped = useCallback(
-    (w: number, h: number) => {
-      handleContentSizeChange(w, h);
-      onContentSizeChangeProp?.(w, h);
-    },
-    [handleContentSizeChange, onContentSizeChangeProp],
+    [layoutHeightSv, onLayoutProp],
   );
 
   type ScrollEvent = Parameters<NonNullable<ScrollViewProps['onScroll']>>[0];
 
-  const handleScroll = useCallback(
+  const reportScrollOffset = useCallback(
+    (x: number, y: number) => {
+      scrollOffsetYRef.current = y;
+      const event = { nativeEvent: { contentOffset: { x, y } } } as ScrollEvent;
+      navScroll.onScroll(event);
+      onScrollProp?.(event);
+    },
+    [navScroll.onScroll, onScrollProp],
+  );
+
+  const scrollHandler = useAnimatedScrollHandler(
+    {
+      onScroll: (event) => {
+        const { x, y } = event.contentOffset;
+        if (pullBridge) {
+          pullBridge.scrollOffsetYSv.value = y;
+          pullBridge.scrollAtTopSv.value = y <= EG_PAGE_SHOT_DISMISS_TOP_Y;
+        }
+        runOnJS(reportScrollOffset)(x, y);
+      },
+    },
+    [pullBridge, reportScrollOffset],
+  );
+
+  const staticBounces = resolveEgPageShotScrollBounces(
+    scrollBounces,
+    !navScroll.scrollEdgeActive,
+    false,
+  );
+
+  const animatedScrollProps = useAnimatedProps<Record<string, unknown>>(() => {
+    'worklet';
+    if (!pullBridge) {
+      return Platform.OS === 'android'
+        ? { overScrollMode: (staticBounces ? 'always' : 'never') as 'always' | 'never' }
+        : { bounces: staticBounces };
+    }
+    const settled = pullBridge.openSettledSv.value;
+    const y = pullBridge.scrollOffsetYSv.value;
+    const bounceOn =
+      settled &&
+      resolveEgPageShotVerticalBounce(
+        scrollBouncesFlag.value,
+        y,
+        contentHeightSv.value,
+        layoutHeightSv.value,
+      );
+    const scrollOn = settled && !pullBridge.closingSv.value && scrollEnabledUser.value;
+    const showIndicator = showIndicatorDefault.value && !pullBridge.closingSv.value;
+    const chrome = {
+      scrollEnabled: scrollOn,
+      showsVerticalScrollIndicator: showIndicator,
+    };
+    if (Platform.OS === 'android') {
+      return {
+        ...chrome,
+        overScrollMode: (bounceOn ? 'always' : 'never') as 'always' | 'never',
+      };
+    }
+    return {
+      ...chrome,
+      bounces: bounceOn,
+    };
+  });
+
+  const handlePlainScroll = useCallback(
     (event: ScrollEvent) => {
       navScroll.onScroll(event);
       onScrollProp?.(event);
-      if (!pullBridge) return;
-      syncScrollChrome(event.nativeEvent.contentOffset.y);
     },
-    [navScroll.onScroll, onScrollProp, pullBridge, syncScrollChrome],
+    [navScroll.onScroll, onScrollProp],
   );
-
-  const handleScrollEndDrag = useCallback(
-    (event: ScrollEvent) => {
-      syncScrollChrome(event.nativeEvent.contentOffset.y);
-    },
-    [syncScrollChrome],
-  );
-
-  const handleMomentumScrollEnd = useCallback(
-    (event: ScrollEvent) => {
-      syncScrollChrome(event.nativeEvent.contentOffset.y);
-    },
-    [syncScrollChrome],
-  );
-
-  const bounces = pullBridge
-    ? gesturesReady
-      ? verticalBounce
-      : false
-    : resolveEgPageShotScrollBounces(scrollBounces, !navScroll.scrollEdgeActive, false);
 
   const scrollProps = {
     style: [{ flex: 1, backgroundColor: 'transparent' }, style] as StyleProp<ViewStyle>,
     contentContainerStyle,
     contentInsetAdjustmentBehavior: 'never' as const,
-    bounces,
     alwaysBounceVertical: false,
-    ...(Platform.OS === 'android'
-      ? { overScrollMode: (bounces ? 'always' : 'never') as 'always' | 'never' }
-      : null),
     onLayout: handleLayout,
-    onContentSizeChange: handleContentSizeChangeWrapped,
-    onScroll: handleScroll,
-    onScrollEndDrag: handleScrollEndDrag,
-    onMomentumScrollEnd: handleMomentumScrollEnd,
+    onContentSizeChange: handleContentSizeChange,
     scrollEventThrottle: scrollEventThrottleProp ?? navScroll.scrollEventThrottle,
     keyboardShouldPersistTaps: 'handled' as const,
     ...scrollRest,
-    scrollEnabled: scrollLocked ? false : (scrollEnabledProp ?? true),
-    showsVerticalScrollIndicator: indicatorUnlessClosing,
+    ...(pullBridge
+      ? { scrollEnabled: scrollEnabledProp ?? true, showsVerticalScrollIndicator: indicatorUnlessClosing }
+      : {
+          onScroll: handlePlainScroll,
+          scrollEnabled: scrollEnabledProp ?? true,
+          showsVerticalScrollIndicator: indicatorUnlessClosing,
+          ...(Platform.OS === 'android'
+            ? { overScrollMode: (staticBounces ? 'always' : 'never') as 'always' | 'never' }
+            : { bounces: staticBounces }),
+        }),
   } as ScrollViewProps;
-
-  const { ref: _scrollRef, ...scrollPropsWithoutRef } = scrollProps;
 
   const presentationSession = pullBridge?.chromeSession ?? -1;
   useLayoutEffect(() => {
     if (!pullBridge) return;
     scrollOffsetYRef.current = 0;
     pullBridge.scrollOffsetYSv.value = 0;
-  }, [pullBridge, presentationSession]);
+    pullBridge.scrollAtTopSv.value = true;
+    closeSyncLastYSv.value = -1;
+  }, [closeSyncLastYSv, pullBridge, presentationSession]);
 
   const scrollGestures = useMemo(() => {
     if (!pullBridge) return null;
-    return gesturesReady
-      ? Gesture.Simultaneous(pullBridge.scrollNative, pullBridge.scrollDismissDown)
-      : pullBridge.scrollNative;
-  }, [gesturesReady, pullBridge]);
+    return Gesture.Simultaneous(pullBridge.scrollNative, pullBridge.scrollDismissDown);
+  }, [pullBridge]);
 
-  const scrollBody = (
-    <RnScrollView
-      ref={scrollRef as Ref<{ scrollTo: (options: { y: number; animated?: boolean }) => void }>}
-      {...scrollPropsWithoutRef}
+  const scrollBody = pullBridge ? (
+    <AnimatedScrollView
+      ref={animatedScrollRef as never}
+      animatedProps={animatedScrollProps}
+      onScroll={scrollHandler}
+      {...scrollProps}
     >
       {children}
-    </RnScrollView>
+    </AnimatedScrollView>
+  ) : (
+    <RnScrollView {...scrollProps}>{children}</RnScrollView>
   );
 
   if (!pullBridge || !scrollGestures) {

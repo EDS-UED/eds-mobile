@@ -1,0 +1,38 @@
+{
+  "$figma": "Palette · Chart",
+  "$description": "图表系列色：light / dark 同值（柔和粉彩，Figma Chart Purple…Blue）。CSS — dist/css/color/palette/chart/（--eds-chart-* · --chart-*）。",
+  "charts": {
+    "purple": {
+      "light": "#c3affa",
+      "dark": "#c3affa"
+    },
+    "magenta": {
+      "light": "#deaef3",
+      "dark": "#deaef3"
+    },
+    "pink": {
+      "light": "#f4afea",
+      "dark": "#f4afea"
+    },
+    "orange": {
+      "light": "#ffb6b3",
+      "dark": "#ffb6b3"
+    },
+    "yellow": {
+      "light": "#ece195",
+      "dark": "#ece195"
+    },
+    "green": {
+      "light": "#96f7d2",
+      "dark": "#96f7d2"
+    },
+    "cyan": {
+      "light": "#70e6f9",
+      "dark": "#70e6f9"
+    },
+    "blue": {
+      "light": "#9accff",
+      "dark": "#9accff"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$figma": "Palette · Hue",
+  "$description": "Palette 色相基色：每 token 含 light / dark 两套 hex。CSS — dist/css/color/palette/hue/（--eds-hue-* · --hue-*）。",
+  "hues": {
+    "red": {
+      "light": "#ff3b30",
+      "dark": "#f76057"
+    },
+    "red-dim": {
+      "light": "#632e2b",
+      "dark": "#7a4c4a",
+      "comment": "Hue Dark Red — 深底 / 弱化红"
+    },
+    "orange": {
+      "light": "#f55e24",
+      "dark": "#f37a4b"
+    },
+    "orange-dim": {
+      "light": "#7a2e12",
+      "dark": "#885340",
+      "comment": "Hue Dark Orange"
+    },
+    "yellow": {
+      "light": "#ffcc00",
+      "dark": "#ffd321"
+    },
+    "yellow-dim": {
+      "light": "#675d44",
+      "dark": "#77705c",
+      "comment": "Hue Dark Yellow"
+    },
+    "green": {
+      "light": "#1fc35a",
+      "dark": "#1fc35a"
+    },
+    "green-dim": {
+      "light": "#064a26",
+      "dark": "#ffffff",
+      "comment": "Hue Dark Green"
+    },
+    "cyan": {
+      "light": "#00e5ff",
+      "dark": "#12e7ff"
+    },
+    "cyan-dim": {
+      "light": "#007d7e",
+      "dark": "#4b999a",
+      "comment": "Hue Dark Cyan"
+    },
+    "blue": {
+      "light": "#0072c3",
+      "dark": "#258fd9"
+    },
+    "blue-dim": {
+      "light": "#003b6e",
+      "dark": "#335e82",
+      "comment": "Hue Dark Blue"
+    },
+    "purple": {
+      "light": "#651fff",
+      "dark": "#966df3"
+    },
+    "purple-dim": {
+      "light": "#3e316c",
+      "dark": "#625984",
+      "comment": "Hue Dark Purple"
+    }
+  }
+}

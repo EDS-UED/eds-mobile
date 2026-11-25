@@ -59,9 +59,17 @@ import {
   pageShotCloseLaunchVelocity,
   pageShotCloseSpringConfig,
   pageShotFrame,
+  pageShotMorphProgressRatio,
   pageShotOpenSpringConfig,
   type PageShotRect,
 } from './pageShotMotion.js';
+
+/** `motion-ratio-page-shot-morph` · 0 = 触发稿，1 = 根页稿。 */
+function pageShotMorphT(progressValue: number) {
+  'worklet';
+  const span = Math.max(1e-4, pageShotMorphProgressRatio);
+  return Math.min(1, Math.max(0, progressValue / span));
+}
 
 const REDUCED_FADE_MS = 180;
 const EDGE_SWIPE_WIDTH = 24;
@@ -71,12 +79,6 @@ const LONG_PRESS_DRAG_MS = 350;
 /** 停顶 Pan 向下激活（轻扫）· 向上 fail 让给滚动。 */
 const PULL_ACTIVE_Y = 4;
 const PULL_FAIL_UP_Y = 6;
-/** 停顶 Fling 下滑 · `releaseDown` 速度阈值（pt/s）。 */
-const PULL_FLING_VELOCITY_Y = 520;
-
-/** 外壳贴近触发元素尺寸时（进度低于此值）叠出触发元素外观：展开起段 / 收回末段即为触发元素本身。 */
-const MORPH_PROGRESS = 0.3;
-
 /** 触发元素几何 · 整页自此展开、收起飞回此处（卡片 / 按钮 / 列表行…动效一致）。 */
 export type EgEdsAnimaPageShotSource = {
   id: string;
@@ -96,6 +98,13 @@ export type EgEdsAnimaPageShotRootApi = {
   close: () => void;
   /** 展开后段淡入（触发元素外的正文）。 */
   bodyStyle: ReturnType<typeof useAnimatedStyle>;
+  /**
+   * 触发元素稿面权重 · `motion-ratio-page-shot-morph`。
+   * progress 0 = 1（仅触发稿），越过 morph 窗 = 0。供业务把不同元素交叉淡化，勿再叠一层居中定格的整卡。
+   */
+  sourceFaceStyle: ReturnType<typeof useAnimatedStyle>;
+  /** 根页稿面权重 · 与 `sourceFaceStyle` 互补（同一 morph 窗）。 */
+  pageFaceStyle: ReturnType<typeof useAnimatedStyle>;
   /** 顶栏底边距弹层顶（状态栏 + NavBar）· 不滚动内容的 `paddingTop`。 */
   topInset: number;
   /** 滚动内容 `contentContainerStyle.paddingTop`（iOS 26+ 为 0 · 系统自动避让栏）。 */
@@ -474,7 +483,10 @@ function PageShotLayer({
       return;
     }
     shown.remeasure((next) => {
-      if (next.width > 0 && next.height > 0) setLandRect(next);
+      if (next.width > 0 && next.height > 0) {
+        sourceRectSv.value = next;
+        setLandRect(next);
+      }
       flyBack();
     });
   };
@@ -529,23 +541,13 @@ function PageShotLayer({
   };
   const releaseDown = (translationY: number, velocityY: number) => {
     'worklet';
-    const shouldDismiss =
-      translationY + velocityY * 0.32 > dismissDistance || velocityY > PULL_FLING_VELOCITY_Y;
+    const shouldDismiss = translationY > dismissDistance;
     if (shouldDismiss) {
       scheduleOnRN(close, -velocityY / pageHeight);
     } else {
       drag.value = withSpring(0, pageShotOpenSpringConfig);
     }
   };
-
-  const onFlingDismissAtTop = useCallback(
-    (velocityY: number) => {
-      if (stack.length > 0) return;
-      if (!openSettled || velocityY <= PULL_FLING_VELOCITY_Y) return;
-      close(-velocityY / pageHeight);
-    },
-    [close, openSettled, pageHeight, stack.length],
-  );
 
   const buildDismissDown = useCallback(
     (scrollGesture: GestureType, allowPageShotDismiss: boolean, withLongPress: boolean) => {
@@ -726,12 +728,19 @@ function PageShotLayer({
   }));
   /** 触发元素外观按触发元素原尺寸排版、居中于外壳，只做 transform · 飞行中不随外壳宽高逐帧重排。 */
   const morphStyle = useAnimatedStyle(() => ({
-    opacity: 1 - Math.min(1, Math.max(0, progress.value / MORPH_PROGRESS)),
+    opacity: 1 - pageShotMorphT(progress.value),
     transform: [{ scale: shotFrameAtProgress.value.land }],
   }));
   /** 有 morph 时外壳底色 + 页面内容与触发元素外观交叉淡化：进度 0 时外壳即触发元素本身。 */
   const pageLayerStyle = useAnimatedStyle(() => ({
-    opacity: hasMorph ? Math.min(1, Math.max(0, progress.value / MORPH_PROGRESS)) : 1,
+    opacity: hasMorph ? pageShotMorphT(progress.value) : 1,
+  }));
+  /** 业务侧元素交叉淡化（与 morph 窗同一 token）· 不依赖触发器 `morph` 快照。 */
+  const sourceFaceStyle = useAnimatedStyle(() => ({
+    opacity: 1 - pageShotMorphT(progress.value),
+  }));
+  const pageFaceStyle = useAnimatedStyle(() => ({
+    opacity: pageShotMorphT(progress.value),
   }));
   const dimStyle = useAnimatedStyle(() => ({
     opacity: shotFrameAtProgress.value.dim * fade.value,
@@ -775,14 +784,12 @@ function PageShotLayer({
       openSettledSv,
       scrollNative,
       scrollDismissDown: dismissDownScroll as unknown as GestureType,
-      onFlingDismissAtTop,
       closingSv,
       chromeSession,
     }),
     [
       chromeSession,
       dismissDownScroll,
-      onFlingDismissAtTop,
       closeProgressStartSv,
       closeScrollArmedSv,
       closeScrollStartYSv,
@@ -799,6 +806,8 @@ function PageShotLayer({
     push,
     close: () => close(),
     bodyStyle,
+    sourceFaceStyle,
+    pageFaceStyle,
     ...insetApi,
   });
   const pageApi = (current: EgEdsAnimaPageShotSource, pageKey: string, index: number): EgEdsAnimaPageShotPageApi => ({
@@ -893,7 +902,10 @@ function PageShotLayer({
               pointerEvents="none"
               style={[StyleSheet.absoluteFill, { backgroundColor: shellBackground }, pageLayerStyle]}
             />
-            <Animated.View style={[{ width: pageWidth, height: pageHeight }, contentStyle, pageLayerStyle]}>
+            <Animated.View
+              pointerEvents={openSettled ? 'auto' : 'none'}
+              style={[{ width: pageWidth, height: pageHeight }, contentStyle, pageLayerStyle]}
+            >
               {showNativeStack ? (
                 <PageShotNativeStack
                   key={`page-shot-native-stack-${chromeSession}`}

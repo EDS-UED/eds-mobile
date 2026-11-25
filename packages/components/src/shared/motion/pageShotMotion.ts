@@ -3,6 +3,8 @@ import { EdsRecipeAnima, EdsSemanticAnima } from '@eds/mobile-animations';
 import { mobileTheme } from '../../theme/index.js';
 import { cloneSpringConfig } from '../slideMotion.js';
 
+const shotRatio = (key: string, fallback: number) => mobileTheme.motion.ratio[key] ?? fallback;
+
 /** 卡片展开整页 · EdsSemanticAnima('page-shot') → spring.page-shot-open。 */
 export const pageShotOpenSpringConfig = cloneSpringConfig(EdsSemanticAnima('page-shot').springConfig);
 
@@ -12,8 +14,7 @@ export const pageShotCloseSpringConfig = cloneSpringConfig(
 );
 
 /** Base `motion-ratio-page-shot-close-launch` — 收回起步速度（progress / s），离场先快后慢。 */
-export const pageShotCloseLaunchVelocity =
-  mobileTheme.motion.ratio['ratio-page-shot-close-launch'] ?? 12;
+export const pageShotCloseLaunchVelocity = shotRatio('ratio-page-shot-close-launch', 12);
 /** Base `motion-opacity-page-shot-dim`（× material-same-black）。 */
 export const pageShotDimOpacity = mobileTheme.motion.opacity['opacity-page-shot-dim'] ?? 0.8;
 /** Base `motion-scale-page-shot-dismiss` — 下拉跟手最小缩放。 */
@@ -23,10 +24,67 @@ export const pageShotDragRadius =
   mobileTheme.motion.radius['radius-page-shot'] ??
   (mobileTheme.spacing['radius-2xl'] as number);
 
+/** `motion-ratio-page-shot-morph` */
+export const pageShotMorphProgressRatio = shotRatio('ratio-page-shot-morph', 0.3);
+/** `motion-ratio-page-shot-body-in-start` */
+export const pageShotBodyInStartRatio = shotRatio('ratio-page-shot-body-in-start', 0.55);
+/** `motion-ratio-page-shot-body-in-span` */
+export const pageShotBodyInSpanRatio = shotRatio('ratio-page-shot-body-in-span', 0.45);
+/** `motion-ratio-page-shot-land` */
+export const pageShotLandRatio = shotRatio('ratio-page-shot-land', 0.5);
+/** `motion-ratio-page-shot-drag-range` */
+export const pageShotDragRangeRatio = shotRatio('ratio-page-shot-drag-range', 0.35);
+/** `motion-ratio-page-shot-dismiss-drag-distance` */
+export const pageShotDismissDragDistanceRatio = shotRatio('ratio-page-shot-dismiss-drag-distance', 0.15);
+/** `motion-ratio-page-shot-scroll-retreat-power` */
+export const pageShotScrollRetreatPower = shotRatio('ratio-page-shot-scroll-retreat-power', 1.22);
+
+/**
+ * page-shot 收回参数 · **EDS 内部**（`EgEdsAnimaPageShot` / `EgPageShotScroll`）；
+ * 业务不引用，手感改 `spec/motion` 的 `motion-ratio-page-shot-*`。
+ * @internal
+ */
+export const pageShotRecover = {
+  openSpring: pageShotOpenSpringConfig,
+  closeSpring: pageShotCloseSpringConfig,
+  closeLaunchVelocity: pageShotCloseLaunchVelocity,
+  dimOpacity: pageShotDimOpacity,
+  dismissScale: pageShotDismissScale,
+  dragRadius: pageShotDragRadius,
+  morphProgress: pageShotMorphProgressRatio,
+  bodyInStart: pageShotBodyInStartRatio,
+  bodyInSpan: pageShotBodyInSpanRatio,
+  landRatio: pageShotLandRatio,
+  dragRangeRatio: pageShotDragRangeRatio,
+  dismissDragDistanceRatio: pageShotDismissDragDistanceRatio,
+  scrollRetreatPower: pageShotScrollRetreatPower,
+} as const;
+
 export type PageShotRect = { x: number; y: number; width: number; height: number };
 
-/** 收回落位回弹（progress < 0）· 按触发元素自身尺寸绕中心微缩，非按整页距离外推（小触发元素不被压扁）。 */
-const PAGE_SHOT_LAND_RATIO = 0.5;
+/**
+ * 收回中与 `pageShotProgressSv` 同轨的滚动 offset（`EgPageShotScroll` 专用）。
+ * @internal
+ */
+export function resolvePageShotCloseScrollY(
+  fromY: number,
+  progress: number,
+  progressAtCloseStart: number,
+): number {
+  'worklet';
+  if (fromY <= 0) return 0;
+  const start = Math.max(1e-4, progressAtCloseStart);
+  const t = Math.min(1, Math.max(0, progress / start));
+  return fromY * t ** pageShotScrollRetreatPower;
+}
+
+export function resolvePageShotDragRange(pageHeight: number): number {
+  return pageHeight * pageShotDragRangeRatio;
+}
+
+export function resolvePageShotDismissDragDistance(pageHeight: number): number {
+  return pageHeight * pageShotDismissDragDistanceRatio;
+}
 
 /**
  * 触发元素 frame ↔ 整页几何（卡片 / 按钮 / 列表行…同一动效）· `progress` 0 = 触发元素 frame，
@@ -43,11 +101,12 @@ export function pageShotFrame(
 ) {
   'worklet';
   const p = Math.min(1, Math.max(0, progress));
-  const land = progress < 0 ? 1 + progress * PAGE_SHOT_LAND_RATIO : 1;
+  const land = progress < 0 ? 1 + progress * pageShotLandRatio : 1;
   const t = Math.max(0, progress);
   const width = (source.width + (pageWidth - source.width) * t) * land;
   const height = (source.height + (pageHeight - source.height) * t) * land;
   const d = Math.min(1, Math.max(0, drag)) * p;
+  const bodySpan = Math.max(1e-4, pageShotBodyInSpanRatio);
   return {
     left: source.x * (1 - t) + (source.width * (1 - land)) / 2,
     top: source.y * (1 - t) + (source.height * (1 - land)) / 2,
@@ -60,6 +119,6 @@ export function pageShotFrame(
     land,
     dim: p * pageShotDimOpacity,
     /** 展开后段淡入（卡片外的正文）。 */
-    bodyOpacity: Math.min(1, Math.max(0, (p - 0.55) / 0.45)),
+    bodyOpacity: Math.min(1, Math.max(0, (p - pageShotBodyInStartRatio) / bodySpan)),
   };
 }

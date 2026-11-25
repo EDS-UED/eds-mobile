@@ -16,8 +16,6 @@ export type EgPageShotPullBridge = {
   scrollNative: GestureType;
   /** 停顶轻扫 / 长按下滑 · 与 `scrollNative` 同挂在 `EgPageShotScroll` 上。 */
   scrollDismissDown: GestureType;
-  /** 保留给壳层下拉 `releaseDown` · Scroll 上下/惯性滚动不触发关页。 */
-  onFlingDismissAtTop: (velocityY: number) => void;
   /** 与 `PageShotLayer` `chromeSession` 同步 · 仅新场次重置滚动偏移。 */
   chromeSession: number;
   /** 与 `close()` 同刻置位 · `EgPageShotScroll` 滚动条（不经 React commit）。 */

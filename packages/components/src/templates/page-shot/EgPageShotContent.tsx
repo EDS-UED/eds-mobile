@@ -29,8 +29,11 @@ export type EgPageShotContentProps = EgPageProps & {
 };
 
 /**
- * `EgPageShot` 弹层内滚动区 · 与 `EgPage` 同套边距 / inset / NavBar 滚动上报；
- * 处于 page-shot pull bridge 时用 `EgPageShotScroll`（停顶下拉 / 长按关闭）。
+ * `EgPageShot` 弹层内**唯一**业务滚动入口（根页 / 子页均用本组件，禁止外包裸 `ScrollView`）。
+ *
+ * - 边距 / inset / NavBar 滚动与 `EgPage` 同轨。
+ * - **收回触发卡片**：关页时 shell `page-shot-close` + 本组件内 `EgPageShotScroll` 自动 scroll↔progress 同轨；
+ *   业务只调 `api.close()` 或下拉/侧滑关页，**无需** `scrollTo`、token 或 motion 辅助函数。
  */
 export function EgPageShotContent({
   mode = 'light',

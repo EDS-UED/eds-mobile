@@ -1,5 +1,11 @@
-/** 低于此偏移视为停顶 — 此区间内关垂直橡皮筋（无顶弹、下拉关页）。 */
+/**
+ * 停顶橡皮筋区 · `contentOffset.y` 低于此值时关整轴顶向 `bounces`。
+ * **≠** 下拉关页阈值（见 `EG_PAGE_SHOT_DISMISS_TOP_Y`）。
+ */
 export const EG_PAGE_SHOT_SCROLL_LEAVE_TOP_Y = 120;
+
+/** 轻扫下拉关页 · 须真正滚到顶（与 `useEgNavBarScroll` 停顶 1px 同轨）。 */
+export const EG_PAGE_SHOT_DISMISS_TOP_Y = 1;
 
 /**
  * page-shot · 有下拉桥时的垂直橡皮筋。
@@ -14,6 +20,7 @@ export function resolveEgPageShotVerticalBounce(
   contentHeight: number,
   layoutHeight: number,
 ): boolean {
+  'worklet';
   if (!scrollBounces) return false;
   const maxOffset = Math.max(0, contentHeight - layoutHeight);
   if (maxOffset <= 0) return false;

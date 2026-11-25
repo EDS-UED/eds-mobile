@@ -120,6 +120,9 @@ declare module 'react-native' {
     scrollIndicatorInsets?: { top?: number; bottom?: number; left?: number; right?: number };
     contentInsetAdjustmentBehavior?: 'automatic' | 'scrollableAxes' | 'never' | 'always';
     onContentSizeChange?: (width: number, height: number) => void;
+    onLayout?: (event: LayoutChangeEvent) => void;
+    alwaysBounceVertical?: boolean;
+    overScrollMode?: 'always' | 'never' | 'auto';
     ref?: import('react').Ref<{ scrollTo: (options: { y: number; animated?: boolean }) => void }>;
     children?: ReactNode;
   };
@@ -284,11 +287,35 @@ declare module 'react-native-reanimated' {
     factory: () => Record<string, unknown>,
     dependencies?: ReadonlyArray<unknown>,
   ): Record<string, unknown>;
-  export function createAnimatedComponent<P>(component: ComponentType<P>): ComponentType<P>;
+  export function useAnimatedProps<T extends Record<string, unknown>>(
+    factory: () => Partial<T>,
+    dependencies?: ReadonlyArray<unknown>,
+  ): Partial<T>;
+  export function useAnimatedRef<T>(): { current: T | null };
+  export function scrollTo<T>(
+    animatedRef: { current: T | null },
+    x: number,
+    y: number,
+    animated: boolean,
+  ): void;
+  export function runOnJS<A extends unknown[], R>(fn: (...args: A) => R): (...args: A) => void;
+  export function useAnimatedScrollHandler(
+    handlers: {
+      onScroll?: (event: {
+        contentOffset: { x: number; y: number };
+        timeStamp?: number;
+      }) => void;
+    },
+    dependencies?: ReadonlyArray<unknown>,
+  ): (event: { nativeEvent: { contentOffset: { x: number; y: number } } }) => void;
+  export function createAnimatedComponent<P>(
+    component: ComponentType<P>,
+  ): ComponentType<P & { animatedProps?: Record<string, unknown> }>;
   const Animated: {
     createAnimatedComponent: typeof createAnimatedComponent;
     View: ComponentType<Record<string, unknown>>;
     Text: ComponentType<Record<string, unknown>>;
+    ScrollView: ComponentType<Record<string, unknown>>;
   };
   export default Animated;
 }

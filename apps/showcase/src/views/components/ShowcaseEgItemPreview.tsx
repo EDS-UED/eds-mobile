@@ -6,7 +6,9 @@ import { StyleSheet, View } from 'react-native';
 import {
   ITEM_DEMO_MENU_ITEMS,
   readItemIconName,
+  readItemPadSize,
   readItemPreviewRowCount,
+  readItemSubLabel,
   readItemTrailingDisplay,
   readItemTrailingValue,
 } from '@/data/components/itemCustomizeModel';
@@ -28,6 +30,8 @@ function DemoIcon({ name, mode }: { name: string; mode: 'light' | 'dark' }) {
 export function ShowcaseEgItemPreview(props: ShowcaseEgItemPreviewProps) {
   const mode = props.mode === 'dark' ? 'dark' : 'light';
   const label = String(props.label ?? '修改昵称');
+  const subLabel = readItemSubLabel(props);
+  const padSize = readItemPadSize(props);
   const widgetEnabled = props.widgetEnabled !== false;
   const trailingDisplay = readItemTrailingDisplay(props);
   const trailingValue = readItemTrailingValue(props);
@@ -78,6 +82,8 @@ export function ShowcaseEgItemPreview(props: ShowcaseEgItemPreviewProps) {
             key={index}
             testID={index === 0 ? testID : `${testID ?? 'eg-item'}-${index}`}
             label={index === 0 ? label : `${label} ${index + 1}`}
+            subLabel={index === 0 ? subLabel : undefined}
+            padSize={padSize}
             value={rowTrailingValue}
             icon={icon}
             trailingEnabled={widgetEnabled}
@@ -103,6 +109,8 @@ export function ShowcaseEgItemPreview(props: ShowcaseEgItemPreviewProps) {
       icon,
       interactive,
       label,
+      subLabel,
+      padSize,
       menuSelectedId,
       mode,
       onMenuSelect,

@@ -5,6 +5,9 @@ import type { EgMenuItem } from '../../molecules/dropdown/menu/EgMenu.types.js';
 import type { MotionPressIntensity } from '../../shared/themeScalars.js';
 import type { ToggleSize } from '../../shared/types.js';
 import type { ThemeMode } from '../../theme/index.js';
+import type { EgItemPadSize } from './egItemMetrics.js';
+
+export type { EgItemPadSize };
 
 export type EgItemTrailingDisplay = 'icon' | 'menu' | 'switch' | 'custom';
 
@@ -13,6 +16,8 @@ export type EgItemProps = {
   label: string;
   /** 主文案加粗 · typography-body-medium-heavy */
   labelHeavy?: boolean;
+  /** 主文案下副文本 · typography-body-small · text-base-secondary · 默认不展示 */
+  subLabel?: string;
   /** 右侧附属说明 · typography-body-small · text-base-secondary */
   value?: string;
   /** 左侧图形插槽 */
@@ -35,6 +40,8 @@ export type EgItemProps = {
   switchSize?: ToggleSize;
   /** `custom` — 业务右侧插槽（优先于内置挂件） */
   trailing?: ReactNode;
+  /** 行密度（上下内边距）· sm 8px · md 12px · lg 16px · 无 `minHeight` · 默认 `lg` */
+  padSize?: EgItemPadSize;
   /** 行底 module 分割线（缩进对齐图标后文案）· 默认 `true` */
   showDivider?: boolean;
   onPress?: () => void;

@@ -323,8 +323,8 @@ function pageShotBodyDoc(): RnDocConfig {
   return {
     componentTag: 'EgPageShot',
     previewSlug: 'page-shot-body',
-    importCode: `// motion-page-shot · EgPageShotTrigger 触发 · renderRoot 内可嵌套 EgPage
-import { EgPage, EgPageShot, EgPageShotTrigger } from '@eds/mobile-components';`,
+    importCode: `// motion-page-shot · 根页须 EgPageShotContent（收回触发卡片含滚后 scroll 同轨已内建）
+import { EgPageShot, EgPageShotContent, EgPageShotTrigger } from '@eds/mobile-components';`,
     customizeDefaults: { mode: 'light' },
     customizeControls: [],
     propRows: [
@@ -337,7 +337,7 @@ import { EgPage, EgPageShot, EgPageShotTrigger } from '@eds/mobile-components';`
     ],
     propQueryKeys: ['mode'],
     buildUsageSnippet: () => `<EgPageShot mode="light" renderRoot={(api) => (
-  <EgPageShotContent mode="light" api={api}>{/* 或 EgPage + 同上 api 字段 */}</EgPageShotContent>
+  <EgPageShotContent mode="light" api={api}>{/* Hero + 正文 */}</EgPageShotContent>
 )}>
   <EgPageShotTrigger id="card" radius={20}>{/* 触发元素 */}</EgPageShotTrigger>
 </EgPageShot>`,
@@ -355,6 +355,12 @@ function itemBodyDoc(): RnDocConfig {
     propRows: [
       { name: 'label', type: 'string', defaultValue: '—', description: '主文案 · typography-body-medium' },
       { name: 'labelHeavy', type: 'boolean', defaultValue: 'false', description: '主文案 · typography-body-medium-heavy' },
+      {
+        name: 'subLabel',
+        type: 'string',
+        defaultValue: 'undefined',
+        description: '主文案下副文本 · typography-body-small · text-base-secondary · 间距 EG_ITEM_SUB_LABEL_GAP（spacing-05）',
+      },
       { name: 'value', type: 'string', defaultValue: 'undefined', description: '右侧附属说明 · typography-body-small' },
       { name: 'icon', type: 'ReactNode', defaultValue: 'undefined', description: '左侧图形（symbol-sm 槽）' },
       {
@@ -378,6 +384,13 @@ function itemBodyDoc(): RnDocConfig {
       { name: 'defaultSwitchValue', type: 'boolean', defaultValue: 'false', description: '`switch` — 非受控默认' },
       { name: 'onSwitchValueChange', type: '(value) => void', defaultValue: 'undefined', description: '`switch` — 切换回调' },
       { name: 'trailing', type: 'ReactNode', defaultValue: 'undefined', description: '`custom` — 右侧自定义插槽' },
+      {
+        name: 'padSize',
+        type: "'sm' | 'md' | 'lg'",
+        defaultValue: "'lg'",
+        description:
+          '行密度 · sm=spacing-2·8px · md=spacing-3·12px · lg=spacing-4·16px · 默认 lg',
+      },
       { name: 'showDivider', type: 'boolean', defaultValue: 'true', description: 'module 分割线 · 缩进对齐文案' },
       { name: 'onPress', type: '() => void', defaultValue: 'undefined', description: '`icon` 点按 · event-tap + 缩放 xs' },
       { name: 'pressIntensity', type: "'xs' | 'sm' | 'md'", defaultValue: "'xs'", description: '点按缩放' },
@@ -405,7 +418,13 @@ function itemBodyDoc(): RnDocConfig {
           : '';
       const customBlock = trailing && trailingDisplay === 'custom' ? `\n  trailing={<… />}` : '';
       const pressBlock = trailing && trailingDisplay === 'icon' ? '\n  onPress={…}' : '';
-      return `<EgItemGroup>\n  <EgItem\n    label="${String(state.label ?? 'Label')}"${valueAttr}${trailingOffAttr}${displayAttr}${iconBlock}${menuBlock}${switchBlock}${customBlock}${pressBlock}\n  />\n</EgItemGroup>`;
+      const subLabelAttr =
+        state.subLabelEnabled === true && String(state.subLabel ?? '').trim()
+          ? `\n  subLabel="${String(state.subLabel).trim()}"`
+          : '';
+      const padSize = String(state.padSize ?? 'lg');
+      const padSizeAttr = padSize !== 'lg' ? `\n  padSize="${padSize}"` : '';
+      return `<EgItemGroup>\n  <EgItem\n    label="${String(state.label ?? 'Label')}"${subLabelAttr}${padSizeAttr}${valueAttr}${trailingOffAttr}${displayAttr}${iconBlock}${menuBlock}${switchBlock}${customBlock}${pressBlock}\n  />\n</EgItemGroup>`;
     },
   };
 }

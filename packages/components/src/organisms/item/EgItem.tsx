@@ -15,12 +15,12 @@ import { EgDataListRowPressable } from '../data-list/egDataListRowPressable.js';
 import {
   EG_ITEM_ICON_GAP,
   EG_ITEM_ICON_SLOT,
-  EG_ITEM_MIN_HEIGHT,
   EG_ITEM_PAD_H,
-  EG_ITEM_PAD_V,
   EG_ITEM_TAP_RADIUS,
+  EG_ITEM_SUB_LABEL_GAP,
   EG_ITEM_TRAILING_GAP,
   getEgItemDividerInset,
+  resolveEgItemPadVertical,
 } from './egItemMetrics.js';
 import type { EgItemProps } from './EgItem.types.js';
 
@@ -178,6 +178,7 @@ function EgItemSwitchTrailing({
 export function EgItem({
   label,
   labelHeavy = false,
+  subLabel,
   value,
   icon,
   trailingEnabled = true,
@@ -192,6 +193,7 @@ export function EgItem({
   switchSize = 'md',
   trailing: trailingSlot,
   showDivider = true,
+  padSize = 'lg',
   onPress,
   showPressFeedback = false,
   testID,
@@ -202,7 +204,9 @@ export function EgItem({
 }: EgItemProps) {
   const colors = getThemeColors(mode);
   const hasIcon = icon != null;
+  const showSubLabel = subLabel != null && subLabel.length > 0;
   const dividerInset = getEgItemDividerInset(hasIcon);
+  const padV = resolveEgItemPadVertical(padSize);
   const openMenuRef = useRef<(() => void) | null>(null);
 
   const interactive =
@@ -214,6 +218,7 @@ export function EgItem({
   const rowShell = (pressed: boolean): ViewStyle =>
     StyleSheet.flatten([
       styles.row,
+      { paddingVertical: padV },
       style,
       interactive && pressed
         ? { backgroundColor: resolveColor(colors, 'event-tap') }
@@ -277,6 +282,18 @@ export function EgItem({
         >
           {label}
         </EdsSansText>
+        {showSubLabel ? (
+          <EdsSansText
+            style={[
+              BODY_SMALL,
+              styles.subLabel,
+              { color: colors['text-base-secondary'] as string },
+            ]}
+            numberOfLines={2}
+          >
+            {subLabel}
+          </EdsSansText>
+        ) : null}
       </View>
       {trailing}
     </>
@@ -285,7 +302,9 @@ export function EgItem({
   const row = interactive ? (
     <EgDataListRowPressable
       testID={testID}
-      accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityLabel={
+        accessibilityLabel ?? (showSubLabel ? `${label}, ${subLabel}` : label)
+      }
       onPress={handlePress}
       pressIntensity={pressIntensity}
       style={({ pressed }) => rowShell(pressed)}
@@ -293,7 +312,11 @@ export function EgItem({
       {rowBody}
     </EgDataListRowPressable>
   ) : (
-    <View testID={testID} accessibilityLabel={accessibilityLabel ?? label} style={rowShell(false)}>
+    <View
+      testID={testID}
+      accessibilityLabel={accessibilityLabel ?? (showSubLabel ? `${label}, ${subLabel}` : label)}
+      style={rowShell(false)}
+    >
       {rowBody}
     </View>
   );
@@ -317,8 +340,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     width: '100%',
     paddingHorizontal: EG_ITEM_PAD_H,
-    paddingVertical: EG_ITEM_PAD_V,
-    minHeight: EG_ITEM_MIN_HEIGHT,
     borderRadius: EG_ITEM_TAP_RADIUS,
     borderCurve: 'continuous',
   },
@@ -331,6 +352,10 @@ const styles = StyleSheet.create({
   labelWrap: {
     flex: 1,
     minWidth: 0,
+    gap: EG_ITEM_SUB_LABEL_GAP,
+  },
+  subLabel: {
+    alignSelf: 'stretch',
   },
   trailing: {
     flexDirection: 'row',

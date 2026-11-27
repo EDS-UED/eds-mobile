@@ -7,8 +7,11 @@ type FamilySpec = ComponentSelfAnnotationSpec;
 
 const FAMILY_SPECS: Record<string, FamilySpec> = {
   avatar: {
-    style: ['图形/字母 `typography-body-medium` · 槽底 `material-card-shallow`。'],
-    layout: ['圆形或圆角矩形槽；边长 `symbol-*` 档。'],
+    style: [
+      '首字 XS `typography-bar`（10/14 · 同 Tag sm）· SM `typography-footnote` semibold。',
+      'MD–2XL `typography-body-small-heavy` · 3XL–5XL `typography-body-medium-heavy`。',
+    ],
+    layout: ['圆形槽 · 边长 `avatar-*` token。'],
   },
   button: {
     style: ['按场景 preset：Brand/Danger/Decor/Link 色票 · 字 `typography-body-medium(-heavy)`。'],
@@ -38,7 +41,7 @@ const FAMILY_SPECS: Record<string, FamilySpec> = {
     layout: ['正方 `symbol-*`。'],
   },
   index: {
-    style: ['索引字 `typography-detail` · `text-base-tertiary`。'],
+    style: ['索引字 `typography-bar` · `text-base-secondary`。'],
     layout: ['贴边 `spacing-2` · 行距 `spacing-3`。'],
   },
   input: {

@@ -36,3 +36,15 @@ export const showcaseDataListPreviewContentStyle: ViewStyle = {
   alignItems: 'stretch',
   justifyContent: 'flex-start',
 };
+
+/** EgPopovers / EgLocate — 箭头四向留白，避免裁切。 */
+export const showcasePopoverPreviewContentStyle: ViewStyle = {
+  alignSelf: 'stretch',
+  width: '100%',
+  minHeight: 280,
+  paddingHorizontal: theme.layout.previewContentPadding,
+  paddingVertical: theme.layout.previewContentPadding * 2,
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'visible',
+};

@@ -42,6 +42,7 @@ import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 import {
   showcaseComponentPreviewContentStyle,
   showcaseDataListPreviewContentStyle,
+  showcasePopoverPreviewContentStyle,
   showcaseTogglePreviewContentStyle,
 } from '@/views/shared/showcaseComponentPreviewCanvas';
 import { resolveShowcaseComponentAnnotation } from '@/data/components/resolveShowcaseComponentAnnotation';
@@ -52,6 +53,7 @@ function createComponentDetailStyles(
   nativeStackNav: boolean,
   dataListPreview: boolean,
   togglePreview: boolean,
+  popoverPreview: boolean,
 ) {
   const pageBg = showcasePageBackgroundColor(colors);
   return StyleSheet.create({
@@ -64,7 +66,9 @@ function createComponentDetailStyles(
       ? showcaseDataListPreviewContentStyle
       : togglePreview
         ? showcaseTogglePreviewContentStyle
-        : showcaseComponentPreviewContentStyle,
+        : popoverPreview
+          ? showcasePopoverPreviewContentStyle
+          : showcaseComponentPreviewContentStyle,
     missing: {
       fontSize: 14,
       color: colors['text-base-secondary'] as string,
@@ -116,6 +120,7 @@ export function ComponentDetailView() {
       nativeStackNav,
       exportName === 'EgDataList',
       false,
+      exportName === 'EgPopovers' || exportName === 'EgLocate',
     ),
   );
   const scrollBottomExtra =

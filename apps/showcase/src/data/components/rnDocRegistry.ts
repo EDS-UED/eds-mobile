@@ -86,10 +86,12 @@ import {
 import {
   SHOWCASE_AVATAR_SIZE_OPTIONS,
   SHOWCASE_AVATAR_SIZE_OPTIONS_TO_2XL,
-  SHOWCASE_SIZE_OPTIONS_LG_TO_SM,
-  SHOWCASE_SIZE_OPTIONS_LG_TO_XS,
-  SHOWCASE_SIZE_OPTIONS_XL_TO_XS,
+  SHOWCASE_GLASS_TEXT_SIZE_OPTIONS,
+  SHOWCASE_INPUT_SIZE_OPTIONS,
+  SHOWCASE_LINK_SIZE_OPTIONS,
+  SHOWCASE_SYMBOL_ACTION_SIZE_OPTIONS,
   SHOWCASE_SYMBOL_SIZE_OPTIONS,
+  SHOWCASE_TAG_SIZE_OPTIONS,
 } from './showcaseSizeOptions.js';
 
 export type RnDocConfig = {
@@ -122,7 +124,7 @@ const FIELD_EVENTS = [
   { value: 'disable', label: '禁用' },
 ] as const;
 
-const CONTROL_SIZES = SHOWCASE_SIZE_OPTIONS_XL_TO_XS;
+const CONTROL_SIZES = SHOWCASE_INPUT_SIZE_OPTIONS;
 
 const fieldCustomizeControls: DocCustomizeControl[] = [
   {
@@ -486,6 +488,7 @@ import { EgDataList, EgDataListMessage, EgDataListReddot, EgDataListRow } from '
       'iconSymbolSize',
       'primaryWeight',
       'primaryTagEnabled',
+      'textBottomTagEnabled',
       'subBoldSegment',
       'descriptionEnabled',
       'widgetEnabled',
@@ -670,11 +673,7 @@ const buttonCustomizeControls: DocCustomizeControl[] = [
   },
 ];
 
-const TAG_SIZES = [
-  { value: 'lg', label: 'LG' },
-  { value: 'md', label: 'MD' },
-  { value: 'sm', label: 'SM' },
-] as const;
+const TAG_SIZES = SHOWCASE_TAG_SIZE_OPTIONS;
 
 function egTagDoc(componentTag: string, previewSlug: string): RnDocConfig {
   const defaults = { ...tagCustomizeDefaults };
@@ -1107,7 +1106,7 @@ function symbolActionDoc(): RnDocConfig {
         kind: 'select',
         key: 'size',
         label: '尺寸',
-        options: [...SHOWCASE_SIZE_OPTIONS_XL_TO_XS],
+        options: [...SHOWCASE_SYMBOL_ACTION_SIZE_OPTIONS],
       },
       { kind: 'text', key: 'icon', label: '符号' },
       { kind: 'boolean', key: 'disabled', label: '禁用' },
@@ -1911,6 +1910,70 @@ function egScrollEdgeShowcaseDoc(): RnDocConfig {
   };
 }
 
+const POPOVER_EDGES = [
+  { value: 'top-leading', label: '上 · 左' },
+  { value: 'top-center', label: '上 · 中' },
+  { value: 'top-trailing', label: '上 · 右' },
+  { value: 'leading-top', label: '左 · 上' },
+  { value: 'leading-middle', label: '左 · 中' },
+  { value: 'leading-bottom', label: '左 · 下' },
+  { value: 'trailing-top', label: '右 · 上' },
+  { value: 'trailing-middle', label: '右 · 中' },
+  { value: 'trailing-bottom', label: '右 · 下' },
+  { value: 'bottom-leading', label: '下 · 左' },
+  { value: 'bottom-center', label: '下 · 中' },
+  { value: 'bottom-trailing', label: '下 · 右' },
+] as const;
+
+function popoversDoc(): RnDocConfig {
+  const defaults = { edge: 'leading-top' };
+  return {
+    componentTag: 'EgPopovers',
+    previewSlug: 'popovers',
+    importCode: `import { EgPopovers } from '@eds/mobile-components';`,
+    customizeDefaults: defaults,
+    customizeControls: [
+      {
+        kind: 'select',
+        key: 'edge',
+        label: '箭头',
+        options: [...POPOVER_EDGES],
+      },
+    ],
+    propRows: [
+      {
+        name: 'edge',
+        type: 'EgPopoversEdge',
+        defaultValue: "'leading-top'",
+        description: '箭头贴边位置 · 12 档，对齐 Figma Popovers 1453:1038',
+      },
+      {
+        name: 'mode',
+        type: "'light' | 'dark'",
+        defaultValue: "'light'",
+        description:
+          '主题 · `glass-menu-box` token（填色 · overlay · 外阴影 · 描边）+ 一体 SVG 轮廓',
+      },
+      {
+        name: 'slot',
+        type: 'ReactNode',
+        defaultValue: 'undefined',
+        description: '内容插槽（与 children 等价，优先 slot）',
+      },
+      { name: 'children', type: 'ReactNode', defaultValue: 'undefined', description: '内容插槽' },
+      {
+        name: 'size',
+        type: "'default' | 'compact'",
+        defaultValue: "'compact'",
+        description: 'adaptive 面板最小尺寸档',
+      },
+    ],
+    propQueryKeys: ['edge', 'mode'],
+    buildUsageSnippet: (state) =>
+      buildRnSelfClosingSnippet('EgPopovers', state, { defaults }),
+  };
+}
+
 export const rnDocBySlug: Record<string, RnDocConfig> = {
   'input-body': inputDoc('EgInput', 'input-input'),
   'input-input': inputDoc('EgInput', 'input-input'),
@@ -1942,7 +2005,7 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
         label: '色调',
         options: [...LINK_BUTTON_SHOWCASE_TONES],
       },
-      { kind: 'select', key: 'size', label: '尺寸', options: [...SHOWCASE_SIZE_OPTIONS_LG_TO_SM] },
+      { kind: 'select', key: 'size', label: '尺寸', options: [...SHOWCASE_LINK_SIZE_OPTIONS] },
       { kind: 'text', key: 'label', label: '文案' },
     ],
     propRows: [
@@ -2023,7 +2086,7 @@ import { EgGlassCapsule } from '@eds/mobile-components';`,
         kind: 'select',
         key: 'size',
         label: '尺寸',
-        options: [...SHOWCASE_SIZE_OPTIONS_LG_TO_XS],
+        options: [...SHOWCASE_GLASS_TEXT_SIZE_OPTIONS],
         visibleWhen: (state) => state.kind === 'text' || state.kind === undefined,
       },
       {
@@ -2275,6 +2338,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
   'feedback-message': messageDoc(),
   divider: dividerDoc(),
   'divider-end': dividerEndDoc(),
+  popovers: popoversDoc(),
   'glass-eg': egGlassShowcaseDoc(),
   'glass-scroll-edge': egScrollEdgeShowcaseDoc(),
   'avatar-body': avatarBodyDoc(),

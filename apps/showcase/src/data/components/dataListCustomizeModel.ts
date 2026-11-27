@@ -3,8 +3,11 @@ import type { EgDataListPrimaryWeight } from '@eds/mobile-components';
 
 import mobileTheme from '@eds/mobile-tokens/theme';
 
+import {
+  SHOWCASE_MOTION_PRESS_INTENSITY_OPTIONS,
+  SHOWCASE_SYMBOL_SIZE_OPTIONS,
+} from './showcaseSizeOptions.js';
 import type { DocCustomizeControl } from './types.js';
-import { SHOWCASE_SYMBOL_SIZE_OPTIONS } from './showcaseSizeOptions.js';
 
 export type DataListGraphicSize = 'sm' | 'md' | 'lg' | 'xl';
 export type DataListGraphicType = 'crypto' | 'avatar' | 'icon' | 'custom';
@@ -16,7 +19,7 @@ function dataListGraphicSizePx(size: DataListGraphicSize): number {
 }
 
 function formatDataListGraphicSizeLabel(size: DataListGraphicSize): string {
-  return `${size.toUpperCase()} · ${dataListGraphicSizePx(size)}px`;
+  return `${size} ${dataListGraphicSizePx(size)}`;
 }
 
 export const DATA_LIST_GRAPHIC_SIZES = (
@@ -41,11 +44,9 @@ export const DATA_LIST_PRIMARY_WEIGHTS = [
   { value: 'heavy', label: '粗 · typography-body-medium-heavy（默认）' },
 ] as const;
 
-export const DATA_LIST_PRESS_INTENSITIES = [
-  { value: 'xs', label: 'XS' },
-  { value: 'sm', label: 'SM' },
-  { value: 'md', label: 'MD' },
-] as const;
+export const DATA_LIST_PRESS_INTENSITIES = SHOWCASE_MOTION_PRESS_INTENSITY_OPTIONS.filter(
+  (option) => option.value !== 'lg',
+);
 
 /** Showcase「业务侧自定义」— 预览固定 3 行示意；业务用 `children` 自配条数。 */
 export const DATA_LIST_ROW_COUNT_BUSINESS = 'business' as const;
@@ -81,6 +82,7 @@ export const dataListCustomizeDefaults = {
   iconSymbolSize: 'md' as EgSymbolSize,
   primaryWeight: 'heavy' as DataListPrimaryWeight,
   primaryTagEnabled: false,
+  textBottomTagEnabled: false,
   subBoldSegment: false,
   descriptionEnabled: false,
   widgetEnabled: false,
@@ -177,7 +179,12 @@ const dataListTextSlotCardControls: DocCustomizeControl[] = [
   {
     kind: 'boolean',
     key: 'primaryTagEnabled',
-    label: 'EgTag',
+    label: '主文 EgTag',
+  },
+  {
+    kind: 'boolean',
+    key: 'textBottomTagEnabled',
+    label: '底部 EgTag',
   },
 ];
 
@@ -297,6 +304,11 @@ export function readDataListSubBoldSegment(state: Record<string, unknown>): bool
 /** 主文本后 EgTag · `primaryTagEnabled`（与挂件 `widgetShowTag` 独立）。 */
 export function readDataListPrimaryTagEnabled(state: Record<string, unknown>): boolean {
   return state.primaryTagEnabled === true;
+}
+
+/** 文本列底部 EgTag · `textBottomTagEnabled` · 上间距 `EG_DATA_LIST_TEXT_BOTTOM_TAG_GAP`（4px）· 多 Tag `EG_DATA_LIST_TEXT_BOTTOM_TAGS_GAP`（4px）。 */
+export function readDataListTextBottomTagEnabled(state: Record<string, unknown>): boolean {
+  return state.textBottomTagEnabled === true;
 }
 
 /** 挂件可同时展示 · 红点与主行挂件不互斥。 */

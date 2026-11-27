@@ -28,6 +28,12 @@ declare module 'react-native' {
     collapsable?: boolean;
     ref?: import('react').Ref<unknown>;
     onStartShouldSetResponder?: () => boolean;
+    onMoveShouldSetResponder?: () => boolean;
+    onResponderTerminationRequest?: () => boolean;
+    onResponderGrant?: (event: { nativeEvent: { locationY: number } }) => void;
+    onResponderMove?: (event: { nativeEvent: { locationY: number } }) => void;
+    onResponderRelease?: () => void;
+    onResponderTerminate?: () => void;
     accessibilityElementsHidden?: boolean;
     importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
     /** RN-web only — used by atom SVG preview slot. */
@@ -222,6 +228,17 @@ declare module 'react-native' {
       b: AnimatedInterpolation<number> | number,
     ): AnimatedInterpolation<number>;
   }
+}
+
+declare module '@react-native-masked-view/masked-view' {
+  import type { ComponentType, ReactElement, ReactNode } from 'react';
+  import type { ViewStyle } from 'react-native';
+  const MaskedView: ComponentType<{
+    style?: ViewStyle;
+    maskElement: ReactElement;
+    children?: ReactNode;
+  }>;
+  export default MaskedView;
 }
 
 declare module 'react-native-svg' {

@@ -15,8 +15,8 @@ export const EG_SEARCH_CLOSE_GAP = spacing['spacing-2-5'] as number;
 /** 默认外边距 · 上 · `spacing-6`（24px）。 */
 export const EG_SEARCH_MARGIN_TOP = spacing['spacing-6'] as number;
 
-/** 默认外边距 · 下 · `spacing-6`（24px）。 */
-export const EG_SEARCH_MARGIN_BOTTOM = spacing['spacing-6'] as number;
+/** 默认外边距 · 下 · `spacing-5`（20px）。 */
+export const EG_SEARCH_MARGIN_BOTTOM = spacing['spacing-5'] as number;
 
 /** 默认外边距 · 右 · `spacing-6`（24px）。 */
 export const EG_SEARCH_MARGIN_RIGHT = spacing['spacing-6'] as number;

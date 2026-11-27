@@ -1,4 +1,5 @@
 import type { DocCustomizeControl } from './types.js';
+import { SHOWCASE_SEGMENTED_SIZE_OPTIONS } from './showcaseSizeOptions.js';
 
 export const TAB_SHOWCASE_MAX_SEGMENTS = 10;
 
@@ -20,11 +21,7 @@ export const tabSlideSegmentCountControl: DocCustomizeControl = {
 
 export const tabSlideCustomizeControls: DocCustomizeControl[] = [tabSlideSegmentCountControl];
 
-export const segmentedControlSizeOptions = [
-  { value: 'lg', label: 'LG' },
-  { value: 'md', label: 'MD' },
-  { value: 'sm', label: 'SM' },
-] as const;
+export const segmentedControlSizeOptions = SHOWCASE_SEGMENTED_SIZE_OPTIONS;
 
 export const segmentedControlWidthModeOptions = [
   { value: 'hug', label: '自适应' },

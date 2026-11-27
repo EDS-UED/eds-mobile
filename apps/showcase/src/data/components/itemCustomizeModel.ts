@@ -1,3 +1,6 @@
+import mobileTheme from '@eds/mobile-tokens/theme';
+
+import { SHOWCASE_MOTION_PRESS_INTENSITY_OPTIONS } from './showcaseSizeOptions.js';
 import type { DocCustomizeControl } from './types.js';
 
 export const ITEM_DEMO_ICONS = [
@@ -8,16 +11,14 @@ export const ITEM_DEMO_ICONS = [
 ] as const;
 
 export const ITEM_PAD_SIZES = [
-  { value: 'sm', label: '紧凑 · 8px' },
-  { value: 'md', label: '标准 · 12px' },
-  { value: 'lg', label: '宽松 · 16px' },
+  { value: 'sm', label: `sm ${mobileTheme.spacing['spacing-2']}` },
+  { value: 'md', label: `md ${mobileTheme.spacing['spacing-3']}` },
+  { value: 'lg', label: `lg ${mobileTheme.spacing['spacing-4']}` },
 ] as const;
 
-export const ITEM_PRESS_INTENSITIES = [
-  { value: 'xs', label: 'XS' },
-  { value: 'sm', label: 'SM' },
-  { value: 'md', label: 'MD' },
-] as const;
+export const ITEM_PRESS_INTENSITIES = SHOWCASE_MOTION_PRESS_INTENSITY_OPTIONS.filter(
+  (option) => option.value !== 'lg',
+);
 
 export const ITEM_TRAILING_DISPLAYS = [
   { value: 'icon', label: 'Icon' },

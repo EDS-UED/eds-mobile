@@ -1,6 +1,8 @@
 import {
   EG_DATA_LIST_SCENE_CONTENT_INSET,
   EG_DATA_LIST_SUB_TEXT_MAX_LINES,
+  EG_DATA_LIST_TEXT_BOTTOM_TAG_GAP,
+  EG_DATA_LIST_TEXT_BOTTOM_TAGS_GAP,
   EgAvatar,
   EgTag,
   EgCryptoBtc,
@@ -26,6 +28,7 @@ import {
   readDataListGraphicSize,
   readDataListGraphicType,
   readDataListPrimaryTagEnabled,
+  readDataListTextBottomTagEnabled,
   readDataListPrimaryWeight,
   readDataListRowCount,
   readDataListSubBoldSegment,
@@ -259,6 +262,7 @@ function DataListDemoRow({
   const subBoldSegment = readDataListSubBoldSegment(state);
   const descriptionEnabled = state.descriptionEnabled === true;
   const primaryTagEnabled = readDataListPrimaryTagEnabled(state);
+  const textBottomTagEnabled = readDataListTextBottomTagEnabled(state);
   const widgetSlotEnabled = state.widgetEnabled === true;
   const widgetFlags = readDataListWidgetFlags(state);
   const slotColumnVisible =
@@ -310,7 +314,8 @@ function DataListDemoRow({
           alignItems: 'stretch',
         }}
       >
-        <View style={{ flex: 1, minWidth: 0, gap: layout.titleSubGap }}>
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <View style={{ gap: layout.titleSubGap }}>
           <EgDataListPrimaryRow
             mode={mode}
             weight={primaryWeight}
@@ -353,6 +358,21 @@ function DataListDemoRow({
           </View>
           {descriptionEnabled ? (
             <ShowcaseSansText style={descriptionStyle}>2026-03-12 14:20</ShowcaseSansText>
+          ) : null}
+          </View>
+          {textBottomTagEnabled ? (
+            <View
+              style={{
+                marginTop: EG_DATA_LIST_TEXT_BOTTOM_TAG_GAP,
+                alignSelf: 'flex-start',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                gap: EG_DATA_LIST_TEXT_BOTTOM_TAGS_GAP,
+              }}
+            >
+              <EgTag size="sm" label="标签" mode={mode} rowAlign accessibilityLabel="文本底部标签" />
+              <EgTag size="sm" label="状态" mode={mode} rowAlign accessibilityLabel="文本底部标签 2" />
+            </View>
           ) : null}
         </View>
         <DataListContentSlotColumn

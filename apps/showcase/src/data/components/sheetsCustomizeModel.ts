@@ -88,9 +88,9 @@ export const sheetsCustomizeControls: DocCustomizeControl[] = [
   { kind: 'boolean', key: 'showLeft', label: '左侧返回', row: 2 },
   { kind: 'boolean', key: 'showRight', label: '右侧关闭', row: 2 },
   { kind: 'heading', key: 'detentHeading', label: '档位' },
-  { kind: 'boolean', key: 'detentSmall', label: 'SM 28%', row: 3 },
-  { kind: 'boolean', key: 'detentMedium', label: 'MD 50%', row: 3 },
-  { kind: 'boolean', key: 'detentLarge', label: 'LG · spacing-0', row: 3 },
+  { kind: 'boolean', key: 'detentSmall', label: 'sm 28%', row: 3 },
+  { kind: 'boolean', key: 'detentMedium', label: 'md 50%', row: 3 },
+  { kind: 'boolean', key: 'detentLarge', label: 'lg 0', row: 3 },
   { kind: 'boolean', key: 'detentAdaptive', label: '自适应', row: 4 },
   {
     kind: 'select',

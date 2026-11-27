@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Platform, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { isIos26OrLater } from '../../shared/iosVersion.js';
 import type { ThemeMode } from '../../theme/index.js';
@@ -26,6 +26,24 @@ type EgGrayGlassBoxProps = {
   testID?: string;
   accessibilityLabel?: string;
 };
+
+/** RN `EgGlass` 壳 — 对齐 `GlassControlShell` `circleHit` 居中所载 icon。 */
+function GrayGlassRnContent({
+  shape,
+  children,
+}: {
+  shape: GlassControlShape;
+  children: ReactNode;
+}) {
+  if (shape !== 'circle') {
+    return children;
+  }
+  return (
+    <View style={styles.circleContent} pointerEvents="box-none">
+      {children}
+    </View>
+  );
+}
 
 function useGrayGlassNativeStack() {
   const GlassView = getNativeGlassView();
@@ -82,7 +100,7 @@ export function EgGrayGlassBox({
     if (!GlassView) {
       return (
         <EgGlass box={EG_GLASS_GRAY_BOX} mode={mode} style={shellStyle}>
-          {children}
+          <GrayGlassRnContent shape={shape}>{children}</GrayGlassRnContent>
         </EgGlass>
       );
     }
@@ -111,7 +129,7 @@ export function EgGrayGlassBox({
         style={styles.rnHit}
       >
         <EgGlass box={EG_GLASS_GRAY_BOX} mode={mode} style={shellStyle}>
-          {children}
+          <GrayGlassRnContent shape={shape}>{children}</GrayGlassRnContent>
         </EgGlass>
       </GlassInteraction>
     );
@@ -119,7 +137,7 @@ export function EgGrayGlassBox({
 
   return (
     <EgGlass box={EG_GLASS_GRAY_BOX} mode={mode} style={shellStyle}>
-      {children}
+      <GrayGlassRnContent shape={shape}>{children}</GrayGlassRnContent>
     </EgGlass>
   );
 }
@@ -140,5 +158,11 @@ const styles = StyleSheet.create({
   },
   rnHit: {
     alignSelf: 'stretch',
+  },
+  circleContent: {
+    ...StyleSheet.absoluteFill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 3,
   },
 });

@@ -66,6 +66,11 @@ export function resolveFamilyBodyEntry(
     return nav.entries.find((entry) => entry.slug === 'divider');
   }
 
+  /** Popovers · 箭头壳体是本体 · Notes 是场景。 */
+  if (nav.family === 'popovers') {
+    return nav.entries.find((entry) => entry.slug === 'popovers');
+  }
+
   return undefined;
 }
 

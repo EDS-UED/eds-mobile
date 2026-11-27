@@ -17,7 +17,7 @@ import { showcaseDetailScreenBackgroundColor } from '@/views/shared/showcaseThem
 const DEMO_TITLE = 'Search 演示';
 
 /**
- * a 贴底。b 距屏幕左右与键盘均为 `spacing-3`。
+ * a 贴底。b 距屏幕左右 `spacing-3`，距键盘 `spacing-5`。
  * 位置只走 `EdsSemanticAnima('offset').springConfig`。
  */
 export function ShowcaseSearchDemoView() {
@@ -61,8 +61,8 @@ export function ShowcaseSearchDemoView() {
     if (!inputFocused || keyboardHeight <= 0 || screenHeight <= 0) {
       return 0;
     }
-    return idleBottom - keyboardHeight - inputEdge;
-  }, [idleBottom, inputEdge, inputFocused, keyboardHeight, screenHeight]);
+    return idleBottom - keyboardHeight - restEdge;
+  }, [idleBottom, inputFocused, keyboardHeight, restEdge, screenHeight]);
 
   useEffect(() => {
     if (appliedShift.current === shift) return;

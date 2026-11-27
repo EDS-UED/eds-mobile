@@ -89,6 +89,8 @@ export { EgTag } from './molecules/tag/tag';
 export { EgTagAlt } from './molecules/tag/tag-alt';
 export { EgSystemTag } from './molecules/tag/system-tag';
 export { EgSystemTagAlt } from './molecules/tag/system-tag-alt';
+export { EgLocate, EG_LOCATE_DEFAULT_KEYS, EG_LOCATE_TRAILING_INSET } from './molecules/locate/locate';
+export type { EgLocateProps } from './molecules/locate/locate';
 export {
   EG_SWITCH_DEFAULT_SIZE,
   EG_SWITCH_DEFAULT_VALUE,
@@ -186,6 +188,8 @@ export type {
   EgNavBarNativeStackScreenOptionsInput,
 } from './organisms/tab-bar/nav-bar';
 export { EgNotesPopover } from './molecules/popovers/notes-popover';
+export { EgPopovers, EG_POPOVERS_MENU_BOX, EG_POPOVERS_SLOT_PADDING } from './molecules/popovers/popovers';
+export type { EgPopoversEdge, EgPopoversProps } from './molecules/popovers/popovers';
 export { EgMode } from './templates/index/mode';
 export { EgIndexTitle } from './templates/index/index-title';
 export { EgIconUserMeSet } from './atoms/icon/icon-user-me-set';
@@ -370,6 +374,8 @@ export {
   egDataListSubTextSegmentAStyle,
   EG_DATA_LIST_GRAPHIC_TEXT_GAP,
   EG_DATA_LIST_PRIMARY_TAG_GAP,
+  EG_DATA_LIST_TEXT_BOTTOM_TAG_GAP,
+  EG_DATA_LIST_TEXT_BOTTOM_TAGS_GAP,
   EG_DATA_LIST_SUB_TEXT_MAX_LINES,
   EG_DATA_LIST_ROW_GAP,
   EG_DATA_LIST_ROW_MARGIN_H,

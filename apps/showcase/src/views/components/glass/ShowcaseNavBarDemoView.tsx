@@ -50,7 +50,13 @@ export function ShowcaseNavBarDemoView() {
   const colors = useShowcaseColors();
   const { colorTheme } = useShowcaseThemeContext();
   const insets = useSafeAreaInsets();
-  const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll();
+  /**
+   * 滚动边只写在 `Stack.Screen options` 里。
+   * 漏写 `scrollEdgeEffects` 时 react-native-screens 用 `automatic`，滚入后是 hard 分割线。
+   */
+  const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll({
+    nativeScrollEdge: false,
+  });
 
   const cregisHome = params.scenario === 'cregis-home';
   const title = params.title ?? (cregisHome ? '主页' : '标题');
@@ -116,6 +122,7 @@ export function ShowcaseNavBarDemoView() {
               background,
               scrollEdgeEffect,
               scrollEdgeActive,
+              deferScrollEdgeToScrollHandler: false,
               mode: colorTheme,
             }),
             contentStyle: { backgroundColor: pageBackground },

@@ -11,6 +11,7 @@ import {
   Text,
   TextInput,
   View,
+  type TextStyle,
   type ViewProps,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -49,6 +50,23 @@ function resolveSearchEvent(
   if (focused) return 'entering';
   if (value.length > 0) return 'done';
   return 'default';
+}
+
+/**
+ * iOS `TextInput` 会把 `lineHeight` 加在已输入文字上，字比占位更靠下。
+ * 去掉行高，由行的 `alignItems: 'center'` 和输入框自身高度对齐。
+ */
+function searchEntryStyle(input: TextStyle): TextStyle {
+  const next: TextStyle = {
+    ...input,
+    padding: 0,
+    margin: 0,
+    textAlignVertical: 'center',
+    includeFontPadding: false,
+    alignSelf: 'center',
+  };
+  delete next.lineHeight;
+  return next;
 }
 
 function isDocPreview(docEvent?: FieldEvent): boolean {
@@ -174,7 +192,7 @@ export const EgSearch = forwardRef<EgSearchHandle, EgSearchProps & Pick<ViewProp
       <>
         {searchIcon}
         <TextInput
-          style={visual.input}
+          style={searchEntryStyle(visual.input)}
           value={text}
           placeholder={placeholder}
           placeholderTextColor={visual.placeholderColor}

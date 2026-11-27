@@ -1,6 +1,7 @@
 import { EG_TOGGLE_MARK_DEFAULT_SIZE } from '@eds/mobile-components';
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 
+import { SHOWCASE_TOGGLE_SIZE_OPTIONS } from './showcaseSizeOptions.js';
 import type { DocCustomizeControl } from './types.js';
 
 export const TOGGLE_MARK_PREVIEW_STATE_OPTIONS = [
@@ -22,11 +23,7 @@ export const toggleMarkCustomizeControls: DocCustomizeControl[] = [
     kind: 'select',
     key: 'size',
     label: '尺寸',
-    options: [
-      { value: 'lg', label: 'LG' },
-      { value: 'md', label: 'MD' },
-      { value: 'sm', label: 'SM' },
-    ],
+    options: [...SHOWCASE_TOGGLE_SIZE_OPTIONS],
   },
   {
     kind: 'select',

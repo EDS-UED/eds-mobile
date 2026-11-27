@@ -63,6 +63,7 @@ const CATALOG = [
   { figmaName: 'Color', exportName: 'EgTagColorAlt', tier: 'molecules', family: 'tag', slug: 'tag-color-alt', figmaPage: 'Tag 标签✅', kind: 'set', variantCount: 24, figmaId: '507:5464' },
   { figmaName: 'System', exportName: 'EgTagSystem', tier: 'molecules', family: 'tag', slug: 'tag-system', figmaPage: 'Tag 标签✅', kind: 'set', variantCount: 15, figmaId: '495:4935' },
   { figmaName: 'System', exportName: 'EgTagSystemAlt', tier: 'molecules', family: 'tag', slug: 'tag-system-alt', figmaPage: 'Tag 标签✅', kind: 'set', variantCount: 15, figmaId: '507:5433' },
+  { figmaName: 'Locate', exportName: 'EgLocate', tier: 'molecules', family: 'locate', slug: 'locate', figmaPage: 'Tag 标签✅', kind: 'component' },
 
   // —— Molecules · Toggle ——
   { figmaName: 'Switch', exportName: 'EgSwitch', tier: 'molecules', family: 'toggle', slug: 'switch', figmaPage: 'Toggle 切换✅', kind: 'set', variantCount: 6, figmaId: '281:3699' },
@@ -97,6 +98,7 @@ const CATALOG = [
 
   // —— Index / Popovers ——
   { figmaName: 'Notes', exportName: 'EgPopoverNotes', tier: 'molecules', family: 'popovers', slug: 'popovers-notes', figmaPage: '⛳️   组件索引✅', kind: 'set', variantCount: 8, figmaId: '180:1982' },
+  { figmaName: 'Popovers', exportName: 'EgPopovers', tier: 'molecules', family: 'popovers', slug: 'popovers', figmaPage: '⛳️   组件索引✅', kind: 'set', variantCount: 12, figmaId: '1453:1038' },
   { figmaName: 'Mode', exportName: 'EgMode', tier: 'templates', family: 'index', slug: 'mode', figmaPage: '⛳️   组件索引✅', kind: 'component', figmaId: '180:1980' },
   { figmaName: 'Title', exportName: 'EgIndexTitle', tier: 'templates', family: 'index', slug: 'index-title', figmaPage: '⛳️   组件索引✅', kind: 'component', figmaId: '180:1981' },
 ];
@@ -238,6 +240,8 @@ const SLUG_OVERRIDES = {
   'button:iCon Container': 'button-icon-container',
   'tab-bar:Apply_TabBar@Cregis': 'tab-bar-cregis',
   'tab-bar:Apply_TabBar@UDun': 'tab-bar-udun',
+  'locate:Locate': 'locate',
+  'popovers:Popovers': 'popovers',
 };
 
 function computeSceneSlug(family, figmaName, altIndex = 0) {
@@ -626,6 +630,14 @@ export type { EgSwitchProps, EgSwitchRenderStack } from './molecules/toggle/swit
 } from './atoms/divider/divider-end';
 export type { EgDividerEndProps } from './atoms/divider/divider-end';`;
   }
+  if (e.exportName === 'EgPopovers') {
+    return `export { EgPopovers, EG_POPOVERS_MENU_BOX, EG_POPOVERS_SLOT_PADDING } from './molecules/popovers/popovers';
+export type { EgPopoversEdge, EgPopoversProps } from './molecules/popovers/popovers';`;
+  }
+  if (e.exportName === 'EgLocate') {
+    return `export { EgLocate, EG_LOCATE_DEFAULT_KEYS, EG_LOCATE_TRAILING_INSET } from './molecules/locate/locate';
+export type { EgLocateProps } from './molecules/locate/locate';`;
+  }
   if (e.exportName === 'EgSearch') {
     return `export {
   EgSearch,
@@ -681,6 +693,8 @@ export {
   egDataListSubTextSegmentAStyle,
   EG_DATA_LIST_GRAPHIC_TEXT_GAP,
   EG_DATA_LIST_PRIMARY_TAG_GAP,
+  EG_DATA_LIST_TEXT_BOTTOM_TAG_GAP,
+  EG_DATA_LIST_TEXT_BOTTOM_TAGS_GAP,
   EG_DATA_LIST_SUB_TEXT_MAX_LINES,
   EG_DATA_LIST_ROW_GAP,
   EG_DATA_LIST_ROW_MARGIN_H,

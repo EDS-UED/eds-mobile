@@ -2,6 +2,7 @@ import { EG_SWITCH_DEFAULT_SIZE, egSwitchComponentDefaults, resolveEgSwitchSize 
 import type { FigmaComponentEntry } from '@eds/mobile-components/catalog';
 import type { ThemeMode } from '@eds/mobile-components';
 
+import { SHOWCASE_TOGGLE_SIZE_OPTIONS } from './showcaseSizeOptions.js';
 import type { DocCustomizeControl } from './types.js';
 
 export const SWITCH_PREVIEW_STATE_OPTIONS = [
@@ -24,11 +25,7 @@ export const switchCustomizeControls: DocCustomizeControl[] = [
     kind: 'select',
     key: 'size',
     label: '尺寸',
-    options: [
-      { value: 'lg', label: 'LG' },
-      { value: 'md', label: 'MD' },
-      { value: 'sm', label: 'SM' },
-    ],
+    options: [...SHOWCASE_TOGGLE_SIZE_OPTIONS],
   },
   {
     kind: 'select',

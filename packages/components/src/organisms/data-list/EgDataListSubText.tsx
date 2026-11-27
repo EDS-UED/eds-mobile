@@ -1,7 +1,8 @@
-import { StyleSheet, type TextProps, type TextStyle } from 'react-native';
+import { StyleSheet, View, type TextProps, type TextStyle } from 'react-native';
 
+import { EgAvatar } from '../../atoms/avatar/avatar/index.js';
 import { EdsSansText } from '../../shared/EdsSansText.js';
-import { getThemeColors } from '../../theme/index.js';
+import { getThemeColors, mobileTheme, type ThemeMode } from '../../theme/index.js';
 import { EG_DATA_LIST_SUB_TEXT_MAX_LINES } from './egDataListMetrics.js';
 import {
   egDataListSubTextFontWeight,
@@ -9,28 +10,35 @@ import {
   egDataListSubTextSegmentAFontWeight,
   flattenEgDataListTextStyle,
 } from './egDataListTypography.js';
-import type { ThemeMode } from '../../theme/index.js';
+
+/** 副文本 · 片段 A 前符号 · 默认关（不传 `segmentSymbol`）。 */
+export type EgDataListSubTextSegmentSymbol = {
+  /** `EgAvatar` 展示名 / seed。 */
+  name: string;
+  colorIndex?: number;
+};
 
 export type EgDataListSubTextProps = Pick<TextProps, 'style' | 'testID' | 'numberOfLines' | 'ellipsizeMode'> & {
   /** 片段 A（可与 `segmentB` 拼接；`boldSegmentA` 时 A 走 body-small-strong）。 */
   segmentA: string;
   segmentB?: string;
   boldSegmentA?: boolean;
+  /** 符号 · 片段 A 前 `EgAvatar` · 尺寸 `xs` · 默认关。 */
+  segmentSymbol?: EgDataListSubTextSegmentSymbol;
   mode?: ThemeMode;
   accessibilityLabel?: string;
 };
 
-/** Data list 副文本 · 最多 {@link EG_DATA_LIST_SUB_TEXT_MAX_LINES} 行；可选片段 A 加粗。 */
-export function EgDataListSubText({
+function EgDataListSubTextBody({
   segmentA,
-  segmentB = '',
-  boldSegmentA = false,
+  segmentB,
+  boldSegmentA,
   mode = 'light',
   style,
-  numberOfLines = EG_DATA_LIST_SUB_TEXT_MAX_LINES,
-  ellipsizeMode = 'tail',
+  numberOfLines,
+  ellipsizeMode,
   ...rest
-}: EgDataListSubTextProps) {
+}: Omit<EgDataListSubTextProps, 'segmentSymbol'>) {
   const colors = getThemeColors(mode);
   const secondary = colors['text-base-secondary'] as string;
   const layout = egDataListSubTextLayout();
@@ -62,5 +70,40 @@ export function EgDataListSubText({
         `${segmentA}${segmentB}`
       )}
     </EdsSansText>
+  );
+}
+
+/** Data list 副文本 · 最多 {@link EG_DATA_LIST_SUB_TEXT_MAX_LINES} 行；可选片段 A 加粗 · 可选符号。 */
+export function EgDataListSubText({
+  segmentSymbol,
+  mode = 'light',
+  ...rest
+}: EgDataListSubTextProps) {
+  if (segmentSymbol == null) {
+    return <EgDataListSubTextBody mode={mode} {...rest} />;
+  }
+
+  const symbolGap = mobileTheme.spacing['spacing-1'] as number;
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'stretch',
+        gap: symbolGap,
+        minWidth: 0,
+      }}
+    >
+      <EgAvatar
+        size="xs"
+        name={segmentSymbol.name}
+        colorIndex={segmentSymbol.colorIndex}
+        accessibilityLabel={segmentSymbol.name}
+      />
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <EgDataListSubTextBody mode={mode} {...rest} />
+      </View>
+    </View>
   );
 }

@@ -1,4 +1,4 @@
-/** Auto-generated from EDS Mobile Figma — 209 components */
+/** Auto-generated from EDS Mobile Figma — 211 components */
 export type FigmaComponentEntry = {
   figmaName: string;
   exportName: string;
@@ -453,6 +453,15 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "figmaId": "507:5433"
   },
   {
+    "figmaName": "Locate",
+    "exportName": "EgLocate",
+    "tier": "molecules",
+    "family": "locate",
+    "slug": "locate",
+    "figmaPage": "Tag 标签✅",
+    "kind": "component"
+  },
+  {
     "figmaName": "Switch",
     "exportName": "EgSwitch",
     "tier": "molecules",
@@ -686,6 +695,17 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "kind": "set",
     "variantCount": 8,
     "figmaId": "180:1982"
+  },
+  {
+    "figmaName": "Popovers",
+    "exportName": "EgPopovers",
+    "tier": "molecules",
+    "family": "popovers",
+    "slug": "popovers",
+    "figmaPage": "⛳️   组件索引✅",
+    "kind": "set",
+    "variantCount": 12,
+    "figmaId": "1453:1038"
   },
   {
     "figmaName": "Mode",

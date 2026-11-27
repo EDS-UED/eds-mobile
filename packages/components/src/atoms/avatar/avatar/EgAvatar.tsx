@@ -1,8 +1,8 @@
-import { Image, StyleSheet, Text, View, type ViewProps } from 'react-native';
+import { Image, StyleSheet, View, type TextStyle, type ViewProps } from 'react-native';
 
 import { EgAtomSvg } from '../../_shared/icon/EgAtomSvg.js';
+import { EdsSansText } from '../../../shared/EdsSansText.js';
 import { resolveColor } from '../../../shared/resolveColor.js';
-import { edsFontStyle } from '../../../shared/fontFamily.js';
 import { getThemeColors } from '../../../theme/index.js';
 import { AVATAR_NATIVE_PALETTE } from '../_shared/avatarPalette.js';
 import {
@@ -49,6 +49,8 @@ export function EgAvatar(props: EgAvatarProps & Pick<ViewProps, 'accessibilityLa
     randomColor,
   });
   const px = AVATAR_SIZE_PX[size];
+  const initialsStyle = avatarInitialsLabelStyle(size);
+  const initialsWeight = (initialsStyle.fontWeight ?? '500') as TextStyle['fontWeight'];
   const ariaLabel =
     accessibilityLabel ??
     label ??
@@ -72,17 +74,15 @@ export function EgAvatar(props: EgAvatarProps & Pick<ViewProps, 'accessibilityLa
             { backgroundColor: paletteColor.hex },
           ]}
         >
-          <View style={styles.initialsPaint}>
-            <Text
-              style={[
-                avatarInitialsLabelStyle(size),
-                edsFontStyle('700'),
-                { color: resolveColor(colors, 'text-same-white') },
-              ]}
-            >
-              {resolvedInitials}
-            </Text>
-          </View>
+          <EdsSansText
+            weight={initialsWeight}
+            style={[
+              initialsStyle,
+              { color: resolveColor(colors, 'text-same-white') },
+            ]}
+          >
+            {resolvedInitials}
+          </EdsSansText>
         </View>
       )}
     </View>
@@ -92,13 +92,8 @@ export function EgAvatar(props: EgAvatarProps & Pick<ViewProps, 'accessibilityLa
 const styles = StyleSheet.create({
   initialsHost: {
     flex: 1,
+    alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  initialsPaint: {
-    ...StyleSheet.absoluteFill,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
   },
 });

@@ -31,6 +31,12 @@ export const EG_DATA_LIST_GRAPHIC_TEXT_GAP = spacing['spacing-3'] as number;
 /** 主文本与紧跟其后的 Tag 间距 · `spacing-1`（4px）。 */
 export const EG_DATA_LIST_PRIMARY_TAG_GAP = spacing['spacing-1'] as number;
 
+/** 文本列底部 Tag 与上方内容间距 · `spacing-1`（4px）。 */
+export const EG_DATA_LIST_TEXT_BOTTOM_TAG_GAP = spacing['spacing-1'] as number;
+
+/** 文本列底部多个 Tag 之间 · `spacing-1`（4px）。 */
+export const EG_DATA_LIST_TEXT_BOTTOM_TAGS_GAP = spacing['spacing-1'] as number;
+
 /** 文本列 ↔ 右侧内容插槽 · `spacing-6`（24px）。 */
 export const EG_DATA_LIST_CONTENT_SLOT_GAP = spacing['spacing-6'] as number;
 

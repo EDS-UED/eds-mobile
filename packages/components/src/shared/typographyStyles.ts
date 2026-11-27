@@ -19,6 +19,8 @@ function preset(sizeKey: keyof typeof base, lineKey: keyof typeof base, weightKe
 const BODY_LARGE_STRONG = preset('size-body-large', 'line-height-body-large', 'weight-medium');
 const BODY_MEDIUM_STRONG = preset('size-body-medium', 'line-height-body-medium', 'weight-medium');
 const TITLE = preset('size-title', 'line-height-title', 'weight-bold');
+const HEADLINE = preset('size-headline', 'line-height-headline', 'weight-bold');
+const FOOTNOTE_STRONG_TYPO = preset('size-footnote', 'line-height-footnote', 'weight-medium');
 
 /** Body Large Strong · 19 / 26 · `eds-body-large-strong-weight` → weight-medium（500）。 */
 export function presetBodyLargeStrong(): TextPreset {
@@ -28,6 +30,23 @@ export function presetBodyLargeStrong(): TextPreset {
 /** Title · 21 / 28 · `eds-title-weight` → weight-bold（700）。 */
 export function presetTitle(): TextPreset {
   return TITLE;
+}
+
+/** Headline · 26 / 32 · `typography-headline` · weight-bold（700）。 */
+export function presetHeadline(): TextPreset {
+  return HEADLINE;
+}
+
+/** Footnote Strong · 13 / 16 · `typography-footnote-strong` · weight-medium（500）。 */
+export function presetFootnoteStrong(): TextPreset {
+  return FOOTNOTE_STRONG_TYPO;
+}
+
+const BAR = preset('size-bar', 'line-height-bar', 'weight-medium');
+
+/** Bar · 10 / 14 · `typography-bar` · weight-medium（500）。RN 直出字号，不做 Web 2× scale。 */
+export function presetBar(): TextPreset {
+  return BAR;
 }
 const BODY_SMALL_STRONG = preset('size-body-small', 'line-height-body-small', 'weight-medium');
 

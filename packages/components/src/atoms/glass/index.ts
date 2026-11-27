@@ -1,4 +1,5 @@
 export { EgGlass, EG_GLASS_SHEETS_BOX } from './EgGlass.js';
+export { EgGrayGlassBox, EG_GLASS_GRAY_BOX } from './EgGrayGlassBox.js';
 export type { EgGlassProps } from './EgGlass.js';
 export { GlassSurface } from './GlassSurface.js';
 export { GlassView } from './GlassView.js';

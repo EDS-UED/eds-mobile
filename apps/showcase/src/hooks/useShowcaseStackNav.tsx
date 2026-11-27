@@ -31,7 +31,10 @@ export function useShowcaseStackNav(title: string, navExtras?: UseShowcaseStackN
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const native = shouldUseEgNavBarNativeStack();
-  /** iOS 26+ scroll edge 写入 `stackScreenOptions.scrollEdgeEffects`（随 `scrollEdgeActive`）；EgPage 在 Showcase 关 `nativeScrollEdge`。 */
+  /**
+   * iOS 26+ scroll edge 写进 `Stack.Screen`（静止 hidden · 滚入 soft）。
+   * `nativeScrollEdge: false` — 勿再 `setOptions`，避免和本 options 抢成 automatic/hard。
+   */
   const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll({
     nativeScrollEdge: false,
   });
@@ -51,7 +54,6 @@ export function useShowcaseStackNav(title: string, navExtras?: UseShowcaseStackN
           showTitle: showNavTitle,
           background: 'auto',
           scrollEdgeActive,
-          /** Expo `Stack.Screen` 与滚动同源写 `scrollEdgeEffects`，勿再让 EgPage `setOptions` 抢写。 */
           deferScrollEdgeToScrollHandler: false,
           mode: colorTheme,
           left: {

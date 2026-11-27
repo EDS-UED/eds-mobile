@@ -282,6 +282,9 @@ const styles = StyleSheet.create({
 
 export { SlideSelectionDemo } from './SlideSelectionDemo.js';
 export { FadeTabDemo } from './FadeTabDemo.js';
+export { DeformDemo } from './DeformDemo.js';
+export type { DeformDemoKind } from './DeformDemo.js';
+export { OffsetSearchDemo } from './OffsetSearchDemo.js';
 export { PageShotDemo } from './PageShotDemo.js';
 export { PageStackDemoPage } from './PageStack.js';
 export { EgEdsAnimaOverlayModal } from '../shared/motion/overlayModal.js';

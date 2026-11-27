@@ -259,6 +259,13 @@
       "comment": "Semantic slide · 指示器落位 · 约 1% 轻过冲"
     },
     "drag": { "response": 0.32, "dampingFraction": 0.82, "blendDuration": 0.10, "reanimated": { "damping": 32, "stiffness": 385, "mass": 1 } },
+    "offset": {
+      "response": 0.36,
+      "dampingFraction": 0.74,
+      "blendDuration": 0.12,
+      "reanimated": { "damping": 26, "stiffness": 305, "mass": 1 },
+      "comment": "Semantic offset · 位移落点轻过冲回弹（≈ 3%）"
+    },
     "menu-in": {
       "response": 0.36,
       "dampingFraction": 0.74,
@@ -364,6 +371,26 @@
       "durationRef": "motion-1",
       "easing": [0.42, 0, 0.58, 1],
       "comment": "Fade mid-swap · var(--motion-delay-fade-swap) → motion-1"
+    },
+    "deform-transform": {
+      "durationRef": "motion-3",
+      "easing": [0.42, 0, 0.58, 1],
+      "comment": "形变几何 · 宽高与圆角 · var(--motion-duration-deform) → motion-3"
+    },
+    "deform-opacity": {
+      "durationRef": "motion-2",
+      "easing": [0.42, 0, 0.58, 1],
+      "comment": "形变内容交叉淡化 · var(--motion-duration-deform-content)"
+    },
+    "offset-transform": {
+      "durationRef": "motion-3",
+      "easing": [0.42, 0, 0.58, 1],
+      "comment": "CSS transform 时长近似 · RN 位移落点用 spring.offset"
+    },
+    "offset-opacity": {
+      "durationRef": "motion-2",
+      "easing": [0.42, 0, 0.58, 1],
+      "comment": "Offset 伴生 opacity"
     },
     "menu-content-in": {
       "duration": 120,

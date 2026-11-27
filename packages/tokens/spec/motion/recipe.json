@@ -48,6 +48,25 @@
       "notes": "纯 opacity crossfade · 文案 / Segment · RN EgEdsAnimaFade"
     },
     {
+      "id": "deform",
+      "label": "Deform",
+      "timingRef": "deform-transform",
+      "cssRecipe": "motion-recipe-deform",
+      "semanticClass": "motion-deform",
+      "interruptible": true,
+      "notes": "形变 timing（宽高、圆角、内容 opacity）· 起止形态由调用方给定"
+    },
+    {
+      "id": "offset",
+      "label": "Offset",
+      "springRef": "offset",
+      "timingRef": "offset-opacity",
+      "cssRecipe": "motion-recipe-offset",
+      "semanticClass": "motion-offset",
+      "interruptible": true,
+      "notes": "位移 · transform 走 spring.offset 落点回弹，opacity 走 timing；距离由调用方给定"
+    },
+    {
       "id": "menu",
       "label": "Menu",
       "springRef": "menu-in",
@@ -149,6 +168,26 @@
           "comment": "85ms · Layout Content opacity（阶梯 motion-1）"
         },
         {
+          "name": "motion-duration-deform",
+          "value": "var(--motion-3)",
+          "comment": "250ms · Deform offset 位移"
+        },
+        {
+          "name": "motion-duration-deform-content",
+          "value": "var(--motion-2)",
+          "comment": "180ms · Deform 伴生 opacity"
+        },
+        {
+          "name": "motion-duration-offset",
+          "value": "var(--motion-3)",
+          "comment": "250ms · Offset 位移"
+        },
+        {
+          "name": "motion-duration-offset-content",
+          "value": "var(--motion-2)",
+          "comment": "180ms · Offset 伴生 opacity"
+        },
+        {
           "name": "motion-duration-menu",
           "value": "var(--motion-6)",
           "comment": "400ms · Menu 容器展开（CSS 近似 spring menu-in）"
@@ -229,6 +268,14 @@
           "value": "opacity var(--motion-duration-layout-deform-content) ease, transform var(--motion-duration-layout-deform) var(--motion-easing-float)"
         },
         {
+          "name": "motion-recipe-deform",
+          "value": "opacity var(--motion-duration-deform-content) var(--motion-easing-standard), width var(--motion-duration-deform) var(--motion-easing-standard), height var(--motion-duration-deform) var(--motion-easing-standard), border-radius var(--motion-duration-deform) var(--motion-easing-standard)"
+        },
+        {
+          "name": "motion-recipe-offset",
+          "value": "opacity var(--motion-duration-offset-content) var(--motion-easing-standard), transform var(--motion-duration-offset) var(--motion-easing-standard)"
+        },
+        {
           "name": "motion-recipe-sheets",
           "value": "transform var(--motion-duration-sheets) var(--motion-easing-sheets), height var(--motion-duration-sheets) var(--motion-easing-sheets), left var(--motion-duration-sheets) var(--motion-easing-sheets), right var(--motion-duration-sheets) var(--motion-easing-sheets), bottom var(--motion-duration-sheets) var(--motion-easing-sheets), border-radius var(--motion-duration-sheets) var(--motion-easing-sheets)"
         },
@@ -258,6 +305,10 @@
     { "name": "motion-duration-fade", "value": "var(--motion-0)" },
     { "name": "motion-duration-layout-deform", "value": "var(--motion-0)" },
     { "name": "motion-duration-layout-deform-content", "value": "var(--motion-0)" },
+    { "name": "motion-duration-deform", "value": "var(--motion-0)" },
+    { "name": "motion-duration-deform-content", "value": "var(--motion-0)" },
+    { "name": "motion-duration-offset", "value": "var(--motion-0)" },
+    { "name": "motion-duration-offset-content", "value": "var(--motion-0)" },
     { "name": "motion-duration-menu", "value": "var(--motion-0)" },
     { "name": "motion-duration-sheets", "value": "var(--motion-0)" },
     { "name": "motion-duration-page", "value": "var(--motion-0)" },

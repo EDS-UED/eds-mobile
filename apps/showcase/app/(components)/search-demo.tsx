@@ -1,0 +1,1 @@
+export { ShowcaseSearchDemoView as default } from '@/views/components/ShowcaseSearchDemoView';

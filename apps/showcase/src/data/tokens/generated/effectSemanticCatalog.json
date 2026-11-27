@@ -26,6 +26,10 @@
         {
           "name": "glass-mask-box",
           "title": "置顶容器（Mask Box）"
+        },
+        {
+          "name": "glass-gray-box",
+          "title": "灰色容器（Gray Box）"
         }
       ]
     }

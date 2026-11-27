@@ -1,4 +1,4 @@
-/** Auto-generated from EDS Mobile Figma — 208 components */
+/** Auto-generated from EDS Mobile Figma — 209 components */
 export type FigmaComponentEntry = {
   figmaName: string;
   exportName: string;
@@ -154,6 +154,15 @@ export const figmaComponentCatalog: FigmaComponentEntry[] = [
     "kind": "set",
     "variantCount": 4,
     "figmaId": "279:2984"
+  },
+  {
+    "figmaName": "End",
+    "exportName": "EgDividerEnd",
+    "tier": "atoms",
+    "family": "divider",
+    "slug": "divider-end",
+    "figmaPage": "Divider 分割线✅",
+    "kind": "component"
   },
   {
     "figmaName": "EgAvatar",

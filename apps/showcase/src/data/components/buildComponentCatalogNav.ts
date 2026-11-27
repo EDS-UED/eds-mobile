@@ -504,7 +504,6 @@ export function familyTierRowHint(nav: ComponentFamilyNav): string {
 
 /** 族列表直进 Live · 无族索引页。 */
 const FAMILY_TIER_DIRECT_DETAIL_SLUG: Partial<Record<string, string>> = {
-  divider: 'divider',
   glass: 'glass-eg',
   'scroll-edge': 'glass-scroll-edge',
   'nav-bar': 'tab-bar-nav-bar',

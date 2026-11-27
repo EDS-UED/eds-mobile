@@ -7,6 +7,8 @@ import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
 
 import {
   defaultMotionScenarioCustomizeState,
+  mergeDeformMode,
+  mergeOffsetMode,
   mergePageDirection,
   motionScenarioCustomizeControls,
   type MotionScenarioCustomizeState,
@@ -90,6 +92,8 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
   if (!demo || !scenario) {
     return (
       <ShowcaseStackScreen>
+        <Stack.Screen options={stackScreenOptions} />
+        {rnNavBar}
         <Text style={styles.missing}>未找到场景 {scenarioId}</Text>
       </ShowcaseStackScreen>
     );
@@ -146,6 +150,8 @@ export function MotionScenarioDetailView({ scenarioId }: MotionScenarioDetailVie
                     slideFollowDrag:
                       typeof next.slideFollowDrag === 'boolean' ? next.slideFollowDrag : prev.slideFollowDrag,
                     ...mergePageDirection(prev, next),
+                    ...mergeOffsetMode(prev, next),
+                    ...mergeDeformMode(prev, next),
                     pageDragDismiss:
                       typeof next.pageDragDismiss === 'boolean' ? next.pageDragDismiss : prev.pageDragDismiss,
                   }))

@@ -77,7 +77,7 @@ function PageScreen({ navigation, route }: NativeStackScreenProps<StackParams, '
   const insets = useSafeAreaInsets();
   const nativePage = shouldUseEgPageNativeStack();
   const scrollTopInset = nativePage ? 0 : egNavBarScrollContentReserve(insets.top);
-  const navScroll = useEgNavBarScroll({ nativeScrollEdge: false });
+  const navScroll = useEgNavBarScroll({ nativeScrollEdge: nativePage });
   const { title, depth } = route.params;
   const exit = useContext(ExitContext);
 

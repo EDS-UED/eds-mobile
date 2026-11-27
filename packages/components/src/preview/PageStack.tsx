@@ -110,7 +110,6 @@ export function PageStackDemoPage({
         contentInsetAdjustmentBehavior={contentInsetAdjustmentBehavior}
         onScroll={onScrollProp}
         scrollEventThrottle={scrollThrottleProp}
-        nativeScrollEdge={false}
       >
         {list}
       </EgPage>

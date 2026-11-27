@@ -1,6 +1,8 @@
 import { EgMenu, EgEdsAnimaPress, type EgMenuProps } from '@eds/mobile-components';
 import {
+  DeformDemo,
   FadeTabDemo,
+  OffsetSearchDemo,
   PageShotDemo,
   SlideSelectionDemo,
 } from '@eds/mobile-components/preview/motion';
@@ -12,6 +14,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { findShowcaseCatalogEntry, mergeCatalogPreviewProps } from '@/data/components';
 import type { MotionScenarioId } from '@/data/animations/motionScenarioCustomize';
 import {
+  deformKindOf,
+  offsetAxisOf,
   pageDirectionOf,
   type MotionScenarioCustomizeState,
 } from '@/data/animations/motionScenarioCustomize';
@@ -131,6 +135,22 @@ export function MotionScenarioPreview({
       return (
         <View style={styles.previewBlock}>
           <FadeTabDemo mode="light" />
+        </View>
+      );
+    case 'deform':
+      return (
+        <View style={styles.previewBlock}>
+          <DeformDemo key={deformKindOf(customize)} mode="light" kind={deformKindOf(customize)} />
+        </View>
+      );
+    case 'offset':
+      return (
+        <View style={styles.previewBlock}>
+          <OffsetSearchDemo
+            key={offsetAxisOf(customize)}
+            mode="light"
+            axis={offsetAxisOf(customize)}
+          />
         </View>
       );
     case 'press':

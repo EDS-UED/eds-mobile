@@ -33,7 +33,13 @@ function scaffoldSelf(exportName: string): ComponentSelfAnnotationSpec {
 
 const SELF_BY_SLUG: Record<string, ComponentSelfAnnotationSpec | ((exportName: string) => ComponentSelfAnnotationSpec)> = {
   divider: {
-    style: ['分割线颜色 `stroke-divider-shallow` 或 `stroke-divider-deep`（module 场景）。'],
+    style: [
+      'Module / Page 场景线色 `stroke-divider-deep`（module 浅底场景可用 `stroke-divider-shallow`）。',
+    ],
+    layout: ['线宽 `stroke-xs`（layout hairline 保底）；水平默认满宽 · 垂直可传 `length`。'],
+  },
+  'divider-end': {
+    style: ['尾分 · 左右线 + 中点；色 `stroke-divider-deep`；点 `spacing-1`、间距 `spacing-2`。'],
     layout: ['线高 1px；水平 inset 由宿主传入（本组件不自带页边距）。'],
   },
   'avatar-body': {
@@ -130,10 +136,18 @@ const SELF_BY_SLUG: Record<string, ComponentSelfAnnotationSpec | ((exportName: s
   },
   'input-search': {
     style: [
-      '搜索框底 `material-card-shallow` · 字 `typography-body-medium`。',
-      '占位 `text-base-tertiary` · 搜索图标槽 `symbol-sm`。',
+      '输入条 / 关闭钮底 `glass-gray-box`（`material-card-deep` + blur）· 字 `typography-body-medium`。',
+      '占位 `text-base-tertiary` · 搜索 / 清除 `symbol-sm`（20px）· 清除 `eds-close-circle-fill`。',
     ],
-    layout: ['高度 `input-md`；左右 `spacing-4`；圆角 `radius-lg` + smoothRadius。'],
+    layout: [
+      '高度 `input-md`（48px）；搜索条↔关闭钮 `spacing-2-5`（10px）。',
+      '内边距水平 `spacing-4` · 圆角 `radius-full` · 默认外边距上/下/右 `spacing-6`（24px）。',
+    ],
+    other: [
+      'Showcase「演示」a 底部 / b 距键盘与左右边缘 `spacing-3` · `EdsSemanticAnima(\'offset\').springConfig`',
+      '输入框变宽变窄 · `EdsSemanticAnima(\'deform\')`；关闭钮入场 scale 0→1、离场 1→0',
+      '聚焦空内容：框内清除可见 · `status-disable-base`；关闭胶囊始终可点',
+    ],
   },
   'input-textarea': {
     style: [

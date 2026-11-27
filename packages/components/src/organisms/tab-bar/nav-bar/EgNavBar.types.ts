@@ -85,7 +85,7 @@ export type EgNavBarProps = {
   /** 背景显隐（scroll edge），贯穿状态栏区。默认 `auto`。 */
   background?: EgNavBarBackground;
   /**
-   * scroll edge 样式 — **RN 栏**缺省：未传时 `auto`/`visible` / Sheet `overlay` → `hard`（滚入栏下含 module 底线）；`hidden` → `hidden`；显式 `soft` 无底线。
+   * scroll edge 样式 — **RN 栏**缺省：`auto` 静止 `hidden`、滚入 `soft`；`visible` / Sheet `overlay` → `hard`；显式值优先。
    * **iOS 26+ 系统栏**缺省：`auto` → 静止 `hidden`、滚入 `soft`（`useEgNavBarScroll` / `egNavBarNativeStackOptions`）。
    */
   scrollEdgeEffect?: EgNavBarScrollEdgeEffect;

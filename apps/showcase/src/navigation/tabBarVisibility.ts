@@ -18,6 +18,9 @@ const INNER_ROUTE_ROOTS = new Set([
   'family',
   'gallery',
   'motion',
+  'scenario',
+  'scene',
+  'motion-demo',
   'glass-demo',
   'parity',
 ]);

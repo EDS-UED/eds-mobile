@@ -15,6 +15,7 @@ export const GLASS_BLUR_BOX_OPTIONS: { value: GlassBoxClassName; label: string }
   { value: 'glass-tabbar-box', label: 'TabBar Box' },
   { value: 'glass-tabbar-bg', label: 'TabBar BG' },
   { value: 'glass-mask-box', label: 'Mask Box' },
+  { value: 'glass-gray-box', label: 'Gray Box' },
 ];
 
 /** iOS 26 `scrollEdgeEffectStyle(_:for:)` 三档；隐藏走 `scrollEdgeEffectHidden` 开关。 */

@@ -91,6 +91,11 @@ export function useEgNavBarScroll({ nativeScrollEdge = true }: UseEgNavBarScroll
     if (!settled) restOffset.current = null;
   }, [settled]);
 
+  /** iOS 26+ 首帧前下发 `hidden`，避免栈级缺省 `scrollEdgeEffects` 落 `automatic`（观感像 hard）。 */
+  useLayoutEffect(() => {
+    if (drivesNativeEdge) applyNativeScrollEdge('hidden');
+  }, [applyNativeScrollEdge, drivesNativeEdge]);
+
   const resetScrollChrome = useCallback(() => {
     clearNativeEdgeHiddenTimer();
     restOffset.current = null;

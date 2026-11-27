@@ -956,6 +956,87 @@ function dividerDoc(): RnDocConfig {
   };
 }
 
+const SEARCH_FIELD_EVENTS = [
+  { value: 'default', label: '默认' },
+  { value: 'tap', label: '点击' },
+  { value: 'entering', label: '输入中' },
+  { value: 'done', label: '已输入' },
+  { value: 'disable', label: '禁用' },
+] as const;
+
+function searchDoc(previewSlug: string): RnDocConfig {
+  const componentTag = 'EgSearch';
+  const defaults = {
+    event: 'default',
+    placeholder: 'Search',
+    disabled: false,
+    defaultValue: '',
+  } as const;
+  return {
+    componentTag,
+    previewSlug,
+    importCode: `import { ${componentTag} } from '@eds/mobile-components';`,
+    customizeDefaults: { ...defaults },
+    customizeControls: [
+      { kind: 'select', key: 'event', label: '交互', options: [...SEARCH_FIELD_EVENTS] },
+      { kind: 'text', key: 'placeholder', label: '占位符' },
+      { kind: 'text', key: 'defaultValue', label: '内容' },
+      { kind: 'boolean', key: 'disabled', label: '禁用' },
+    ],
+    propRows: [
+      {
+        name: 'event',
+        type: "'default' | 'tap' | 'entering' | 'done' | 'disable'",
+        defaultValue: "'default'",
+        description:
+          'Default=仅输入条；聚焦/有内容/ Tap·Entering·Done 时右侧关闭胶囊；框内清除 `eds-close-circle-fill`',
+      },
+      { name: 'placeholder', type: 'string', defaultValue: "'Search'", description: '占位文案' },
+      { name: 'value', type: 'string', defaultValue: 'undefined', description: '受控值' },
+      { name: 'defaultValue', type: 'string', defaultValue: "''", description: '非受控初始值' },
+      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
+      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
+      {
+        name: 'onFocus',
+        type: '() => void',
+        defaultValue: 'undefined',
+        description: '输入框聚焦',
+      },
+      { name: 'onBlur', type: '() => void', defaultValue: 'undefined', description: '输入框失焦' },
+      {
+        name: 'ref.dismiss',
+        type: '() => void',
+        defaultValue: '—',
+        description: '退出搜索（失焦并清空）',
+      },
+    ],
+    propQueryKeys: ['event', 'placeholder', 'defaultValue', 'disabled'],
+    buildUsageSnippet: (state) =>
+      buildRnSelfClosingSnippet(componentTag, state, { defaults: { ...defaults } }),
+  };
+}
+
+function dividerEndDoc(): RnDocConfig {
+  const componentTag = 'EgDividerEnd';
+  return {
+    componentTag,
+    previewSlug: 'divider-end',
+    importCode: `import { ${componentTag} } from '@eds/mobile-components';`,
+    customizeDefaults: {},
+    customizeControls: [],
+    propRows: [
+      {
+        name: 'mode',
+        type: "'light' | 'dark'",
+        defaultValue: "'light'",
+        description: '主题；线色 `stroke-divider-deep`',
+      },
+    ],
+    propQueryKeys: [],
+    buildUsageSnippet: () => `<${componentTag} />`,
+  };
+}
+
 const SYMBOL_ACTION_SHOWCASE_TONES = [
   { value: 'brand', label: '品牌' },
   { value: 'decor', label: '装饰' },
@@ -1743,7 +1824,7 @@ function egGlassShowcaseDoc(): RnDocConfig {
         name: 'box',
         type: 'GlassBoxClassName',
         defaultValue: JSON.stringify(defaultBox),
-        description: 'Effect Glass Box class（button / sheets / tabbar …）',
+        description: 'Effect Glass Box class（button / sheets / tabbar / gray …）',
       },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '外观' },
       { name: 'style', type: 'StyleProp<ViewStyle>', defaultValue: '—', description: '布局尺寸；材质由 box + mode 解析' },
@@ -1833,38 +1914,8 @@ function egScrollEdgeShowcaseDoc(): RnDocConfig {
 export const rnDocBySlug: Record<string, RnDocConfig> = {
   'input-body': inputDoc('EgInput', 'input-input'),
   'input-input': inputDoc('EgInput', 'input-input'),
-  'search-body': {
-    ...fieldDoc('EgSearch', 'input-search', 'Search'),
-    customizeDefaults: { size: 'md', event: 'default', placeholder: 'Search', disabled: false },
-    propRows: [
-      { name: 'size', type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '控件尺寸（Figma Search 为 md / 48px）' },
-      {
-        name: 'event',
-        type: "'default' | 'tap' | 'entering' | 'done'",
-        defaultValue: "'default'",
-        description: 'Default=居中 pill；Tap=展开+光标在前；Entering=输入中；Done=已填内容',
-      },
-      { name: 'placeholder', type: 'string', defaultValue: "'Search'", description: '占位文案' },
-      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
-      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
-    ],
-  },
-  'input-search': {
-    ...fieldDoc('EgSearch', 'input-search', 'Search'),
-    customizeDefaults: { size: 'md', event: 'default', placeholder: 'Search', disabled: false },
-    propRows: [
-      { name: 'size', type: "'xl' | 'lg' | 'md' | 'sm' | 'xs'", defaultValue: "'md'", description: '控件尺寸（Figma Search 为 md / 48px）' },
-      {
-        name: 'event',
-        type: "'default' | 'tap' | 'entering' | 'done'",
-        defaultValue: "'default'",
-        description: 'Default=居中 pill；Tap=展开+光标在前；Entering=输入中；Done=已填内容',
-      },
-      { name: 'placeholder', type: 'string', defaultValue: "'Search'", description: '占位文案' },
-      { name: 'disabled', type: 'boolean', defaultValue: 'false', description: '禁用' },
-      { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
-    ],
-  },
+  'search-body': searchDoc('input-search'),
+  'input-search': searchDoc('input-search'),
   'textarea-body': textareaFieldDoc('EgTextarea', 'input-textarea'),
   'input-textarea': textareaFieldDoc('EgTextarea', 'input-textarea'),
   'input-quick-input': fieldDoc('EgQuickInput', 'input-quick-input', 'Quick input'),
@@ -2223,6 +2274,7 @@ import { EgNavBar, useEgNavBarScroll } from '@eds/mobile-components';`,
   'input-combo-textarea-input': minimalDoc('EgComboTextareaInput', 'input-combo-textarea-input'),
   'feedback-message': messageDoc(),
   divider: dividerDoc(),
+  'divider-end': dividerEndDoc(),
   'glass-eg': egGlassShowcaseDoc(),
   'glass-scroll-edge': egScrollEdgeShowcaseDoc(),
   'avatar-body': avatarBodyDoc(),

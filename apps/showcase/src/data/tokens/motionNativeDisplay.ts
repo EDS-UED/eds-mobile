@@ -254,6 +254,10 @@ export function motionScenarioUsageSnippet(scenarioId: string): string {
       return LAYOUT_CONTENT_SNIPPET;
     case 'fade':
       return FADE_SNIPPET;
+    case 'deform':
+      return "const motion = EdsSemanticAnima('deform');\nwidth.value = withTiming(nextWidth, motion.timingConfig);\nradius.value = withTiming(nextRadius, motion.timingConfig);";
+    case 'offset':
+      return "const motion = EdsSemanticAnima('offset');\ntranslate.value = withSpring(to, motion.springConfig);";
     case 'menu':
       return MENU_SNIPPET;
     case 'sheets':

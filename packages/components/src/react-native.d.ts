@@ -64,6 +64,7 @@ declare module 'react-native' {
     multiline?: boolean;
     autoFocus?: boolean;
     selectTextOnFocus?: boolean;
+    returnKeyType?: 'done' | 'go' | 'next' | 'search' | 'send' | 'default' | 'emergency-call' | 'google' | 'join' | 'route' | 'yahoo';
     onChangeText?: (text: string) => void;
     onFocus?: () => void;
     onBlur?: () => void;
@@ -152,6 +153,9 @@ declare module 'react-native' {
   export const Image: ComponentType<ImageProps>;
   export const Text: ComponentType<TextProps>;
   export const TextInput: ComponentType<TextInputProps>;
+  export const Keyboard: {
+    dismiss: () => void;
+  };
   export const Pressable: ComponentType<PressableProps>;
   export const ScrollView: ComponentType<ScrollViewProps>;
   export const Modal: ComponentType<ModalProps>;
@@ -244,6 +248,7 @@ declare module 'react-native-reanimated' {
     config?: { duration?: number; easing?: (value: number) => number },
     callback?: (finished?: boolean) => void,
   ) => number;
+  export const withSequence: (...animations: number[]) => number;
   export const withDelay: (delayMs: number, animation: number) => number;
   export const cancelAnimation: (sharedValue: { value: unknown }) => void;
   export enum Extrapolation {

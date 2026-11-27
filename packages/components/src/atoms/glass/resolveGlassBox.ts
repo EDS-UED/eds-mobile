@@ -8,7 +8,8 @@ export type GlassBoxClassName =
   | 'glass-sheets-box'
   | 'glass-tabbar-box'
   | 'glass-tabbar-bg'
-  | 'glass-mask-box';
+  | 'glass-mask-box'
+  | 'glass-gray-box';
 
 export type GlassBoxShadowLayer = {
   offsetX: number;

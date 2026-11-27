@@ -47,8 +47,8 @@ const FAMILY_SPECS: Record<string, FamilySpec> = {
     motion: ['focus `event-focus`（无整页 semantic）。'],
   },
   search: {
-    style: ['底 `material-card-shallow` · 字/占位同 Input · 搜索图标 `symbol-sm`。'],
-    layout: ['高度 `input-md` · 圆角 `radius-lg` + smooth。'],
+    style: ['底 `glass-gray-box` · 字/占位同 Input · 图标 `symbol-sm`（20px）。'],
+    layout: ['高度 `input-md` · 圆角 `radius-full` · 默认外边距上/下/右 `spacing-6`。'],
   },
   textarea: {
     style: ['多行字 `typography-body-medium` · 描边/占位同 Input。'],

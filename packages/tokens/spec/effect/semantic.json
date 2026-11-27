@@ -6,7 +6,8 @@
     "sheets": "glass-sheets-box",
     "tabBar": "glass-tabbar-box",
     "tabBarBg": "glass-tabbar-bg",
-    "mask": "glass-mask-box"
+    "mask": "glass-mask-box",
+    "gray": "glass-gray-box"
   },
   "groups": [
     {
@@ -68,6 +69,15 @@
           "className": "glass-mask-box",
           "properties": {
             "background": "linear-gradient(0deg, var(--effect-overlay-subtle) 0%, var(--effect-overlay-shallow) 100%), var(--effect-box)",
+            "backdrop-filter": "var(--eds-blur-glass)",
+            "-webkit-backdrop-filter": "var(--eds-blur-glass)"
+          }
+        },
+        {
+          "title": "灰色容器（Gray Box）",
+          "className": "glass-gray-box",
+          "properties": {
+            "background": "var(--material-card-deep)",
             "backdrop-filter": "var(--eds-blur-glass)",
             "-webkit-backdrop-filter": "var(--eds-blur-glass)"
           }

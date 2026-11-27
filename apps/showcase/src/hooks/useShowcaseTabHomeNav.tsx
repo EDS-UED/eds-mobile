@@ -16,7 +16,7 @@ import { useShowcaseThemeContext } from '@/theme/ShowcaseThemeProvider';
 export type UseShowcaseTabHomeNavOptions = {
   /** @deprecated 易随选中态重建 `options` 导致列表回顶 — 优先 `ScrollEdgeTitleComponent`。 */
   scrollEdgeTitleContent?: ReactElement | null;
-  /** 滚入栏下后的标题区 — 稳定组件类型；iOS 26+ 走 RN 浮层，勿写系统 `headerTitle`。 */
+  /** 滚入栏下后的标题区 — 稳定组件类型；iOS ≤25 / Android RN 浮层；iOS 26+ 仅内容区分段 + 系统 `title`。 */
   ScrollEdgeTitleComponent?: ComponentType;
 };
 
@@ -32,11 +32,12 @@ export function useShowcaseTabHomeNav(title: string, navOptions?: UseShowcaseTab
   const scrollEdgeTitleContent = navOptions?.scrollEdgeTitleContent ?? null;
   const hasCustomNavTitle = Boolean(ScrollEdgeTitleComponent) || scrollEdgeTitleContent != null;
   const { scrollOffset, onScroll, scrollEventThrottle, scrollEdgeActive } = useEgNavBarScroll({
+    /** 与 `Stack.Screen` 里的 `scrollEdgeEffects` 单源；勿 `setOptions` 抢写。 */
     nativeScrollEdge: false,
   });
 
-  const showStringNavTitle = scrollEdgeActive && !hasCustomNavTitle;
-  const showCustomNavTitle = scrollEdgeActive && hasCustomNavTitle;
+  /** iOS 26+ 仅系统栏 — 滚入后系统 `title`；勿叠 RN `EgNavBar`（hidden → soft 单源 `useEgNavBarScroll`）。 */
+  const showNativeTitle = scrollEdgeActive;
 
   const stackScreenOptions = useMemo(
     () => {
@@ -46,7 +47,7 @@ export function useShowcaseTabHomeNav(title: string, navOptions?: UseShowcaseTab
             title,
             showLeft: false,
             showRight: false,
-            showTitle: hasCustomNavTitle ? false : showStringNavTitle,
+            showTitle: showNativeTitle,
             background: 'auto',
             scrollEdgeActive,
             deferScrollEdgeToScrollHandler: false,
@@ -61,27 +62,12 @@ export function useShowcaseTabHomeNav(title: string, navOptions?: UseShowcaseTab
         contentStyle: { backgroundColor: showcasePageBackgroundColor(colors) },
       };
     },
-    [colorTheme, colors, hasCustomNavTitle, native, scrollEdgeActive, showStringNavTitle, title],
+    [colorTheme, colors, native, scrollEdgeActive, showNativeTitle, title],
   );
 
-  const rnNavBar = useMemo(() => {
-    if (native && hasCustomNavTitle) {
-      if (!showCustomNavTitle) {
-        return null;
-      }
-      return (
-        <ShowcaseRnEgNavBarOverlay
-          title={title}
-          mode={colorTheme}
-          scrollOffset={scrollOffset}
-          showLeft={false}
-          showTitle
-          forceRnOnIos26
-          titleContent={ScrollEdgeTitleComponent ? <ScrollEdgeTitleComponent /> : scrollEdgeTitleContent}
-        />
-      );
-    }
+  const showCustomNavTitle = scrollEdgeActive && hasCustomNavTitle;
 
+  const rnNavBar = useMemo(() => {
     if (native) {
       return null;
     }
@@ -93,6 +79,7 @@ export function useShowcaseTabHomeNav(title: string, navOptions?: UseShowcaseTab
         scrollOffset={scrollOffset}
         showLeft={false}
         showTitle={scrollEdgeActive}
+        scrollEdgeEffect="soft"
         titleContent={
           showCustomNavTitle && ScrollEdgeTitleComponent ? (
             <ScrollEdgeTitleComponent />

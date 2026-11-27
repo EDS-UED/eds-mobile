@@ -163,7 +163,7 @@ function EgNavBarLayoutSlot({
 /**
  * RN 顶栏 ScrollEdge — 显式 `scrollEdgeEffect` 尊重业务；未传时由 `background` / 宿主决定：
  * - `hidden` → 不绘
- * - `auto` 滚入栏下 → `hard`（module 底线）· 静止 `hidden`
+ * - `auto` 滚入栏下 → `soft`（页面 · 无分割线）· 静止 `hidden`
  * - Sheet `overlay` · `visible` → `hard`
  */
 function resolveRnScrollEdgeStyle(
@@ -184,7 +184,7 @@ function resolveRnScrollEdgeStyle(
     return 'hard';
   }
   if (background === 'auto') {
-    return contentUnderNav ? 'hard' : 'hidden';
+    return contentUnderNav ? 'soft' : 'hidden';
   }
   return 'hard';
 }

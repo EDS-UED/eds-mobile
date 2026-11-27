@@ -35,6 +35,7 @@ const GLASS_BOX_CLASS_NAMES = new Set<string>([
   'glass-tabbar-box',
   'glass-tabbar-bg',
   'glass-mask-box',
+  'glass-gray-box',
 ]);
 
 export function isGlassBoxPreviewClass(name: string): name is GlassBoxClassName {

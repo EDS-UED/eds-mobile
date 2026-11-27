@@ -69,7 +69,7 @@ export function createFieldStyles(state: FieldVisualState): {
     ? 'disable'
     : (state.event ?? (state.focused ? 'entering' : state.pressed ? 'tap' : 'default'));
 
-  const centerContent = state.kind === 'search' && event === 'default';
+  const centerContent = false;
 
   const container: ViewStyle = {
     flexDirection: 'row',
@@ -134,10 +134,7 @@ export function createFieldStyles(state: FieldVisualState): {
       break;
     default:
       container.backgroundColor = fieldSurfaceColor(colors, 'material-card-moderate', showBackground);
-      input.color =
-        state.kind === 'search'
-          ? resolveColor(colors, 'text-base-tertiary')
-          : resolveColor(colors, 'text-base-primary');
+      input.color = resolveColor(colors, 'text-base-primary');
       break;
   }
 

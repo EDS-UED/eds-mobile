@@ -70,9 +70,7 @@ function AnimationsHomeViewBody() {
         >
           <ShowcaseTabHomeDisplayTitle>{title}</ShowcaseTabHomeDisplayTitle>
           <ShowcaseTabHomeIntro lead={showcaseTabHomeLeads.animations}>
-            {!scrollEdgeActive ? (
-              <AnimationsHomeInlineSegment testID="animations-home-segment" />
-            ) : null}
+            <AnimationsHomeInlineSegment testID="animations-home-segment" />
           </ShowcaseTabHomeIntro>
 
           {segmentIndex === 0 ? (

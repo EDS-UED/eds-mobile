@@ -56,9 +56,14 @@ export function resolveFamilyBodyEntry(
     return suffixBase;
   }
 
-  /** 仅一项的族（如 Divider · NavBar）— 该项即本体，不列入场景化。 */
+  /** 仅一项的族 — 该项即本体，不列入场景化。 */
   if (nav.entries.length === 1) {
     return nav.entries[0];
+  }
+
+  /** Divider · `divider` 即本体 · `divider-end` 场景化。 */
+  if (nav.family === 'divider') {
+    return nav.entries.find((entry) => entry.slug === 'divider');
   }
 
   return undefined;

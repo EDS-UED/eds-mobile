@@ -3,16 +3,9 @@ import { StyleSheet, View, type ViewProps, type ViewStyle } from 'react-native';
 import { getThemeColors } from '../../../theme/index.js';
 import {
   EG_DIVIDER_DEFAULT_VERTICAL_LENGTH_PX,
-  EG_DIVIDER_STROKE_THICKNESS_PX,
+  egDividerStrokeLayoutThickness,
 } from './egDividerMetrics.js';
 import type { EgDividerProps } from './EgDivider.types.js';
-
-/** Token `stroke-xs` 可能低于 RN 物理最小线宽，layout 用 hairline 保底。 */
-function strokeXsLayoutThickness(): number {
-  const spec = EG_DIVIDER_STROKE_THICKNESS_PX;
-  const hairline = StyleSheet.hairlineWidth;
-  return spec > 0 && spec < hairline ? hairline : spec;
-}
 
 export function EgDivider({
   variant = 'page',
@@ -28,7 +21,7 @@ export function EgDivider({
     return null;
   }
 
-  const thickness = strokeXsLayoutThickness();
+  const thickness = egDividerStrokeLayoutThickness();
   const lineColor = getThemeColors(mode)['stroke-divider-deep'] as string;
 
   const lineStyle: ViewStyle =

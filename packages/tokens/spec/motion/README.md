@@ -6,7 +6,7 @@ Base → Recipe → Semantic
 
 **Semantic class** 与 RN **`EdsSemanticAnima('<scenarioId>')`** 同名：`className = motion-{scenarioId}`。
 
-当前 spec 含 **`press`** · **`slide`** · **`layout-content`** · **`fade`** · **`menu`** · **`sheets`** · **`page`** · **`page-shot`** 八个场景；新增 Semantic 时按需补 Base / Recipe（勿私造未引用参数）。
+当前 spec 含 **`press`** · **`slide`** · **`layout-content`** · **`fade`** · **`deform`** · **`offset`** · **`menu`** · **`sheets`** · **`page`** · **`page-shot`** 十个场景；新增 Semantic 时按需补 Base / Recipe（勿私造未引用参数）。
 
 ---
 
@@ -27,6 +27,8 @@ Base → Recipe → Semantic
 | `slide` | 滑选落位 |
 | `drag` | slide 跟手（无独立 Semantic） |
 | `layout-content` | 同壳正文 crossfade |
+| `deform` | 形变（宽高、圆角、内容互换） |
+| `offset` | 位移（spring 落点回弹 · 距离由调用方给定） |
 | `menu` | 浮层自触发点倒出 |
 | `menu-dismiss` | 浮层收回（无独立 Semantic） |
 | `sheets` | Sheet 呈现（悬浮 ↔ 贴边） |
@@ -46,6 +48,8 @@ Base → Recipe → Semantic
 | `.motion-press` | `press` | `press` |
 | `.motion-slide` | `slide` | `slide` |
 | `.motion-layout-content` | `layout-content` | `layout-content` |
+| `.motion-deform` | `deform` | `deform` |
+| `.motion-offset` | `offset` | `offset` |
 | `.motion-menu` | `menu` | `menu` |
 | `.motion-sheets` | `sheets` | `sheets` |
 | `.motion-page` | `page` | `page` |

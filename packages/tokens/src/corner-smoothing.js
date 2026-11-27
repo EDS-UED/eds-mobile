@@ -100,7 +100,8 @@ function isEffectBoxRoot(element) {
     element.classList.contains('glass-menu-box') ||
     element.classList.contains('glass-sheets-box') ||
     element.classList.contains('glass-tabbar-box') ||
-    element.classList.contains('glass-mask-box')
+    element.classList.contains('glass-mask-box') ||
+    element.classList.contains('glass-gray-box')
   );
 }
 

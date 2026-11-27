@@ -12,6 +12,12 @@ export { EgTitleComboTitle } from './atoms/text/title-combo-title';
 export { EgTitleComboBody } from './atoms/text/title-combo-body';
 export { EgDivider } from './atoms/divider/divider';
 export {
+  EgDividerEnd,
+  EG_DIVIDER_END_DOT_SIZE,
+  EG_DIVIDER_END_GAP,
+} from './atoms/divider/divider-end';
+export type { EgDividerEndProps } from './atoms/divider/divider-end';
+export {
   EgAvatar,
   EgAvatarPreset0,
   EgAvatarPreset1,
@@ -63,7 +69,16 @@ export type {
   EgGlassCapsuleStackDiagnostics,
 } from './molecules/button/button-glass';
 export { EgInput } from './molecules/input/input';
-export { EgSearch } from './molecules/input/search';
+export {
+  EgSearch,
+  EG_SEARCH_CLOSE_GAP,
+  EG_SEARCH_FIELD_HEIGHT,
+  EG_SEARCH_ICON_SIZE,
+  EG_SEARCH_MARGIN_BOTTOM,
+  EG_SEARCH_MARGIN_RIGHT,
+  EG_SEARCH_MARGIN_TOP,
+} from './molecules/input/search';
+export type { EgSearchHandle, EgSearchProps } from './molecules/input/search';
 export { EgTextarea } from './molecules/input/textarea';
 export { EgQuickInput } from './molecules/input/quick-input';
 export { EgInputPointer } from './molecules/input/input-pointer';

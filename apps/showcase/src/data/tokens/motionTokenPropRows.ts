@@ -7,7 +7,17 @@ import {
   motionSemanticScenarioIdForTokenEntry,
 } from '@/data/tokens/motionNativeDisplay';
 
-type MotionScenario = 'press' | 'slide' | 'layout-content' | 'menu' | 'sheets' | 'page' | 'page-shot';
+type MotionScenario =
+  | 'press'
+  | 'slide'
+  | 'layout-content'
+  | 'fade'
+  | 'deform'
+  | 'offset'
+  | 'menu'
+  | 'sheets'
+  | 'page'
+  | 'page-shot';
 
 const RECIPE_SCENARIO: Record<string, MotionScenario> = {
   press: 'press',
@@ -15,6 +25,9 @@ const RECIPE_SCENARIO: Record<string, MotionScenario> = {
   slide: 'slide',
   drag: 'slide',
   'layout-content': 'layout-content',
+  fade: 'fade',
+  deform: 'deform',
+  offset: 'offset',
   menu: 'menu',
   'menu-dismiss': 'menu',
   sheets: 'sheets',
@@ -63,6 +76,20 @@ export const SCENARIO_PROPS: Record<MotionScenario, DocPropRow[]> = {
     row('onSwitchStart', '() => void', '—', '切换开始时回调（如滚回顶部）'),
     row('swapMs', 'number', '120', '新旧内容替换的时间点（毫秒）'),
     row('reduceMotion', 'boolean', '跟随系统', '减少动态效果时直接切换'),
+  ],
+  fade: [
+    row('EgEdsAnimaFade', '组件', '—', '纯 opacity crossfade'),
+    row('contentKey', 'string', '—', '内容标识'),
+    row('children', 'ReactNode', '—', '当前内容'),
+  ],
+  deform: [
+    row("EdsSemanticAnima('deform')", '函数', '—', '形变 timing：宽高、圆角、内容 opacity'),
+    row('timingConfig', 'TimingConfig', 'deform-transform', '几何时长与缓动；起止形态由调用方传入'),
+  ],
+  offset: [
+    row("EdsSemanticAnima('offset')", '函数', '—', '位移：transform 落点回弹，opacity 另计'),
+    row('springConfig', 'SpringConfig', 'offset', '落点回弹；位移距离由调用方传入'),
+    row('timingConfig', 'TimingConfig', 'offset-opacity', '伴生透明度时长与缓动'),
   ],
   menu: [
     row('EgMenu', '组件', '—', '下拉菜单，动效内置：自触发点倒出、收回'),

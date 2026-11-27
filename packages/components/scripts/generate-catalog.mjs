@@ -29,6 +29,7 @@ const CATALOG = [
   { figmaName: 'Title Combo/3-Title', exportName: 'EgTitleComboTitle', tier: 'atoms', family: 'text', slug: 'title-combo-title', figmaPage: 'Text 文字✅', kind: 'set', variantCount: 3, figmaId: '139:1189' },
   { figmaName: 'Title Combo/4-Body', exportName: 'EgTitleComboBody', tier: 'atoms', family: 'text', slug: 'title-combo-body', figmaPage: 'Text 文字✅', kind: 'set', variantCount: 3, figmaId: '139:1209' },
   { figmaName: 'Divider', exportName: 'EgDivider', tier: 'atoms', family: 'divider', slug: 'divider', figmaPage: 'Divider 分割线✅', kind: 'set', variantCount: 4, figmaId: '279:2984' },
+  { figmaName: 'End', exportName: 'EgDividerEnd', tier: 'atoms', family: 'divider', slug: 'divider-end', figmaPage: 'Divider 分割线✅', kind: 'component' },
   { figmaName: 'EgAvatar', exportName: 'EgAvatar', tier: 'atoms', family: 'avatar', slug: 'avatar-body', figmaPage: 'Avatar 头像 ✅🕒', kind: 'component', figmaId: '465:1721' },
   { figmaName: 'eds-avatar-0', exportName: 'EgAvatarPreset0', tier: 'atoms', family: 'avatar', slug: 'avatar-preset-0', figmaPage: 'Avatar 头像 ✅🕒', kind: 'component', figmaId: '465:1872' },
   { figmaName: 'eds-avatar-1', exportName: 'EgAvatarPreset1', tier: 'atoms', family: 'avatar', slug: 'avatar-preset-1', figmaPage: 'Avatar 头像 ✅🕒', kind: 'component', figmaId: '465:1905' },
@@ -616,6 +617,26 @@ export type { EgMessageProps, EgMessageTone } from './molecules/feedback/message
   shouldUseEgSwitchNativeStack,
 } from './molecules/toggle/switch';
 export type { EgSwitchProps, EgSwitchRenderStack } from './molecules/toggle/switch';`;
+  }
+  if (e.exportName === 'EgDividerEnd') {
+    return `export {
+  EgDividerEnd,
+  EG_DIVIDER_END_DOT_SIZE,
+  EG_DIVIDER_END_GAP,
+} from './atoms/divider/divider-end';
+export type { EgDividerEndProps } from './atoms/divider/divider-end';`;
+  }
+  if (e.exportName === 'EgSearch') {
+    return `export {
+  EgSearch,
+  EG_SEARCH_CLOSE_GAP,
+  EG_SEARCH_FIELD_HEIGHT,
+  EG_SEARCH_ICON_SIZE,
+  EG_SEARCH_MARGIN_BOTTOM,
+  EG_SEARCH_MARGIN_RIGHT,
+  EG_SEARCH_MARGIN_TOP,
+} from './molecules/input/search';
+export type { EgSearchHandle, EgSearchProps } from './molecules/input/search';`;
   }
   return `export { ${e.exportName} } from './${e.tier}/${e.family}/${componentDirFromExport(e.exportName)}';`;
 });

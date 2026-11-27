@@ -1,6 +1,6 @@
 {
   "$figma": "https://www.figma.com/design/LlB2jT8KdxM6taf5wOSAEM/EverGreen-Design-System--Mobile-",
-  "$description": "EDS Mobile Motion Semantic — press / slide / layout-content / fade（淡入淡出）/ menu（浮层倒出）/ sheets（Sheet）。",
+  "$description": "EDS Mobile Motion Semantic — press / slide / layout-content / fade / deform（offset 位移）/ menu / sheets。",
   "groups": [
     {
       "comment": "Press（点按 · EgEdsAnimaPress）",
@@ -119,6 +119,43 @@
           "notes": [
             "EdsSemanticAnima('fade') · mid-swap var(--motion-delay-fade-swap)",
             "RN · EgEdsAnimaFade + useMotionLayoutContentSwitch"
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "Deform（形变 · 尺寸 / 圆角 / 内容互换）",
+      "styles": [
+        {
+          "title": "形变 · 尺寸、形状、元素互换",
+          "className": "motion-deform",
+          "scenarioId": "deform",
+          "recipe": "deform",
+          "properties": {
+            "transition": "var(--motion-recipe-deform)"
+          },
+          "notes": [
+            "EdsSemanticAnima('deform') · 宽高与圆角同一 timing，内容 opacity 交叉",
+            "起止宽高、圆角由调用方传入，spec 不绑定具体控件"
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "Offset（位移 · spring 落点）",
+      "styles": [
+        {
+          "title": "位移 · spring 落点 + opacity",
+          "className": "motion-offset",
+          "scenarioId": "offset",
+          "recipe": "offset",
+          "properties": {
+            "transition": "var(--motion-recipe-offset)",
+            "opacity": "var(--motion-opacity-visible)"
+          },
+          "notes": [
+            "EdsSemanticAnima('offset').springConfig · transform 落点回弹",
+            "opacity 走 timingConfig；位移距离由调用方传入，spec 不设固定长度"
           ]
         }
       ]
@@ -309,6 +346,8 @@
     "motion-fade",
     "motion-fade.is-exiting",
     "motion-fade.is-entering",
+    "motion-deform",
+    "motion-offset",
     "motion-menu",
     "motion-menu.is-collapsed",
     "motion-sheets",
@@ -329,6 +368,8 @@
       { "from": "motion-slide", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-layout-content", "toStrategy": "instant", "utilityClass": "motion-none" },
       { "from": "motion-fade", "toStrategy": "instant", "utilityClass": "motion-none" },
+      { "from": "motion-deform", "toStrategy": "instant", "utilityClass": "motion-none" },
+      { "from": "motion-offset", "toStrategy": "instant", "utilityClass": "motion-none" },
       { "from": "motion-menu", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-sheets", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },
       { "from": "motion-page", "toStrategy": "fade", "utilityClass": "motion-reduced-fade" },

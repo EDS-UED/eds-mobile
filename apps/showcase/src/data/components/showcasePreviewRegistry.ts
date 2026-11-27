@@ -30,6 +30,9 @@ const showcasePreviewLoaders: Record<string, ShowcasePreviewLoader> = {
   EgDataList: () => require('@/views/components/ShowcaseEgDataListPreview').ShowcaseEgDataListPreview,
   EgItem: () => require('@/views/components/ShowcaseEgItemPreview').ShowcaseEgItemPreview,
   EgDivider: () => require('@/views/components/ShowcaseDividerPreview').ShowcaseDividerPreview,
+  EgDividerEnd: () =>
+    require('@/views/components/ShowcaseDividerEndPreview').ShowcaseDividerEndPreview,
+  EgSearch: () => require('@/views/components/ShowcaseEgSearchPreview').ShowcaseEgSearchPreview,
   EgTab: () => require('@/views/components/ShowcaseEgTabPreview').ShowcaseEgTabPreview,
   EgToggle: () => require('@/views/components/ShowcaseEgTogglePreview').ShowcaseEgTogglePreview,
   EgTabBarText: () => require('@/views/components/ShowcaseEgTabBarTextPreview').ShowcaseEgTabBarTextPreview,

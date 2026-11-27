@@ -1,5 +1,6 @@
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useShowcaseStackNav } from '@/hooks/useShowcaseStackNav';
 
@@ -9,15 +10,18 @@ import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { DocSection } from '@/views/shared/DocSection';
 import { DocSectionLinkRow } from '@/views/shared/DocSectionLinkRow';
 import { ShowcasePlainCodeSnippet } from '@/views/shared/ShowcasePlainCodeSnippet';
-import { showcaseTheme as theme } from '@/views/shared/showcaseTheme';
+import { edsSpacing } from '@/views/shared/resolveEdsTheme';
+import { ShowcaseStackScreen } from '@/views/shared/ShowcaseStackScreen';
+import { showcasePageBackgroundColor, showcaseTheme as theme } from '@/views/shared/showcaseTheme';
 import { ShowcaseNavBlurBackdrop } from '@/navigation/ShowcaseNavBlurBackdrop';
 import { ShowcasePageScroll } from '@/views/shared/ShowcasePageScroll';
 
-function createMotionDetailStyles(colors: ShowcaseColorMap) {
+function createMotionDetailStyles(colors: ShowcaseColorMap, nativeStackNav: boolean) {
+  const pageBg = showcasePageBackgroundColor(colors);
   return StyleSheet.create({
-    root: {
+    scrollRoot: {
       flex: 1,
-      backgroundColor: colors.page as string,
+      ...(nativeStackNav ? null : { backgroundColor: pageBg }),
     },
     missing: {
       padding: theme.layout.pageInset,
@@ -29,7 +33,7 @@ function createMotionDetailStyles(colors: ShowcaseColorMap) {
 /** Motion catalog class — 解析链速查；RN 片段与参数在 Tokens · 场景 Live 在上一节列表。 */
 export function MotionCatalogDetailView() {
   const { motionId } = useLocalSearchParams<{ motionId: string }>();
-  const styles = useThemedStyles(createMotionDetailStyles);
+  const insets = useSafeAreaInsets();
   const entry = motionCatalogEntries.find((item) => item.id === motionId);
   const navTitle = entry?.id ?? motionId ?? '';
   const {
@@ -40,12 +44,16 @@ export function MotionCatalogDetailView() {
     rnNavBar,
     rnScrollPaddingTop,
   } = useShowcaseStackNav(navTitle);
+  const styles = useThemedStyles((c) => createMotionDetailStyles(c, nativeStackNav));
+  const scrollBottomExtra = Math.max(insets.bottom, edsSpacing('spacing-3'));
 
   if (!entry) {
     return (
-      <View style={styles.root}>
+      <ShowcaseStackScreen>
+        <Stack.Screen options={stackScreenOptions} />
+        {rnNavBar}
         <Text style={styles.missing}>未找到 {motionId}</Text>
-      </View>
+      </ShowcaseStackScreen>
     );
   }
 
@@ -64,7 +72,7 @@ export function MotionCatalogDetailView() {
   }
 
   return (
-    <View style={styles.root}>
+    <ShowcaseStackScreen>
       <Stack.Screen options={stackScreenOptions} />
       {rnNavBar}
       <ShowcaseNavBlurBackdrop>
@@ -75,7 +83,8 @@ export function MotionCatalogDetailView() {
           scrollEventThrottle={scrollEventThrottle}
           withTabBarInset={false}
           docSectionStack
-          style={styles.root}
+          bottomInsetExtra={scrollBottomExtra}
+          style={styles.scrollRoot}
         >
           <DocSection title="令牌参数" cardPadding="none">
             <DocSectionLinkRow
@@ -94,6 +103,6 @@ export function MotionCatalogDetailView() {
           </DocSection>
         </ShowcasePageScroll>
       </ShowcaseNavBlurBackdrop>
-    </View>
+    </ShowcaseStackScreen>
   );
 }

@@ -130,7 +130,14 @@ export function createCatalogPreviewProps(
       };
 
     case 'tag-color':
-      return { ...base, variant: 'subtle', shape: 'round', size: 'sm', label: 'Tag' };
+      return {
+        ...base,
+        family: 'system',
+        variant: 'subtle',
+        shape: 'round',
+        size: 'sm',
+        label: 'Tag',
+      };
     case 'tag-color-alt':
       return { ...base, label: 'Tag', colorType: 'green', size: 'md' };
     case 'tag-system':

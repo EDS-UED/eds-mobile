@@ -12,9 +12,8 @@ export type EgDataListRowProps = {
   children: ReactNode;
   accessibilityLabel: string;
   onPress?: () => void;
+  /** 长按 · 须 `touchGestureEnabled`。 */
   onLongPress?: () => void;
-  /** iOS 压感 / 3D Touch 回调 · 须 `forceTouchEnabled`。 */
-  onForcePress?: () => void;
   testID?: string;
   mode?: ThemeMode;
   axis?: 'row' | 'column';
@@ -23,9 +22,11 @@ export type EgDataListRowProps = {
   /** 加在行壳上；勿设 `height` / `minHeight` 冒充行高（除非业务刻意撑满）。 */
   contentStyle?: StyleProp<ViewStyle>;
   layout?: EgDataListRowLayout;
-  /** 默认随 `onPress` / `onLongPress` / Force 推断；`false` 为只读行。 */
+  /** 默认随 `onPress` / 长按 推断；`false` 为只读行。 */
   interactive?: boolean;
   pressIntensity?: MotionPressIntensity;
-  /** 压感 / 3D Touch · 默认 `false`。 */
-  forceTouchEnabled?: boolean;
+  /** 点按时触觉反馈 · 默认 `false`。 */
+  pressHapticEnabled?: boolean;
+  /** 长按手势 · 默认 `false`；为 `true` 时响应 `onLongPress`。 */
+  touchGestureEnabled?: boolean;
 };

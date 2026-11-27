@@ -176,6 +176,7 @@ export function CustomizePanel({ controls, state, onChange, sectionDividers }: C
 
         if (control.kind === 'boolean') {
           const value = Boolean(state[control.key]);
+          const rowLeadingInset = control.rowLeadingInset;
           return (
             <EgItem
               key={control.key}
@@ -190,6 +191,7 @@ export function CustomizePanel({ controls, state, onChange, sectionDividers }: C
               showDivider={showDivider}
               mode={mode}
               testID={`customize-${control.key}`}
+              style={rowLeadingInset != null ? { paddingLeft: rowLeadingInset } : undefined}
             />
           );
         }

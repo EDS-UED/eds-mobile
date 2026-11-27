@@ -5,7 +5,7 @@
     "colorfulLight": "2933:9342",
     "colorfulDark": "2933:9009"
   },
-  "$description": "Tag Status / Colorful / Custom fill + text (Figma hard-coded). Built into dist/css/color/tag/ (--eds-tag-* base + --tag-* semantic), separate from Color System semantic.",
+  "$description": "Tag Status / Colorful / Custom fill + text (Figma hard-coded). Built into dist/css/color/palette/tag/ (--eds-tag-* base + --tag-* semantic), separate from Color System semantic.",
   "status": {
     "danger": {
       "light": { "bg": "#ffcdd2", "text": "#7c0b17" },
@@ -150,6 +150,26 @@
     "peach": {
       "light": { "bg": "ref:eds-same-black", "text": "ref:eds-same-black", "bar": "#ff9e80" },
       "dark": { "bg": "ref:eds-same-black", "text": "ref:eds-same-black", "bar": "#ff9e80" }
+    },
+    "aml-danger": {
+      "light": { "bg": "ref:eds-same-black", "text": "ref:eds-same-black", "bar": "ref:eds-danger" },
+      "dark": { "bg": "ref:eds-same-black", "text": "ref:eds-same-black", "bar": "ref:eds-danger" }
+    },
+    "aml-safe": {
+      "light": { "bg": "ref:eds-same-black", "text": "#00bf46", "bar": "#00bf46" },
+      "dark": { "bg": "ref:eds-same-black", "text": "#00bf46", "bar": "#00bf46" }
+    },
+    "aml-suspicious": {
+      "light": { "bg": "ref:eds-same-black", "text": "ref:eds-warning", "bar": "ref:eds-warning" },
+      "dark": { "bg": "ref:eds-same-black", "text": "ref:eds-warning", "bar": "ref:eds-warning" }
+    },
+    "aml-ready": {
+      "light": { "bg": "ref:eds-same-black", "text": "ref:eds-match", "bar": "ref:eds-match" },
+      "dark": { "bg": "ref:eds-same-black", "text": "ref:eds-match", "bar": "ref:eds-match" }
+    },
+    "aml-invalid": {
+      "light": { "bg": "ref:eds-same-black", "text": "ref:eds-base/0.25", "bar": "ref:eds-base/0.25" },
+      "dark": { "bg": "ref:eds-same-black", "text": "ref:eds-base/0.25", "bar": "ref:eds-base/0.25" }
     }
   },
   "mobileColor": {

@@ -15,7 +15,8 @@ import type {
 } from '../../../shared/types.js';
 import type { TagStatus } from '../../../shared/tagPalette.js';
 import type { ThemeMode } from '../../../theme/index.js';
-import { createTagStyles } from './tagStyles.js';
+import { createBusinessTagStyles, createTagStyles } from './tagStyles.js';
+import type { TagFamily, TagColorfulStyle, TagCustomStyle } from '../../../shared/tagFamilyTypes.js';
 
 export type EgTagBaseProps = EgCommonProps &
   EgLabelProps & {
@@ -25,7 +26,11 @@ export type EgTagBaseProps = EgCommonProps &
     colorType?: ColorTagType;
     systemType?: SystemTagType;
     status?: TagStatus;
+    family?: TagFamily;
+    colorfulStyle?: TagColorfulStyle;
+    customStyle?: TagCustomStyle;
     alt?: boolean;
+    rowAlign?: boolean;
     style?: ViewStyle;
     mode?: ThemeMode;
   };
@@ -37,7 +42,11 @@ export function EgTagBase({
   colorType,
   systemType,
   status,
+  family,
+  colorfulStyle,
+  customStyle,
   alt = false,
+  rowAlign = false,
   label,
   children,
   testID,
@@ -47,15 +56,44 @@ export function EgTagBase({
 }: EgTagBaseProps) {
   const content = children ?? label ?? 'Label';
   const resolvedShape = shape ?? 'round';
+
+  if (family === 'custom') {
+    const business = createBusinessTagStyles({
+      mode,
+      size,
+      family,
+      customStyle,
+      shape: resolvedShape,
+      rowAlign,
+    });
+    const a11y = accessibilityLabel ?? (typeof content === 'string' ? content : 'Tag');
+    const labelNode =
+      typeof content === 'string' ? (
+        <EdsSansText style={business.label}>{content}</EdsSansText>
+      ) : (
+        <Text style={business.label}>{content}</Text>
+      );
+    return (
+      <View testID={testID} accessibilityLabel={a11y} style={business.outer}>
+        <View style={business.bar} />
+        <View style={business.content}>{labelNode}</View>
+      </View>
+    );
+  }
+
   const visual = createTagStyles({
     mode,
     size,
+    family,
     variant,
     shape: resolvedShape,
     colorType,
     systemType,
     status,
+    colorfulStyle,
+    customStyle,
     alt,
+    rowAlign,
   });
 
   const a11y = accessibilityLabel ?? (typeof content === 'string' ? content : 'Tag');

@@ -27,6 +27,7 @@ export const COLOR_BASE_KEYS = [
   'flotation',
 ] as const;
 
+import { getPaletteTokenByName } from './paletteTokenCatalog.js';
 import { COLOR_SEMANTIC_SHOWCASE_GROUPS } from './showcaseTokenGroupComments';
 
 export const COLOR_SEMANTIC_GROUPS = COLOR_SEMANTIC_SHOWCASE_GROUPS;
@@ -35,7 +36,7 @@ export const COLOR_SEMANTIC_GROUPS = COLOR_SEMANTIC_SHOWCASE_GROUPS;
 export const COLOR_SEMANTIC_TOKEN_NAMES = colorSemanticSpec.tokens.map((token) => token.name);
 
 export type ColorTheme = 'light' | 'dark';
-export type ColorTokenLayer = 'base' | 'semantic';
+export type ColorTokenLayer = 'base' | 'semantic' | 'hue' | 'chart' | 'tag';
 
 export type ColorTokenEntry = {
   name: string;
@@ -176,9 +177,9 @@ export function getColorTokenByName(name: string, theme: ColorTheme = 'light'): 
     return base;
   }
 
-  if (!COLOR_SEMANTIC_TOKEN_NAMES.includes(name)) {
-    return undefined;
+  if (COLOR_SEMANTIC_TOKEN_NAMES.includes(name)) {
+    return buildSemanticEntry(name, theme);
   }
 
-  return buildSemanticEntry(name, theme);
+  return getPaletteTokenByName(name, theme);
 }

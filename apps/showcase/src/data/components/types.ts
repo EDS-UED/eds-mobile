@@ -29,6 +29,8 @@ export type DocCustomizeBooleanControl = {
   exclusiveKey?: string;
   /** 勾选为 true 时，将列出的 keys 全部置为 false（如 Paste / Unit / Max 互斥）。 */
   exclusiveKeys?: string[];
+  /** 行左内边距（px）· 如 DataList 插槽子项 `40`（`spacing-10`）。 */
+  rowLeadingInset?: number;
   /** 勾选后在同一控件槽右侧展示的下拉（如显示图标 → 图标位置）。 */
   inlineSelect?: {
     key: string;

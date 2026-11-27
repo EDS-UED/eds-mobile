@@ -31,7 +31,7 @@ export function EgSwitchNative({
   const trackOn = resolveColor(colors, disabled ? 'status-disable-brand' : 'material-brand');
 
   return (
-    <View style={[{ opacity: disabled ? disabledOpacity() : 1, alignSelf: 'flex-start' }, style]}>
+    <View style={[{ opacity: disabled ? disabledOpacity() : 1, alignSelf: 'center' }, style]}>
       <Switch
         testID={testID ?? 'toggle-switch'}
         accessibilityLabel={accessibilityLabel}

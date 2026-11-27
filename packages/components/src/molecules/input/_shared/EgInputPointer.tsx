@@ -16,7 +16,7 @@ export function EgInputPointer({ mode = 'light' }: { mode?: ThemeMode }) {
           width: pointerWidth,
           minWidth: pointerWidth,
           height: pointerHeight,
-          backgroundColor: resolveColor(colors, 'material-brand'),
+          backgroundColor: resolveColor(colors, 'text-brand'),
         },
       ]}
     />

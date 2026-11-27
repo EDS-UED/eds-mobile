@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { triggerGlassPressHaptic } from '../../atoms/glass/glassPressHaptic.js';
@@ -16,13 +16,12 @@ type EgDataListRowPressableProps = {
   disabled?: boolean;
   onPress?: () => void;
   onLongPress?: () => void;
-  /** iOS 压感 / 3D Touch · 默认关；开时较短 `delayLongPress` + 重触觉（真 3D Touch 须原生增强）。 */
-  forceTouchEnabled?: boolean;
-  onForcePress?: () => void;
   style?: StyleProp<ViewStyle> | ((state: { pressed: boolean }) => StyleProp<ViewStyle>);
   testID?: string;
   accessibilityLabel?: string;
   pressIntensity?: MotionPressIntensity;
+  pressHapticEnabled?: boolean;
+  touchGestureEnabled?: boolean;
 };
 
 function resolveStyle(
@@ -37,19 +36,19 @@ function resolveStyle(
  * 列表行点按 — RN Pressable（走 ScrollView 响应者链）：
  * - 轻扫 / 滑动 Swipe：按下态延迟 {@link ROW_PRESS_IN_DELAY_MS}，父级 Scroll 接管即取消，不出高亮与缩放；
  * - 快速滑动 Fling 惯性中点停：ScrollView 捕获触摸，行不触发 press / 高亮。
- * 仅 Tap / Long Press（及可选 Force）走 `pressing` 反馈。
+ * 仅 Tap / Long Press 走 `pressing` 反馈。
  */
 export function EgDataListRowPressable({
   children,
   disabled,
   onPress,
   onLongPress,
-  forceTouchEnabled = false,
-  onForcePress,
   style,
   testID,
   accessibilityLabel,
   pressIntensity = 'xs',
+  pressHapticEnabled = false,
+  touchGestureEnabled = false,
 }: EgDataListRowPressableProps) {
   const { animatedStyle, onPressIn, onPressOut, pressing } = useMotionPressScale({
     pressRecipe: 'tap',
@@ -58,24 +57,14 @@ export function EgDataListRowPressable({
     enabled: true,
   });
 
-  const handleLongPress = () => {
-    onLongPress?.();
+  const handlePress = () => {
+    if (pressHapticEnabled) {
+      triggerGlassPressHaptic();
+    }
+    onPress?.();
   };
 
-  const handleForcePress = () => {
-    triggerGlassPressHaptic();
-    onForcePress?.();
-  };
-
-  const longPressHandler =
-    forceTouchEnabled && onForcePress
-      ? handleForcePress
-      : onLongPress
-        ? handleLongPress
-        : undefined;
-
-  const longPressDelay =
-    forceTouchEnabled && onForcePress ? 320 : onLongPress ? 500 : undefined;
+  const longPressHandler = touchGestureEnabled && onLongPress ? onLongPress : undefined;
 
   return (
     <AnimatedPressable
@@ -83,9 +72,9 @@ export function EgDataListRowPressable({
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
       disabled={disabled}
-      onPress={onPress}
+      onPress={onPress ? handlePress : undefined}
       onLongPress={longPressHandler}
-      delayLongPress={longPressHandler ? longPressDelay : undefined}
+      delayLongPress={longPressHandler ? 500 : undefined}
       unstable_pressDelay={ROW_PRESS_IN_DELAY_MS}
       onPressIn={onPressIn}
       onPressOut={onPressOut}

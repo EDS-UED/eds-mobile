@@ -88,5 +88,10 @@ export type EgSheetsProps = {
    * 未传则保持既有高度算法。
    */
   actionsBlankCompensation?: EgSheetsActionsBlankCompensation;
+  /**
+   * 贴边 · 默认 `false`（浮动 inset）。
+   * `true` 时各档位左右及底外边距均为 0（`motion-offset-sheets-inset` 不参与布局）。
+   */
+  flushToEdges?: boolean;
   testID?: string;
 };

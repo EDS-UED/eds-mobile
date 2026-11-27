@@ -110,7 +110,7 @@ export const showcaseTheme = {
     /** 定制 — 类标题（图形 / 文本）· body-medium-heavy。 */
     customizeCategoryTitle: edsTokenFont('body-medium-heavy', '600'),
     /** 定制 — 插槽小类标题 · typography-body-large-heavy。 */
-    customizeSlotCategoryTitle: edsTokenFont('body-large-heavy', '700'),
+    customizeSlotCategoryTitle: edsTokenFont('body-large-heavy', '600'),
     /** 定制 — 项标题 · body-medium。 */
     customizeFieldTitle: edsTokenFont('body-medium', '400'),
     /** 定制 — 选择卡默认文案 · body-small · 60%。 */

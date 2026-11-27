@@ -28,6 +28,7 @@ export type EgFieldBaseProps = EgCommonProps & {
   unit?: string;
   multiline?: boolean;
   onChangeText?: (text: string) => void;
+  autoFocus?: boolean;
   onPress?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -37,6 +38,8 @@ export type EgFieldBaseProps = EgCommonProps & {
   leading?: ReactNode;
   trailing?: ReactNode;
   showChevron?: boolean;
+  /** 容器浅底 · 默认 true；false → `material-hide`。 */
+  showBackground?: boolean;
   style?: ViewStyle;
   mode?: ThemeMode;
 };
@@ -75,6 +78,7 @@ export function EgFieldBase({
   unit = 'Unit',
   multiline = false,
   onChangeText,
+  autoFocus = false,
   onPress,
   onFocus,
   onBlur,
@@ -84,6 +88,7 @@ export function EgFieldBase({
   leading,
   trailing,
   showChevron = kind === 'dropdown' || kind === 'menu',
+  showBackground = true,
   testID,
   mode = 'light',
   style,
@@ -112,6 +117,7 @@ export function EgFieldBase({
     pressed,
     focused,
     multiline: resolvedKind === 'textarea',
+    showBackground,
   });
 
   const showInlineClear =
@@ -172,6 +178,7 @@ export function EgFieldBase({
         placeholderTextColor={visual.placeholderColor}
         editable={!disabled}
         multiline={resolvedKind === 'textarea'}
+        autoFocus={autoFocus}
         onChangeText={handleChangeText}
         onFocus={() => {
           setFocused(true);

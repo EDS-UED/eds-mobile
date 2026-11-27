@@ -20,7 +20,10 @@ export type EgItemProps = {
   subLabel?: string;
   /** 右侧附属说明 · typography-body-small · text-base-secondary */
   value?: string;
-  /** 左侧图形插槽 */
+  /**
+   * 左侧图形 · 槽 `symbol-md`（22px）· 描边 `stroke-lg`。
+   * 右侧内置箭头由组件固定 `stroke-xl`。
+   */
   icon?: ReactNode;
   /** 展示右侧挂件 · 默认 `true` */
   trailingEnabled?: boolean;

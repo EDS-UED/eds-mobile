@@ -15,6 +15,8 @@ import { EgDataListRowPressable } from '../data-list/egDataListRowPressable.js';
 import {
   EG_ITEM_ICON_GAP,
   EG_ITEM_ICON_SLOT,
+  EG_ITEM_TRAILING_ICON_COLOR,
+  EG_ITEM_TRAILING_ICON_STROKE,
   EG_ITEM_PAD_H,
   EG_ITEM_TAP_RADIUS,
   EG_ITEM_SUB_LABEL_GAP,
@@ -47,7 +49,8 @@ function EgItemIconTrailing({
         name={TRAILING_ICON}
         mode={mode}
         size="sm"
-        strokeColorToken="text-base-secondary"
+        strokeScaleToken={EG_ITEM_TRAILING_ICON_STROKE}
+        strokeColorToken={EG_ITEM_TRAILING_ICON_COLOR}
         accessibilityLabel=""
       />
     ) : null;
@@ -70,7 +73,8 @@ function EgItemIconTrailing({
             name={TRAILING_ICON}
             mode={mode}
             size="sm"
-            strokeColorToken="text-base-secondary"
+            strokeScaleToken={EG_ITEM_TRAILING_ICON_STROKE}
+            strokeColorToken={EG_ITEM_TRAILING_ICON_COLOR}
             accessibilityLabel=""
           />
         ) : null}
@@ -109,7 +113,8 @@ function EgItemMenuTrailing({ value, mode, colors, menuProps, onRegisterOpen }: 
         name={MENU_TRAILING_ICON}
         mode={mode}
         size="sm"
-        strokeColorToken="text-base-secondary"
+        strokeScaleToken={EG_ITEM_TRAILING_ICON_STROKE}
+        strokeColorToken={EG_ITEM_TRAILING_ICON_COLOR}
         accessibilityLabel=""
       />
     </View>

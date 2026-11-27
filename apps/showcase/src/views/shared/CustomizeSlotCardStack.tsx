@@ -6,7 +6,7 @@ import { CustomizePanel } from '@/views/shared/CustomizePanel';
 
 const styles = StyleSheet.create({
   stack: {
-    gap: edsSpacing('spacing-4'),
+    gap: edsSpacing('spacing-3'),
   },
 });
 
@@ -16,12 +16,18 @@ type CustomizeSlotCardStackProps = {
   onChange: (next: Record<string, unknown>) => void;
 };
 
-/** 插槽 — 多张子卡片 · 每张 `EgItemGroup` · 间距 `spacing-4`（16px）。 */
+/** 多卡定制 · 每张 `EgItemGroup` · 卡间距 `spacing-3`（12px）。 */
 export function CustomizeSlotCardStack({ cardControls, state, onChange }: CustomizeSlotCardStackProps) {
   return (
     <View style={styles.stack}>
       {cardControls.map((controls, index) => (
-        <CustomizePanel key={`slot-card-${index}`} controls={controls} state={state} onChange={onChange} />
+        <CustomizePanel
+          key={`slot-card-${index}`}
+          sectionDividers
+          controls={controls}
+          state={state}
+          onChange={onChange}
+        />
       ))}
     </View>
   );

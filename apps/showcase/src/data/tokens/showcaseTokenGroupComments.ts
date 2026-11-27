@@ -13,9 +13,18 @@ export const COLOR_SEMANTIC_SHOWCASE_GROUPS = [
   { comment: '容器（Box）', prefix: 'box' },
   { comment: '线（Stroke）', prefix: 'stroke' },
   { comment: '文本（Text）', prefix: 'text' },
+  { comment: '材质（Material）', prefix: 'material' },
   { comment: '状态（Status）', prefix: 'status' },
   { comment: '特效（Effect）', prefix: 'effect' },
   { comment: '交互状态（Event）', prefix: 'event' },
+  { comment: '表格（Data Table）', prefix: 'data-table' },
+] as const;
+
+/** Tag semantic — must match `TAG_SEMANTIC_GROUP_ORDER` in packages/tokens/scripts/build.mjs */
+export const TAG_SEMANTIC_SHOWCASE_GROUPS = [
+  { comment: '标签状态（Tag Status）', prefix: 'tag-status' },
+  { comment: '彩色标签（Tag Colorful）', prefix: 'tag-colorful' },
+  { comment: '自定义标签（Tag Custom）', prefix: 'tag-custom' },
 ] as const;
 
 /** Animas / Motion — showcase 分组标题（spec 英文 comment → 中文）。 */

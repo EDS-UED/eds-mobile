@@ -161,7 +161,7 @@ export function ComponentDetailView() {
       return `${entry.slug}-${readTabSegmentCount(customize)}-${String(customize.size ?? 'lg')}-${String(customize.widthMode ?? 'hug')}`;
     }
     if (entry.exportName === 'EgDataList') {
-      return `${entry.slug}-${String(customize.rowCount ?? '1')}-${String(customize.graphicEnabled)}-${String(customize.graphicType)}-${String(customize.primaryWeight)}-${String(customize.subBoldSegment)}-${String(customize.widgetEnabled)}-${String(customize.widgetShowTime)}-${String(customize.widgetShowTag)}-${String(customize.widgetShowCustom)}-${String(customize.widgetShowRedDot)}-${String(customize.interactive)}`;
+      return `${entry.slug}-${String(customize.rowCount ?? '1')}-${String(customize.graphicEnabled)}-${String(customize.graphicType)}-${String(customize.primaryWeight)}-${String(customize.primaryTagEnabled)}-${String(customize.subBoldSegment)}-${String(customize.widgetEnabled)}-${String(customize.widgetShowTime)}-${String(customize.widgetShowTag)}-${String(customize.widgetSlotEnabled)}-${String(customize.widgetShowCustom)}-${String(customize.widgetShowSwitch)}-${String(customize.widgetShowArrow)}-${String(customize.widgetShowMessage)}-${String(customize.widgetShowRedDot)}-${String(customize.interactive)}-${String(customize.pressHapticEnabled)}-${String(customize.touchGestureEnabled)}`;
     }
     if (entry.exportName === 'EgTabBarText') {
       return `${entry.slug}-${readTabBarTextTabCount(customize)}-${String(customize.defaultSelectedIndex ?? '0')}`;
@@ -280,7 +280,7 @@ export function ComponentDetailView() {
           </DocSection>
 
           {doc?.customizeSlotCards?.length ? (
-            <DocSection title="插槽" slotStack>
+            <DocSection title={doc.customizeSlotSectionTitle ?? '插槽'} slotStack>
               <CustomizeSlotCardStack
                 cardControls={doc.customizeSlotCards}
                 state={customize}

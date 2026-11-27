@@ -30,7 +30,8 @@ export function colorizeTokenIconMarkup(
     strokeScaleToken?: IconStrokeScaleToken;
   },
 ): string {
-  const scale = (mobileTheme.spacing[options.strokeScaleToken ?? 'stroke-xl'] as number) ?? 2;
+  const scale =
+    (mobileTheme.spacing[options.strokeScaleToken ?? 'stroke-xl'] as number) ?? 2;
   const strokeWidth = scale * (ICON_VIEWBOX_SIZE / options.displayPx);
   const shapeRe = new RegExp(`<${SHAPE_TAG}\\b([^>]*?)(\\/?)>`, 'gi');
 

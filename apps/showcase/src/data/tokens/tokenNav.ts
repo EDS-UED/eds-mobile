@@ -10,7 +10,7 @@ export const tokenCategories: TokenCategory[] = [
   {
     id: 'color',
     label: 'Color',
-    lead: 'Base & Semantic',
+    lead: 'Base · Semantic · Palette',
     specPath: 'packages/tokens/spec/color',
     routeId: 'color',
   },

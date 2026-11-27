@@ -45,6 +45,7 @@ export const sheetsCustomizeDefaults: Record<string, unknown> = {
   content: 'slot',
   showActions: true,
   actionsBlankCompensation: '',
+  flushToEdges: false,
 };
 
 const ACTIONS_BLANK_COMPENSATION_KEYS = [
@@ -100,6 +101,7 @@ export const sheetsCustomizeControls: DocCustomizeControl[] = [
       { value: 'adaptive', label: '自适应' },
     ],
   },
+  { kind: 'boolean', key: 'flushToEdges', label: '贴边' },
   { kind: 'boolean', key: 'dismissible', label: '遮罩 / 下拉收起' },
   { kind: 'boolean', key: 'showDragIndicator', label: '拖拽指示条' },
   {
@@ -139,6 +141,7 @@ export type SheetsPreviewProps = {
   content: SheetsContentKind;
   showActions: boolean;
   actionsBlankCompensation?: EgSheetsActionsBlankCompensation;
+  flushToEdges: boolean;
 };
 
 export function buildSheetsPropsFromCustomize(state: Record<string, unknown>): SheetsPreviewProps {
@@ -159,6 +162,7 @@ export function buildSheetsPropsFromCustomize(state: Record<string, unknown>): S
     content: merged.content === 'long' ? 'long' : 'slot',
     showActions: Boolean(merged.showActions),
     actionsBlankCompensation: parseActionsBlankCompensation(merged.actionsBlankCompensation),
+    flushToEdges: Boolean(merged.flushToEdges),
   };
 }
 

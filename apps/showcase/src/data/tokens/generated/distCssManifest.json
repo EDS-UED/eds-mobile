@@ -65,7 +65,7 @@
       "stroke-xs": "0.2px",
       "stroke-sm": "var(--scale-0125)",
       "stroke-md": "var(--scale-025)",
-      "stroke-lg": "var(--scale-0375)",
+      "stroke-lg": "1.7px",
       "stroke-xl": "var(--scale-05)",
       "blur-xs": "var(--scale-0)",
       "blur-sm": "var(--scale-2)",
@@ -165,7 +165,7 @@
       "eds-body-large-strong-weight": "var(--weight-medium)",
       "eds-body-large-strong-line-height": "var(--line-height-body-large)",
       "eds-body-large-heavy-size": "var(--size-body-large)",
-      "eds-body-large-heavy-weight": "var(--weight-bold)",
+      "eds-body-large-heavy-weight": "var(--weight-semibold)",
       "eds-body-large-heavy-line-height": "var(--line-height-body-large)",
       "eds-body-medium-size": "var(--size-body-medium)",
       "eds-body-medium-weight": "var(--weight-regular)",
@@ -809,7 +809,7 @@
         "file": "semantic.css",
         "startLine": 45,
         "endLine": 45,
-        "snippet": "  --stroke-lg: var(--scale-0375); /* 1.5px */"
+        "snippet": "  --stroke-lg: 1.7px;             /* 1.7px */"
       },
       "stroke-xl": {
         "file": "semantic.css",
@@ -1399,7 +1399,7 @@
         "file": "semantic.css",
         "startLine": 36,
         "endLine": 36,
-        "snippet": "  --eds-body-large-heavy-weight: var(--weight-bold); /* 700 */"
+        "snippet": "  --eds-body-large-heavy-weight: var(--weight-semibold); /* 600 */"
       },
       "eds-body-large-heavy-line-height": {
         "file": "semantic.css",
@@ -1657,7 +1657,7 @@
         "file": "semantic.css",
         "startLine": 132,
         "endLine": 136,
-        "snippet": ".typography-body-large-heavy\nfont-size: var(--eds-body-large-heavy-size); /* 19px */\nfont-weight: var(--eds-body-large-heavy-weight); /* 700 */\nline-height: var(--eds-body-large-heavy-line-height); /* 26px */"
+        "snippet": ".typography-body-large-heavy\nfont-size: var(--eds-body-large-heavy-size); /* 19px */\nfont-weight: var(--eds-body-large-heavy-weight); /* 600 */\nline-height: var(--eds-body-large-heavy-line-height); /* 26px */"
       },
       "typography-body-medium": {
         "file": "semantic.css",

@@ -17,12 +17,22 @@ export type FieldVisualState = {
   pressed?: boolean;
   focused?: boolean;
   multiline?: boolean;
+  /** 浅底 · 默认 true；false → `material-hide`（文本域 Showcase / 业务）。 */
+  showBackground?: boolean;
 };
 
 const spacing = mobileTheme.spacing;
 
 function fieldCaretColor(mode: ThemeMode): string {
-  return resolveColor(getThemeColors(mode), 'material-brand');
+  return resolveColor(getThemeColors(mode), 'text-brand');
+}
+
+function fieldSurfaceColor(
+  colors: ReturnType<typeof getThemeColors>,
+  token: string,
+  showBackground: boolean,
+): string {
+  return resolveColor(colors, showBackground ? token : 'material-hide');
 }
 
 function fieldRadius(kind: FieldKind, size: ControlSize): number {
@@ -49,6 +59,7 @@ export function createFieldStyles(state: FieldVisualState): {
   caretColor: string;
 } {
   const colors = getThemeColors(state.mode);
+  const showBackground = state.showBackground !== false;
   const caretColor = fieldCaretColor(state.mode);
   const caretWidth = 2;
   const height = fieldMinHeight(state);
@@ -102,27 +113,27 @@ export function createFieldStyles(state: FieldVisualState): {
     case 'tap':
       container.backgroundColor =
         state.kind === 'search'
-          ? resolveColor(colors, 'material-card-moderate')
-          : resolveColor(colors, 'event-tap');
+          ? fieldSurfaceColor(colors, 'material-card-moderate', showBackground)
+          : fieldSurfaceColor(colors, 'event-tap', showBackground);
       input.color = resolveColor(colors, 'text-base-quaternary');
       placeholderColor = resolveColor(colors, 'text-base-quaternary');
       break;
     case 'entering':
-      container.backgroundColor = resolveColor(colors, 'material-card-moderate');
+      container.backgroundColor = fieldSurfaceColor(colors, 'material-card-moderate', showBackground);
       input.color = resolveColor(colors, 'text-base-primary');
       break;
     case 'done':
     case 'echo':
-      container.backgroundColor = resolveColor(colors, 'material-card-moderate');
+      container.backgroundColor = fieldSurfaceColor(colors, 'material-card-moderate', showBackground);
       input.color = resolveColor(colors, 'text-base-primary');
       break;
     case 'disable':
-      container.backgroundColor = resolveColor(colors, 'material-card-moderate');
+      container.backgroundColor = fieldSurfaceColor(colors, 'material-card-moderate', showBackground);
       input.color = resolveColor(colors, 'text-base-quaternary');
       placeholderColor = resolveColor(colors, 'text-base-quaternary');
       break;
     default:
-      container.backgroundColor = resolveColor(colors, 'material-card-moderate');
+      container.backgroundColor = fieldSurfaceColor(colors, 'material-card-moderate', showBackground);
       input.color =
         state.kind === 'search'
           ? resolveColor(colors, 'text-base-tertiary')

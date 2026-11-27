@@ -28,7 +28,7 @@ import {
   resolveSheetsDetentIndex,
   sheetsDetentSpringConfig,
   sheetsDismissTimingConfig,
-  sheetsFrame,
+  sheetsFrameForSheet,
   sheetsFrameTokens,
   sheetsPresentSpringConfig,
   sheetsTopOffset,
@@ -127,11 +127,17 @@ export function EgSheets({
   actions,
   showActions = true,
   actionsBlankCompensation,
+  flushToEdges = false,
   testID,
 }: EgSheetsProps) {
   const colors = getThemeColors(mode);
   const reduceMotion = useReducedMotion();
   const safeArea = useSafeAreaInsets();
+  const flushToEdgesSV = useSharedValue(flushToEdges);
+  useEffect(() => {
+    flushToEdgesSV.value = flushToEdges;
+  }, [flushToEdges, flushToEdgesSV]);
+  const sheetLayoutInset = flushToEdges ? 0 : sheetsFrameTokens.inset;
   const [containerHeight, setContainerHeight] = useState(() => Dimensions.get('window').height);
   const [containerWidth, setContainerWidth] = useState(() => Dimensions.get('window').width);
 
@@ -222,7 +228,7 @@ export function EgSheets({
   const maxHeight = Math.max(...detentHeights);
   const floatingHeights = detentHeights.filter((_, index) => detentNames[index] !== 'large');
   const attachFrom = floatingHeights.length > 0 ? Math.max(...floatingHeights) : mediumHeight;
-  const hiddenOffset = maxHeight + sheetsFrameTokens.inset + safeArea.bottom;
+  const hiddenOffset = maxHeight + sheetLayoutInset + safeArea.bottom;
   const initialDetentName = detent ?? initialDetent ?? 'medium';
   const initialIndex = Math.max(0, detentNames.indexOf(initialDetentName));
   const topIndex = useMemo(() => {
@@ -344,7 +350,7 @@ export function EgSheets({
         scheduleOnRN(finishClose);
       }
     };
-    const target = sheetHeight.value + sheetsFrameTokens.inset;
+    const target = sheetHeight.value + sheetLayoutInset;
     exitFrom.value = offsetY.value;
     exitDimFrom.value = 1;
     exitDistance.value = target;
@@ -363,6 +369,7 @@ export function EgSheets({
     presence,
     reduceMotion,
     sheetHeight,
+    sheetLayoutInset,
   ]);
 
   useEffect(() => {
@@ -525,7 +532,8 @@ export function EgSheets({
           ) {
             closing.value = 1;
             scheduleOnRN(markClosing);
-            const target = Math.max(offsetY.value, sheetHeight.value + sheetsFrameTokens.inset);
+            const layoutInset = flushToEdgesSV.value ? 0 : sheetsFrameTokens.inset;
+            const target = Math.max(offsetY.value, sheetHeight.value + layoutInset);
             exitFrom.value = offsetY.value;
             exitDimFrom.value = 1 - Math.min(1, Math.max(0, offsetY.value / hiddenOffset));
             exitDistance.value = target;
@@ -597,7 +605,7 @@ export function EgSheets({
   /** 裁切层固定高度 · 含橡皮筋余量与一个圆角，避免超拉时顶角被裁、各层多余圆角切入可视区。 */
   const clipHeight =
     viewportHeight +
-    sheetsFrameTokens.inset +
+    sheetLayoutInset +
     RUBBER_HEADROOM_PX +
     Math.max(sheetsFrameTokens.floatingRadius, sheetsFrameTokens.attachedRadius);
   const clipSize = useMemo(
@@ -663,7 +671,13 @@ export function EgSheets({
    * 浮动 ↔ 贴边的左右 inset 变化不触发重排，内容宽度固定为浮动卡片宽。
    */
   const clipBottomLeftStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     const bottomEdge = frame.inset;
     return {
       borderRadius: frame.bottomRadius,
@@ -673,7 +687,13 @@ export function EgSheets({
   });
 
   const clipBottomRightStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     return {
       borderRadius: frame.bottomRadius,
       transform: [{ translateX: -2 * frame.inset }],
@@ -682,7 +702,13 @@ export function EgSheets({
 
   /** 顶边随档位高度移动。 */
   const clipTopLeftStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     const visible = sheetHeight.value;
     return {
       borderRadius: frame.topRadius,
@@ -691,7 +717,13 @@ export function EgSheets({
   });
 
   const clipTopRightStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     return {
       borderRadius: frame.topRadius,
       transform: [{ translateX: -2 * frame.inset }],
@@ -700,7 +732,13 @@ export function EgSheets({
 
   /** 内容层回到屏幕原点（全宽）。 */
   const sheetFrameBodyStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     return { transform: [{ translateX: frame.inset }] };
   });
 
@@ -709,7 +747,13 @@ export function EgSheets({
    * 卡片宽度在浮动 ↔ 贴边间变化 16px，内容宽度随之逐帧变化（同 iOS 原生 sheet）。
    */
   const contentFrameStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     return { marginHorizontal: frame.inset };
   });
 
@@ -730,7 +774,13 @@ export function EgSheets({
   }, [commitContentHeight]);
   useAnimatedReaction(
     () => {
-      const attach = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens).attach;
+      const attach = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    ).attach;
       return attach <= 0 || attach >= 1 ? 1 : 0;
     },
     (settled, prev) => {
@@ -756,25 +806,49 @@ export function EgSheets({
 
   /** 顶栏左右按钮随贴边外扩，始终距卡片边固定（仅 transform）。 */
   const chromeEdgeShift = useDerivedValue(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
-    return sheetsFrameTokens.inset - frame.inset;
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
+    return flushToEdgesSV.value ? 0 : sheetsFrameTokens.inset - frame.inset;
   });
 
   /** 底部 action：底边贴当前档位可视底（不补安全区）；左右下距卡片边 spacing-5 · 上 spacing-3。 */
   const actionsStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     return {
       paddingHorizontal: SHEETS_CONTENT_PADDING + frame.inset,
       transform: [{ translateY: sheetHeight.value - actionsHeightSV.value }],
     };
   });
   const dimFloatingStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     return { opacity: (1 - frame.attach) * dimPresence(offsetY.value, presence.value) };
   });
 
   const dimAttachedStyle = useAnimatedStyle(() => {
-    const frame = sheetsFrame(sheetHeight.value, attachFrom, largeHeight, sheetsFrameTokens);
+    const frame = sheetsFrameForSheet(
+      sheetHeight.value,
+      attachFrom,
+      largeHeight,
+      sheetsFrameTokens,
+      flushToEdgesSV.value,
+    );
     return { opacity: frame.attach * dimPresence(offsetY.value, presence.value) };
   });
 
@@ -944,7 +1018,7 @@ export function EgSheets({
                       titleAlign="leading"
                       leadingTitleInset={mobileTheme.spacing['spacing-1'] as number}
                       leadingTitleGap={mobileTheme.spacing['spacing-3'] as number}
-                      contentPaddingHorizontal={SHEETS_CHROME_PADDING + sheetsFrameTokens.inset}
+                      contentPaddingHorizontal={SHEETS_CHROME_PADDING + sheetLayoutInset}
                       edgeShift={chromeEdgeShift}
                       contentPaddingTop={SHEETS_CHROME_PADDING}
                       contentPaddingBottom={SHEETS_CHROME_PADDING_BOTTOM}

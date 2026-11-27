@@ -16,10 +16,12 @@ export const TAB_BAR_SHELL_PADDING_BOTTOM =
 export const TAB_BAR_ITEM_PADDING_VERTICAL = mobileTheme.spacing['spacing-2'] as number;
 /** icon ↔ label — `spacing-05`（2px）。 */
 export const TAB_BAR_ITEM_GAP = mobileTheme.spacing['spacing-05'] as number;
-export const TAB_BAR_ICON_SLOT = mobileTheme.spacing['symbol-lg'] as number;
+/** Tab 图标槽 · `symbol-md`（22px）。 */
+export const TAB_BAR_ICON_SLOT = mobileTheme.spacing['symbol-md'] as number;
 
 export const TAB_BAR_PILL_RADIUS = mobileTheme.spacing['radius-full'] as number;
-export const TAB_BAR_ICON_SIZE = 'lg' as const;
+/** `EgSymbol` 尺寸 · 与 `TAB_BAR_ICON_SLOT` 同 token。 */
+export const TAB_BAR_ICON_SIZE = 'md' as const;
 
 /** pill track 内容区高度（inner + item + symbol + gap + label token 合计）。 */
 export const TAB_BAR_PILL_TRACK_HEIGHT = 64 as const;

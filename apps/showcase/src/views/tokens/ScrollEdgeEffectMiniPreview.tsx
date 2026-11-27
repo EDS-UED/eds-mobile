@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     height: 168,
   },
   sectionTitle: {
-    ...edsTokenFont('body-large-heavy', '700'),
+    ...edsTokenFont('body-large-heavy', '600'),
   },
   grid: {
     flexDirection: 'row',

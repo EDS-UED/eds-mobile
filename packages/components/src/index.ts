@@ -344,6 +344,7 @@ export type {
 } from './organisms/sheets';
 export {
   EgDataList,
+  EgDataListPrimaryRow,
   EgDataListPrimaryText,
   EgDataListReddot,
   EgDataListMessage,
@@ -353,6 +354,7 @@ export {
   egDataListSubTextStyle,
   egDataListSubTextSegmentAStyle,
   EG_DATA_LIST_GRAPHIC_TEXT_GAP,
+  EG_DATA_LIST_PRIMARY_TAG_GAP,
   EG_DATA_LIST_SUB_TEXT_MAX_LINES,
   EG_DATA_LIST_ROW_GAP,
   EG_DATA_LIST_ROW_MARGIN_H,
@@ -363,6 +365,7 @@ export {
   getEgDataListRowLayout,
 } from './organisms/data-list';
 export type {
+  EgDataListPrimaryRowProps,
   EgDataListPrimaryTextProps,
   EgDataListPrimaryWeight,
   EgDataListProps,

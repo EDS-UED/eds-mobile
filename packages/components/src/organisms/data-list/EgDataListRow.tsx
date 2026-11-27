@@ -11,7 +11,6 @@ export function EgDataListRow({
   accessibilityLabel,
   onPress,
   onLongPress,
-  onForcePress,
   testID,
   mode = 'light',
   axis = 'row',
@@ -20,16 +19,15 @@ export function EgDataListRow({
   layout: layoutOverride,
   interactive: interactiveProp,
   pressIntensity = 'xs',
-  forceTouchEnabled = false,
+  pressHapticEnabled = false,
+  touchGestureEnabled = false,
 }: EgDataListRowProps) {
   const colors = getThemeColors(mode);
   const layout = layoutOverride ?? getEgDataListRowLayout();
   const resolvedGap = gap ?? (axis === 'row' ? layout.contentGap : undefined);
+  const longPressActive = touchGestureEnabled && onLongPress != null;
   const interactive =
-    interactiveProp ??
-    (onPress != null ||
-      onLongPress != null ||
-      (forceTouchEnabled && onForcePress != null));
+    interactiveProp ?? (onPress != null || longPressActive);
 
   const rowShell: ViewStyle = {
     flexDirection: axis,
@@ -88,11 +86,11 @@ export function EgDataListRow({
     <EgDataListRowPressable
       testID={testID}
       accessibilityLabel={accessibilityLabel}
-      disabled={!onPress && !onLongPress && !(forceTouchEnabled && onForcePress)}
+      disabled={!onPress && !longPressActive}
       onPress={onPress}
-      onLongPress={onLongPress}
-      onForcePress={onForcePress}
-      forceTouchEnabled={forceTouchEnabled}
+      onLongPress={longPressActive ? onLongPress : undefined}
+      pressHapticEnabled={pressHapticEnabled}
+      touchGestureEnabled={touchGestureEnabled}
       pressIntensity={pressIntensity}
       style={({ pressed }) => [
         outerWrap,

@@ -78,6 +78,24 @@ export function sheetsFrame(
   };
 }
 
+/**
+ * `flushToEdges`（贴边）— 各档位左右及底外边距恒为 0（仍保留顶圆角 / attach 遮罩插值）。
+ */
+export function sheetsFrameForSheet(
+  height: number,
+  attachFrom: number,
+  attachTo: number,
+  tokens: SheetsFrameTokens,
+  flushToEdges: boolean,
+) {
+  'worklet';
+  const frame = sheetsFrame(height, attachFrom, attachTo, tokens);
+  if (!flushToEdges) {
+    return frame;
+  }
+  return { ...frame, inset: 0, bottomRadius: 0 };
+}
+
 /** 松手速度投影后取最近档位（velocityY 向下为正，单位 px/s）。 */
 export function resolveSheetsDetentIndex(
   height: number,

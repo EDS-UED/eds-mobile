@@ -229,7 +229,7 @@ effect/themes/{theme}/base.css      --eds-shadow-* / --eds-glass-*（引用 --ed
 | `--radius-lg` | `16px` |
 | `--radius-xl` | `20px` |
 | `--radius-full` | `888px` |
-| `--stroke-xs` … `--stroke-xl` | `0.2px` / `scale-0125` (0.5px) / `scale-025` (1px) / `scale-0375` (1.5px) / `scale-05` (2px) |
+| `--stroke-xs` … `--stroke-xl` | `0.2px` / `scale-0125` (0.5px) / `scale-025` (1px) / `1.7px` / `scale-05` (2px) |
 | `--blur-deep` / `--blur-moderate` / `--blur-shallow` | `40px` / `80px` / `200px` |
 | `--depth-deep` / `--depth-moderate` / `--depth-shallow` | `8px` / `16px` / `32px` |
 
@@ -293,10 +293,10 @@ effect/themes/{theme}/base.css      --eds-shadow-* / --eds-glass-*（引用 --ed
 |------|------|--------|-------------|
 | display | 34 | bold(700) | 44 |
 | headline | 26 | bold | 32 |
-| title | 21 | bold | 28 |
+| title | 21 | bold(700) | 28 |
 | body-large | 19 | regular | 26 |
 | body-large-strong | 19 | medium(500) | 26 |
-| body-large-heavy | 19 | bold(700) | 26 |
+| body-large-heavy | 19 | semibold(600) | 26 |
 | body-medium | 17 | regular | 24 |
 | body-medium-strong | 17 | medium(500) | 24 |
 | body-medium-heavy | 17 | semibold(600) | 24 |

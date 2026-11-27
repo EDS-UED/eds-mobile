@@ -8,12 +8,16 @@ export { EgDataListMessage } from './EgDataListMessage.js';
 export type { EgDataListMessageProps } from './EgDataListMessage.js';
 export { EgDataListPrimaryText } from './EgDataListPrimaryText.js';
 export type { EgDataListPrimaryTextProps } from './EgDataListPrimaryText.js';
+export { EgDataListPrimaryRow } from './EgDataListPrimaryRow.js';
+export type { EgDataListPrimaryRowProps } from './EgDataListPrimaryRow.js';
 export { EgDataListSubText } from './EgDataListSubText.js';
 export type { EgDataListSubTextProps } from './EgDataListSubText.js';
 export { egDataListPrimaryTextStyle, egDataListSubTextStyle, egDataListSubTextSegmentAStyle } from './egDataListTypography.js';
 export type { EgDataListPrimaryWeight } from './egDataListTypography.js';
 export {
   EG_DATA_LIST_GRAPHIC_TEXT_GAP,
+  EG_DATA_LIST_CONTENT_SLOT_GAP,
+  EG_DATA_LIST_PRIMARY_TAG_GAP,
   EG_DATA_LIST_SUB_TEXT_MAX_LINES,
   EG_DATA_LIST_PRESS_INTENSITY,
   EG_DATA_LIST_ROW_GAP,

@@ -24,7 +24,15 @@ const DEMO_MENU_ITEMS: EgMenuItem[] = ITEM_DEMO_MENU_ITEMS.map((item) => ({
 
 function DemoIcon({ name, mode }: { name: string; mode: 'light' | 'dark' }) {
   if (!name) return null;
-  return <EgSymbol name={name} mode={mode} size="md" accessibilityLabel="" />;
+  return (
+    <EgSymbol
+      name={name}
+      mode={mode}
+      size="md"
+      strokeScaleToken="stroke-lg"
+      accessibilityLabel=""
+    />
+  );
 }
 
 export function ShowcaseEgItemPreview(props: ShowcaseEgItemPreviewProps) {
@@ -66,7 +74,15 @@ export function ShowcaseEgItemPreview(props: ShowcaseEgItemPreviewProps) {
   }, []);
 
   const customTrailing = useMemo(
-    () => <EgSymbol name="eds-editor" mode={mode} size="sm" accessibilityLabel="" />,
+    () => (
+      <EgSymbol
+        name="eds-editor"
+        mode={mode}
+        size="sm"
+        strokeScaleToken="stroke-lg"
+        accessibilityLabel=""
+      />
+    ),
     [mode],
   );
 

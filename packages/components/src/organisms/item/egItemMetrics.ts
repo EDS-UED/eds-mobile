@@ -51,8 +51,17 @@ export const EG_ITEM_TAP_RADIUS = spacing['radius-md'] as number;
 /** 图形与主文案间距 · `spacing-4`（16px）。 */
 export const EG_ITEM_ICON_GAP = spacing['spacing-4'] as number;
 
-/** 左侧图标槽宽 · `symbol-sm`。 */
-export const EG_ITEM_ICON_SLOT = spacing['symbol-sm'] as number;
+/** 左侧图标槽宽 · `symbol-md`（22px）。 */
+export const EG_ITEM_ICON_SLOT = spacing['symbol-md'] as number;
+
+/** 左侧图形描边 · `stroke-lg`（`--stroke-lg`）。 */
+export const EG_ITEM_LEADING_ICON_STROKE = 'stroke-lg' as const;
+
+/** 右侧内置箭头描边 · `stroke-xl`（2px）。 */
+export const EG_ITEM_TRAILING_ICON_STROKE = 'stroke-xl' as const;
+
+/** 右侧内置箭头色 · `--stroke-base-tertiary`。 */
+export const EG_ITEM_TRAILING_ICON_COLOR = 'stroke-base-tertiary' as const;
 
 /** 右侧附属区间距 · `spacing-1-5`（6px）。 */
 export const EG_ITEM_TRAILING_GAP = spacing['spacing-1-5'] as number;

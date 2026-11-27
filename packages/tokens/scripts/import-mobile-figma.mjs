@@ -30,7 +30,7 @@ const primitives = {
   light: {
     'eds-brand': baseEntry('#5f2243'),
     'eds-match': baseEntry('#003a6d'),
-    'eds-decor': baseEntry('#044020'),
+    'eds-decor': baseEntry('#034421'),
     'eds-success': baseEntry('#1fc35a'),
     'eds-danger': baseEntry('#d7462d'),
     'eds-warning': baseEntry('#eb9114'),
@@ -228,7 +228,7 @@ const scaleSemantic = {
         { name: 'stroke-xs', value: '0.2px', comment: '0.2px' },
         { name: 'stroke-sm', value: 'var(--scale-0125)', comment: '0.5px' },
         { name: 'stroke-md', value: 'var(--scale-025)', comment: '1px' },
-        { name: 'stroke-lg', value: 'var(--scale-0375)', comment: '1.5px' },
+        { name: 'stroke-lg', value: '1.7px', comment: '1.7px' },
         { name: 'stroke-xl', value: 'var(--scale-05)', comment: '2px' },
       ],
     },

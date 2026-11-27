@@ -25,7 +25,7 @@ export function presetBodyLargeStrong(): TextPreset {
   return BODY_LARGE_STRONG;
 }
 
-/** Title · 21 / 28 · `eds-title-weight` → weight-bold。 */
+/** Title · 21 / 28 · `eds-title-weight` → weight-bold（700）。 */
 export function presetTitle(): TextPreset {
   return TITLE;
 }
@@ -39,11 +39,11 @@ export function presetBodySmallStrong(): TextPreset {
   return BODY_SMALL_STRONG;
 }
 
-const BODY_LARGE_HEAVY = preset('size-body-large', 'line-height-body-large', 'weight-bold');
+const BODY_LARGE_HEAVY = preset('size-body-large', 'line-height-body-large', 'weight-semibold');
 const BODY_MEDIUM_HEAVY = preset('size-body-medium', 'line-height-body-medium', 'weight-semibold');
 const BODY_SMALL_HEAVY = preset('size-body-small', 'line-height-body-small', 'weight-semibold');
 
-/** Body Large Heavy · 19 / 26 · `eds-body-large-heavy-weight` → weight-bold（700）。 */
+/** Body Large Heavy · 19 / 26 · `eds-body-large-heavy-weight` → weight-semibold（600）。 */
 export function presetBodyLargeHeavy(): TextPreset {
   return BODY_LARGE_HEAVY;
 }

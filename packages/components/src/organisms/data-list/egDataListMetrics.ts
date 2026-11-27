@@ -28,6 +28,12 @@ export const EG_DATA_LIST_ROW_MARGIN_H = spacing['spacing-2'] as number;
 /** 图形插槽与文本列间距 · `spacing-3`（12px）。 */
 export const EG_DATA_LIST_GRAPHIC_TEXT_GAP = spacing['spacing-3'] as number;
 
+/** 主文本与紧跟其后的 Tag 间距 · `spacing-1`（4px）。 */
+export const EG_DATA_LIST_PRIMARY_TAG_GAP = spacing['spacing-1'] as number;
+
+/** 文本列 ↔ 右侧内容插槽 · `spacing-3`（12px）。 */
+export const EG_DATA_LIST_CONTENT_SLOT_GAP = spacing['spacing-3'] as number;
+
 /** 副文本最多行数 · 超出换行，末行溢出 `…`。 */
 export const EG_DATA_LIST_SUB_TEXT_MAX_LINES = 2;
 
@@ -42,6 +48,8 @@ export type EgDataListRowLayout = {
   marginH: number;
   /** 图形 ↔ 文本 · {@link EG_DATA_LIST_GRAPHIC_TEXT_GAP}。 */
   contentGap: number;
+  /** 文本/挂件 ↔ 右侧内容插槽 · {@link EG_DATA_LIST_CONTENT_SLOT_GAP}。 */
+  contentSlotGap: number;
   contentInsetFromScreen: number;
   borderRadius: number;
   slack: number;
@@ -62,6 +70,7 @@ export function getEgDataListRowLayout(
     padV,
     marginH,
     contentGap,
+    contentSlotGap: EG_DATA_LIST_CONTENT_SLOT_GAP,
     borderRadius: EG_DATA_LIST_ROW_RADIUS,
     slack: 0,
     sceneInset: sceneContentInset,

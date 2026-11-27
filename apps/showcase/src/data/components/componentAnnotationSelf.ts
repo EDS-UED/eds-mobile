@@ -136,8 +136,11 @@ const SELF_BY_SLUG: Record<string, ComponentSelfAnnotationSpec | ((exportName: s
     layout: ['高度 `input-md`；左右 `spacing-4`；圆角 `radius-lg` + smoothRadius。'],
   },
   'input-textarea': {
-    style: ['多行字 `typography-body-medium` · 描边/占位同 Input 族。'],
-    layout: ['最小高度 `input-*` 高档；内边距 `spacing-4` · 顶底 `spacing-3`。'],
+    style: [
+      '多行字 `typography-body-medium` · 指针/光标 `text-brand`。',
+      '浅底 `material-card-moderate`（`showBackground` 默认开；关 → `material-hide`）。',
+    ],
+    layout: ['最小高度 `spacing-12`×2；内边距水平 `spacing-4` · 垂直 `spacing-2`。'],
   },
 };
 

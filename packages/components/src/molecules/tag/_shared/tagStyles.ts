@@ -2,7 +2,15 @@ import type { TextStyle, ViewStyle } from 'react-native';
 import { getThemeColors, mobileTheme, type ThemeMode } from '../../../theme/index.js';
 import { tagHeight } from '../../../shared/controlMetrics.js';
 import { resolveColor } from '../../../shared/resolveColor.js';
-import { resolveColorTagColors, resolveStatusTagColors, type TagStatus } from '../../../shared/tagPalette.js';
+import type { TagFamily, TagColorfulStyle, TagCustomStyle } from '../../../shared/tagFamilyTypes.js';
+import {
+  resolveColorTagColors,
+  resolveColorfulTagColors,
+  resolveCustomTagAppearance,
+  resolveStatusTagColors,
+  resolveTagStatusColors,
+  type TagStatus,
+} from '../../../shared/tagPalette.js';
 import { tagTypography } from '../../../shared/typographyStyles.js';
 import type {
   ColorTagType,
@@ -15,12 +23,17 @@ import type {
 export type TagVisualState = {
   mode: ThemeMode;
   size: TagSize;
+  family?: TagFamily;
   variant?: EgTagVariant;
   shape?: TagShape;
   colorType?: ColorTagType;
   systemType?: SystemTagType;
   status?: TagStatus;
+  colorfulStyle?: TagColorfulStyle;
+  customStyle?: TagCustomStyle;
   alt?: boolean;
+  /** 与 Data list 主文等同行 · `alignSelf: 'center'`。 */
+  rowAlign?: boolean;
 };
 
 function tagPadding(size: TagSize, spacing: (typeof mobileTheme)['spacing']) {
@@ -102,7 +115,7 @@ export function createTagStyles(state: TagVisualState): { container: ViewStyle; 
   const shape = state.shape ?? 'round';
 
   const container: ViewStyle = {
-    alignSelf: 'flex-start',
+    alignSelf: state.rowAlign ? 'center' : 'flex-start',
     ...tagPadding(state.size, spacing),
     ...tagShapeRadius(shape, spacing),
     borderColor: 'transparent',
@@ -115,8 +128,21 @@ export function createTagStyles(state: TagVisualState): { container: ViewStyle; 
     textAlign: 'center',
   };
 
-  if (state.variant) {
-    applyEgTagVariant(state.variant, colors, container, label);
+  if (state.family === 'status' && state.status) {
+    applyFilledTagPair(resolveTagStatusColors(state.status, state.mode), container, label);
+    finalizeTagDimensions(state, container, height, spacing);
+    return { container, label };
+  }
+
+  if (state.family === 'colorful' && state.colorfulStyle) {
+    applyFilledTagPair(resolveColorfulTagColors(state.colorfulStyle, state.mode), container, label);
+    finalizeTagDimensions(state, container, height, spacing);
+    return { container, label };
+  }
+
+  if (state.variant != null || state.family === 'system') {
+    const variant = state.variant ?? 'subtle';
+    applyEgTagVariant(variant, colors, container, label);
     return { container, label };
   }
 
@@ -146,6 +172,80 @@ export function createTagStyles(state: TagVisualState): { container: ViewStyle; 
   container.backgroundColor = resolveColor(colors, 'material-card-moderate');
   label.color = resolveColor(colors, 'text-base-primary');
   return { container, label };
+}
+
+function applyFilledTagPair(
+  pair: { bg: string; text: string },
+  container: ViewStyle,
+  label: TextStyle,
+) {
+  container.backgroundColor = pair.bg;
+  label.color = pair.text;
+  container.borderWidth = 0;
+  container.borderColor = 'transparent';
+}
+
+function finalizeTagDimensions(
+  state: TagVisualState,
+  container: ViewStyle,
+  height: number,
+  spacing: (typeof mobileTheme)['spacing'],
+) {
+  container.minHeight = height;
+  container.maxHeight =
+    state.size === 'lg'
+      ? height + (spacing['spacing-1'] as number)
+      : height + (spacing['spacing-05'] as number);
+}
+
+const CUSTOM_BAR_WIDTH = 3;
+
+export function createBusinessTagStyles(state: TagVisualState): {
+  outer: ViewStyle;
+  bar: ViewStyle;
+  content: ViewStyle;
+  label: TextStyle;
+} {
+  const spacing = mobileTheme.spacing;
+  const height = tagHeight(state.size);
+  const typography = tagTypography(state.size);
+  const customStyle = state.customStyle ?? 'vermilion';
+  const appearance = resolveCustomTagAppearance(customStyle, state.mode);
+  const radius = spacing['radius-xs'] as number;
+
+  const padH = state.size === 'lg' ? spacing['spacing-2'] : spacing['spacing-1-5'];
+  const padV = state.size === 'lg' ? spacing['spacing-1'] : spacing['spacing-05'];
+
+  const label: TextStyle = { ...typography, textAlign: 'center', color: appearance.labelColor };
+
+  return {
+    outer: {
+      alignSelf: state.rowAlign ? 'center' : 'flex-start',
+      flexDirection: 'row',
+      alignItems: 'stretch',
+      borderRadius: radius,
+      borderCurve: 'continuous',
+      overflow: 'hidden',
+      minHeight: height,
+      maxHeight:
+        state.size === 'lg'
+          ? height + (spacing['spacing-1'] as number)
+          : height + (spacing['spacing-05'] as number),
+    },
+    bar: {
+      width: CUSTOM_BAR_WIDTH,
+      backgroundColor: appearance.bar,
+      flexShrink: 0,
+    },
+    content: {
+      flexShrink: 1,
+      justifyContent: 'center',
+      paddingHorizontal: padH,
+      paddingVertical: padV,
+      backgroundColor: appearance.contentBg,
+    },
+    label,
+  };
 }
 
 function applySystemTag(

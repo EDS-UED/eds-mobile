@@ -35,6 +35,8 @@ export type EgFieldProps = EgCommonProps & {
   showMax?: boolean;
   unit?: string;
   onChangeText?: (text: string) => void;
+  /** 挂载后聚焦输入（Sheet 驳回页等）。 */
+  autoFocus?: boolean;
   onPress?: () => void;
   onClear?: () => void;
   onPaste?: () => void;

@@ -30,7 +30,7 @@ export type EgSymbolProps = EgCommonProps & {
   fillTone?: IconFillTone;
   /** Semantic color token for stroke icons — default `text-base-primary`. */
   strokeColorToken?: string;
-  /** 描边粗细 token · 默认 `stroke-xl`（其余场景不变）。 */
+  /** 描边粗细 token · 默认 `stroke-xl`（2px）。 */
   strokeScaleToken?: IconStrokeScaleToken;
 };
 

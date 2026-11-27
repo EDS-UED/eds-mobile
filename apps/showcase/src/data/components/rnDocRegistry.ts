@@ -32,7 +32,7 @@ import {
 import {
   dataListComponentCustomizeControls,
   dataListCustomizeDefaults,
-  dataListSlotCustomizeControls,
+  dataListSlotCustomizeCards,
   isDataListRowCountBusiness,
   readDataListRowCount,
 } from './dataListCustomizeModel.js';
@@ -41,6 +41,7 @@ import {
   itemCustomizeDefaults,
   itemSlotCustomizeControls,
 } from './itemCustomizeModel.js';
+import { tagCustomizeControls, tagCustomizeDefaults } from './tagCustomizeModel.js';
 import {
   buildEgSegmentedControlPreviewSegments,
   buildEgTogglePreviewItems,
@@ -102,8 +103,10 @@ export type RnDocConfig = {
   customizeControls: DocCustomizeControl[];
   /** 插槽定制（如 EgDataList）· 独立「插槽」卡片。 */
   customizeSlotControls?: DocCustomizeControl[];
-  /** 插槽 — 多张子卡片（遗留）· 优先 `customizeSlotControls` 单卡 + 小类标题。 */
+  /** 插槽 / 内容 — 多张子卡片 · 优先于 `customizeSlotControls` 单卡。 */
   customizeSlotCards?: DocCustomizeControl[][];
+  /** 多卡区块 DocSection 标题 · 默认「插槽」。 */
+  customizeSlotSectionTitle?: string;
   /** Menu — 分组切换 + 添加分组，而非一次展示全部组。 */
   customizeLayout?: 'menu-sections';
   propRows: DocPropRow[];
@@ -229,6 +232,12 @@ import { EgSheets } from '@eds/mobile-components';`,
       { name: 'showLeft', type: 'boolean', defaultValue: 'false', description: '显示左侧返回 · 按钮由 EDS 锁定（eds-arrow-left-ios），业务侧禁止修改 / 替换' },
       { name: 'onBack', type: '() => void', defaultValue: 'undefined', description: '左侧返回点击回调' },
       { name: 'showRight', type: 'boolean', defaultValue: 'true', description: '显示右侧关闭 · 按钮由 EDS 锁定（eds-close，点击收起），业务侧禁止修改 / 替换' },
+      {
+        name: 'flushToEdges',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: '贴边 · 开启后各档位左右及底外边距为 0（默认关 · 浮动 inset）',
+      },
       { name: 'dismissible', type: 'boolean', defaultValue: 'true', description: '遮罩点击 / 下拉 / 系统返回可收起' },
       { name: 'showDragIndicator', type: 'boolean', defaultValue: 'false', description: '顶部拖拽指示条 · 叠在卡片顶缘，不侵占 NavBar 顶边距' },
       { name: 'scrollEdgeEffect', type: "'automatic' | 'hard' | 'soft' | 'hidden'", defaultValue: "'soft'", description: '顶栏 scroll edge · 静止 hidden，内容滚入栏下后用此样式（默认 soft）· iOS 26+ 系统 Scroll Edge · iOS 26 以下遮罩浅 · Android 遮罩深 · automatic 按 Sheet 解析为 hard' },
@@ -362,7 +371,13 @@ function itemBodyDoc(): RnDocConfig {
         description: '主文案下副文本 · typography-body-small · text-base-secondary · 间距 EG_ITEM_SUB_LABEL_GAP（spacing-05）',
       },
       { name: 'value', type: 'string', defaultValue: 'undefined', description: '右侧附属说明 · typography-body-small' },
-      { name: 'icon', type: 'ReactNode', defaultValue: 'undefined', description: '左侧图形（symbol-sm 槽）' },
+      {
+        name: 'icon',
+        type: 'ReactNode',
+        defaultValue: 'undefined',
+        description:
+          '左侧图形 · 槽 symbol-md（22px）· 描边 stroke-lg · 推荐 `<EgSymbol size="md" strokeScaleToken="stroke-lg" />`',
+      },
       {
         name: 'trailingEnabled',
         type: 'boolean',
@@ -374,7 +389,7 @@ function itemBodyDoc(): RnDocConfig {
         type: "'icon' | 'menu' | 'switch' | 'custom'",
         defaultValue: "'icon'",
         description:
-          '显示 — icon：`eds-arrow-right-mini-ios`；menu：`eds-arrow-integrated-sort-mini` + `EgMenu`；switch：`EgSwitch`；custom：`trailing` 插槽',
+          '显示 — icon：`eds-arrow-right-mini-ios`（stroke-xl · stroke-base-tertiary）；menu：排序箭头同上 + `EgMenu`；switch：`EgSwitch`；custom：`trailing` 插槽',
       },
       { name: 'showChevron', type: 'boolean', defaultValue: 'true', description: '`icon` — 无 value 时右箭头；有 value 时与附属说明同排' },
       { name: 'menuItems', type: 'EgMenuItem[]', defaultValue: 'undefined', description: '`menu` — 选项' },
@@ -406,7 +421,7 @@ function itemBodyDoc(): RnDocConfig {
       const trailingOffAttr = trailing ? '' : '\n  trailingEnabled={false}';
       const iconName = state.iconName === 'none' ? '' : String(state.iconName ?? 'eds-pentagram');
       const iconBlock = iconName
-        ? `\n  icon={<EgSymbol name="${iconName}" size="md" />}`
+        ? `\n  icon={<EgSymbol name="${iconName}" size="md" strokeScaleToken="stroke-lg" />}`
         : '';
       const menuBlock =
         trailing && trailingDisplay === 'menu'
@@ -437,7 +452,8 @@ function dataListBodyDoc(): RnDocConfig {
 import { EgDataList, EgDataListMessage, EgDataListReddot, EgDataListRow } from '@eds/mobile-components';`,
     customizeDefaults: { ...dataListCustomizeDefaults },
     customizeControls: dataListComponentCustomizeControls,
-    customizeSlotControls: dataListSlotCustomizeControls,
+    customizeSlotCards: dataListSlotCustomizeCards,
+    customizeSlotSectionTitle: '内容',
     propRows: [
       { name: 'children', type: 'EgDataListRow[]', defaultValue: '—', description: '数据行 · 行壳（外 spacing-2 / 内 spacing-3）+ 内容插槽 children' },
       { name: 'sceneContentInset', type: 'number', defaultValue: '20', description: 'Scene 水平 inset · 默认 spacing-5' },
@@ -451,9 +467,14 @@ import { EgDataList, EgDataListMessage, EgDataListReddot, EgDataListRow } from '
       },
       { name: 'axis', type: "'row' | 'column'", defaultValue: "'row'", description: 'EgDataListRow 主轴' },
       { name: 'onPress', type: '() => void', defaultValue: 'undefined', description: 'Tap · 触发点按底与缩放' },
-      { name: 'onLongPress', type: '() => void', defaultValue: 'undefined', description: 'Long Press · 同上（滑动/拖拽不触发）' },
-      { name: 'forceTouchEnabled', type: 'boolean', defaultValue: 'false', description: '压感 / 3D Touch · 默认关' },
-      { name: 'onForcePress', type: '() => void', defaultValue: 'undefined', description: 'forceTouchEnabled 时短按深触' },
+      {
+        name: 'onLongPress',
+        type: '() => void',
+        defaultValue: 'undefined',
+        description: '长按 · 须 `touchGestureEnabled`（滑动/拖拽不触发）',
+      },
+      { name: 'pressHapticEnabled', type: 'boolean', defaultValue: 'false', description: '点按触觉反馈 · 默认关' },
+      { name: 'touchGestureEnabled', type: 'boolean', defaultValue: 'false', description: '长按手势 · 默认关' },
       { name: 'interactive', type: 'boolean', defaultValue: 'true', description: '点按底 + 缩放' },
       { name: 'pressIntensity', type: "'xs' | 'sm' | 'md' | 'lg'", defaultValue: "'xs'", description: '点按缩放档位' },
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
@@ -464,18 +485,23 @@ import { EgDataList, EgDataListMessage, EgDataListReddot, EgDataListRow } from '
       'graphicType',
       'iconSymbolSize',
       'primaryWeight',
+      'primaryTagEnabled',
       'subBoldSegment',
       'descriptionEnabled',
       'widgetEnabled',
       'widgetShowTime',
       'widgetShowTag',
+      'widgetSlotEnabled',
       'widgetShowCustom',
+      'widgetShowSwitch',
+      'widgetShowArrow',
       'widgetShowMessage',
       'widgetShowRedDot',
       'rowCount',
       'interactive',
       'pressIntensity',
-      'forceTouchEnabled',
+      'pressHapticEnabled',
+      'touchGestureEnabled',
     ],
     buildUsageSnippet: (state) => {
       if (isDataListRowCountBusiness(state)) {
@@ -542,6 +568,27 @@ import { EgMenuTrigger } from '@eds/mobile-components';`,
   };
 }
 
+const textareaCustomizeDefaults = {
+  ...fieldCustomizeDefaults,
+  placeholder: 'Textarea',
+  showBackground: true,
+} as const;
+
+const textareaCustomizeControls: DocCustomizeControl[] = [
+  ...fieldCustomizeControls,
+  { kind: 'boolean', key: 'showBackground', label: '背景' },
+];
+
+const textareaPropRows: DocPropRow[] = [
+  ...fieldPropRows,
+  {
+    name: 'showBackground',
+    type: 'boolean',
+    defaultValue: 'true',
+    description: '浅底 material-card-moderate；关 → material-hide',
+  },
+];
+
 function fieldDoc(
   componentTag: string,
   previewSlug: string,
@@ -558,6 +605,22 @@ function fieldDoc(
     buildUsageSnippet: (state) =>
       buildRnSelfClosingSnippet(componentTag, state, {
         defaults: { ...fieldCustomizeDefaults, placeholder },
+      }),
+  };
+}
+
+function textareaFieldDoc(componentTag: string, previewSlug: string): RnDocConfig {
+  return {
+    componentTag,
+    previewSlug,
+    importCode: `import { ${componentTag} } from '@eds/mobile-components';`,
+    customizeDefaults: { ...textareaCustomizeDefaults },
+    customizeControls: textareaCustomizeControls,
+    propRows: textareaPropRows,
+    propQueryKeys: ['size', 'event', 'placeholder', 'disabled', 'showBackground'],
+    buildUsageSnippet: (state) =>
+      buildRnSelfClosingSnippet(componentTag, state, {
+        defaults: { ...textareaCustomizeDefaults },
       }),
   };
 }
@@ -613,52 +676,50 @@ const TAG_SIZES = [
   { value: 'sm', label: 'SM' },
 ] as const;
 
-const EG_TAG_VARIANTS = [
-  { value: 'subtle', label: '浅' },
-  { value: 'solid-brand', label: '实心品牌' },
-  { value: 'solid-red', label: '实心红' },
-  { value: 'gray', label: '灰' },
-  { value: 'stroke-subtle', label: '描边浅' },
-  { value: 'stroke-solid', label: '描边实心' },
-] as const;
-
-const TAG_SHAPES = [
-  { value: 'round', label: '圆形' },
-  { value: 'square', label: '方形' },
-] as const;
-
 function egTagDoc(componentTag: string, previewSlug: string): RnDocConfig {
-  const defaults = { variant: 'subtle', shape: 'round', size: 'sm', label: 'Tag' } as const;
+  const defaults = { ...tagCustomizeDefaults };
   return {
     componentTag,
     previewSlug,
     importCode: `import { ${componentTag} } from '@eds/mobile-components';`,
-    customizeDefaults: { ...defaults },
-    customizeControls: [
-      {
-        kind: 'select',
-        key: 'variant',
-        label: '类型',
-        options: [...EG_TAG_VARIANTS],
-      },
-      { kind: 'select', key: 'shape', label: '形状', options: [...TAG_SHAPES] },
-      { kind: 'select', key: 'size', label: '尺寸', options: [...TAG_SIZES] },
-      { kind: 'text', key: 'label', label: '文案' },
-    ],
+    customizeDefaults: defaults,
+    customizeControls: tagCustomizeControls,
     propRows: [
+      {
+        name: 'family',
+        type: "'system' | 'status' | 'colorful' | 'custom'",
+        defaultValue: "'system'",
+        description: '类型 · 系统 / 状态 / 彩色 / 商业',
+      },
       {
         name: 'variant',
         type: "'subtle' | 'solid-brand' | 'solid-red' | 'gray' | 'stroke-subtle' | 'stroke-solid'",
         defaultValue: "'subtle'",
-        description: '语义类型',
+        description: '样式 · 仅 family=system',
       },
+      {
+        name: 'status',
+        type: 'TagStatus',
+        defaultValue: "'danger'",
+        description: '状态色 · family=status',
+      },
+      { name: 'colorfulStyle', type: 'TagColorfulStyle', defaultValue: "'apricot'", description: '彩色 · family=colorful' },
+      { name: 'customStyle', type: 'TagCustomStyle', defaultValue: "'vermilion'", description: '商业 · family=custom' },
       { name: 'shape', type: "'round' | 'square'", defaultValue: "'round'", description: '圆角：radius-full · scale-1' },
       { name: 'size', type: "'lg' | 'md' | 'sm'", defaultValue: "'sm'", description: '尺寸' },
       { name: 'label', type: 'string', defaultValue: 'undefined', description: '标签文案' },
     ],
-    propQueryKeys: ['variant', 'shape', 'size', 'label'],
-    buildUsageSnippet: (state) =>
-      buildRnSelfClosingSnippet(componentTag, state, { defaults: { ...defaults } }),
+    propQueryKeys: [
+      'family',
+      'variant',
+      'status',
+      'colorfulStyle',
+      'customStyle',
+      'shape',
+      'size',
+      'label',
+    ],
+    buildUsageSnippet: (state) => buildRnSelfClosingSnippet(componentTag, state, { defaults }),
   };
 }
 
@@ -1804,8 +1865,8 @@ export const rnDocBySlug: Record<string, RnDocConfig> = {
       { name: 'mode', type: "'light' | 'dark'", defaultValue: "'light'", description: '主题' },
     ],
   },
-  'textarea-body': fieldDoc('EgTextarea', 'input-textarea', '文本域'),
-  'input-textarea': fieldDoc('EgTextarea', 'input-textarea', '文本域'),
+  'textarea-body': textareaFieldDoc('EgTextarea', 'input-textarea'),
+  'input-textarea': textareaFieldDoc('EgTextarea', 'input-textarea'),
   'input-quick-input': fieldDoc('EgQuickInput', 'input-quick-input', 'Quick input'),
   'input-pointer': {
     componentTag: 'EgInputPointer',

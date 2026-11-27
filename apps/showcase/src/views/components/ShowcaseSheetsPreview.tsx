@@ -102,6 +102,7 @@ export function ShowcaseSheetsPreview(props: ShowcaseSheetsPreviewProps) {
         showDragIndicator={sheetProps.showDragIndicator}
         showActions={sheetProps.showActions}
         actionsBlankCompensation={sheetProps.actionsBlankCompensation}
+        flushToEdges={sheetProps.flushToEdges}
       >
         <SheetsContent kind={sheetProps.content} mode={mode} />
       </EgSheets>

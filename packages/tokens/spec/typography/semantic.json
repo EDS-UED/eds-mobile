@@ -46,7 +46,7 @@
       "comment": "Body Large Heavy",
       "tokens": [
         { "name": "eds-body-large-heavy-size", "value": "var(--size-body-large)" },
-        { "name": "eds-body-large-heavy-weight", "value": "var(--weight-bold)" },
+        { "name": "eds-body-large-heavy-weight", "value": "var(--weight-semibold)" },
         { "name": "eds-body-large-heavy-line-height", "value": "var(--line-height-body-large)" }
       ]
     },

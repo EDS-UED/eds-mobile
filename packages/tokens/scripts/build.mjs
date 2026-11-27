@@ -1722,8 +1722,106 @@ function buildColorSystem() {
 
   writeImportAggregator(
     join(cssDir, 'color/index.css'),
-    ['./themes/light.css', './themes/dark.css', './tag/index.css'],
+    ['./themes/light.css', './themes/dark.css', './palette/index.css'],
     'Color System entry (all themes)',
+  );
+}
+
+function buildHexPaletteBaseSpec(entries, edsPrefix) {
+  const light = {};
+  const dark = {};
+  for (const [key, values] of Object.entries(entries ?? {})) {
+    const varName = `eds-${edsPrefix}-${key}`;
+    const lightEntry = { hex: values.light };
+    const darkEntry = { hex: values.dark };
+    if (values.comment) {
+      lightEntry.comment = values.comment;
+      darkEntry.comment = values.comment;
+    }
+    light[varName] = lightEntry;
+    dark[varName] = darkEntry;
+  }
+  return { light, dark };
+}
+
+function expandHexPaletteSemanticTokens(entries, semanticPrefix) {
+  const tokens = [];
+  for (const key of Object.keys(entries ?? {})) {
+    const name = `${semanticPrefix}-${key}`;
+    const reference = `color(var(--eds-${semanticPrefix}-${key}) / 1)`;
+    tokens.push({ name, light: reference, dark: reference });
+  }
+  return tokens;
+}
+
+function buildHexPaletteColorSystem({
+  specRelativePath,
+  dataKey,
+  edsPrefix,
+  semanticPrefix,
+  distFolderName,
+  systemTitle,
+  sourceComment,
+}) {
+  const palette = loadJson(specRelativePath);
+  const entries = palette[dataKey] ?? {};
+  const baseSpec = buildHexPaletteBaseSpec(entries, edsPrefix);
+  const semanticTokens = expandHexPaletteSemanticTokens(entries, semanticPrefix);
+  const semanticGroups = [{ comment: systemTitle, tokens: semanticTokens }];
+
+  for (const themeName of ['light', 'dark']) {
+    const selector = themeSelector(themeName);
+    const themeDir = join(cssDir, 'color/palette', distFolderName, 'themes', themeName);
+
+    writeColorBaseCssFile(join(themeDir, 'base.css'), selector, themeName, baseSpec, [
+      ` * ${systemTitle} — base (${themeName}).`,
+      ` * Source: spec/${specRelativePath}`,
+      ` * ${sourceComment}`,
+    ]);
+
+    writeColorSemanticCssFile(join(themeDir, 'semantic.css'), selector, semanticGroups, themeName, [
+      ` * ${systemTitle} — semantic (${themeName}).`,
+      ` * Source: spec/${specRelativePath}`,
+    ]);
+
+    writeImportAggregator(
+      join(cssDir, 'color/palette', distFolderName, 'themes', `${themeName}.css`),
+      [`./${themeName}/base.css`, `./${themeName}/semantic.css`],
+      `${systemTitle} entry (${themeName})`,
+    );
+  }
+
+  writeImportAggregator(
+    join(cssDir, 'color/palette', distFolderName, 'index.css'),
+    ['./themes/light.css', './themes/dark.css'],
+    `${systemTitle} entry (all themes)`,
+  );
+}
+
+function buildPaletteColorSystem() {
+  buildHexPaletteColorSystem({
+    specRelativePath: 'color/palette/hue.json',
+    dataKey: 'hues',
+    edsPrefix: 'hue',
+    semanticPrefix: 'hue',
+    distFolderName: 'hue',
+    systemTitle: 'Palette · Hue',
+    sourceComment: 'Figma Palette · Hue',
+  });
+  buildHexPaletteColorSystem({
+    specRelativePath: 'color/palette/chart.json',
+    dataKey: 'charts',
+    edsPrefix: 'chart',
+    semanticPrefix: 'chart',
+    distFolderName: 'chart',
+    systemTitle: 'Palette · Chart',
+    sourceComment: 'Figma Palette · Chart',
+  });
+  buildTagColorSystem();
+  writeImportAggregator(
+    join(cssDir, 'color/palette/index.css'),
+    ['./hue/index.css', './chart/index.css', './tag/index.css'],
+    'Palette entry (Hue · Chart · Tag)',
   );
 }
 
@@ -1736,7 +1834,7 @@ function buildTagColorSystem() {
 
   for (const themeName of ['light', 'dark']) {
     const selector = themeSelector(themeName);
-    const themeDir = join(cssDir, 'color/tag/themes', themeName);
+    const themeDir = join(cssDir, 'color/palette/tag/themes', themeName);
 
     writeColorBaseCssFile(join(themeDir, 'base.css'), selector, themeName, tagBaseSpec, [
       ` * Tag Color System — base palette (${themeName}).`,
@@ -1750,14 +1848,14 @@ function buildTagColorSystem() {
     ]);
 
     writeImportAggregator(
-      join(cssDir, 'color/tag/themes', `${themeName}.css`),
+      join(cssDir, 'color/palette/tag/themes', `${themeName}.css`),
       [`./${themeName}/base.css`, `./${themeName}/semantic.css`],
       `Tag Color System entry (${themeName})`,
     );
   }
 
   writeImportAggregator(
-    join(cssDir, 'color/tag/index.css'),
+    join(cssDir, 'color/palette/tag/index.css'),
     ['./themes/light.css', './themes/dark.css'],
     'Tag Color System entry (all themes)',
   );
@@ -1948,7 +2046,7 @@ async function buildAll() {
   buildEffectSystem();
   buildLiquidGlassCssSystem();
   buildColorSystem();
-  buildTagColorSystem();
+  buildPaletteColorSystem();
   buildRootIndex();
   buildJsonExport();
   buildRnTheme({ specDir, distDir });

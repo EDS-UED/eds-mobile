@@ -272,6 +272,14 @@ function resolveTagPaletteSide(side, themeName, colorBase) {
   return out;
 }
 
+function buildHexPaletteRn(paletteJson, dataKey) {
+  const out = {};
+  for (const [key, values] of Object.entries(paletteJson[dataKey] ?? {})) {
+    out[key] = { light: values.light, dark: values.dark };
+  }
+  return out;
+}
+
 function buildTagPaletteRn(tagPalette, colorBase) {
   const tags = {};
   for (const groupKey of ['mobileColor', 'mobileStatus', 'status', 'colorful', 'custom']) {
@@ -333,6 +341,8 @@ export function buildRnTheme({ specDir, distDir }) {
   const colorBase = loadJson(specDir, 'color/base.json');
   const colorSemantic = loadJson(specDir, 'color/semantic.json');
   const tagPalette = loadJson(specDir, 'color/tag-palette.json');
+  const huePalette = loadJson(specDir, 'color/palette/hue.json');
+  const chartPalette = loadJson(specDir, 'color/palette/chart.json');
   const scaleSemantic = loadJson(specDir, 'scale/semantic.json');
   const scaleBase = loadJson(specDir, 'scale/base.json');
   const typographyBase = loadJson(specDir, 'typography/base.json');
@@ -385,6 +395,10 @@ export function buildRnTheme({ specDir, distDir }) {
       }),
     },
     tags: buildTagPaletteRn(tagPalette, colorBase),
+    palette: {
+      hue: buildHexPaletteRn(huePalette, 'hues'),
+      chart: buildHexPaletteRn(chartPalette, 'charts'),
+    },
   };
 
   const jsDir = join(distDir, 'js');
@@ -393,7 +407,7 @@ export function buildRnTheme({ specDir, distDir }) {
   const jsBody = `/** Auto-generated — do not edit. Source: packages/tokens/spec */\nexport const mobileTheme = ${JSON.stringify(theme, null, 2)};\nexport default mobileTheme;\n`;
   writeFileSync(join(jsDir, 'theme.js'), jsBody);
 
-  const dts = `/** Auto-generated — do not edit. */\nexport type MobileThemeColors = Record<string, string>;\nexport type MobileThemeColorBaseP3 = Record<string, [number, number, number]>;\nexport type MobileFontRole = { stackName: string; weights: Record<string, string> };\nexport type MobileFontFace = { family: string; file: string; weight: number };\nexport type MobileTagPaletteEntry = { light: Record<string, string>; dark: Record<string, string> };\nexport type MobileTheme = {\n  colors: { light: MobileThemeColors; dark: MobileThemeColors };\n  colorBaseP3: { light: MobileThemeColorBaseP3; dark: MobileThemeColorBaseP3 };\n  spacing: Record<string, number | string>;\n  scale: Record<string, number | string>;\n  typography: { base: Record<string, number | string>; semantic: Record<string, string> };\n  fonts: { sans: MobileFontRole; mono: MobileFontRole; faces: MobileFontFace[] };\n  motion: {\n    springs: Record<string, Record<string, number>>;\n    springByName: Record<string, Record<string, number>>;\n    timings: Record<string, { duration?: number; easing?: string }>;\n    scale: Record<string, number>;\n    opacity: Record<string, number>;\n    offset: Record<string, number>;\n    radius: Record<string, number>;\n    ratio: Record<string, number>;\n    haptic: Record<string, string>;\n    interaction: Record<string, boolean>;\n  };\n  tags: Record<string, Record<string, MobileTagPaletteEntry>>;\n  glass: {\n    effect: Record<string, number | string>;\n    surface: {\n      variants: Record<string, Record<string, unknown>>;\n      shapes: Record<string, string>;\n      container: Record<string, string>;\n    };\n    boxes: Record<string, { title?: string; className: string; light: Record<string, unknown>; dark: Record<string, unknown> }>;\n  };\n};\nexport declare const mobileTheme: MobileTheme;\nexport default mobileTheme;\n`;
+  const dts = `/** Auto-generated — do not edit. */\nexport type MobileThemeColors = Record<string, string>;\nexport type MobileThemeColorBaseP3 = Record<string, [number, number, number]>;\nexport type MobileFontRole = { stackName: string; weights: Record<string, string> };\nexport type MobileFontFace = { family: string; file: string; weight: number };\nexport type MobileTagPaletteEntry = { light: Record<string, string>; dark: Record<string, string> };\nexport type MobileTheme = {\n  colors: { light: MobileThemeColors; dark: MobileThemeColors };\n  colorBaseP3: { light: MobileThemeColorBaseP3; dark: MobileThemeColorBaseP3 };\n  spacing: Record<string, number | string>;\n  scale: Record<string, number | string>;\n  typography: { base: Record<string, number | string>; semantic: Record<string, string> };\n  fonts: { sans: MobileFontRole; mono: MobileFontRole; faces: MobileFontFace[] };\n  motion: {\n    springs: Record<string, Record<string, number>>;\n    springByName: Record<string, Record<string, number>>;\n    timings: Record<string, { duration?: number; easing?: string }>;\n    scale: Record<string, number>;\n    opacity: Record<string, number>;\n    offset: Record<string, number>;\n    radius: Record<string, number>;\n    ratio: Record<string, number>;\n    haptic: Record<string, string>;\n    interaction: Record<string, boolean>;\n  };\n  tags: Record<string, Record<string, MobileTagPaletteEntry>>;\n  palette: { hue: Record<string, { light: string; dark: string }>; chart: Record<string, { light: string; dark: string }> };\n  glass: {\n    effect: Record<string, number | string>;\n    surface: {\n      variants: Record<string, Record<string, unknown>>;\n      shapes: Record<string, string>;\n      container: Record<string, string>;\n    };\n    boxes: Record<string, { title?: string; className: string; light: Record<string, unknown>; dark: Record<string, unknown> }>;\n  };\n};\nexport declare const mobileTheme: MobileTheme;\nexport default mobileTheme;\n`;
   writeFileSync(join(jsDir, 'theme.d.ts'), dts);
 
   writeRnFontAssets(jsDir, theme.fonts.faces);

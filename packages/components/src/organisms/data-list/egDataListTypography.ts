@@ -42,6 +42,11 @@ export function egDataListPrimaryTextLayout(): Pick<TextStyle, 'fontSize' | 'lin
   };
 }
 
+/** 主文本行盒高度 · 与 {@link egDataListPrimaryTextLayout} `lineHeight` 一致。 */
+export function egDataListPrimaryLineHeight(): number {
+  return base['line-height-body-medium'] as number;
+}
+
 export function egDataListSubTextLayout(): Pick<TextStyle, 'fontSize' | 'lineHeight'> {
   return {
     fontSize: base['size-body-small'] as number,

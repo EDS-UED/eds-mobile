@@ -5,19 +5,19 @@ import {
   EgTag,
   EgCryptoBtc,
   EgDataList,
-  EgDataListPrimaryText,
+  EgDataListPrimaryRow,
   EgDataListMessage,
   EgDataListReddot,
   EgDataListRow,
   EgDataListSubText,
+  EgSwitch,
   EgSymbol,
   getEgDataListRowLayout,
 } from '@eds/mobile-components';
 import type { EgSymbolSize } from '@eds/mobile-components';
 import mobileTheme from '@eds/mobile-tokens/theme';
-import { catalogPreviewCanvasStyle } from '@eds/mobile-components/catalog';
 import React, { useMemo } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ShowcaseSansText } from '@/components/ShowcaseSansText';
 import {
@@ -25,6 +25,7 @@ import {
   dataListGraphicAvatarSize,
   readDataListGraphicSize,
   readDataListGraphicType,
+  readDataListPrimaryTagEnabled,
   readDataListPrimaryWeight,
   readDataListRowCount,
   readDataListSubBoldSegment,
@@ -34,13 +35,8 @@ import {
 import { useShowcaseColors } from '@/hooks/useShowcaseColors';
 import type { ShowcaseColorMap } from '@/hooks/useShowcaseColors';
 import { edsTokenFont } from '@/views/shared/resolveEdsTheme';
-import { showcaseTheme } from '@/views/shared/showcaseTheme';
 
 type ShowcaseEgDataListPreviewProps = Record<string, unknown>;
-
-/** 与 Divider 预览一致 — 画布 `alignItems: center` 时子树须显式撑满可用宽。 */
-const STAGE_HORIZONTAL_CHROME =
-  2 * (showcaseTheme.layout.cardPaddingHorizontal + catalogPreviewCanvasStyle.padding);
 
 type DataListPressIntensity = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -115,49 +111,121 @@ function DataListGraphicSlot({
           { color: colors['text-base-secondary'] as string },
         ]}
       >
-        自定
+        插槽
       </ShowcaseSansText>
     </View>
   );
 }
 
+function DataListTrailingSlotPlaceholder({
+  mode,
+  colors,
+  fullHeight = false,
+}: {
+  mode: 'light' | 'dark';
+  colors: ShowcaseColorMap;
+  fullHeight?: boolean;
+}) {
+  return (
+    <View
+      style={[
+        styles.trailingSlot,
+        fullHeight ? styles.trailingSlotFullHeight : null,
+        {
+          borderColor: colors['text-base-quaternary'] as string,
+        },
+      ]}
+    >
+      <ShowcaseSansText
+        style={[
+          edsTokenFont('body-small-strong', '600'),
+          { color: colors['text-base-tertiary'] as string },
+        ]}
+      >
+        插槽
+      </ShowcaseSansText>
+    </View>
+  );
+}
+
+/** 挂件 · 主文本行尾（时间 / Tag · 与 {@link EgDataListPrimaryRow} 同行对齐）。 */
 function DataListPrimaryRowWidgets({
   flags,
   mode,
   colors,
+  gap,
 }: {
   flags: DataListWidgetFlags;
   mode: 'light' | 'dark';
   colors: ShowcaseColorMap;
+  gap: number;
 }) {
+  if (!flags.showTime && !flags.showTag) return null;
+
   const secondaryStyle = [
     edsTokenFont('body-small', '400'),
     { color: colors['text-base-secondary'] as string },
   ];
 
-  const nodes: React.ReactNode[] = [];
-  if (flags.showTime) {
-    nodes.push(
-      <ShowcaseSansText key="time" style={secondaryStyle}>
-        14:20
-      </ShowcaseSansText>,
-    );
-  }
-  if (flags.showTag) {
-    nodes.push(<EgTag key="tag" size="sm" label="标签" mode={mode} />);
-  }
-  if (flags.showCustom) {
-    nodes.push(
-      <ShowcaseSansText key="custom" style={secondaryStyle}>
-        详情
-      </ShowcaseSansText>,
-    );
-  }
-  if (nodes.length === 0) return null;
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap }}>
+      {flags.showTime ? (
+        <ShowcaseSansText key="time" style={secondaryStyle}>
+          14:20
+        </ShowcaseSansText>
+      ) : null}
+      {flags.showTag ? (
+        <EgTag
+          key="widget-tag"
+          size="sm"
+          label="标签"
+          mode={mode}
+          rowAlign
+          accessibilityLabel="挂件标签"
+        />
+      ) : null}
+    </View>
+  );
+}
+
+/** 内容区右侧满高插槽 · 仅右箭头 / Switch / 自定义。 */
+function DataListContentSlotColumn({
+  flags,
+  mode,
+  colors,
+  gap,
+  marginLeft,
+}: {
+  flags: DataListWidgetFlags;
+  mode: 'light' | 'dark';
+  colors: ShowcaseColorMap;
+  gap: number;
+  marginLeft: number;
+}) {
+  if (!flags.slotOpen) return null;
+
+  const hasSlotItems = flags.showSwitch || flags.showCustom || flags.showArrow;
+  if (!hasSlotItems) return null;
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: mobileTheme.spacing['spacing-2'] as number }}>
-      {nodes}
+    <View style={[styles.slotColumn, { marginLeft, gap }]}>
+      {flags.showSwitch ? (
+        <EgSwitch key="slot-switch" mode={mode} value={false} accessibilityLabel="开关" />
+      ) : null}
+      {flags.showCustom ? (
+        <DataListTrailingSlotPlaceholder key="slot-custom" mode={mode} colors={colors} fullHeight />
+      ) : null}
+      {flags.showArrow ? (
+        <EgSymbol
+          key="slot-arrow"
+          name="eds-arrow-right-mini-ios"
+          mode={mode}
+          size="sm"
+          strokeScaleToken="stroke-xl"
+          strokeColorToken="stroke-base-tertiary"
+          accessibilityLabel="进入"
+        />
+      ) : null}
     </View>
   );
 }
@@ -167,7 +235,8 @@ function DataListDemoRow({
   state,
   interactive,
   pressIntensity,
-  forceTouchEnabled,
+  pressHapticEnabled,
+  touchGestureEnabled,
   mode,
   colors,
 }: {
@@ -175,7 +244,8 @@ function DataListDemoRow({
   state: ShowcaseEgDataListPreviewProps;
   interactive: boolean;
   pressIntensity: DataListPressIntensity;
-  forceTouchEnabled: boolean;
+  pressHapticEnabled: boolean;
+  touchGestureEnabled: boolean;
   mode: 'light' | 'dark';
   colors: ShowcaseColorMap;
 }) {
@@ -188,11 +258,17 @@ function DataListDemoRow({
   const primaryWeight = readDataListPrimaryWeight(state);
   const subBoldSegment = readDataListSubBoldSegment(state);
   const descriptionEnabled = state.descriptionEnabled === true;
+  const primaryTagEnabled = readDataListPrimaryTagEnabled(state);
+  const widgetSlotEnabled = state.widgetEnabled === true;
   const widgetFlags = readDataListWidgetFlags(state);
+  const slotColumnVisible =
+    widgetFlags.slotOpen &&
+    (widgetFlags.showSwitch || widgetFlags.showCustom || widgetFlags.showArrow);
+  const slotLeadingMargin = slotColumnVisible ? layout.contentSlotGap : 0;
+  const primaryTrailingGap = spacing['spacing-2'] as number;
 
   const onPress = interactive ? () => undefined : undefined;
-  const onLongPress = interactive ? () => undefined : undefined;
-  const onForcePress = forceTouchEnabled && interactive ? () => undefined : undefined;
+  const onLongPress = touchGestureEnabled && interactive ? () => undefined : undefined;
 
   const descriptionStyle = [
     edsTokenFont('body-small', '400'),
@@ -214,9 +290,9 @@ function DataListDemoRow({
       interactive={interactive}
       mode={mode}
       pressIntensity={pressIntensity}
-      forceTouchEnabled={forceTouchEnabled}
+      pressHapticEnabled={pressHapticEnabled}
+      touchGestureEnabled={touchGestureEnabled}
       onLongPress={onLongPress}
-      onForcePress={onForcePress}
     >
       <DataListGraphicSlot
         graphicEnabled={graphicEnabled}
@@ -226,40 +302,66 @@ function DataListDemoRow({
         mode={mode}
         colors={colors}
       />
-      <View style={{ flex: 1, minWidth: 0, gap: layout.titleSubGap }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing['spacing-2'] as number }}>
-          <EgDataListPrimaryText
-            weight={primaryWeight}
+      <View
+        style={{
+          flex: 1,
+          minWidth: 0,
+          flexDirection: 'row',
+          alignItems: 'stretch',
+        }}
+      >
+        <View style={{ flex: 1, minWidth: 0, gap: layout.titleSubGap }}>
+          <EgDataListPrimaryRow
             mode={mode}
-            numberOfLines={1}
-            style={{ flex: 1, minWidth: 0 }}
+            weight={primaryWeight}
+            tag={
+              primaryTagEnabled ? (
+                <EgTag size="sm" label="标签" mode={mode} rowAlign accessibilityLabel="主文后标签" />
+              ) : undefined
+            }
+            trailing={
+              widgetSlotEnabled ? (
+                <DataListPrimaryRowWidgets
+                  flags={widgetFlags}
+                  mode={mode}
+                  colors={colors}
+                  gap={primaryTrailingGap}
+                />
+              ) : undefined
+            }
           >
             {primaryLabel}
-          </EgDataListPrimaryText>
-          <DataListPrimaryRowWidgets flags={widgetFlags} mode={mode} colors={colors} />
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing['spacing-2'] as number }}>
-          <EgDataListSubText
-            mode={mode}
-            segmentA={subSegmentA}
-            segmentB={subSegmentB}
-            boldSegmentA={subBoldSegment}
-            style={{ flex: 1, minWidth: 0 }}
-            numberOfLines={EG_DATA_LIST_SUB_TEXT_MAX_LINES}
-            ellipsizeMode="tail"
-          />
-          {widgetFlags.showMessage || widgetFlags.showRedDot ? (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing['spacing-2'] as number }}>
-              {widgetFlags.showMessage ? (
-                <EgDataListMessage mode={mode} label="9" accessibilityLabel="未读计数" />
-              ) : null}
-              {widgetFlags.showRedDot ? <EgDataListReddot mode={mode} accessibilityLabel="未读" /> : null}
-            </View>
+          </EgDataListPrimaryRow>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: primaryTrailingGap }}>
+            <EgDataListSubText
+              mode={mode}
+              segmentA={subSegmentA}
+              segmentB={subSegmentB}
+              boldSegmentA={subBoldSegment}
+              style={{ flex: 1, minWidth: 0 }}
+              numberOfLines={EG_DATA_LIST_SUB_TEXT_MAX_LINES}
+              ellipsizeMode="tail"
+            />
+            {widgetSlotEnabled && (widgetFlags.showMessage || widgetFlags.showRedDot) ? (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: primaryTrailingGap }}>
+                {widgetFlags.showMessage ? (
+                  <EgDataListMessage mode={mode} label="9" accessibilityLabel="未读计数" />
+                ) : null}
+                {widgetFlags.showRedDot ? <EgDataListReddot mode={mode} accessibilityLabel="未读" /> : null}
+              </View>
+            ) : null}
+          </View>
+          {descriptionEnabled ? (
+            <ShowcaseSansText style={descriptionStyle}>2026-03-12 14:20</ShowcaseSansText>
           ) : null}
         </View>
-        {descriptionEnabled ? (
-          <ShowcaseSansText style={descriptionStyle}>2026-03-12 14:20</ShowcaseSansText>
-        ) : null}
+        <DataListContentSlotColumn
+          flags={widgetFlags}
+          mode={mode}
+          colors={colors}
+          gap={primaryTrailingGap}
+          marginLeft={slotLeadingMargin}
+        />
       </View>
     </EgDataListRow>
   );
@@ -268,13 +370,12 @@ function DataListDemoRow({
 /** EgDataList 详情 · Scene inset + DL-bleed + 插槽行预览。 */
 export function ShowcaseEgDataListPreview(props: ShowcaseEgDataListPreviewProps) {
   const colors = useShowcaseColors();
-  const { width: windowWidth } = useWindowDimensions();
-  const railWidth = Math.max(0, windowWidth - STAGE_HORIZONTAL_CHROME);
   const mode = props.mode === 'dark' ? 'dark' : 'light';
   const rowCount = readDataListRowCount(props);
   const interactive = props.interactive !== false;
   const pressIntensity = (props.pressIntensity as DataListPressIntensity | undefined) ?? 'xs';
-  const forceTouchEnabled = props.forceTouchEnabled === true;
+  const pressHapticEnabled = props.pressHapticEnabled === true;
+  const touchGestureEnabled = props.touchGestureEnabled === true;
   const testID = props.testID as string | undefined;
 
   const rows = useMemo(
@@ -286,24 +387,47 @@ export function ShowcaseEgDataListPreview(props: ShowcaseEgDataListPreviewProps)
           state={props}
           interactive={interactive}
           pressIntensity={pressIntensity}
-          forceTouchEnabled={forceTouchEnabled}
+          pressHapticEnabled={pressHapticEnabled}
+          touchGestureEnabled={touchGestureEnabled}
           mode={mode}
           colors={colors}
         />
       )),
-    [colors, forceTouchEnabled, interactive, mode, pressIntensity, props, rowCount],
+    [colors, interactive, mode, pressHapticEnabled, pressIntensity, props, rowCount, touchGestureEnabled],
   );
 
   return (
-    <View style={[styles.rail, { width: railWidth }]} testID={testID}>
-      <EgDataList sceneContentInset={EG_DATA_LIST_SCENE_CONTENT_INSET}>{rows}</EgDataList>
-    </View>
+    <EgDataList sceneContentInset={EG_DATA_LIST_SCENE_CONTENT_INSET} testID={testID}>
+      {rows}
+    </EgDataList>
   );
 }
 
 const styles = StyleSheet.create({
-  rail: {
+  slotColumn: {
+    flexGrow: 0,
+    flexShrink: 0,
     alignSelf: 'stretch',
-    overflow: 'visible',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  trailingSlot: {
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderRadius: mobileTheme.spacing['radius-sm'] as number,
+    paddingHorizontal: mobileTheme.spacing['spacing-2'] as number,
+    height: mobileTheme.typography.base['line-height-body-medium'] as number,
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+  trailingSlotFullHeight: {
+    alignSelf: 'stretch',
+    flexGrow: 0,
+    flexShrink: 0,
+    height: undefined,
+    minHeight: mobileTheme.typography.base['line-height-body-medium'] as number,
+    paddingHorizontal: mobileTheme.spacing['spacing-2'] as number,
+    marginHorizontal: 0,
   },
 });
